@@ -1,0 +1,4212 @@
+\ProvidesFile{oxref.tex}
+    [2015/05/25 0.1 Biblatex styles inspired by the Oxford Guide to Style]
+
+\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
+\newoutputstream{preamble}
+\openoutputfile{oxref-preamble.tex}{preamble}
+\begin{writeverbatim}{preamble}
+\setlrmarginsandblock{4cm}{2cm}{*}
+\setulmarginsandblock{2.5cm}{2.5cm}{*}
+\checkandfixthelayout
+% Document divisions
+\chapterstyle{hangnum}
+\hangsecnum
+\setsecheadstyle{\Large\bfseries\raggedright}
+\setsubsecheadstyle{\large\bfseries\scshape\raggedright}
+\setsecnumdepth{subsection}
+% Pagination and headers
+\nouppercaseheads
+\makeoddhead{myheadings}{\textsc{\leftmark}}{}{\thepage}
+%\makeevenhead{myheadings}{\thepage}{}{\textsc{\leftmark}}
+\makepsmarks{myheadings}{%
+    \def\chaptermark##1{\markboth{##1}{##1}}%
+    \def\sectionmark##1{\markright{##1}}%
+}
+\pagestyle{myheadings}
+\aliaspagestyle{title}{empty}
+
+\usepackage[british]{babel}
+%\usepackage[utf8]{inputenc}
+%   \DeclareUnicodeCharacter{2212}{\textminus}
+\usepackage{libertine}
+\ifluatex
+\setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
+\else
+\ifxetex
+\setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
+\else
+\usepackage[varl]{zi4}
+\fi
+\fi
+%\setmonofont[Scale=MatchLowercase]{LettrGoth12 BT}
+\usepackage{htabular,url-apa,csquotes,xcolor,xparse,multicol}
+\definecolor{Green}{rgb}{0,.5,0}
+\colorlet{ok}{Green}
+\colorlet{bad}{red}
+\colorlet{hacked}{orange}
+\colorlet{manual}{purple}
+\usepackage
+[bibstyle=oxnotes%
+,citestyle=verbose%
+,backend=biber%
+,hyperref=false%
+,isbn=false]{biblatex}
+\bibliography{oxref}
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage[noabbrev,capitalize,nameinlink]{cleveref}
+
+\newcommand*{\lit}[1]{\textsf{#1}}
+\newcommand*{\code}[1]{`\textsf{#1}'}
+\newcommand*{\aside}[1]{\textcolor{violet}{\emph{[#1]}}}
+
+% For debugging; userd is either ‘bad’, ‘hacked’, ‘manual’
+\makeatletter
+\def\CiteStatus{bad}
+\newcommand{\dbgcolor}[2]{%
+    \bgroup
+    \blx@citecmdinit
+    \blx@citeinit
+    \def\blx@precode{}%
+    \def\blx@postcode{}%
+    \def\blx@loopcode{%
+        \iffieldundef{userd}
+        {\xdef\CiteStatus{ok}}
+        {\xdef\CiteStatus{\abx@field@userd}}}%
+    \blx@citeloop{#1}%
+    \textcolor{\CiteStatus}{#2}%
+    \egroup
+}
+\makeatother
+% \testrow compares target format with generated format. Arguments:
+% #1 = target format
+% #2 = page range
+% #3 = bib key
+\NewDocumentCommand\testrow{mom}{\parbox{\textwidth}{\biburlsetup #1\\%
+        \makebox[0pt][r]{\footnotesize\textcolor{teal}{#3}\quad}%
+        \IfNoValueTF{#2}{\dbgcolor{#3}{\fullcite{#3}.}}%
+        {\dbgcolor{#3}{\fullcite[#2]{#3}.}}\par}}
+% \egcite gives a citation as an example. Arguments:
+% #1 = page range
+% #2 = bib key
+\NewDocumentCommand\egcite{om}{%
+    \makebox[0pt][r]{\footnotesize\textcolor{teal}{#2}\quad}%
+    \IfNoValueTF{#1}{\dbgcolor{#2}{\fullcite{#2}.}}%
+    {\dbgcolor{#2}{\fullcite[#1]{#2}}.}}
+\newcommand{\egauthor}[1]{%
+    \makebox[0pt][r]{\footnotesize\textcolor{teal}{#1}\quad}%
+    \dbgcolor{#1}{\citeauthor{#1}.}%
+}
+
+\frenchspacing
+\end{writeverbatim}
+\closeoutputstream{preamble}
+
+\newoutputstream{notesbbx}
+\openoutputfile{oxnotes.bbx}{notesbbx}
+\begin{writeverbatim}{notesbbx}
+\ProvidesFile{oxnotes.bbx}
+
+% New defaults
+
+\ExecuteBibliographyOptions{urldate=comp,pagetracker}
+
+% Tweaks to language style
+
+\DeclareLanguageMapping{british}{british-ox}
+\NewBibliographyString{at}
+\NewBibliographyString{under}
+\NewBibliographyString{facsimile}
+\NewBibliographyString{revised}
+\NewBibliographyString{byperformer}
+\NewBibliographyString{bydirector}
+\NewBibliographyString{byreader}
+
+% Controlled vocabulary
+
+\def\isInferred{inferred} % Where authorship isn't explicit
+\def\whenPublished{published} % URL date is when published online
+
+% Standard style is not far off
+
+\RequireBibliographyStyle{standard}
+
+% Punctuation conventions
+
+\renewcommand*{\labelnamepunct}{\addcomma\space}
+\renewcommand*{\newunitpunct}{\addcomma\space}
+\renewcommand*{\subtitlepunct}{\addcolon\space}
+\renewcommand*{\intitlepunct}{\nopunct\space}
+\renewcommand*{\bibnamedash}{\rule[0.5ex]{2em}{\normalrulethickness}\addthinspace}
+\renewcommand*{\revsdnamedelim}{\addcomma}
+
+% Names generally
+
+\DeclareNameFormat{entrystartname}{%
+    \ifbibliography
+    {\ifnumequal{\value{listcount}}{1}
+        {\iffirstinits
+            {\usebibmacro{name:last-first-sc}{#1}{#4}{#5}{#7}}
+            {\usebibmacro{name:last-first-sc}{#1}{#3}{#5}{#7}}%
+            \ifblank{#3#5}
+            {}
+            {\usebibmacro{name:revsdelim}}}
+        {\iffirstinits
+            {\usebibmacro{name:last-first-sc}{#1}{#4}{#5}{#7}}
+            {\usebibmacro{name:last-first-sc}{#1}{#3}{#5}{#7}}}}%
+    {\iffirstinits
+        {\usebibmacro{name:first-last}{#1}{#4}{#5}{#7}}
+        {\usebibmacro{name:first-last}{#1}{#3}{#5}{#7}}}%
+    \usebibmacro{name:andothers}}
+
+\DeclareNameAlias{author}{entrystartname}
+\DeclareNameAlias[book]{editor}{entrystartname}
+\DeclareNameAlias[booklet]{editor}{entrystartname}
+\DeclareNameAlias[collection]{editor}{entrystartname}
+\DeclareNameAlias[manual]{editor}{entrystartname}
+\DeclareNameAlias[misc]{editor}{entrystartname}
+\DeclareNameAlias[mvbook]{editor}{entrystartname}
+\DeclareNameAlias[mvcollection]{editor}{entrystartname}
+\DeclareNameAlias[mvproceedings]{editor}{entrystartname}
+\DeclareNameAlias[mvreference]{editor}{entrystartname}
+\DeclareNameAlias[online]{editor}{entrystartname}
+\DeclareNameAlias[proceedings]{editor}{entrystartname}
+\DeclareNameAlias[reference]{editor}{entrystartname}
+
+\newbibmacro*{name:last-first-sc}[4]{%
+    \ifuseprefix
+    {\usebibmacro{name:delim}{\textsc{#3}\textsc{#1}}%
+        \usebibmacro{name:hook}{\textsc{#3}\textsc{#1}}%
+        \ifblank{\textsc{#3}}{}{%
+            \ifcapital
+            {\mkbibnameprefix{\MakeCapital{\textsc{#3}}}\isdot}
+            {\mkbibnameprefix{\textsc{#3}}\isdot}%
+            \ifpunctmark{'}{}{\bibnamedelimc}}%
+        \mkbibnamelast{\textsc{#1}}\isdot
+        \ifblank{\textsc{#4}}{}{\bibnamedelimd\mkbibnameaffix{\textsc{#4}}\isdot}%
+        \ifblank{\textsc{#2}}{}{\addcomma\bibnamedelimd\mkbibnamefirst{\textsc{#2}}\isdot}}
+    {\usebibmacro{name:delim}{\textsc{#1}}%
+        \usebibmacro{name:hook}{\textsc{#1}}%
+        \mkbibnamelast{\textsc{#1}}\isdot
+        \ifblank{\textsc{#4}}{}{\bibnamedelimd\mkbibnameaffix{\textsc{#4}}\isdot}%
+        \ifblank{\textsc{#2}\textsc{#3}}{}{\addcomma}%
+        \ifblank{\textsc{#2}}{}{\bibnamedelimd\mkbibnamefirst{\textsc{#2}}\isdot}%
+        \ifblank{\textsc{#3}}{}{\bibnamedelimd\mkbibnameprefix{\textsc{#3}}\isdot}}}
+
+\renewbibmacro*{name:first-last}[4]{%
+    \usebibmacro{name:delim}{#2#3#1}%
+    \usebibmacro{name:hook}{#2#3#1}%
+    \ifblank{#2}{}{\mkbibnamefirst{#2}\isdot\bibnamedelimd}%
+    \ifblank{#3}{}{%
+        \mkbibnameprefix{#3}\isdot
+        \ifpunctmark{'}%
+        {}%
+        {\ifuseprefix{\bibnamedelimc}{\bibnamedelimd}}}%
+    \mkbibnamelast{#1}\isdot
+    \ifblank{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnameaffix{#4}\isdot}}
+
+% Authors
+
+\DeclareFieldFormat{nameaddon}{\mkbibparens{#1}}
+
+\InitializeBibliographyStyle{%
+    \global\undef\bbx@lasthash}
+
+\newbibmacro*{bbx:savehash}{%
+    \savefield{fullhash}{\bbx@lasthash}}
+
+\newbibmacro*{bbx:dashcheck}[2]{%
+    \ifboolexpr{
+        test {\iffieldequals{fullhash}{\bbx@lasthash}}
+        and
+        not test \iffirstonpage
+        and
+        (
+        not bool {bbx@inset}
+        or
+        test {\iffieldequalstr{entrysetcount}{1}}
+        )
+    }
+    {#1}
+    {#2}}
+
+\newbool{bbx@inset}
+\DeclareBibliographyDriver{set}{%
+    \booltrue{bbx@inset}%
+    \entryset{}{}%
+    \newunit\newblock
+    \usebibmacro{setpageref}%
+    \finentry}
+
+\renewbibmacro*{author}{%
+    \ifboolexpr{
+        test \ifuseauthor
+        and
+        not test {\ifnameundef{author}}
+    }
+    {\usebibmacro{bbx:dashcheck}
+        {\bibnamedash}
+        {\usebibmacro{bbx:savehash}%
+            \iffieldequals{authortype}{\isInferred}
+            {\mkbibbrackets{\printnames{author}}\clearfield{authortype}}%
+            {\printnames{author}}%
+            \iffieldundef{nameaddon}
+            {}
+            {\setunit{\addspace}%
+                \printfield{nameaddon}}%
+            \iffieldundef{authortype}
+            {\setunit{\addspace}}
+            {\setunit{\addcomma\space}}}%
+        \iffieldundef{authortype}
+        {}
+        {\usebibmacro{authorstrg}%
+            \setunit{\addspace}}}%
+    {\global\undef\bbx@lasthash}}
+
+% Editors
+
+\renewbibmacro*{editor}{%
+    \usebibmacro{bbx:editor}{editorstrg}}
+\renewbibmacro*{editor+others}{%
+    \usebibmacro{bbx:editor}{editor+othersstrg}}
+\newbibmacro*{bbx:editor}[1]{%
+    \ifboolexpr{
+        test \ifuseeditor
+        and
+        not test {\ifnameundef{editor}}
+    }
+    {\usebibmacro{bbx:dashcheck}
+        {\bibnamedash}
+        {\usebibmacro{bbx:savehash}%
+            \printnames{editor}%
+            \addspace}%
+        \mkbibparens{\usebibmacro{#1}}%
+        \clearname{editor}%
+        \setunit{\addspace}}%
+    {\global\undef\bbx@lasthash}}
+
+% Book authors
+
+\renewbibmacro*{bybookauthor}{%
+    \ifnamesequal{author}{bookauthor}%
+    {\bibstring{idem\thefield{gender}}}%
+    {\printnames{bookauthor}}}
+
+\newbibmacro*{bookeditor}{%
+    \ifnamesequal{author}{editor}%
+    {\bibstring{idem\thefield{gender}}%
+        \addspace%
+        \mkbibparens{\usebibmacro{editor+othersstrg}}%
+        \clearname{editor}}%
+    {\undef\bbx@lasthash\usebibmacro{editor+others}}}
+
+% Dates generally
+
+\RequirePackage{xstring}
+% This command is extracted and adapted from code by Marco Daniel:
+% see http://tex.stackexchange.com/questions/23483/
+% It compares two years, and outputs a full or truncated version of
+% the second year, depending on how similar it is to the first.
+\newcommand{\blx@ox@compyear}[2]{%
+    \def\num@one{#1}%
+    \def\num@two{#2}%
+    \StrLen{\num@one}[\num@one@len]%
+    \StrLen{\num@two}[\num@two@len]%
+    \IfEq{\num@one@len}{\num@two@len}%
+    {\StrCompare{\num@one}{\num@two}[\Result]%
+        \ifnum\num@two@len>3%
+        \IfStrEq{\Result}{2}{\def\Result{1}}{}%
+        \fi
+        \StrGobbleLeft{0\num@two}{\Result}}%
+    {\num@two}%
+}
+
+\renewrobustcmd*{\mkbibrangetrunc}[2]{%
+    \iffieldundef{#2year}%
+    {}%
+    {\printtext{%
+            \iffieldsequal{#2year}{#2endyear}%
+            {\iffieldsequal{#2month}{#2endmonth}%
+                {\csuse{mkbibdate#1}{}{}{#2day}}%
+                {\csuse{mkbibdate#1}{}{#2month}{#2day}}}%
+            {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
+            \iffieldundef{#2endyear}%
+            {}%
+            {\iffieldequalstr{#2endyear}{}%
+                {\mbox{\bibdatedash}}%
+                {\bibdatedash
+                    % In the original, only the false part of the following occurs
+                    \iffieldundef{#2month}%
+                    {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+                    {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}%
+}
+
+\renewrobustcmd*{\mkbibrangetruncextra}[2]{%
+    \iffieldundef{#2year}%
+    {}%
+    {\printtext{%
+            \iffieldsequal{#2year}{#2endyear}%
+            {\iffieldsequal{#2month}{#2endmonth}%
+                {\csuse{mkbibdate#1}{}{}{#2day}}%
+                {\csuse{mkbibdate#1}{}{#2month}{#2day}}}%
+            {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
+        \iffieldundef{#2endyear}%
+        {\printfield{extrayear}}%
+        {\iffieldequalstr{#2endyear}{}%
+            {\printfield{extrayear}%
+                \printtext{\mbox{\bibdatedash}}}%
+            {\printtext{%
+                    \bibdatedash
+                    % In the original, only the false part of the following occurs
+                    \iffieldundef{#2month}%
+                    {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+                    {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+                    \printfield{extrayear}}}}}%
+}
+% - allow date to be prefaced by a type
+\let\dateType\@empty
+\DeclareEntryOption{datetype}{\def\dateType{#1\addspace}}
+\renewbibmacro*{date}{%
+    \ifx\@empty\dateType\else\printtext{\dateType}\fi
+    \printdate}
+
+% Editions
+
+\DeclareFieldFormat{edition}{%
+    \ifinteger{#1}
+    {\mkbibordedition{#1}~\bibstring{edition}}
+    {\ifbibstring{#1}{\bibstring{#1}}{#1\isdot}}}
+
+% Pages (no pp.)
+
+\DeclareFieldFormat{pages}{\mkcomprange{#1}}
+\DeclareFieldFormat{postnote}{\iffieldundef{pages}{}%
+    {\addspace\bibstring{at}\addspace}%
+    \mkcomprange{#1}}
+
+\renewbibmacro*{postnote}{%
+    \iffieldundef{postnote}
+    {}
+    % This test makes a lot of assumptions and needs more sophistication
+    {\iffieldundef{pages}
+        % The \printtext following is a complete hack as print tracker has become unreliable
+        {\printtext{\unspace}\setunit{\postnotedelim}\newblock\printfield{postnote}}
+        {\printfield{postnote}}%
+    }}
+
+% URLs
+
+\DeclareFieldFormat{url}{$\langle$\url{#1}$\rangle$}
+\DeclareFieldFormat{urldate}{\bibstring{urlseen}\space#1}
+\DeclareFieldFormat{urldatepublished}{\bibstring{epublished}\space#1}
+
+\renewbibmacro*{url+urldate}{%
+    \iffieldundef{url}{}{\nopunct}%
+    \printfield{url}%
+    \iffieldundef{urlyear}
+    {\iffieldundef{url}{}{\nopunct}}
+    {\newunit
+        \printtext[urldate]{\printurldate}}}
+% - allow custom urldate type (these have a different position)
+\DeclareEntryOption{urldatetype}{%
+    \DeclareFieldFormat{urldate}{\printtext{#1}\space##1}%
+    \renewbibmacro*{url+urldate}{%
+        \iffieldundef{url}{}{%
+            \newunit
+            \printtext[urldate]{\printurldate}%
+            \setunit*{\addspace}%
+            \printfield{url}%
+            \nopunct
+        }%
+    }%
+}
+
+% Addenda
+
+\renewbibmacro*{addendum+pubstate}{%
+    \iffieldundef{pubstate}{}{\nopunct}%
+    \printfield[parens]{pubstate}%
+    \setunit{\addperiod\addspace}\newblock
+    \printfield{addendum}}
+
+% Relationships: reprints
+
+\renewbibmacro*{related:reprintfrom}[1]{%
+    \entrydata*{#1}{%
+        \iffieldundef{journaltitle}{% Reprint from book
+            \iffieldundef{maintitle}
+            {\printfield[title:hook]{booktitle}}
+            {\printfield[title:hook]{maintitle}}%
+            \newunit\newblock
+            \usebibmacro{byeditor+others}%
+            \newunit\newblock
+            \iffieldundef{volume}{%
+            }{%
+                \printfield{volume}%
+                \printfield{part}%
+            }%
+            \newunit\newblock
+            \printfield{note}%
+            \newunit\newblock
+            \usebibmacro{series+number+edition+publisher+location+date}%
+            \newunit\newblock
+            \usebibmacro{chapter+pages}
+        }{% Reprint from periodical
+            \usebibmacro{journal+issuetitle}%
+            \newunit
+            \usebibmacro{byeditor+others}%
+            \iffieldundef{note}{%
+                \newunit
+            }{%
+                \setunit{\addsemicolon\addspace}%
+            }%
+            \usebibmacro{note+pages}%
+        }}}
+
+% Adjustments to articles
+
+\DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
+
+\newbibmacro*{journaltype}{%
+    \iffieldequalstr{entrysubtype}{online journal}%
+    {\nopunct\printfield{entrysubtype}}{}%
+}
+
+\renewbibmacro*{journal+issuetitle}{%
+    \ifboolexpr{
+        test {\iffieldundef{title}}
+        and
+        not test {\iffieldundef{issuetitle}}
+    }{%
+        \usebibmacro{issue}%
+        \clearfield{issuetitle}%
+        \setunit{\addspace =\addspace}}{}%
+    \usebibmacro{journal}%
+    \usebibmacro{journaltype}%
+    \setunit*{\addspace}%
+    \iffieldundef{series}
+    {\newunit}
+    {\newunit
+        \printfield{series}%
+        \setunit{\addspace}}%
+    \usebibmacro{volume+number+eid}%
+    \setunit{\addspace}%
+    \usebibmacro{issue+date}%
+    \setunit{\addsemicolon\space}%
+    \usebibmacro{issue}%
+    \newunit}
+
+\renewbibmacro*{title+issuetitle}{%
+    \usebibmacro{periodical}%
+    \usebibmacro{journaltype}%
+    \setunit*{\addspace}%
+    \iffieldundef{series}
+    {\newunit}
+    {\newunit
+        \printfield{series}%
+        \setunit{\addspace}}%
+    \usebibmacro{volume+number+eid}%
+    \setunit{\addspace}%
+    \usebibmacro{issue+date}%
+    \setunit{\addcolon\space}%
+    \usebibmacro{issue}%
+    \newunit}
+
+\renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addslash}%
+    \printfield{number}%
+    \setunit{\addcomma\space}%
+    \printfield{eid}}
+
+\renewbibmacro*{issue+date}{%
+    \ifboolexpr{(
+        test {\iffieldundef{volume}}
+        and
+        test {\iffieldundef{number}}
+        ) and
+        test {\iffieldundef{eid}}
+    }%
+    {\newunit\printtext{%
+            \iffieldundef{issue}
+            {\usebibmacro{date}}
+            {\printfield{issue}%
+                \setunit*{\addspace}%
+                \usebibmacro{date}}}}%
+    {\ifboolexpr{
+            test {\iffieldundef{issue}}
+            and
+            test {\iffieldundef{year}}
+        }{}{%
+            \printtext[parens]{%
+                \iffieldundef{issue}
+                {\usebibmacro{date}}
+                {\printfield{issue}%
+                    \setunit*{\addspace}%
+                    \usebibmacro{date}}}}}%
+    \newunit}
+
+% Adjustments to books
+
+\DeclareFieldFormat[bookinbook]{citetitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[bookinbook]{title}{\mkbibquote{#1\isdot}}
+
+\DeclareFieldFormat[book,bookinbook,inbook,mvbook,%
+collection,incollection,mvcollection,%
+proceedings,inproceedings,mvproceedings,%
+reference,inreference,mvreference]{volume}{\Rn{#1}}
+
+\renewbibmacro*{series+number}{%
+    \printfield{series}%
+    \newunit
+    \printfield{number}}
+
+\newbibmacro*{origdate}{\printorigdate}
+
+\newbibmacro*{edition+publisher+location+date}{%
+    \printlist{origlocation}%
+    \iflistundef{origpublisher}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{origpublisher}%
+    \setunit*{\addcomma\space}%
+    \printorigdate%
+    %\usebibmacro{origdate}%
+    \setunit*{\addsemicolon\space}%
+    \printfield{edition}%
+    \setunit*{\addcomma\space}%
+    \printlist{location}%
+    \iflistundef{publisher}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{publisher}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{date}%
+}
+
+\DeclareFieldFormat{publication}{\mkbibparens{#1}}
+
+\newbibmacro*{series+number+edition+publisher+location+date}{%
+    \nopunct\printtext[publication]{%
+        \usebibmacro{series+number}%
+        \setunit*{\addsemicolon\addspace}%
+        \usebibmacro{edition+publisher+location+date}%
+    }%
+}
+
+\newbibmacro*{maintitle+volume}{%
+    \ifboolexpr{
+        test {\iffieldundef{maintitle}}
+        or
+        test {\iffieldundef{volume}}
+    }{}%
+    {\printtext[publication]{%\bibstring{volume}\addspace
+            \printfield{volume}\addspace\bibstring{ofseries}\addspace
+            \usebibmacro{maintitle}}}
+}
+
+% Adjustments to online
+
+\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
+
+% Adjustments to proceedings
+
+\renewbibmacro*{event+venue+date}{%
+    \printfield{eventtitle}%
+    \ifboolexpr{
+        test {\iffieldundef{venue}}
+        and
+        test {\iffieldundef{eventyear}}
+    }
+    {}
+    {\ifboolexpr{
+            test {\iffieldundef{language}}
+            and
+            test {\iffieldundef{eventtitle}}
+        }{\setunit{\mkbibemph{\addcolon}\addspace}}%
+        {\setunit{\addcolon\addspace}}%
+        \printfield{venue}%
+        \setunit*{\addcomma\space}%
+        \printeventdate}%
+    \newunit}
+
+% Adjustments to reference
+
+\newbibmacro*{series+number+publisher+location+date}{%
+    \nopunct\printtext[publication]{%
+        \usebibmacro{series+number}%
+        \setunit{\addsemicolon\space}%
+        \usebibmacro{publisher+location+date}%
+    }%
+}
+
+% Adjustments to reports and theses
+
+\newbibmacro*{type+number}{%
+    \printfield{type}%
+    \newunit
+    \printfield{number}}
+
+\renewbibmacro*{institution+location+date}{%
+    \nopunct\printtext[publication]{%
+        \printlist{location}%
+        \iflistundef{institution}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addcolon\space}}%
+        \printlist{institution}%
+        \setunit*{\addcomma\space}%
+        \usebibmacro{date}%
+    }%
+}
+
+\newbibmacro*{type+number+edition+institution+location+date}{%
+    \nopunct\printtext[publication]{%
+        \usebibmacro{type+number}%
+        \setunit{\addsemicolon\space}%
+        \printfield{edition}%
+        \setunit*{\addcomma\space}%
+        \printlist{location}%
+        \iflistundef{institution}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addcolon\space}}%
+        \printlist{institution}%
+        \setunit*{\addcomma\space}%
+        \usebibmacro{date}%
+    }%
+}
+
+\newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
+    \nopunct\printtext[publication]{%
+        \printfield{type}%
+        \setunit*{\addcomma\space}%
+        \usebibmacro{series+number}%
+        \setunit{\addsemicolon\space}%
+        \printfield{edition}%
+        \setunit*{\addcomma\space}%
+        \iflistundef{publisher}%
+        {}%
+        {\printlist{organization}%
+            \setunit*{\addcomma\space}}%
+        \printlist{location}%
+        \iflistundef{publisher}%
+        {\iflistundef{organization}%
+            {\setunit*{\addcomma\space}}%
+            {\setunit*{\addcolon\space}%
+                \printlist{organization}}}%
+        {\setunit*{\addcolon\space}
+            \printlist{publisher}}%
+        \setunit*{\addcomma\space}%
+        \usebibmacro{date}%
+    }%
+}
+
+% Adjustments to review
+
+\DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[review]{volume}{#1}% volume of a journal
+\DeclareFieldFormat[review]{number}{#1}% number of a journal
+\DeclareFieldFormat[review]{series}{% series of a journal
+    \ifinteger{#1}
+    {\mkbibordseries{#1}~\bibstring{jourser}}
+    {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
+
+% - allow reference to reviewed item to be embedded within the reference to the review
+% - TODO: switch to using biblatex's related item mechanism instead
+\newbibmacro*{reviewof}{}
+\DeclareBibliographyCategory{reviewed}
+\DeclareEntryOption{reviewed}{%
+    \renewbibmacro*{reviewof}{%
+        \bibstring{reviewof}\addspace
+        \fullcite{#1}\printtext{\unspace}% <- hack to ensure punctuation is triggered
+    }%
+    \addtocategory{reviewed}{#1}%
+}
+
+% Somewhat cleaner Biber method
+\newbibmacro*{related:reviewof}[1]{%
+    \entrydata*{#1}{%
+        \iffieldundef{journaltitle}{% Review of book
+            \usebibmacro{author}%
+            \setunit{\labelnamepunct}\newblock
+            \iffieldequalstr{entrysubtype}{sequence}%
+            {\usebibmacro{title}}%
+            {\usebibmacro{maintitle+title}}%
+            \newunit
+            \printlist{language}%
+            \newunit\newblock
+            \usebibmacro{byauthor}%
+            \newunit\newblock
+            \usebibmacro{byeditor+others}%
+            \newunit\newblock
+            \iffieldequalstr{entrysubtype}{sequence}{%
+                \printfield{note}%
+                \newunit\newblock
+                \usebibmacro{maintitle+volume}%
+                \newunit
+            }{%
+                \printfield{volumes}%
+                \newunit\newblock
+                \iffieldundef{maintitle}{%
+                    \printfield{volume}%
+                    \printfield{part}%
+                }{}%
+                \newunit
+                \printfield{note}%
+                \newunit\newblock
+            }%
+            \usebibmacro{series+number+edition+publisher+location+date}%
+        }{% Review of periodical
+            \usebibmacro{author/translator+others}%
+            \setunit{\labelnamepunct}\newblock
+            \usebibmacro{title}%
+            \newunit
+            \printlist{language}%
+            \newunit\newblock
+            \usebibmacro{byauthor}%
+            \newunit\newblock
+            \usebibmacro{bytranslator+others}%
+            \newunit\newblock
+            \printfield{version}%
+            \newunit\newblock
+            \usebibmacro{journal+issuetitle}%
+            \newunit
+            \usebibmacro{byeditor+others}%
+            \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+            \usebibmacro{note+pages}%
+        }%
+    }%
+}
+
+% Adjustments to music
+
+\newbibmacro*{publisher+type+series+number+date}{%
+    \nopunct\printtext[publication]{%
+        \printfield{howpublished}%
+        \setunit*{\addcomma\space}%
+        \printlist{publisher}%
+        \setunit*{\addspace}%
+        \printfield{type}%
+        \setunit*{\addspace}%
+        \printfield{series}%
+        \setunit*{\addcomma\space}%
+        \printfield{number}%
+        \setunit{\addcomma\space}%
+        \usebibmacro{date}%
+    }%
+}
+
+% Adjustments to aliases
+
+\DeclareBibliographyAlias{mvreference}{reference}
+
+% Adjustments to existing drivers
+
+\DeclareBibliographyDriver{article}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{bytranslator+others}%
+    \newunit\newblock
+    \printfield{version}%
+    \newunit\newblock
+    \usebibmacro{journal+issuetitle}%
+    \newunit
+    \usebibmacro{byeditor+others}%
+    \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+    \usebibmacro{note+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{book}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{title}}%
+    {\usebibmacro{maintitle+title}}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inbook}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{bybookauthor}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{booktitle}}%
+    {\usebibmacro{maintitle+booktitle}}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{collection}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{editor+others}%
+    \setunit{\labelnamepunct}\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{title}}%
+    {\usebibmacro{maintitle+title}}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{incollection}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{bookeditor}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{booktitle}}%
+    {\usebibmacro{maintitle+booktitle}}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{online}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/editor+others/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \usebibmacro{maintitle}
+    \setunit{\addspace}\newblock
+    \printfield{entrysubtype}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \printfield{version}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \printlist{organization}%
+    \newunit\newblock
+    \iffieldundef{date}{}{%
+        \printtext[parens]{\usebibmacro{date}}%
+    }%
+    \newunit\newblock
+    \iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{url+urldate}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{proceedings}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{maintitle+title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{event+venue+date}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \printfield{volumes}%
+    \newunit\newblock
+    \iffieldundef{maintitle}
+    {\printfield{volume}%
+        \printfield{part}}
+    {}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \printlist{organization}%
+    \newunit
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inproceedings}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{maintitle+booktitle}%
+    \newunit\newblock
+    \usebibmacro{event+venue+date}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \printfield{volumes}%
+    \newunit\newblock
+    \iffieldundef{maintitle}
+    {\printfield{volume}%
+        \printfield{part}}
+    {}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \printlist{organization}%
+    \newunit
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{reference}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{title}}%
+    {\usebibmacro{maintitle+title}}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \printfield{edition}%
+    \newunit
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inreference}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{bookeditor}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{booktitle}}%
+    {\usebibmacro{maintitle+booktitle}}%
+    \newunit\newblock
+    \printfield{edition}%
+    \newunit
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{report}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \printfield{version}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \usebibmacro{type+number+edition+institution+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isrn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{manual}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{maintitle+title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \printfield{volumes}%
+    \newunit\newblock
+    \iffieldundef{maintitle}
+    {\printfield{volume}%
+        \printfield{part}}
+    {}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \printfield{type}%
+    \newunit
+    \printfield{version}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+% Previously unsupported types
+
+\DeclareBibliographyDriver{review}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{bytranslator+others}%
+    \newunit\newblock
+    \printfield{version}%
+    \newunit\newblock
+    \usebibmacro{reviewof}%
+    \newunit\newblock
+    \iftoggle{bbx:related}{%
+        \usebibmacro{related:init}%
+        \usebibmacro{related}%
+    }{}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{journal+issuetitle}%
+    \newunit
+    \usebibmacro{byeditor+others}%
+    \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+    \usebibmacro{note+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{audio}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{title}}%
+    {\usebibmacro{maintitle+title}}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{publisher+type+series+number+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \setunit{\addperiod\addspace}\newblock
+    \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+        \usebibmacro{related}}
+    {}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyAlias{music}{audio}
+
+% \DeclareBibliographyDriver{movie}{%
+% \DeclareBibliographyDriver{video}{%
+
+\endinput
+\end{writeverbatim}
+\closeoutputstream{notesbbx}
+
+\newoutputstream{yearbbx}
+\openoutputfile{oxyear.bbx}{yearbbx}
+\begin{writeverbatim}{yearbbx}
+\ProvidesFile{oxnotes.bbx}
+
+% New defaults
+
+\ExecuteBibliographyOptions{urldate=comp,pagetracker}
+
+% Entry options
+
+\def\dateType{}
+\DeclareEntryOption{datetype}{\def\dateType{#1\space}}
+\DeclareEntryOption{urldatetype}{%
+    \renewbibmacro*{url+urldate}{%
+        \printtext{#1}\space\printurldate\space
+        \printfield{url}%
+        \iffieldundef{url}{}{\nopunct}}%
+}
+\DeclareBibliographyCategory{reviewed}
+\DeclareEntryOption{reviewed}{%
+    \renewbibmacro*{reviewof}{%
+        \bibstring{reviewof}\addspace
+        \fullcite{#1}%
+    }%
+    \addtocategory{reviewed}{#1}%
+}
+% Tweaks to language style
+
+\DeclareLanguageMapping{british}{british-ox}
+\NewBibliographyString{at}
+\NewBibliographyString{under}
+\NewBibliographyString{facsimile}
+\NewBibliographyString{revised}
+\NewBibliographyString{reviewof}
+
+% Controlled vocabulary
+
+\def\isInferred{inferred} % Where authorship isn't explicit
+\def\whenPublished{published} % URL date is when published online
+
+% Standard style is not far off
+
+\RequireBibliographyStyle{standard}
+
+% Punctuation conventions
+
+\renewcommand*{\labelnamepunct}{\addcomma\space}
+\renewcommand*{\newunitpunct}{\addcomma\space}
+\renewcommand*{\subtitlepunct}{\addcolon\space}
+\renewcommand*{\intitlepunct}{\nopunct\space}
+\renewcommand*{\bibnamedash}{\rule[0.5ex]{2em}{\normalrulethickness}\addthinspace}
+\renewcommand*{\revsdnamedelim}{\addcomma}
+
+% Names generally
+
+\DeclareNameFormat{entrystartname}{%
+    \ifbibliography
+    {\ifnumequal{\value{listcount}}{1}
+        {\iffirstinits
+            {\usebibmacro{name:last-first-sc}{#1}{#4}{#5}{#7}}
+            {\usebibmacro{name:last-first-sc}{#1}{#3}{#5}{#7}}%
+            \ifblank{#3#5}
+            {}
+            {\usebibmacro{name:revsdelim}}}
+        {\iffirstinits
+            {\usebibmacro{name:last-first-sc}{#1}{#4}{#5}{#7}}
+            {\usebibmacro{name:last-first-sc}{#1}{#3}{#5}{#7}}}}%
+    {\iffirstinits
+        {\usebibmacro{name:first-last}{#1}{#4}{#5}{#7}}
+        {\usebibmacro{name:first-last}{#1}{#3}{#5}{#7}}}%
+    \usebibmacro{name:andothers}}
+
+\DeclareNameAlias{author}{entrystartname}
+\DeclareNameAlias[book]{editor}{entrystartname}
+\DeclareNameAlias[booklet]{editor}{entrystartname}
+\DeclareNameAlias[collection]{editor}{entrystartname}
+\DeclareNameAlias[manual]{editor}{entrystartname}
+\DeclareNameAlias[misc]{editor}{entrystartname}
+\DeclareNameAlias[mvbook]{editor}{entrystartname}
+\DeclareNameAlias[mvcollection]{editor}{entrystartname}
+\DeclareNameAlias[mvproceedings]{editor}{entrystartname}
+\DeclareNameAlias[mvreference]{editor}{entrystartname}
+\DeclareNameAlias[online]{editor}{entrystartname}
+\DeclareNameAlias[proceedings]{editor}{entrystartname}
+\DeclareNameAlias[reference]{editor}{entrystartname}
+
+\newbibmacro*{name:last-first-sc}[4]{%
+    \ifuseprefix
+    {\usebibmacro{name:delim}{\textsc{#3}\textsc{#1}}%
+        \usebibmacro{name:hook}{\textsc{#3}\textsc{#1}}%
+        \ifblank{\textsc{#3}}{}{%
+            \ifcapital
+            {\mkbibnameprefix{\MakeCapital{\textsc{#3}}}\isdot}
+            {\mkbibnameprefix{\textsc{#3}}\isdot}%
+            \ifpunctmark{'}{}{\bibnamedelimc}}%
+        \mkbibnamelast{\textsc{#1}}\isdot
+        \ifblank{\textsc{#4}}{}{\bibnamedelimd\mkbibnameaffix{\textsc{#4}}\isdot}%
+        \ifblank{\textsc{#2}}{}{\addcomma\bibnamedelimd\mkbibnamefirst{\textsc{#2}}\isdot}}
+    {\usebibmacro{name:delim}{\textsc{#1}}%
+        \usebibmacro{name:hook}{\textsc{#1}}%
+        \mkbibnamelast{\textsc{#1}}\isdot
+        \ifblank{\textsc{#4}}{}{\bibnamedelimd\mkbibnameaffix{\textsc{#4}}\isdot}%
+        \ifblank{\textsc{#2}\textsc{#3}}{}{\addcomma}%
+        \ifblank{\textsc{#2}}{}{\bibnamedelimd\mkbibnamefirst{\textsc{#2}}\isdot}%
+        \ifblank{\textsc{#3}}{}{\bibnamedelimd\mkbibnameprefix{\textsc{#3}}\isdot}}}
+
+\renewbibmacro*{name:first-last}[4]{%
+    \usebibmacro{name:delim}{#2#3#1}%
+    \usebibmacro{name:hook}{#2#3#1}%
+    \ifblank{#2}{}{\mkbibnamefirst{#2}\isdot\bibnamedelimd}%
+    \ifblank{#3}{}{%
+        \mkbibnameprefix{#3}\isdot
+        \ifpunctmark{'}%
+        {}%
+        {\ifuseprefix{\bibnamedelimc}{\bibnamedelimd}}}%
+    \mkbibnamelast{#1}\isdot
+    \ifblank{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnameaffix{#4}\isdot}}
+
+% Authors
+
+\DeclareFieldFormat{nameaddon}{\mkbibparens{#1}}
+
+\InitializeBibliographyStyle{%
+    \global\undef\bbx@lasthash}
+
+\newbibmacro*{bbx:savehash}{%
+    \savefield{fullhash}{\bbx@lasthash}}
+
+\newbibmacro*{bbx:dashcheck}[2]{%
+    \ifboolexpr{
+        test {\iffieldequals{fullhash}{\bbx@lasthash}}
+        and
+        not test \iffirstonpage
+        and
+        (
+        not bool {bbx@inset}
+        or
+        test {\iffieldequalstr{entrysetcount}{1}}
+        )
+    }
+    {#1}
+    {#2}}
+
+\newbool{bbx@inset}
+\DeclareBibliographyDriver{set}{%
+    \booltrue{bbx@inset}%
+    \entryset{}{}%
+    \newunit\newblock
+    \usebibmacro{setpageref}%
+    \finentry}
+
+\renewbibmacro*{author}{%
+    \ifboolexpr{
+        test \ifuseauthor
+        and
+        not test {\ifnameundef{author}}
+    }
+    {\usebibmacro{bbx:dashcheck}
+        {\bibnamedash}
+        {\usebibmacro{bbx:savehash}%
+            \iffieldequals{authortype}{\isInferred}
+            {\mkbibbrackets{\printnames{author}}\clearfield{authortype}}%
+            {\printnames{author}}%
+            \iffieldundef{nameaddon}
+            {}
+            {\setunit{\addspace}%
+                \printfield{nameaddon}}%
+            \iffieldundef{authortype}
+            {\setunit{\addspace}}
+            {\setunit{\addcomma\space}}}%
+        \iffieldundef{authortype}
+        {}
+        {\usebibmacro{authorstrg}%
+            \setunit{\addspace}}}%
+    {\global\undef\bbx@lasthash}}
+
+% Editors
+
+\renewbibmacro*{editor}{%
+    \usebibmacro{bbx:editor}{editorstrg}}
+\renewbibmacro*{editor+others}{%
+    \usebibmacro{bbx:editor}{editor+othersstrg}}
+\newbibmacro*{bbx:editor}[1]{%
+    \ifboolexpr{
+        test \ifuseeditor
+        and
+        not test {\ifnameundef{editor}}
+    }
+    {\usebibmacro{bbx:dashcheck}
+        {\bibnamedash}
+        {\usebibmacro{bbx:savehash}%
+            \printnames{editor}%
+            \addspace}%
+        \mkbibparens{\usebibmacro{#1}}%
+        \clearname{editor}%
+        \setunit{\addspace}}%
+    {\global\undef\bbx@lasthash}}
+
+% Book authors
+
+\renewbibmacro*{bybookauthor}{%
+    \ifnamesequal{author}{bookauthor}%
+    {\bibstring{idem\thefield{gender}}}%
+    {\printnames{bookauthor}}}
+
+\newbibmacro*{bookeditor}{%
+    \ifnamesequal{author}{editor}%
+    {\bibstring{idem\thefield{gender}}%
+        \addspace%
+        \mkbibparens{\usebibmacro{editor+othersstrg}}%
+        \clearname{editor}}%
+    {\undef\bbx@lasthash\usebibmacro{editor+others}}}
+
+% Dates generally
+
+\RequirePackage{xstring}
+% This command is extracted and adapted from code by Marco Daniel:
+% see http://tex.stackexchange.com/questions/23483/
+% It compares two years, and outputs a full or truncated version of
+% the second year, depending on how similar it is to the first.
+\newcommand{\blx@ox@compyear}[2]{%
+    \def\num@one{#1}%
+    \def\num@two{#2}%
+    \StrLen{\num@one}[\num@one@len]%
+    \StrLen{\num@two}[\num@two@len]%
+    \IfEq{\num@one@len}{\num@two@len}%
+    {\StrCompare{\num@one}{\num@two}[\Result]%
+        \ifnum\num@two@len>3%
+        \IfStrEq{\Result}{2}{\def\Result{1}}{}%
+        \fi
+        \StrGobbleLeft{0\num@two}{\Result}}%
+    {\num@two}
+}
+
+\renewrobustcmd*{\mkbibrangetrunc}[2]{%
+    \iffieldundef{#2year}
+    {}
+    {\printtext{%
+            \iffieldsequal{#2year}{#2endyear}
+            {\iffieldsequal{#2month}{#2endmonth}
+                {\csuse{mkbibdate#1}{}{}{#2day}}
+                {\csuse{mkbibdate#1}{}{#2month}{#2day}}}
+            {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
+            \iffieldundef{#2endyear}
+            {}
+            {\iffieldequalstr{#2endyear}{}
+                {\mbox{\bibdatedash}}
+                {\bibdatedash
+                    % In the original, only the false part of the following occurs
+                    \iffieldundef{#2month}%
+                    {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+                    {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}}
+
+\renewrobustcmd*{\mkbibrangetruncextra}[2]{%
+    \iffieldundef{#2year}
+    {}
+    {\printtext{%
+            \iffieldsequal{#2year}{#2endyear}
+            {\iffieldsequal{#2month}{#2endmonth}
+                {\csuse{mkbibdate#1}{}{}{#2day}}
+                {\csuse{mkbibdate#1}{}{#2month}{#2day}}}
+            {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
+        \iffieldundef{#2endyear}
+        {\printfield{extrayear}}
+        {\iffieldequalstr{#2endyear}{}
+            {\printfield{extrayear}%
+                \printtext{\mbox{\bibdatedash}}}
+            {\printtext{%
+                    \bibdatedash
+                    % In the original, only the false part of the following occurs
+                    \iffieldundef{#2month}%
+                    {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+                    {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+                    \printfield{extrayear}}}}}}
+
+\renewbibmacro*{date}{\printtext{\dateType}\printdate}
+
+% Editions
+
+\DeclareFieldFormat{edition}{%
+    \ifinteger{#1}
+    {\mkbibordedition{#1}~\bibstring{edition}}
+    {\ifbibstring{#1}{\bibstring{#1}}{#1\isdot}}}
+
+% Pages (no pp.)
+
+\DeclareFieldFormat{pages}{\mkcomprange{#1}}
+\DeclareFieldFormat{postnote}{\iffieldundef{pages}{}%
+    {\bibstring{at}\addspace}%
+    \mkcomprange{#1}}
+
+\renewbibmacro*{postnote}{%
+    \iffieldundef{postnote}
+    {}
+    % This test makes a lot of assumptions and needs more sophistication
+    {\iffieldundef{pages}
+        {\setunit{\postnotedelim}}
+        {}%
+        \printfield{postnote}}}
+
+% URLs
+
+\DeclareFieldFormat{url}{$\langle$\url{#1}$\rangle$}
+\DeclareFieldFormat{urldate}{\bibstring{urlseen}\space#1}
+\DeclareFieldFormat{urldatepublished}{\bibstring{epublished}\space#1}
+
+\renewbibmacro*{url+urldate}{%
+    \iffieldundef{url}{}{\nopunct}%
+    \printfield{url}%
+    \iffieldundef{urlyear}
+    {\iffieldundef{url}{}{\nopunct}}
+    {\newunit
+        \printtext[urldate]{\printurldate}}}
+
+% Addenda
+
+\renewbibmacro*{addendum+pubstate}{%
+    \iffieldundef{pubstate}{}{\nopunct}%
+    \printfield[parens]{pubstate}%
+    \setunit{\addperiod\addspace}\newblock
+    \printfield{addendum}}
+
+% Adjustments to articles
+
+\DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
+
+\newbibmacro*{journaltype}{%
+    \iffieldequalstr{entrysubtype}{online journal}%
+    {\nopunct\printfield{entrysubtype}}{}%
+}
+
+\renewbibmacro*{journal+issuetitle}{%
+    \ifboolexpr{
+        test {\iffieldundef{title}}
+        and
+        not test {\iffieldundef{issuetitle}}
+    }{%
+        \usebibmacro{issue}%
+        \clearfield{issuetitle}%
+        \setunit{\addspace =\addspace}}{}%
+    \usebibmacro{journal}%
+    \usebibmacro{journaltype}%
+    \setunit*{\addspace}%
+    \iffieldundef{series}
+    {\newunit}
+    {\newunit
+        \printfield{series}%
+        \setunit{\addspace}}%
+    \usebibmacro{volume+number+eid}%
+    \setunit{\addspace}%
+    \usebibmacro{issue+date}%
+    \setunit{\addsemicolon\space}%
+    \usebibmacro{issue}%
+    \newunit}
+
+\renewbibmacro*{title+issuetitle}{%
+    \usebibmacro{periodical}%
+    \usebibmacro{journaltype}%
+    \setunit*{\addspace}%
+    \iffieldundef{series}
+    {\newunit}
+    {\newunit
+        \printfield{series}%
+        \setunit{\addspace}}%
+    \usebibmacro{volume+number+eid}%
+    \setunit{\addspace}%
+    \usebibmacro{issue+date}%
+    \setunit{\addcolon\space}%
+    \usebibmacro{issue}%
+    \newunit}
+
+\renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addslash}%
+    \printfield{number}%
+    \setunit{\addcomma\space}%
+    \printfield{eid}}
+
+\renewbibmacro*{issue+date}{%
+    \ifboolexpr{(
+        test {\iffieldundef{volume}}
+        and
+        test {\iffieldundef{number}}
+        ) and
+        test {\iffieldundef{eid}}
+    }%
+    {\newunit\printtext{%
+            \iffieldundef{issue}
+            {\usebibmacro{date}}
+            {\printfield{issue}%
+                \setunit*{\addspace}%
+                \usebibmacro{date}}}}%
+    {\ifboolexpr{
+            test {\iffieldundef{issue}}
+            and
+            test {\iffieldundef{year}}
+        }{}{%
+            \printtext[parens]{%
+                \iffieldundef{issue}
+                {\usebibmacro{date}}
+                {\printfield{issue}%
+                    \setunit*{\addspace}%
+                    \usebibmacro{date}}}}}%
+    \newunit}
+
+% Adjustments to books
+
+\DeclareFieldFormat[book,inbook,collection,incollection,proceedings,inproceedings,reference,inreference]{volume}{\Rn{#1}}
+
+\renewbibmacro*{series+number}{%
+    \printfield{series}%
+    \newunit
+    \printfield{number}}
+
+\newbibmacro*{origdate}{\printorigdate}
+
+\newbibmacro*{edition+publisher+location+date}{%
+    \printlist{origlocation}%
+    \iflistundef{origpublisher}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{origpublisher}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{origdate}%
+    \setunit*{\addsemicolon\space}%
+    \printfield{edition}%
+    \setunit*{\addcomma\space}%
+    \printlist{location}%
+    \iflistundef{publisher}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{publisher}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{date}%
+}
+
+\DeclareFieldFormat{publication}{\mkbibparens{#1}}
+
+\newbibmacro*{series+number+edition+publisher+location+date}{%
+    \nopunct\printtext[publication]{%
+        \usebibmacro{series+number}%
+        \setunit{\addsemicolon\space}%
+        \usebibmacro{edition+publisher+location+date}%
+    }%
+}
+
+\newbibmacro*{maintitle+volume}{%
+    \ifboolexpr{
+        test {\iffieldundef{maintitle}}
+        or
+        test {\iffieldundef{volume}}
+    }{}%
+    {\printtext[publication]{\bibstring{volume}\addspace
+            \printfield{volume}\addspace\bibstring{ofseries}\addspace
+            \usebibmacro{maintitle}}}
+}
+
+% Adjustments to online
+
+\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
+
+% Adjustments to proceedings
+
+\renewbibmacro*{event+venue+date}{%
+    \printfield{eventtitle}%
+    \ifboolexpr{
+        test {\iffieldundef{venue}}
+        and
+        test {\iffieldundef{eventyear}}
+    }
+    {}
+    {\ifboolexpr{
+            test {\iffieldundef{language}}
+            and
+            test {\iffieldundef{eventtitle}}
+        }{\setunit{\mkbibemph{\addcolon}\addspace}}%
+        {\setunit{\addcolon\addspace}}%
+        \printfield{venue}%
+        \setunit*{\addcomma\space}%
+        \printeventdate}%
+    \newunit}
+
+% Adjustments to reference
+
+\newbibmacro*{series+number+publisher+location+date}{%
+    \nopunct\printtext[publication]{%
+        \usebibmacro{series+number}%
+        \setunit{\addsemicolon\space}%
+        \usebibmacro{publisher+location+date}%
+    }%
+}
+
+% Adjustments to reports and theses
+
+\newbibmacro*{type+number}{%
+    \printfield{type}%
+    \newunit
+    \printfield{number}}
+
+\renewbibmacro*{institution+location+date}{%
+    \nopunct\printtext[publication]{%
+        \printlist{location}%
+        \iflistundef{institution}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addcolon\space}}%
+        \printlist{institution}%
+        \setunit*{\addcomma\space}%
+        \usebibmacro{date}%
+    }%
+}
+
+\newbibmacro*{type+number+edition+institution+location+date}{%
+    \nopunct\printtext[publication]{%
+        \usebibmacro{type+number}%
+        \setunit{\addsemicolon\space}%
+        \printfield{edition}%
+        \setunit*{\addcomma\space}%
+        \printlist{location}%
+        \iflistundef{institution}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addcolon\space}}%
+        \printlist{institution}%
+        \setunit*{\addcomma\space}%
+        \usebibmacro{date}%
+    }%
+}
+
+% Adjustments to review
+
+\DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[review]{volume}{#1}% volume of a journal
+\DeclareFieldFormat[review]{number}{#1}% number of a journal
+\DeclareFieldFormat[review]{series}{% series of a journal
+    \ifinteger{#1}
+    {\mkbibordseries{#1}~\bibstring{jourser}}
+    {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
+
+\newbibmacro*{reviewof}{}
+
+% Adjustments to aliases
+
+\DeclareBibliographyAlias{mvreference}{reference}
+
+% Adjustments to existing drivers
+
+\DeclareBibliographyDriver{article}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{bytranslator+others}%
+    \newunit\newblock
+    \printfield{version}%
+    \newunit\newblock
+    \usebibmacro{journal+issuetitle}%
+    \newunit
+    \usebibmacro{byeditor+others}%
+    \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+    \usebibmacro{note+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{book}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{title}}%
+    {\usebibmacro{maintitle+title}}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inbook}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{bybookauthor}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{booktitle}}%
+    {\usebibmacro{maintitle+booktitle}}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{collection}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{editor+others}%
+    \setunit{\labelnamepunct}\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{title}}%
+    {\usebibmacro{maintitle+title}}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{incollection}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{bookeditor}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{booktitle}}%
+    {\usebibmacro{maintitle+booktitle}}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{online}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/editor+others/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \usebibmacro{maintitle}
+    \setunit{\addspace}\newblock
+    \printfield{entrysubtype}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \printfield{version}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \printlist{organization}%
+    \newunit\newblock
+    \printtext[parens]{\usebibmacro{date}}%
+    \newunit\newblock
+    \iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{url+urldate}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{proceedings}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{maintitle+title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{event+venue+date}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \printfield{volumes}%
+    \newunit\newblock
+    \iffieldundef{maintitle}
+    {\printfield{volume}%
+        \printfield{part}}
+    {}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \printlist{organization}%
+    \newunit
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inproceedings}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{maintitle+booktitle}%
+    \newunit\newblock
+    \usebibmacro{event+venue+date}%
+    \newunit\newblock
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \printfield{volumes}%
+    \newunit\newblock
+    \iffieldundef{maintitle}
+    {\printfield{volume}%
+        \printfield{part}}
+    {}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \printlist{organization}%
+    \newunit
+    \usebibmacro{series+number+edition+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{reference}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{title}}%
+    {\usebibmacro{maintitle+title}}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \printfield{edition}%
+    \newunit
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inreference}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{bookeditor}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\usebibmacro{booktitle}}%
+    {\usebibmacro{maintitle+booktitle}}%
+    \newunit\newblock
+    \printfield{edition}%
+    \newunit
+    \usebibmacro{byeditor+others}%
+    \newunit\newblock
+    \iffieldequalstr{entrysubtype}{sequence}%
+    {\printfield{note}%
+        \newunit\newblock
+        \usebibmacro{maintitle+volume}%
+        \newunit}
+    {\printfield{volumes}%
+        \newunit\newblock
+        \iffieldundef{maintitle}
+        {\printfield{volume}%
+            \printfield{part}}
+        {}%
+        \newunit
+        \printfield{note}%
+        \newunit\newblock}%
+    \usebibmacro{series+number+publisher+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{report}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \printfield{version}%
+    \newunit
+    \printfield{note}%
+    \newunit\newblock
+    \usebibmacro{type+number+edition+institution+location+date}%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+    \newunit
+    \printfield{pagetotal}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{isrn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{review}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \usebibmacro{author/translator+others}%
+    \setunit{\labelnamepunct}\newblock
+    \usebibmacro{title}%
+    \newunit
+    \printlist{language}%
+    \newunit\newblock
+    \usebibmacro{byauthor}%
+    \newunit\newblock
+    \usebibmacro{bytranslator+others}%
+    \newunit\newblock
+    \printfield{version}%
+    \newunit\newblock
+    \usebibmacro{reviewof}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{journal+issuetitle}%
+    \newunit
+    \usebibmacro{byeditor+others}%
+    \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+    \usebibmacro{note+pages}%
+    \newunit\newblock
+    \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}%
+    \setunit{\bibpagerefpunct}\newblock
+    \usebibmacro{pageref}%
+    \usebibmacro{finentry}}
+
+\endinput
+\end{writeverbatim}
+\closeoutputstream{yearbbx}
+
+\newoutputstream{lbx}
+\openoutputfile{british-oxref.lbx}{lbx}
+\begin{writeverbatim}{lbx}
+\end{writeverbatim}
+\closeoutputstream{lbx}
+
+\newoutputstream{notesdoc}
+\openoutputfile{oxref-notes-doc.tex}{notesdoc}
+\begin{writeverbatim}{notesdoc}
+\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
+\input{oxref-preamble}
+
+\title{Oxnotes style for Biblatex}
+\author{Alex Ball}
+
+\begin{document}
+    \thispagestyle{empty}
+    \begin{adjustwidth}{.2\textwidth}{0pt}
+        \sffamily\setlength{\parindent}{0pt}%
+        \LARGE\textsc{oxref bundle}
+        
+        \vspace{\stretch{1}}
+        \LARGE\thetitle
+        
+        \bigskip
+        \Large\theauthor
+        
+        \bigskip
+        \Large\ifx\undefined\thedate\today\else\thedate\fi
+    \end{adjustwidth}
+    
+    \vspace{\stretch{3}}
+    \noindent
+    \hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
+    
+    \newpage
+    \tableofcontents*
+    
+    \chapter{Supported entry types}
+    
+    The Oxref family of Biblatex styles supports the following entry types:
+    
+    \begin{multicols}{2}
+        \begin{itemize}\firmlist
+            \item\hyperref[sec:article]{article}
+            \item\hyperref[sec:book]{book}
+            \item\hyperref[sec:book]{mvbook}
+            \item\hyperref[sec:inx]{inbook}
+            \item\hyperref[sec:inx]{bookinbook}
+            \item\hyperref[sec:inx]{suppbook}
+            \item booklet \aside{to do}
+            \item\hyperref[sec:book]{collection}
+            \item\hyperref[sec:book]{mvcollection}
+            \item\hyperref[sec:inx]{incollection}
+            \item\hyperref[sec:inx]{suppcollection}
+            \item manual \aside{to do}
+            \item misc \aside{to do}
+            \item\hyperref[sec:electronic]{online}
+            \item patent \aside{to do}
+            \item periodical \aside{to do}
+            \item suppperiodical \aside{to do}
+            \item\hyperref[sec:proceedings]{proceedings}
+            \item\hyperref[sec:proceedings]{mvproceedings}
+            \item\hyperref[sec:inproceedings]{inproceedings}
+            \item\hyperref[sec:book]{reference}
+            \item\hyperref[sec:book]{mvreference}
+            \item\hyperref[sec:inx]{inreference}
+            \item\hyperref[sec:report]{report}
+            \item\hyperref[sec:thesis]{thesis}
+            \item\hyperref[sec:unpublished]{unpublished}
+            \item\hyperref[sec:audiovideo]{audio}
+            \item\hyperref[sec:audiovideo]{movie}
+            \item\hyperref[sec:audiovideo]{music}
+            \item\hyperref[sec:article]{review}
+            \item\hyperref[sec:audiovideo]{video}
+        \end{itemize}
+    \end{multicols}
+    
+    \chapter{Style Specification}
+    
+    The preferred method of citation in the Oxford style is by footnotes or endnotes; this is the method employed by the Oxnotes citation style and assumed by the Oxnotes bibliography style. The sections below specify the form taken by citation notes. References in a bibliography are formatted in the same way except for one specific change: authors' names are inverted and printed in full and small capitals.
+    
+    \begin{itemize}
+        \item
+        \textsc{Author, First}, \lit{and} \textsc{Author, Second}, \emph{Title} (Location: Publisher, Year).
+    \end{itemize}
+    
+    \section{General formatting}
+    
+    \subsection{Author's Name}
+    
+    \begin{itemize}
+        \item Author names are not inverted (except in the bibliography).
+        
+        \item Full names are not reduced to initials, but if they are given in the work as initials they need not be expanded.
+        
+        \item No more than three authors are given:
+        \begin{enumerate}
+            \item First Author
+            \\\egcite{eliot1977m}
+            
+            \item First Author and Second Author
+            \\\egcite{rouse.rouse1991btu}
+            
+            \item First Author, Second Author, and Third Author
+            \\\egcite{brady.etal1994hehsa}
+            
+            \item First Author et al.
+            \\\egcite{stewart.etal1994mb} % This is actually five authors
+        \end{enumerate}
+        
+        \item If adding a famous pseudonym to a work published under a real name: Real Name (Pen Name). \aside{Use \textsf{biblatex} field \code{nameaddon} for the alternative name.}\\\egcite{dodgson1896sl}
+        
+        \item Pseudo-Name should convert to \textsc{Name (Ps.-)} or \textsc{Name (Pseudo-)} in bibliography. \aside{To do, low priority}
+        
+        \item If square brackets are used for inferred authorship \aside{by giving as the value of the \textsf{biblatex} field \code{authortype} the definition of the macro \texttt{\textbackslash isInferred}, by default \enquote{inferred}}, the name should be alphabetized as if the brackets weren't there. Repetitions still get replaced by a rule.\\\egcite{balfour1768pe}
+        
+        \item Anonymous works: Author missed out from footnotes, can be replaced by \enquote{Anonymous} in bibliography. \aside{To do}
+        \\\egcite{anon1822san}
+        \\\egcite{anon1956lu}
+    \end{itemize}
+    
+    \subsection{Titles and subtitles}
+    
+    \begin{itemize}
+        \item Titles are not converted to lowercase.
+        
+        \item Subtitles are separated from titles by a colon.
+        
+        \item Subtitles are given an initial capital.
+        \par\egcite{bettelheim1976uem}
+    \end{itemize}
+    
+    \subsection{Publishers}
+    
+    \begin{itemize}
+        \item If the place of publication is absent, replace with n.p.
+    \end{itemize}
+    
+    \aside{Publisher names may be uniformly omitted from all citations and bibliography entries. There may be a package option to switch off publisher names in future.}
+    
+    \subsection{Dates}
+    
+    \begin{itemize}
+        \item Months should be abbreviated to three or four letters: Apr.\ May June July Sept. % Already so by default.
+    \end{itemize}
+    
+    \subsection{Foliation}
+    
+    \begin{itemize}
+        \item Page number format: 32.
+        \item Volume and page number format: iv.\ 32.
+        \item Volume and preliminary page number format: vol.\ iv, p.\ xxxii.
+        \item Page ranges should be compact: 32--3.\\\egcite{dean1995rpb}
+        \item If a particular page is required the first time a source is cited, it should be given after the full page range: 259--338 at 332.\\\egcite[332]{rouse.rouse1991btu}
+    \end{itemize}
+    
+    \subsection{Repeated citations}
+    
+    Oxford style does not prescribe a particular way of abbreviating the second and subsequent citations of a work, but does suggest the following shorthand expressions for use with closely proximate repeated citations:
+    
+    \begin{itemize}
+        \item Ibid. = in the same place = same author and title as immediately preceding citation.
+        \item Author, op. cit. = in the cited work = same title as the last cited work by the specified author. Best suited to occasions where a work is being singled out from a recently cited list of works. 
+        \item Author, art. cit. = in the cited article = same title as the last cited article by the specified author. Best suited to occasions where a work is being singled out from a recently cited list of works.
+        \item Author, loc. cit. = at the cited place = same title and page range as the last cited work by the specified author. Rarely needed.
+        \item Id. = same = same male author as the immediately preceding citation.
+        \item Ead. = same = same female author as the immediately preceding citation.
+        \item Eid. = same = same male authors, or male and female authors, as the immediately preceding citation.
+        \item Eaed. = same = same female authors as the immediately preceding citation.
+    \end{itemize}
+    
+    \section{Books, collections and reference works}\label{sec:book}
+    
+    \subsection{Books}
+    
+    Biblatex defines \code{book} as a monograph, written either by a single author, or by several authors who have joint responsibility for the entire work. An editor in this context has a modest role selecting or annotating the content, and therefore in Oxford style is given after the title even if the author is not given.
+    
+    \begin{description}
+        \item[Basic form]~\par
+        Author, \emph{Title} (Location: Publisher, Year).
+        \\\egcite{eliot1977m}
+        \\\egcite{benvenuti1986op}
+        \\\egcite{oconor1977sjf}
+        
+        \item[No publisher]~\par
+        Author, \emph{Title} (Location, Year).
+        \\\egcite{balfour1768pe}
+        
+        \item[Edited book]~\par
+        Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year). \\\egcite{boethius1976dds}\par
+        \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+        \\\egcite{boas.botschuyver1952dc}
+    \end{description}
+    
+    \subsection{Collections}
+    
+    Biblatex defines \code{collection} as a book made up of multiple self-contained contributions from distinct authors. There is no overall author: use the regular \code{book} entry type for collections of a single author’s work. The editor in this case has a more active role and therefore comes before the title.
+    
+    \begin{description}
+        \item[Edited collection]~\par
+        Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).\par
+        Editor \lit{et al.} (\lit{eds.}), \emph{Title} (Location: Publisher, Year).
+        \\\egcite{stewart.etal1994mb}
+    \end{description}
+    
+    \subsection{Reference works}
+    
+    Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). Unlike standard Biblatex, though, Oxford style considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first.
+    
+    \begin{description}
+        \item[Edited reference work]~\par
+        \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+        \\\egcite{fortenbaugh.etal1991tes}
+    \end{description}
+    
+    \subsection{Multi-volume works}
+    
+    Biblatex provides additional entry types for multi-volume works: \code{mvbook}, \code{mvcollection} and \code{mvreference} respectively. These can be used to cite all the volumes at once, or just one volume from the set.
+    
+    \begin{description}
+        \item[All volumes (form 1)] Used where all volumes were published consistently.
+        \par Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.
+        \\\egcite{straeten1867lmp}
+        
+        \item[All volumes (form 2)] Used where the publisher changed between volumes.
+        \par Author, \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher, Year), VolNo (Location: Publisher, Year).
+        \\\egcite{ritter1838hap}
+        
+        \item[One volume from several (form 1)] Used where the volumes are merely numbered. \aside{Use \code{title} but not \code{maintitle}.}
+        \par Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.
+        \\\egcite{straeten1867lmp.ii}
+        
+        \item[One volume from several (form 2)] Used where the volumes each have their own (sub)title, and they were all published at once (more or less). \aside{Use both \code{title} and \code{maintitle}.}
+        \par Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.
+        \\\egcite{brady.etal1994hehsa}
+        \\\egcite{ward.waller1932che}
+        
+        \item[One volume from several (form 3)] Used where the volumes each have their own (sub)title, and there are many volumes spanning years and possibly publishers. \aside{Use entry subtype \code{sequence}.}
+        \par Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.
+        \\\egcite{fischer1989asf}
+    \end{description}
+    
+    \subsection{Common variations}
+    
+    \begin{description}
+        \item[Works with notable additions] Used where works have significant introductions, forewords, afterwords, illustrations, etc.\par
+        Author, \emph{Title}, \lit{with an} Addition \lit{by} Addition Author (Location: Publisher, Year).
+        \\\egcite{twain1971cyk}
+        
+        \item[Translated works]~\par
+        Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).
+        \\\egcite{bischoff1990lpa}
+        
+        \item[Modified works with notable additions]~\par
+        Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher, Year).
+        \\\egcite{martorell1984tlb}
+        
+        \item[Revised works (form 1)] Used for light revisions.
+        \par Author, \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher, Year).
+        
+        \item[Revised works (form 2)] Used for extensive revisions.
+        \par Author, \lit{rev.} Reviser, \emph{Title}, (Location: Publisher, Year).
+        
+        \item[Later edition (form 1)] Used where the editor is common to both. \aside{Use entry type \code{book}.}
+        \par Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).
+        \\\egcite{baker1990iel}
+        
+        \item[Later edition (form 2)] Used where the editor has changed. \aside{Use entry type \code{reference}.}
+        \par \emph{Title}, nth \lit{edn.}, \lit{ed.} Editor (Location: Publisher, Year).
+        \\\egcite{knowles1999odq}
+        
+        \item[First and later edition (form 1)] Used where the publisher is common to both. \aside{Use the \code{orig} fields.}
+        \par Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).
+        \\\egcite{denniston1934gp}
+        \\\egcite{gibbon1686dfs}
+        
+        \item[First and later edition (form 2)] Used where the publisher has changed. \aside{Use \code{pubstate} for the original publication date.}
+        \par Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).
+        \\\egcite{bettelheim1976uem}
+        
+        \item[Reprint] \aside{Use localization key \code{reprint} as the edition.}\par 
+        Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).
+        \\\egcite{adam.tannery1897odd}
+        
+        \item[Facsimile Edition] \aside{Use localization key \code{facsimile} as the edition.}\par 
+        Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).
+        \\\egcite{allen1594kkk}
+        
+        \item[Multiple publishers, same title]~\par 
+        Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).
+        \\\egcite{holfordstrevens1988ag}
+        
+        \item[Work from a series]~
+        \par Author, \emph{Title} (Series; Location: Publisher, Year).
+        \par Author, \emph{Title} (Series, Number; Location: Publisher, Year).
+        \\\egcite{garlandia1972dmm}
+        \par Author, \emph{Title} (nth \lit{ser.}, Year).
+    \end{description}
+    
+    \section{Reports}\label{sec:report}
+    
+    Oxford style does not have any special rules for referencing reports. Its provision for books, however, is sufficient for most purposes.
+    
+    \begin{description}
+        \item[Basic form]~\par
+        Author, \emph{Title} (Location: Institution, Year).
+        \\\egcite{botswana1980hdr}
+        
+        \item[Publisher as author]~\par
+        Author, \emph{Title} (Location, Year).
+        \\\egcite{pac1988upt}
+        
+        \item[Report in series] \aside{Extension}\par
+        Author, \emph{Title} (Type, Number; Location: Institution, Year).
+    \end{description} 
+    
+    \section{Proceedings}\label{sec:proceedings}
+    
+    \subsection{Single volume proceedings}
+    
+    The \code{proceedings} entry type is intended for a set of conference papers that have been collected together into a single volume.
+    
+    \begin{description}
+        \item[Basic form]~\par
+        \emph{Title}, \lit{ed.} Editor (Location: Publisher, Year).
+        \\\egcite{icp1975pic}
+        
+        \item[Event details not in title] \aside{Extension}\par
+        \emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).
+        \\\egcite{ecdl2009}
+    \end{description}
+    
+    \subsection{Multi-volume proceedings}
+    
+    Biblatex provides \code{mvproceedings} for multi-volume proceedings.
+    
+    \begin{description}
+        \item[All volumes] \aside{Extension}\par
+        \emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year).
+        \\\egcite{iced2009}
+        
+        \item[One volume] \aside{Extension}\par
+        \emph{Title}, VolNo: \emph{VolTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).
+        \\\egcite{iced2009dik}
+        
+    \end{description}
+    
+    \section{Works in books, collections and reference works}\label{sec:inx}
+    
+    \subsection{Works in books}
+    
+    The \code{inbook} entry type is intended for books that consist of several self-contained works by the same author, for citing one of these works. 
+    
+    \begin{description}
+        \item[One from a collection of single author's works] \aside{\code{author} $=$ \code{bookauthor} $\neq$ \code{editor}}
+        \par Author, \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.
+        \\\egcite{owen1986pi}
+        \par Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.
+    \end{description}
+    
+    \subsection{Works in collections}
+    
+    The \code{incollection} entry type is intended for citing one of a collection of self-contained works by different authors.
+    
+    \begin{description}
+        \item[Work in mixed collection] \aside{\code{author} $\neq$ \code{editor}, no \code{bookauthor}}
+        \par Author, \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher, Year), Pages.
+        \\\egcite{shearman1993vsf}
+        
+        \item[Work by the editor in mixed collection] Replace the editor's name with \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.} \aside{\code{author} $=$ \code{editor}, no \code{bookauthor}}
+        \par Author, \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher, Year), Pages.
+        \\\egcite{todd1974dhp}
+        
+    \end{description}
+    
+    \subsection{Anthologies of independently published works}
+    
+    Biblatex provides the \code{bookinbook} entry type for citing a part of an anthology that has previously been published as a book in its own right. Oxford style provides two different mechanisms for this, depending on circumstance.
+    
+    \begin{description}
+        \item[Both versions equally accessible] \aside{If using Biber, put the key of the original work in \code{related}, and in \code{relatedtype} use the keyword \code{reprintfrom}. Otherwise, use \code{addendum} to give \enquote{From} and the reference to the original, but omit \code{author} and \code{title} from the entry for the original work.}\par
+        Later Reference. From Earlier Reference.
+        \\\egcite{owen1986pi}
+        \item[Later version more accessible] \aside{Use \code{pubstate} to give the date of original publication.}\par
+        \par Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).
+        \\\egcite{frege1892osr}
+    \end{description}
+    
+    \section{Papers in proceedings}\label{sec:inproceedings}
+    
+    The \code{inproceedings} entry type is intended for a conference paper published as part of a proceedings volume. For papers that have not been collected into a proceedings volume, or presentation slide sets, use the \code{unpublished} entry type instead.
+    
+    \begin{description}
+        \item[Published conference paper] \aside{Extension}\par
+        Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).
+        \\\egcite{tonkin.strelnikov2009iem}\par
+        Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year), VolNo. Pages.
+        \\\egcite{ding.etal2009sfc}
+        
+        \item[Published orations, addresses, lectures, and speeches] Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enquote{Romanes Lecture}.\par Author, \emph{Title}, Type, Venue, Date (Location: Publisher, Year).
+        \\\egcite{gombrich1957as}
+    \end{description}
+    
+    \section{Articles in periodicals}\label{sec:article}
+    
+    \begin{description}
+        \item[Article in issue with no volume or number]~
+        \par Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.
+        \\\egcite{boyce1957pgi}
+        \\\egcite{lee1995ehf}
+        \\\egcite{bw1984wen}
+        
+        \item[Article in issue with volume/number]~
+        \par Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.
+        \\\egcite{vaucouleurs1975nmn}
+        \\\egcite{inalcik1992csm}
+        \\\egcite{goldblatt1973dmm}
+        
+        \item[Periodicals with series]~
+        \par Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.
+        \par Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.
+        \\\egcite{barnes1971has}
+        
+        \item[Work published as an issue] Taking the monograph edition as primary \aside{For this, abuse the appropriate monograph entry type: \code{book} or \code{collection}.}
+        \par Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher, Year), pages.
+        \\\egcite{bec1976isc}
+        
+        \item[Work published as an issue] Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \code{title}.}
+        \par Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Year).
+        \\\egcite{trisoglio1973gnq}
+        
+        \item[Article in issue that is a supplement to another issue] \aside{Use \code{note} field to write ‘Supplement to’ and a reference to a \code{periodical}.}
+        \par Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number (Year), Pages.
+        \\\egcite{zhentao.etal1989ars}
+        
+        \item[Review] \aside{If using Biber, use \code{related} to give the key of the reviewed item, and in \code{relatedtype} give the keyword \code{reviewof}. Otherwise, set the option \code{reviewed} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired.}
+        \par Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.
+        \\\egcite{dean1995rpb}
+        \\\egcite{jocelyn1989pav}
+        %\item[Alternative styles]~
+        %\par Author, \enquote{Title}, \emph{JournalTitle}, Vol: Number (Year), Pages.
+        %\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.
+        %\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol (Number): Pages.
+    \end{description}
+    
+    \subsection{Notes}
+    
+    \begin{itemize}
+        \item Oxford style permits volumes and part numbers to be written like 23: 2 instead of 23/2. \aside{To do, as a package option.}
+        
+        \item If the last\slash only word of the JournalTitle is abbreviated (indicated by point or capital letter), it does not need a comma after it.
+        \\\egcite{lindars1965eir}
+    \end{itemize}
+    
+    \section{Theses and dissertations}\label{sec:thesis}
+    
+    \begin{description}
+        \item[Preferred]~\par Author, \enquote{Title}, Type (Institution, Year).
+        \\\egcite{blackburn1970tlp}
+        
+        \item[Alternative] \aside{To do, as package option.}\par Author, \enquote{Title}, (Type, Institution, Year).
+    \end{description}
+    
+    %\subsection{Notes}
+    %\begin{itemize}
+    %\item \enquote{Dissertation} should be abbreviated to \enquote{diss.} if the degree/level is given before it, or \enquote{Diss.} otherwise (i.e. German or Dutch dissertations).
+    %\end{itemize}
+    
+    \section{Unpublished works}\label{sec:unpublished}
+    
+    \begin{description}
+        \item[Accepted journal article, pre-publication]~\par
+        Author, \enquote{Title} (\lit{to be published in} \emph{JournalTitle}, Year).
+        
+        \item[Unpublished conference paper]~\par
+        Author, \enquote{Title}, \lit{paper given at the} ConfTitle, Venue, EventDate.
+        \\\egcite{holfordstrevens1999hlm}
+        
+        \item[Unpublished orations, addresses, lectures, and speeches]~\par Author, \enquote{Title}, Description.
+    \end{description}
+    
+    %\subsection{Notes}
+    %\begin{itemize}
+    %\item Description (of oration) is capitalized if derived from a place or event (Sermon on the Mount; Gettysburg Address) but not if derived from a time (Easter sermon; speech in the House of Lords, 18 March 1751).
+    %\end{itemize}
+    
+    \section{Poems}\label{sec:poem}
+    
+    \begin{description}
+        \item[Long poems] Used for poems divided into cantos
+        \par Author, \emph{Title}, Book. Canto. Stanza. Line.
+        \par Author, \emph{Title}, \lit{bk.} Book, \lit{canto} Canto, \lit{stanza} Stanza, \lit{line} Line.
+        
+        \item[Short poems]~\par
+        \par Author, \enquote{Title}, in\dots
+    \end{description}
+    
+    \subsection{Notes}
+    \begin{itemize}
+        \item When using numerals, Book uses full capital roman, Canto uses small capital roman, Stanza uses lowercase roman, Line uses arabic: II. \textsc{iv}. xxxi. 7.
+        
+        \item When using words (i.e. when citing whole stanzas or greater), use small capital roman numerals: bk. ii, canto iv, stanza xxxi.
+    \end{itemize}
+    
+    \section{Plays}\label{sec:play}
+    
+    \begin{description}
+        \item[Basic form]~
+        \par Author, \emph{Title}, Act. Scene. Line.
+        \par Author, \emph{Title}, \lit{Act} Act, \lit{Scene} Scene, \lit{line} Line.
+    \end{description}
+    
+    \subsection{Notes}
+    \begin{itemize}
+        \item When using numerals only in a parenthetical citation, Act uses small capital roman numerals. Otherwise, Act uses full capital roman numerals.
+        
+        \item Scene always uses lowercase roman numerals and Line always uses arabic.
+        
+        \item The words \enquote{Act} and \enquote{Scene} are capitalized, whereas \enquote{line} is not: Act IV, Scene iii, line 10.
+    \end{itemize}
+    
+    \section{Manuscripts}\label{sec:ms}
+    
+    \begin{description}
+        \item[Form]~
+        \item Author, Title, City, Archive, Collection Series, Volume.
+    \end{description}
+    
+    \subsection{Notes}
+    \begin{itemize}
+        \item Volume means any lower level division (file, bundle, box). Use whatever system the archive uses.
+        \item Abbreviate folio to fo. (or fos.). Superscript \textsuperscript{r} and \textsuperscript{v} for recto and verso: fo. 7\textsuperscript{r--v}, fos. 117\textsuperscript{v}--121\textsuperscript{r}.
+    \end{itemize}
+    
+    \section{Audio and visual broadcasts and recordings}\label{sec:audiovideo}
+    
+    \begin{description}
+        \item[Audio recordings] Oxref provides the additional editor types \code{performer}, \code{director} and \code{reader}.
+        \par Composer, \emph{Title}, Artist (Series, Number, Year).
+        \\\egcite{couperin1970pdc}
+        \par Composer, \emph{Title}, Ensemble, \lit{dir.} Director; Credit (Publisher Type Number, Year).
+        \\\egcite{pageNDmn}
+        \par Composer, \emph{Title}, Artist (Publisher Series, Number, Year) (Medium).
+        \\\egcite{hopkinsNDcar}
+        \par Author, \emph{Title}, \lit{read by} Reader (Medium, Number, Year).
+        \\\egcite{lewis1981lww}
+        \par Speaker, \emph{Title} (Publisher, Number, Year).
+        \item[Video recordings]~
+        \par \emph{Title} (Publisher, Number, Year).
+        \par \enquote{EpisodeTitle}, \emph{SeriesTitle} \lit{series} (Publisher, Number, Year).
+        \par Director (\lit{dir.}), \emph{Title} (Publisher, Number, Year).
+        \par \emph{Title}, \lit{dir.} Director (Publisher, Number, Year).
+        \par \emph{Title} (Publisher, Number, Year), Credit.
+        \item[Broadcasts]~
+        \par \emph{Title}, Channel, Date.
+        \par \enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.
+    \end{description}
+    
+    \subsection{Notes}
+    \begin{itemize}
+        \item Credit means a string like \enquote{edition and project supervision by Editor}.
+    \end{itemize}
+    
+    \section{Electronic data}\label{sec:electronic}
+    
+    \begin{description}
+        \item[Accessible by URL]~
+        \par Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$URL$\rangle$ Division, \lit{accessed} URLDate.
+        \\\egcite{quint2001ohm}
+        \item[Accessible by DOI]~
+        \par Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$\lit{DOI} DOI$\rangle$ Division.
+    \end{description}
+    
+    \subsection{Notes}
+    \begin{itemize}
+        \item Indicate missing date of publication with n.d.
+        \item Clarify meaning of date if needed: posted 10 Oct. 2001.
+        \\\egcite{ritter2001aog}
+        \item Access date can be omitted if publication date is given.
+        \item Division can include instruction to search: s.v. \enquote{trignonometry}.
+    \end{itemize}
+    
+    \chapter{Sample references}
+    \setlength{\parindent}{0pt}\nonzeroparskip
+    
+    Below are a series of sample references taken from the \emph{Oxford Style Manual} (in black), each followed by a corresponding reference (in colour) generated using the \textsf{oxref} style. \textcolor{Green}{Green} references can be generated using standard \textsf{biblatex} semantics in the \texttt{.bib} file; \textcolor{red}{red} or missing references aren't currently supported properly; \textcolor{orange}{orange} references require some cheating in the \texttt{.bib} file, and so would have to be altered should a different style be chosen. The database key for each reference is given in the margin to make it easier to look up in the sample database. The section numbers refer to the location of the references in the \emph{Oxford Style Manual}.
+    
+    \section*{15.1} % General
+    
+    \testrow{Mary A. Rouse and Richard H. Rouse, \enquote{The Book Trade at the University of Paris, c.1250--c.1350}, in eid., \emph{Authentic Witnesses: Approaches to Medieval Texts and Manuscripts} (Publications in Medieval Studies, 17; Notre Dame, IN, 1991), 259--338 at 332.}%
+    [332]{rouse.rouse1991btu}
+    
+    \section*{15.2.1} % Books: author's name
+    
+    \testrow{Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).}%
+    {stewart.etal1994mb}
+    
+    \testrow{\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).}%
+    {fortenbaugh.etal1991tes}
+    
+    \testrow{Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.}%
+    {vaucouleurs1975nmn}
+    
+    \testrow{George Eliot, \emph{Middlemarch} (New York: W. W. Norton, 1977).}%
+    {eliot1977m}
+    
+    \testrow{Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).}%
+    {twain1971cyk}
+    
+    \testrow{C. L. Dodgson (Lewis Carroll), \emph{Symbolic Logic} (Oxford: Clarendon Press, 1896).}%
+    {dodgson1896sl}
+    
+    \testrow{Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).}%
+    {boethius1976dds}
+    
+    \testrow{\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).}%
+    {boas.botschuyver1952dc}
+    
+    \testrow{{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).}%
+    {balfour1768pe}
+    
+    \aside{In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the following reference; this may be an error.}
+    
+    \testrow{{[John Gibbon]}, \emph{Day-Fatality: Or Some Observations on Days Lucky and Unlucky}, (London, 1678; rev.~edn., 1686).}%
+    {gibbon1686dfs}
+    
+    \testrow{\emph{Stories after Nature} (London: Allman, 1822).\quad [\enquote{Anonymous} in Bibliography]}%
+    {anon1822san}
+    
+    \testrow{\emph{Liber usualis} (Tournai: Desclée, 1956).}%
+    {anon1956lu}
+    
+    \section*{15.2.2} % Books: titles and subtitles
+    
+    \testrow{Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).}%
+    {brady.etal1994hehsa}
+    
+    \testrow{Antonia Tissoni Benvenuti, \emph{L'\emph{Orfeo} del Poliziano} (Padua: Editrice Antenore, 1986).}%
+    {benvenuti1986op}
+    
+    \testrow{Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the Liffey} (Dublin: HCE Press, 1977).}%
+    {oconor1977sjf}
+    
+    \section*{15.2.3} % Books: editions
+    
+    \testrow{J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.}%
+    [419--421]{baker1990iel}
+    
+    \testrow{J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).}%
+    {denniston1934gp}
+    
+    \testrow{Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).}%
+    {bettelheim1976uem}
+    
+    \testrow{\emph{The Oxford Dictionary of Quotations}, 5th edn., ed. Elizabeth Knowles (Oxford, 1999).}%
+    {knowles1999odq}
+    
+    \section*{15.2.4} % Books: reprints, reprint editions, and facsimiles
+    
+    \testrow{C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).}%
+    {adam.tannery1897odd}
+    
+    \testrow{E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).}%
+    {allen1594kkk}
+    
+    \section*{15.2.5} % Books: co-publications and foreign editions
+    
+    \aside{The following effect was achieved by abusing the \code{origlocation}, \code{origpublisher} and \code{origdate} fields.}
+    
+    \testrow{L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).}%
+    {holfordstrevens1988ag}
+    
+    \section*{15.2.6} % Books: volumes
+    
+    \testrow{Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.}%
+    [\nopp ii.\ \mkcomprange{367--368}]{straeten1867lmp}
+    
+    \testrow{Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.}%
+    [367--368]{straeten1867lmp.ii}
+    
+    [In the \emph{Oxford Style Manual}, the translator is in parentheses in the following reference, but as this pattern does not occur in any other it may be an error or stylistic variation. The following effect was achieved with \code{volume = \{1--iii\}}, \code{pages = \{iv\}}, and \code{pubstate = \{London: Bohn, 1846\}}.]
+    
+    \testrow{Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4 vols., i--iii (Oxford: Talboys, 1838--9), iv (London: Bohn, 1846).}%
+    {ritter1838hap}
+    
+    \testrow{A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.}%
+    [42--56]{ward.waller1932che}
+    
+    \testrow{David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).}
+    {fischer1989asf}
+    
+    \section*{15.2.7} % Books: series title
+    
+    \testrow{Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (Beihefte zum Archiv für Musikwissenschaft, 10--11; Wiesbaden, 1972).}%
+    {garlandia1972dmm}
+    
+    \section*{15.2.12} % Books: multi-author works
+    
+    \testrow{\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).}%
+    {icp1975pic}
+    
+    \section*{15.2.13} % Books: organizations
+    
+    \testrow{Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).}{botswana1980hdr}
+    
+    \testrow{Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Mentally Disordered Offenders from Custody} (London, 1988).}{pac1988upt}
+    
+    \section*{15.2.15} % Books: translations
+    
+    \testrow{Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).}%
+    {bischoff1990lpa}
+    
+    \testrow{Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).}%
+    {martorell1984tlb}
+    
+    \section*{15.3} % Chapters and articles in books
+    
+    \testrow{John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George Holmes (ed.), \emph{Art and Politics in Renaissance Italy: British Academy Lectures} (Oxford: Clarendon Press, 1993), 185--240.}%
+    {shearman1993vsf}
+    
+    \testrow{W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).}%
+    {todd1974dhp}
+    
+    \testrow{G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).}%
+    {frege1892osr}
+    
+    \testrow{G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.}%
+    {owen1986pi}
+    
+    % Article in yearbook
+    
+    \testrow{M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.}%
+    {boyce1957pgi}
+    
+    \section*{15.4.1} % Articles in periodicals
+    
+    \testrow{Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typification of the Ottoman Polity}, \emph{Princeton Papers in Near Eastern Studies}, 1 (1992), 49--72.}%
+    {inalcik1992csm}
+    
+    \testrow{Robert Goldblatt, \enquote{Diodorean Modality in Minkowski Space-Time}, \emph{Studia Logica}, 39/3 (1973), 219--36.}%
+    {goldblatt1973dmm}
+    
+    \testrow{Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.}%
+    {lee1995ehf}
+    
+    \testrow{\enquote{Who's Excellent Now?}, \emph{Business Week}, 5 Nov. 1984, 76--86.}%
+    {bw1984wen}
+    
+    \aside{The following effect was achieved by added \code{\textbackslash nopunct} to the end of the journal title.}
+    
+    \testrow{B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.}%
+    {lindars1965eir}
+    
+    \aside{Here the \code{=} and journal title are given as the \code{titleaddon}, and the issue information as the \code{note}.}
+    
+    \testrow{C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.}%
+    {bec1976isc}
+    
+    \testrow{F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).}%
+    {trisoglio1973gnq}
+    
+    \testrow{X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.}%
+    {zhentao.etal1989ars}
+    
+    \section*{15.4.3} % Articles in periodicals: series
+    
+    \testrow{J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quarterly}, \textsc{ns} 21 (1971), 65--80.}%
+    {barnes1971has}
+    
+    \section*{15.4.4} % Articles in periodicals: reviews
+    
+    \testrow{J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.}%
+    {dean1995rpb}
+    
+    \testrow{H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.}%
+    {jocelyn1989pav}
+    
+    \section*{15.5.1} % Theses and dissertations: terminology
+    
+    \testrow{Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).}%
+    {blackburn1970tlp}
+    
+    \section*{15.6} % Unpublished books and articles
+    
+    \testrow{Leofranc Holford-Strevens, \enquote{Humanism and the Language of Music Theory Treatises}, paper given at the 65th Annual Meeting of the American Musicological Society, Kansas City, MO, 4--7 Nov. 1999.}%
+    {holfordstrevens1999hlm}
+    
+    \testrow{E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).}%
+    {gombrich1957as}
+    
+    \section*{15.8} % Poems
+    
+    Spenser, \emph{Faerie Queene}, II. \textsc{vi}. xxxv. 7
+    
+    Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
+    
+    W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}], in \enquote{The German Auden: Six Early Poems}, trans. David Constantine, in Katherine Bucknell and Nicholas Jenkins (eds.), \emph{W. H. Auden, \enquote{The Map of All my Youth}: Early Works, Friends, and Influences} (Auden Studies, 1; Oxford, 1990), 1--15 at 6.
+    
+    William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Jan M. Ziolkowski, \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. Edward Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
+    
+    \section*{15.14.1} % Audio recordings
+    
+    \testrow{Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).}%
+    {couperin1970pdc}
+    
+    \testrow{Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).}%
+    {hillier1989p}
+    
+    \testrow{Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) (two-volume compact disc set).}%
+    {hopkinsNDcar}
+    
+    \testrow{\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut}, Gothic Voices, dir. Christopher Page (Hyperion compact disc CDA 66087).}
+    {pageNDmn}
+    
+    \testrow{C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).}
+    {lewis1981lww}
+    
+    \section*{15.14.2} % Films, video recordings, and slides
+    
+    \emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
+    
+    Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
+    
+    \emph{Leningrad Cowboys Go America} (Villealfa Filmproductions, 1989), dir.\ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki, Mato Valtonen.
+    
+    \enquote{Percy and Harold and Other Stories}, \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224, 1986).
+    
+    \emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi}, dir.\ Rob Reiner (Embassy Pictures, 1983).
+    
+    \section*{15.14.3} % Television and radio programmes
+    
+    \emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
+    
+    \section*{15.15.2} % Electronic data: representation
+    
+    \testrow{Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court}, \emph{Information Today} [online journal], 18/5 (May 2001) $\langle$\url{http://www.infotoday.com/newsbreaks/nb010330-1.htm}$\rangle$, accessed 1 July 2001.}%
+    {quint2001ohm}
+    
+    \section*{15.15.3} % Electronic data: forms of reference
+    
+    \testrow{R. M. Ritter, \enquote{About the Oxford Guide to Style}, \emph{Oxford Editorial} [website], (updated 10 Oct.\ 2001) $\langle$\url{http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}$\rangle$}%
+    {ritter2001aog}
+    
+    \testrow{William Strunk, Jr., \emph{The Elements of Style} (1st edn., Geneva, NY: W. P. Humphrey, 1918), published online July 1999 $\langle$\url{http://www.bartleby.com/141}$\rangle$}%
+    {strunk1999tes}
+    
+    %\nocite{*}
+    \printbibliography[notcategory=reviewed]
+\end{document}
+\end{writeverbatim}
+\closeoutputstream{notesdoc}
+
+\newoutputstream{bib}
+\openoutputfile{oxref.bib}{bib}
+\begin{writeverbatim}{bib}
+% p.506
+
+@inbook{rouse.rouse1991btu,
+    author = {Mary A. Rouse and Richard H. Rouse},
+    gender = {pp},
+    title = {The Book Trade at the University of Paris, c.1250--c.1350},
+    bookauthor = {Mary A. Rouse and Richard H. Rouse},
+    booktitle = {Authentic Witnesses},
+    booksubtitle = {Approaches to Medieval Texts and Manuscripts},
+    series = {Publications in Medieval Studies},
+    number = {17},
+    location = {Notre Dame, IN},
+    date = {1991},
+    pages = {259--338}
+}
+
+% p. 507
+
+@collection{stewart.etal1994mb,
+    editor = {Rosemary Stewart and Jean-Louis Barsoux and Alfred Kieser and Hans-Dieter Ganter and Peter Walgenbach},
+    title = {Managing in {Britain}},
+    location = {London},
+    date = {1994}
+}
+
+@mvbook{fortenbaugh.etal1991tes,
+    title = {{Theophrastus} of {Eresus}},
+    subtitle = {Sources for his Life, Writings, Thought, and Influence},
+    editor = {William W. Fortenbaugh and Pamela M Huby and Robert W. Sharples and Dimitri Gutas and others},
+    volumes = {2},
+    series = {Philosophia Antiqua},
+    number = {54},
+    location = {Leiden},
+    date = {1991}
+}
+
+@article{vaucouleurs1975nmn,
+    author = {Gerald de Vaucouleurs and J. Blunck and M. Davies and A. Dollfus and I. Koval and G. Kuiper and H. Masursky and S. Miyamoto and V Moroz and Carl Sagan},
+    title = {The New {Martian} Nomenclature of the {International} {Astronomical} {Union}},
+    journaltitle = {Icarus},
+    volume = {26},
+    date = {1975},
+    pages = {85-98}
+}
+
+@book{eliot1977m,
+    author = {George Eliot},
+    title = {Middlemarch},
+    location = {New York},
+    publisher = {W. W. Norton},
+    date = {1977}
+}
+
+@book{twain1971cyk,
+    author = {Mark Twain},
+    title = {A {Connecticut} Yankee at {King} {Arthur's} Court},
+    introduction = {Justin Kaplan},
+    location = {Harmondsworth},
+    publisher = {Penguin},
+    date = {1971}
+}
+
+@book{dodgson1896sl,
+    author = {C. L. Dodgson},
+    nameaddon = {Lewis Carroll},
+    title = {Symbolic Logic},
+    location = {Oxford},
+    publisher = {Clarendon Press},
+    date = {1896}
+}
+
+@book{boethius1976dds,
+    author = {Pseudo-Boethius},
+    title = {De disciplina scolarium},
+    subtitle = {Édition critique, introduction et notes},
+    editor = {Olga Weijers},
+    location = {Leiden},
+    date = {1976}
+}
+
+% p.508
+
+@book{boas.botschuyver1952dc,
+    title = {Distichia Catonis},
+    editor = {Marcus Boas and Henricus Johannes Botschuyver},
+    location = {Amsterdam},
+    date = {1952}
+}
+
+@book{balfour1768pe,
+    author = {James Balfour},
+    authortype = {inferred},
+    title = {Philosophical Essays},
+    location = {Edinburgh},
+    date = {1768}
+}
+
+@book{gibbon1686dfs,
+    author = {John Gibbon},
+    authortype = {inferred},
+    title = {Day-Fatality},
+    subtitle = {Or Some Observations on Days Lucky and Unlucky},
+    edition = {revised},
+    origlocation = {London},
+    origdate = {1678},
+    date = {1686}
+}
+
+% Do we need special handling for whether a work is marked 'Anon'?
+@book{anon1822san,
+    title = {Stories after Nature},
+    location = {London},
+    publisher = {Allman},
+    date = {1822}
+}
+
+@book{anon1956lu,
+    title = {Liber usualis},
+    location = {Tournai},
+    publisher = {Desclée},
+    date = {1956}
+}
+
+% p. 511
+
+@mvcollection{brady.etal1994hehsa,
+    editor = {Brady, Jr., Thomas A. and Heiko A. Oberman and James D. Tracy},
+    maintitle = {Handbook of European History, 1400–1600},
+    mainsubtitle = {{Late} {Middle} {Ages,} {Renaissance} and {Reformation}},
+    volume = {1},
+    title = {Structures and Assertions},
+    location = {Leiden},
+    publisher = {E. J. Brill},
+    date = {1994}
+}
+
+@book{benvenuti1986op,
+    author = {Antonia Tissoni Benvenuti},
+    title = {L'\emph{Orfeo} del Poliziano},
+    location = {Padua},
+    publisher = {Editrice Antenore},
+    date = {1986}
+}
+
+% p. 512
+
+@book{oconor1977sjf,
+    author = {Roderick O'Conor},
+    title = {A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the {Liffey}},
+    location = {Dublin},
+    publisher = {HCE Press},
+    date = {1977}
+}
+
+% p. 513
+
+% The page range goes in the citation command
+@book{baker1990iel,
+    author = {J. H. Baker},
+    title = {An Introduction to {English} Legal History},
+    edition = {3},
+    date = {1990}
+}
+
+% First and later edition, same publisher
+@book{denniston1934gp,
+    author = {J. D. Denniston},
+    title = {The Greek Particles},
+    origdate = {1934},
+    edition = {2},
+    location = {Oxford},
+    date = {1954}
+}
+
+% First and later edition, different publisher
+@book{bettelheim1976uem,
+    author = {Bruno Bettelheim},
+    title = {The Uses of Enchantment},
+    subtitle = {The Meaning and Importance of Fairy Tales},
+    location = {Harmondsworth},
+    publisher = {Penguin Books},
+    date = {1988},
+    pubstate = {first pub\adddotspace 1976}
+}
+
+% p. 514
+
+% Later edition by different editor
+@reference{knowles1999odq,
+    title = {The {Oxford} Dictionary of Quotations},
+    edition = {5},
+    editor = {Elizabeth Knowles},
+    publisher = {Oxford},
+    date = {1999}
+}
+
+@collection{adam.tannery1897odd,
+    editor = {C. Adam and D. Tannery},
+    title = {Œuvres de Descartes},
+    origlocation = {Paris},
+    origpublisher = {Cerf},
+    origdate = {1897/1913},
+    edition = {reprint},
+    location = {Paris},
+    publisher = {J. Vrin, CNRS},
+    date = {1964/1976}
+}
+
+% p. 515
+
+% Need special handling for marking facsimile editions
+@book{allen1594kkk,
+    author = {E. Allen},
+    title = {A Knack to Know a Knave},
+    origlocation = {London},
+    origdate = {1594},
+    edition = {facsimile},
+    location = {Oxford},
+    publisher = {Malone Society Reprints},
+    date = {1963}
+}
+% doombar
+% p. 516
+
+% Multiple publishers, same title
+@book{holfordstrevens1988ag,
+    author = {L. A. Holford-Strevens},
+    title = {Aulus Gellius},
+    origlocation = {London},
+    origpublisher = {Duckworth},
+    origdate = {1988},
+    location = {Chapel Hill},
+    publisher = {University of North Carolina Press},
+    date = {1989},
+    userd = {hacked}
+}
+
+% p. 517
+
+@mvbook{straeten1867lmp,
+    author = {Edmond Vander Straeten},
+    title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
+    volumes = {8},
+    location = {Brussels},
+    date = {1867/1888}
+}
+
+@mvbook{straeten1867lmp.ii,
+    author = {Edmond Vander Straeten},
+    title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
+    volume = {2},
+    location = {Brussels},
+    date = {1867/1888}
+}
+
+% This hack is not at all portable. Use with care, or use one of the other layouts.
+@mvbook{ritter1838hap,
+    author = {Heinrich Ritter},
+    title = {The History of Ancient Philosophy},
+    translator = {Alexander J. W. Morrison},
+    volumes = {4},
+    volume = {1--iii},
+    location = {Oxford},
+    publisher = {Talboys},
+    date = {1838/1839},
+    pages = {iv},
+    pubstate = {London: Bohn, 1846},
+    userd = {hacked}
+}
+
+@mvcollection{ward.waller1932che,
+    editor = {A. W. Ward and A. E. Waller},
+    maintitle = {The Cambridge History of English Literature},
+    volume = {12},
+    title = {The Nineteenth Century},
+    location = {Cambridge},
+    publisher = {CUP},
+    date = {1932}
+}
+
+@book{fischer1989asf,
+    entrysubtype = {sequence},
+    author = {David Hackett Fischer},
+    title = {Albion’s Seed},
+    subtitle = {Four British Folkways in America},
+    volume = {1},
+    maintitle = {America},
+    mainsubtitle = {A Cultural History},
+    location = {New York},
+    publisher = {Oxford University Press},
+    date = {1989}
+}
+
+% p. 518
+
+@mvbook{garlandia1972dmm,
+    author = {Johannes de Garlandia},
+    title = {De mensurabili musica},
+    editor = {Erich Reimer},
+    volumes = {2},
+    series = {Beihefte zum Archiv für Musikwissenschaft},
+    number = {10--11},
+    publisher = {Wiesbaden},
+    date = {1972}
+}
+
+% p. 523
+
+@proceedings{icp1975pic,
+    title = {Proceedings of the {XIV} {International} {Congress} of {Papyrologists}},
+    subtitle = {{Oxford}, 24--31 {July} 1974},
+    location = {London},
+    date = {1975}
+}
+
+% p. 524
+
+@report{botswana1980hdr,
+    author = {{Government of Botswana}},
+    title = {A Human Drought Relief Programme for Botswana},
+    location = {Gabarone},
+    institution = {Ministry of Local Government and Lands},
+    date = {1980}
+}
+
+@report{pac1988upt,
+    author = {{Penal Affairs Consortium}},
+    title = {An Unsuitable Place for Treatment},
+    subtitle = {Diverting Mentally Disordered Offenders from Custody},
+    location = {London},
+    date = {1988}
+}
+
+@book{bischoff1990lpa,
+    author = {Bernhard Bischoff},
+    title = {Latin Palaeography},
+    subtitle = {Antiquity and the Middle Ages},
+    translator = {Dáibhi Ó Cróinín and David Ganz},
+    location = {Cambridge},
+    date = {1990}
+}
+
+@book{martorell1984tlb,
+    author = {Joanat Martorell},
+    title = {Tirant lo Blanc},
+    translator = {David H. Rosenthal},
+    foreword = {David H. Rosenthal},
+    location = {London},
+    date = {1984}
+}
+
+% p. 525
+
+@incollection{shearman1993vsf,
+    author = {John Shearman},
+    title = {The Vatican Stanze},
+    subtitle = {Functions and Decoration},
+    editor = {George Holmes},
+    booktitle = {Art and Politics in Renaissance Italy},
+    booksubtitle = {British Academy Lectures},
+    location = {Oxford},
+    publisher = {Clarendon Press},
+    date = {1993},
+    pages = {185-240}
+}
+
+@incollection{todd1974dhp,
+    author = {W. B. Todd},
+    gender = {sm},
+    title = {David Hume},
+    subtitle = {A Preliminary Bibliography},
+    editor = {W. B. Todd},
+    booktitle = {Hume and the Enlightenment},
+    booksubtitle = {Essays Presented to Ernest Campbell Mossner},
+    location = {Edinburgh},
+    publisher = {Edinburgh University Press},
+    date = {1974}
+}
+
+% p. 526
+
+@bookinbook{frege1892osr,
+    author = {G. Frege},
+    gender = {sm},
+    title = {On Sense and Reference},
+    bookauthor = {G. Frege},
+    booktitle = {Philosophical Writings},
+    translator = {P. T. Geach and M. Black},
+    editor = {P. T. Geach and M. Black},
+    location = {Oxford},
+    publisher = {Blackwell},
+    date = {1952},
+    pubstate = {originally pub\adddotspace 1892}
+}
+
+@periodical{osap1983,
+    journaltitle = {Oxford Studies in Ancient Philosophy},
+    volume = {1},
+    date = {1983},
+    pages = {1-25},
+    userd = {bad}
+}
+
+@bookinbook{owen1986pi,
+    author = {G. E. L. Owen},
+    gender = {sm},
+    title = {Philosophical Invective},
+    booktitle = {Logic, Science and Dialectic},
+    bookauthor = {G. E. L. Owen},
+    editor = {M. Nussbaum},
+    location = {Ithaca, NY},
+    publisher = {Cornell University Press},
+    date = {1986},
+    pages = {347-364},
+    related = {osap1983},
+    relatedtype = {reprintfrom}
+}
+% If not using Biber, you would use
+% addendum = {From \fullcite[1-25]{osap1983}}
+% instead of the related fields
+
+@article{boyce1957pgi,
+    author = {M. Boyce},
+    title = {The Parthian \emph{Gsn} and Iranian Minstrel Tradition},
+    journaltitle = {Journal of the Royal Asiatic Society},
+    date = {1957},
+    pages = {10-45}
+}
+
+% p. 527
+
+@article{inalcik1992csm,
+    author = {Halil Inalcik},
+    title = {Comments on \enquote{Sultanism}},
+    subtitle = {Max Weber's Typification of the Ottoman Polity},
+    journaltitle = {Princeton Papers in Near Eastern Studies},
+    volume = {1},
+    date = {1992},
+    pages = {49-72}
+}
+
+@article{goldblatt1973dmm,
+    author = {Robert Goldblatt},
+    title = {Diodorean Modality in Minkowski Space-Time},
+    journaltitle = {Studia Logica},
+    volume = {39},
+    number = {3},
+    date = {1973},
+    pages = {219-236}
+}
+
+% p. 528
+
+@article{lee1995ehf,
+    author = {Alan Lee},
+    title = {England Haunted by Familiar Failings},
+    journaltitle = {The Times},
+    date = {1995-06-23}
+}
+
+@article{bw1984wen,
+    title = {Who's Excellent Now?},
+    journaltitle = {Business Week},
+    date = {1984-11-05},
+    pages = {76-86}
+}
+
+% p. 529
+
+@article{lindars1965eir,
+    author = {B. Lindars},
+    title = {Ezechiel and Individual Responsibility},
+    journaltitle = {VT\nopunct},
+    volume = {15},
+    date = {1965},
+    pages = {452-467},
+    userd = {hacked}
+}
+
+% This one is \emph{weird}
+@collection{bec1976isc,
+    editor = {C. Bec},
+    title = {Italie 1500--1550},
+    subtitle = {Une situation de crise?\nopunct},
+    titleaddon = {= \emph{Annales de l'Université Jean Moulin}},
+    note = {1975/2},
+    series = {Langues étrangères},
+    number = {2},
+    location = {Lyon},
+    date = {1976},
+    pages = {99--109},
+    userd = {hacked}
+}
+
+@article{trisoglio1973gnq,
+    author = {F. Trisoglio},
+    issuetitle = {Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)},
+    journaltitle = {Rivista Iasalliana},
+    volume = {40},
+    date = {1973}
+}
+
+@article{zhentao.etal1989ars,
+    author = {X. Zhentao and K. K. C. Yau and F. R. Stephenson},
+    title = {Astronomical Records on the Shang Dynasty Oracle Bones},
+    journaltitle = {Archaeoastronomy},
+    volume = {14},
+    date = {1989},
+    note = {Supplement to \fullcite{jha1989}},
+    pages = {\ppno~S61-S72}
+}
+
+@periodical{jha1989,
+    title = {Journal for the History of Astronomy},
+    volume = {20},
+    userd = {bad}
+}
+
+% p. 530
+
+@article{barnes1971has,
+    author = {J. Barnes},
+    title = {Homonymy in Aristotle and Speusippus},
+    journaltitle = {Classical Quarterly},
+    series = {newseries},
+    volume = {21},
+    date = {1971},
+    pages = {65--80}
+}
+
+% With Biber: using related field mechanism
+@review{dean1995rpb,
+    author = {J. Dean},
+    related = {basiron1994mel},
+    relatedtype = {reviewof},
+    journaltitle = {Res facta},
+    volume = {17},
+    date = {1995},
+    pages = {56-59}
+}
+
+@book{basiron1994mel,
+    author = {Philippe Basiron},
+    title = {My Early Life},
+    location = {Bourges},
+    year = {1994},
+    userd = {bad}
+}
+
+% Without Biber: need special field for reviewed document
+@review{jocelyn1989pav,
+    author = {H. D. Jocelyn},
+    title = {Probus and Virgil},
+    options = {reviewed=delvigo1987tvt},
+    journaltitle = {CR},
+    series = {newseries},
+    volume = {39},
+    date = {1989},
+    pages = {27-28}
+}
+
+@book{delvigo1987tvt,
+    author = {Maria Luisa Delvigo},
+    title = {Testo virgiliano e tradizione indiretta},
+    location = {Pisa},
+    date = {1987},
+    userd = {bad}
+}
+
+% p. 531
+
+@thesis{blackburn1970tlp,
+    author = {Bonnie J. Blackburn},
+    title = {The Lupus Problem},
+    type = {Ph.D. diss.},
+    institution = {University of Chicago},
+    date = {1970}
+}
+
+% p. 533
+
+@unpublished{holfordstrevens1999hlm,
+    author = {Leofranc Holford-Strevens},
+    title = {Humanism and the Language of Music Theory Treatises},
+    howpublished = {paper given at the 65th Annual Meeting of the American Musicological Society},
+    location = {Kansas City, MO},
+    date = {1999-11-04/1999-11-07}
+}
+
+@book{gombrich1957as,
+    author = {E. H. Gombrich},
+    title = {Art and Scholarship},
+    note = {Inaugural Lecture, University College London, 14 Feb. 1957},
+    location = {London},
+    publisher = {H. K. Lewis},
+    date = {1957}
+}
+
+% p. 534
+
+% Spenser
+
+% Auden
+
+% Blois
+
+% p. 543
+
+@music{couperin1970pdc,
+    author = {Francois Couperin},
+    title = {Pièces de clavecin},
+    subtitle = {Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres},
+    editor = {Huguette Dreyfus},
+    editortype = {performer},
+    series = {Valois},
+    number = {MB 797},
+    date = {1970}
+}
+
+@music{hillier1989p,
+    author = {Paul Hillier},
+    title = {Proensa},
+    publisher = {ECM Records},
+    type = {compact disc},
+    number = {ECM 1368},
+    date = {1989}
+}
+
+@music{hopkinsNDcar,
+    author = {Lightnin’ Hopkins},
+    title = {The Complete Aladdin Recordings},
+    publisher = {EMI},
+    series = {Blues Series},
+    number = {CDP-7-96843-2},
+    pubstate = {two-volume compact disc set}
+}
+
+@music{pageNDmn,
+    title = {The Mirror of Narcissus},
+    subtitle = {Songs by Guillaume do Machaut},
+    editor = {Gothic Voices},
+    editortype = {performer},
+    editora = {Christopher Page},
+    editoratype = {director},
+    publisher = {Hyperion},
+    type = {compact disc},
+    number = {CDA 66087}
+}
+
+% p. 544
+
+% Lewis
+@audio{lewis1981lww,
+    author = {C. S. Lewis},
+    title = {The Lion, the Witch, and the Wardrobe},
+    editor = {Sir Michael Hordern},
+    editortype = {reader},
+    howpublished = {2 audio cassettes},
+    number = {TO1611},
+    date = {1981},
+}
+
+% p. 545
+
+% Sunday Grandstand
+
+% p. 546
+
+@article{quint2001ohm,
+    author = {Barbara Quint},
+    title = {One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court},
+    journaltitle = {Information Today},
+    entrysubtype = {online journal},
+    volume = {18},
+    number = {5},
+    date = {2001-05},
+    url = {http://www.infotoday.com/newsbreaks/nb010330-1.htm},
+    urldate = {2001-07-01}
+}
+
+% p. 548
+
+@online{ritter2001aog,
+    author = {R. M. Ritter},
+    title = {About the Oxford Guide to Style},
+    maintitle = {Oxford Editorial},
+    entrysubtype = {website},
+    date = {2001-10-10},
+    options = {datetype=updated},
+    url = {http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}
+}
+
+@book{strunk1999tes,
+    author = {Strunk, Jr., William},
+    title = {The Elements of Style},
+    edition = {1},
+    location = {Geneva, NY},
+    publisher = {W. P. Humphrey},
+    date = {1918},
+    url = {http://www.bartleby.com/141},
+    urldate = {1999-07},
+    options = {urldatetype=published{\space}online}
+}
+
+% Extensions
+
+@proceedings{ecdl2009,
+    editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos Papatheodorou and Giannis Tsakonas},
+    title = {Research and Advanced Technology for Digital Libraries},
+    eventtitle = {13th European Conference, ECDL 2009},
+    venue = {Corfu, Greece},
+    eventdate = {2009-09-27/2009-10-02},
+    series = {Lecture Notes in Computer Science},
+    number = {5714},
+    location = {Berlin},
+    publisher = {Springer},
+    date = {2009},
+    isbn = {978-3-642-04345-1},
+    issn = {0302-9743}
+}
+
+@inproceedings{tonkin.strelnikov2009iem,
+    author = {Emma Tonkin and Alexey Strelnikov},
+    title = {Information Environment Metadata Schema Registry},
+    editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos Papatheodorou and Giannis Tsakonas},
+    booktitle = {Research and Advanced Technology for Digital Libraries},
+    eventtitle = {13th European Conference, ECDL 2009},
+    venue = {Corfu, Greece},
+    eventdate = {2009-09-27/2009-10-02},
+    series = {Lecture Notes in Computer Science},
+    number = {5714},
+    location = {Berlin},
+    publisher = {Springer},
+    date = {2009},
+    pages = {487-488},
+    isbn = {978-3-642-04345-1},
+    issn = {0302-9743}
+}
+
+@proceedings{iced2009,
+    title = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
+    volumes = {10},
+    editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
+    venue = {Stanford, CA},
+    eventdate = {2009-08-24/2009-08-27},
+    location = {Glasgow},
+    publisher = {Design Society},
+    date = {2009},
+    isbn = {978-1-904670-12-4}
+}
+
+@proceedings{iced2009dik,
+    maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
+    title = {Design Information and Knowledge},
+    volume = {8},
+    editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
+    venue = {Stanford, CA},
+    eventdate = {2009-08-24/2009-08-27},
+    location = {Glasgow},
+    publisher = {Design Society},
+    date = {2009},
+    isbn = {978-1-904670-12-4}
+}
+
+@inproceedings{ding.etal2009sfc,
+    author = {Lian Ding and Alex Ball and Manjula Patel and Jason Matthews and Glen Mullineux},
+    title = {Strategies for the Collaborative Use of CAD Product Models},
+    maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
+    booktitle = {Design Information and Knowledge},
+    volume = {8},
+    editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
+    venue = {Stanford, CA},
+    eventdate = {2009-08-24/2009-08-27},
+    location = {Glasgow},
+    publisher = {Design Society},
+    date = {2009},
+    pages = {123-134},
+    isbn = {978-1-904670-12-4},
+    url = {http://opus.bath.ac.uk/14285}
+}
+\end{writeverbatim}
+\closeoutputstream{bib}
+
+\input{oxref-preamble}
+
+\title{Oxref: Biblatex styles inspired by the Oxford Guide to Style}
+\author{Alex Ball}
+
+\begin{document}
+    \thispagestyle{empty}
+    \begin{adjustwidth}{.2\textwidth}{0pt}
+        \sffamily\setlength{\parindent}{0pt}%
+        \LARGE\textsc{oxref bundle}
+        
+        \vspace{\stretch{1}}
+        \LARGE OXREF
+        
+        \Large Biblatex styles inspired by the \emph{Oxford Guide to Style}
+        
+        \bigskip
+        \Large\theauthor
+        
+        \bigskip
+        \Large\ifx\undefined\thedate\today\else\thedate\fi
+    \end{adjustwidth}
+    
+    \vspace{\stretch{3}}
+    \noindent
+    \hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
+    
+    \chapter{Introduction}
+    
+    This document provides the documented sources for the \textsf{oxref}
+    biblography styles. For information on how to use the styles, please refer
+    to the separate documentation.
+\end{document}
