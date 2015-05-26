@@ -8,9 +8,9 @@
 %%% COMMON PREAMBLE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newoutputstream{preamble}
-\openoutputfile{oxref-preamble.tex}{preamble}
-\begin{writeverbatim}{preamble}
+\newoutputstream{src}
+\openoutputfile{oxref-preamble.tex}{src}
+\begin{writeverbatim}{src}
 \setlrmarginsandblock{4cm}{2cm}{*}
 \setulmarginsandblock{2.5cm}{2.5cm}{*}
 \checkandfixthelayout
@@ -32,25 +32,40 @@
 \aliaspagestyle{title}{empty}
 
 \usepackage[british]{babel}
-%\usepackage[utf8]{inputenc}
 %   \DeclareUnicodeCharacter{2212}{\textminus}
 \usepackage{libertine}
 \ifluatex
-\setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
+  \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
 \else
-\ifxetex
-\setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
-\else
-\usepackage[varl]{zi4}
+  \ifxetex
+  \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
+  \else
+    \usepackage[utf8]{inputenc}
+    \usepackage[varl]{zi4}
+  \fi
 \fi
-\fi
-%\setmonofont[Scale=MatchLowercase]{LettrGoth12 BT}
+
 \usepackage{htabular,url-apa,csquotes,xcolor,xparse,multicol}
 \definecolor{Green}{rgb}{0,.5,0}
 \colorlet{ok}{Green}
 \colorlet{bad}{red}
 \colorlet{hacked}{orange}
 \colorlet{manual}{purple}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{listingsutf8,breakable}
+\lstloadlanguages{[LaTeX]TeX}
+\lstset
+  { columns=fullflexible
+  , basicstyle=\ttfamily
+  , language={[LaTeX]TeX}
+  , texcsstyle=*\color{red!75!black}
+  , moredelim=**[s][\color{violet}]{[}{]}
+  , moredelim=**[s][\color{blue!75!black}]{\{}{\}}
+  , mathescape
+  , escapechar=~
+  }
+
 \usepackage
 [backend=biber%
 ,hyperref=false%
@@ -103,19 +118,18 @@
 
 \frenchspacing
 \end{writeverbatim}
-\closeoutputstream{preamble}
+\closeoutputstream{src}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% OXNOTES BBX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newoutputstream{notesbbx}
-\openoutputfile{oxnotes.bbx}{notesbbx}
-\begin{writeverbatim}{notesbbx}
+\openoutputfile{oxnotes.bbx}{src}
+\begin{writeverbatim}{src}
 \ProvidesFile{oxnotes.bbx}
 \end{writeverbatim}
 \addtostream{notesbbx}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
-\begin{writeverbatim}{notesbbx}
+\begin{writeverbatim}{src}
 
 % New defaults
 
@@ -1485,24 +1499,23 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \DeclareBibliographyAlias{music}{audio}
 
-% \DeclareBibliographyDriver{movie}{%
-% \DeclareBibliographyDriver{video}{%
+%% \DeclareBibliographyDriver{movie}{%
+%% \DeclareBibliographyDriver{video}{%
 
 \endinput
 \end{writeverbatim}
-\closeoutputstream{notesbbx}
+\closeoutputstream{src}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% OXYEAR BBX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newoutputstream{yearbbx}
-\openoutputfile{oxyear.bbx}{yearbbx}
-\begin{writeverbatim}{yearbbx}
+\openoutputfile{oxyear.bbx}{src}
+\begin{writeverbatim}{src}
 \ProvidesFile{oxyear.bbx}
 \end{writeverbatim}
 \addtostream{yearbbx}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
-\begin{writeverbatim}{yearbbx}
+\begin{writeverbatim}{src}
 
 % New defaults
 
@@ -2554,19 +2567,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \endinput
 \end{writeverbatim}
-\closeoutputstream{yearbbx}
+\closeoutputstream{src}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% BRITISH-OXREF LBX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newoutputstream{lbx}
-\openoutputfile{british-oxref.lbx}{lbx}
-\begin{writeverbatim}{lbx}
+\openoutputfile{british-oxref.lbx}{src}
+\begin{writeverbatim}{src}
 \ProvidesFile{british-oxref.lbx}
 \end{writeverbatim}
 \addtostream{lbx}{\space\space\space\space[\Version\space British English conventions required by the biblatex-oxref styles]}
-\begin{writeverbatim}{lbx}
+\begin{writeverbatim}{src}
 
 \InheritBibliographyExtras{british}
 \DeclareBibliographyExtras{%
@@ -2697,7 +2709,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \endinput
 \end{writeverbatim}
-\closeoutputstream{lbx}
+\closeoutputstream{src}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DOCUMENTATION FOR OXNOTES
@@ -4389,11 +4401,62 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
 \input{oxref-preamble}
 
+% For typesetting the implementation
+\usepackage{metalogo}
+\usepackage{makedoc}[2012/04/03]
+\usepackage{niceverb}[2012/08/27]
+\renewcommand{\SetOffInlineCmdBox}{\textcolor{red!75!black}}
+\renewcommand*{\TreatAsCode}[1]{%
+  \ifPackageCode
+  \else
+    \WriteResult{\string\begin{tcblisting}{breakable,listing only,listing options={firstnumber=last}}}%
+    \PackageCodeTrue
+  \fi
+  \WriteResult{#1}%
+}
+\renewcommand*{\TreatAsComment}[1]{%
+  \ifPackageCode
+    \WriteResult{\string\end{tcblisting}}%
+    \WriteResult{}
+    \PackageCodeFalse
+    \EveryComment
+  \fi
+  \WriteResult{#1}%
+}
+\makeatletter
+\PushCatMakeLetter\_
+\renewcommand*{\make_doc_arg}[1]{%
+  \makedoc_maybe_autocorr
+  \ifnum\value{lstnumber}>\z@
+    \WriteResult{\string\begin{tcblisting}{breakable,listing only,listing options={firstnumber=1}}}%
+    \PackageCodeTrue
+  \else
+    \PackageCodeFalse
+  \fi
+  \ProcessFileWith{#1}{%
+    \CountInputLines
+    \makedoc_line_body
+    \process_line_message
+  }%
+  \ifPackageCode
+    \WriteResult{\string\end{tcblisting}}
+    \PackageCodeFalse
+  \fi
+}
+\PopLetterCat\_
+\makeatother
+
 \title{Oxref: Biblatex styles inspired by the Oxford Guide to Style}
 \author{Alex Ball}
 
+\providecommand*{\listinglabel}[1]{%
+  \llap{\scriptsize\itshape\the#1}\hskip\listingoffset\relax
+}%
+\providecommand*{\TODO}{\textcolor{blue}{TODO}}
+ 
+
 \begin{document}
-    \thispagestyle{empty}
+    \thispagestyle{empty}\noNiceVerb
     \begin{adjustwidth}{.2\textwidth}{0pt}
         \sffamily\setlength{\parindent}{0pt}%
         \LARGE\textsc{oxref bundle}
@@ -4426,4 +4489,28 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \end{itemize}
     For information on how to use the styles, please refer
     to the separate documentation.
+    
+    \lstset
+      { basicstyle=\footnotesize\ttfamily
+      , breaklines=true
+      , escapechar=
+      }%
+    \useNiceVerb
+    
+    \chapter{oxnotes.bbx}
+    
+    \renewcommand*{\mdJobName}{oxnotes}
+    \MakeInputJobDoc[bbx]{0}{\ProcessInputWith{PScomment}}
+    
+    \chapter{oxyear.bbx}
+    
+    \renewcommand*{\mdJobName}{oxyear}
+    \MakeInputJobDoc[bbx]{0}{\ProcessInputWith{PScomment}}
+    
+    \chapter{british-oxref.lbx}
+    
+    \renewcommand*{\mdJobName}{british-oxref}
+    \MakeInputJobDoc[lbx]{0}{\ProcessInputWith{PScomment}}
+    
+    \noNiceVerb
 \end{document}
