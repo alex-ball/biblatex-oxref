@@ -106,7 +106,9 @@
 \openoutputfile{oxnotes.bbx}{notesbbx}
 \begin{writeverbatim}{notesbbx}
 \ProvidesFile{oxnotes.bbx}
-    [\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]
+\end{writeverbatim}
+\addtostream{notesbbx}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
+\begin{writeverbatim}{notesbbx}
 
 % New defaults
 
@@ -114,7 +116,7 @@
 
 % Tweaks to language style
 
-\DeclareLanguageMapping{british}{british-ox}
+\DeclareLanguageMapping{british}{british-oxref}
 \NewBibliographyString{at}
 \NewBibliographyString{under}
 \NewBibliographyString{facsimile}
@@ -1487,7 +1489,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \openoutputfile{oxyear.bbx}{yearbbx}
 \begin{writeverbatim}{yearbbx}
 \ProvidesFile{oxyear.bbx}
-    [\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]
+\end{writeverbatim}
+\addtostream{yearbbx}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
+\begin{writeverbatim}{yearbbx}
 
 % New defaults
 
@@ -1513,7 +1517,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 }
 % Tweaks to language style
 
-\DeclareLanguageMapping{british}{british-ox}
+\DeclareLanguageMapping{british}{british-oxref}
 \NewBibliographyString{at}
 \NewBibliographyString{under}
 \NewBibliographyString{facsimile}
@@ -2545,7 +2549,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \openoutputfile{british-oxref.lbx}{lbx}
 \begin{writeverbatim}{lbx}
 \ProvidesFile{british-oxref.lbx}
-    [\Version\space British English conventions required by the biblatex-oxref styles]
+\end{writeverbatim}
+\addtostream{lbx}{\space\space\space\space[\Version\space British English conventions required by the biblatex-oxref styles]}
+\begin{writeverbatim}{lbx}
 
 \InheritBibliographyExtras{british}
 \DeclareBibliographyExtras{%
