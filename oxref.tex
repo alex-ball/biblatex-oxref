@@ -47,9 +47,7 @@
 \colorlet{hacked}{orange}
 \colorlet{manual}{purple}
 \usepackage
-[bibstyle=oxnotes%
-,citestyle=verbose%
-,backend=biber%
+[backend=biber%
 ,hyperref=false%
 ,isbn=false]{biblatex}
 \bibliography{oxref}
@@ -2685,9 +2683,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \closeoutputstream{lbx}
 
 \newoutputstream{notesdoc}
-\openoutputfile{oxref-notes-doc.tex}{notesdoc}
+\openoutputfile{oxnotes-doc.tex}{notesdoc}
 \begin{writeverbatim}{notesdoc}
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
+\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
 \input{oxref-preamble}
 
 \title{Oxnotes style for Biblatex}
@@ -3531,6 +3530,43 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \end{writeverbatim}
 \closeoutputstream{notesdoc}
 
+\newoutputstream{yeardoc}
+\openoutputfile{oxyear-doc.tex}{yeardoc}
+\begin{writeverbatim}{yeardoc}
+\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
+\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
+\input{oxref-preamble}
+
+\title{Oxyear style for Biblatex}
+\author{Alex Ball}
+
+\begin{document}
+    \thispagestyle{empty}
+    \begin{adjustwidth}{.2\textwidth}{0pt}
+        \sffamily\setlength{\parindent}{0pt}%
+        \LARGE\textsc{oxref bundle}
+        
+        \vspace{\stretch{1}}
+        \LARGE\thetitle
+        
+        \bigskip
+        \Large\theauthor
+        
+        \bigskip
+        \Large\ifx\undefined\thedate\today\else\thedate\fi
+    \end{adjustwidth}
+    
+    \vspace{\stretch{3}}
+    \noindent
+    \hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
+    
+    \newpage
+    \nocite{*}
+    \printbibliography[notcategory=reviewed]
+\end{document}
+\end{writeverbatim}
+\closeoutputstream{yeardoc}
+
 \newoutputstream{bib}
 \openoutputfile{oxref.bib}{bib}
 \begin{writeverbatim}{bib}
@@ -4317,6 +4353,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \end{writeverbatim}
 \closeoutputstream{bib}
 
+\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
 \input{oxref-preamble}
 
 \title{Oxref: Biblatex styles inspired by the Oxford Guide to Style}
@@ -4347,6 +4384,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \chapter{Introduction}
     
     This document provides the documented sources for the \textsf{oxref}
-    biblography styles. For information on how to use the styles, please refer
+    biblography styles:
+    \begin{itemize}
+      \item
+      \textsf{oxnotes}: a style similar to the standard \textsf{verbose}, intended for use with footnotes;
+      \item
+      \textsf{oxyear}: a style similar to the standard \textsf{authoryear}, intended for use with parenthetical in-text citations.
+    \end{itemize}
+    For information on how to use the styles, please refer
     to the separate documentation.
 \end{document}
