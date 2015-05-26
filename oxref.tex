@@ -1,5 +1,6 @@
+\def\Version{2015/05/25 v0.1}
 \ProvidesFile{oxref.tex}
-    [2015/05/25 0.1 Biblatex styles inspired by the Oxford Guide to Style]
+    [\Version\space Biblatex styles inspired by the Oxford Guide to Style]
 
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \newoutputstream{preamble}
@@ -105,6 +106,7 @@
 \openoutputfile{oxnotes.bbx}{notesbbx}
 \begin{writeverbatim}{notesbbx}
 \ProvidesFile{oxnotes.bbx}
+    [\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]
 
 % New defaults
 
@@ -1484,7 +1486,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newoutputstream{yearbbx}
 \openoutputfile{oxyear.bbx}{yearbbx}
 \begin{writeverbatim}{yearbbx}
-\ProvidesFile{oxnotes.bbx}
+\ProvidesFile{oxyear.bbx}
+    [\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]
 
 % New defaults
 
@@ -2542,6 +2545,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \openoutputfile{british-oxref.lbx}{lbx}
 \begin{writeverbatim}{lbx}
 \ProvidesFile{british-oxref.lbx}
+    [\Version\space British English conventions required by the biblatex-oxref styles]
 
 \InheritBibliographyExtras{british}
 \DeclareBibliographyExtras{%
