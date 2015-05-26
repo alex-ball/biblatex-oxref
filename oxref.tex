@@ -3,6 +3,11 @@
     [\Version\space Biblatex styles inspired by the Oxford Guide to Style]
 
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% COMMON PREAMBLE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newoutputstream{preamble}
 \openoutputfile{oxref-preamble.tex}{preamble}
 \begin{writeverbatim}{preamble}
@@ -99,6 +104,10 @@
 \frenchspacing
 \end{writeverbatim}
 \closeoutputstream{preamble}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% OXNOTES BBX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newoutputstream{notesbbx}
 \openoutputfile{oxnotes.bbx}{notesbbx}
@@ -1483,6 +1492,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \end{writeverbatim}
 \closeoutputstream{notesbbx}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% OXYEAR BBX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newoutputstream{yearbbx}
 \openoutputfile{oxyear.bbx}{yearbbx}
 \begin{writeverbatim}{yearbbx}
@@ -2543,6 +2556,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \end{writeverbatim}
 \closeoutputstream{yearbbx}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BRITISH-OXREF LBX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newoutputstream{lbx}
 \openoutputfile{british-oxref.lbx}{lbx}
 \begin{writeverbatim}{lbx}
@@ -2681,6 +2698,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \endinput
 \end{writeverbatim}
 \closeoutputstream{lbx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTATION FOR OXNOTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newoutputstream{notesdoc}
 \openoutputfile{oxnotes-doc.tex}{notesdoc}
@@ -3530,6 +3551,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \end{writeverbatim}
 \closeoutputstream{notesdoc}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTATION FOR OXYEAR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newoutputstream{yeardoc}
 \openoutputfile{oxyear-doc.tex}{yeardoc}
 \begin{writeverbatim}{yeardoc}
@@ -3566,6 +3591,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \end{document}
 \end{writeverbatim}
 \closeoutputstream{yeardoc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SAMPLE BIB FILE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newoutputstream{bib}
 \openoutputfile{oxref.bib}{bib}
@@ -4352,6 +4381,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 }
 \end{writeverbatim}
 \closeoutputstream{bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% COMMON PACKAGE DOCUMENTATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
 \input{oxref-preamble}
