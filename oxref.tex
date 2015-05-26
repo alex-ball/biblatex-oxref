@@ -2541,6 +2541,136 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newoutputstream{lbx}
 \openoutputfile{british-oxref.lbx}{lbx}
 \begin{writeverbatim}{lbx}
+\ProvidesFile{british-oxref.lbx}
+
+\InheritBibliographyExtras{british}
+\DeclareBibliographyExtras{%
+  \protected\def\mkbibdatelong#1#2#3{%
+    \iffieldundef{#3}
+      {}
+      {\stripzeros{\thefield{#3}}%
+       \iffieldundef{#2}{}{\nobreakspace}}%
+    \iffieldundef{#2}
+      {}
+      {\mkbibmonth{\thefield{#2}}%
+       \iffieldundef{#1}{}{\space}}%
+    \stripzeros{\thefield{#1}}}%
+  \def\finalandcomma{\addcomma}%
+}
+\DeclareBibliographyStrings{%
+  inherit          = {british},
+  % Peculiar to Oxref
+  at               = {{at}{at}},
+  under            = {{s.v.}{s.v.}},
+  facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
+  revised          = {{revised edition}{rev\adddotspace edn\adddot}},
+  reviewof         = {{review of}{review of}},
+  byperformer      = {{}{}},
+  bydirector       = {{directed by}{dir\adddot}},
+  byreader         = {{read by}{read by}},
+  % Standard (NB. Oxford style is more sparing with 'by')
+  introduction     = {{introduction}{introduction}},
+  withintroduction = {{with an introduction by}{with an introduction by}},
+  byeditor         = {{edited by}{ed\adddot}},
+  bycompiler       = {{compiled by}{comp\adddot}},
+  byredactor       = {{redacted by}{red\adddot}},
+  byfounder        = {{founded by}{found\adddot}},
+  bycontinuator    = {{continued by}{cont\adddot}},
+  bycollaborator   = {{in collaboration with}{in collab\adddotspace with}}, % FIXME: unsure
+  bytranslator     = {{translated \lbx@lfromlang\ by}{trans\adddot\ \lbx@sfromlang}},
+  bycommentator    = {{commented by}{comm\adddot}},
+  byannotator      = {{annotated by}{annot\adddot}},
+  withcommentator  = {{with a commentary by}{with a commentary by}},
+  withannotator    = {{with annotations by}{with annotations by}},
+  withintroduction = {{with an introduction by}{with an introduction by}},
+  withforeword     = {{with a foreword by}{with a foreword by}},
+  withafterword    = {{with an afterword by}{with an afterword by}},
+  byeditortr       = {{edited and translated \lbx@lfromlang\ by}%
+                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
+  byeditorco       = {{edited and commented by}%
+                      {ed\adddotspace and comm\adddot}},
+  byeditoran       = {{edited and annotated by}%
+                      {ed\adddotspace and annot\adddot}},
+  byeditorin       = {{edited, with an introduction, by}%
+                      {ed.\adddotspace with introduction}},
+  byeditorfo       = {{edited, with a foreword, by}%
+                      {ed.\adddotspace with foreword}},
+  byeditoraf       = {{edited, with an afterword, by}%
+                      {ed.\adddotspace with afterword}},
+  byeditortrco     = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
+  byeditortran     = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
+  byeditortrin     = {{edited and translated \lbx@lfromlang, with an introduction, by}%
+                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with introduction}},
+  byeditortrfo     = {{edited and translated \lbx@lfromlang, with a foreword, by}%
+                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with foreword}},
+  byeditortraf     = {{edited and translated \lbx@lfromlang, with an afterword, by}%
+                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with afterword}},
+  byeditorcoin     = {{edited and commented, with an introduction, by}%
+                      {ed\adddotspace and comm\adddotspace with introduction}},
+  byeditorcofo     = {{edited and commented, with a foreword, by}%
+                      {ed\adddotspace and comm\adddotspace with foreword}},
+  byeditorcoaf     = {{edited and commented, with an afterword, by}%
+                      {ed\adddotspace and comm\adddotspace with afterword}},
+  byeditoranin     = {{edited and annotated, with an introduction, by}%
+                      {ed\adddotspace and annot\adddotspace with introduction}},
+  byeditoranfo     = {{edited and annotated, with a foreword, by}%
+                      {ed\adddotspace and annot\adddotspace with foreword}},
+  byeditoranaf     = {{edited and annotated, with an afterword, by}%
+                      {ed\adddotspace and annot\adddotspace with afterword}},
+  byeditortrcoin   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with an introduction, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with introduction}},
+  byeditortrcofo   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with a foreword, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with foreword}},
+  byeditortrcoaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with an afterword, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with afterword}},
+  byeditortranin   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an introduction, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with introduction}},
+  byeditortranfo   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with a foreword, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with foreword}},
+  byeditortranaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an afterword, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with afterword}},
+  bytranslatorco   = {{translated \lbx@lfromlang\ and commented by}%
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddot\ by}},
+  bytranslatoran   = {{translated \lbx@lfromlang\ and annotated by}%
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddot\ by}},
+  bytranslatorin   = {{translated \lbx@lfromlang, with an introduction, by}%
+                      {trans\adddot\ \lbx@sfromlang\ with introduction}},
+  bytranslatorfo   = {{translated \lbx@lfromlang, with a foreword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ with foreword}},
+  bytranslatoraf   = {{translated \lbx@lfromlang, with an afterword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ with afterword}},
+  bytranslatorcoin = {{translated \lbx@lfromlang\ and commented, with an introduction, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with introduction}},
+  bytranslatorcofo = {{translated \lbx@lfromlang\ and commented, with a foreword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with foreword}},
+  bytranslatorcoaf = {{translated \lbx@lfromlang\ and commented, with an afterword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with afterword}},
+  bytranslatoranin = {{translated \lbx@lfromlang\ and annotated, with an introduction, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with introduction}},
+  bytranslatoranfo = {{translated \lbx@lfromlang\ and annotated, with a foreword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with foreword}},
+  bytranslatoranaf = {{translated \lbx@lfromlang\ and annotated, with an afterword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with afterword}},
+  idem             = {{idem}{id\adddot}},
+  idemsm           = {{idem}{id\adddot}},
+  idemsf           = {{eadem}{ead\adddot}},
+  idemsn           = {{idem}{id\adddot}},
+  idempm           = {{eidem}{eid\adddot}},
+  idempf           = {{eaedem}{eaed\adddot}},
+  idempn           = {{eadem}{ead\adddot}},
+  idempp           = {{eidem}{eid\adddot}},
+  newseries        = {{new series}{\mkbibacro{NS}}},
+  oldseries        = {{old series}{\mkbibacro{OS}}},
+  edition          = {{edition}{edn\adddot}},
+  reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
+  reviewof         = {{review of}{review of}},
+  reprintfrom      = {{from}{from}},
+  urlseen          = {{accessed}{accessed}},
+}
+
+\endinput
 \end{writeverbatim}
 \closeoutputstream{lbx}
 
