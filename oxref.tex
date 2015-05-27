@@ -45,12 +45,14 @@
   \fi
 \fi
 
-\usepackage{htabular,url-apa,csquotes,xcolor,xparse,multicol}
+\usepackage{xpatch,url-apa,csquotes,xcolor,xparse,multicol,fontawesome}
 \definecolor{Green}{rgb}{0,.5,0}
 \colorlet{ok}{Green}
 \colorlet{bad}{red}
 \colorlet{hacked}{orange}
 \colorlet{manual}{purple}
+
+\newcommand{\fa}[1]{\makebox[1em][c]{\faicon{#1}}}
 
 \usepackage{tcolorbox}
 \tcbuselibrary{listingsutf8,breakable}
@@ -120,6 +122,9 @@
 \end{writeverbatim}
 \closeoutputstream{src}
 
+\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
+\input{oxref-preamble}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% OXNOTES BBX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -128,7 +133,7 @@
 \begin{writeverbatim}{src}
 \ProvidesFile{oxnotes.bbx}
 \end{writeverbatim}
-\addtostream{notesbbx}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
+\addtostream{src}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{src}
 
 % New defaults
@@ -1514,7 +1519,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \begin{writeverbatim}{src}
 \ProvidesFile{oxyear.bbx}
 \end{writeverbatim}
-\addtostream{yearbbx}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
+\addtostream{src}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{src}
 
 % New defaults
@@ -1546,7 +1551,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \NewBibliographyString{under}
 \NewBibliographyString{facsimile}
 \NewBibliographyString{revised}
-\NewBibliographyString{reviewof}
+\NewBibliographyString{byperformer}
+\NewBibliographyString{bydirector}
+\NewBibliographyString{byreader}
 
 % Controlled vocabulary
 
@@ -2577,7 +2584,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \begin{writeverbatim}{src}
 \ProvidesFile{british-oxref.lbx}
 \end{writeverbatim}
-\addtostream{lbx}{\space\space\space\space[\Version\space British English conventions required by the biblatex-oxref styles]}
+\addtostream{src}{\space\space\space\space[\Version\space British English conventions required by the biblatex-oxref styles]}
 \begin{writeverbatim}{src}
 
 \InheritBibliographyExtras{british}
@@ -2723,21 +2730,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \usepackage{xstring}
 % \bibexample adds a sample reference to the documentation.
-% #1 = where to send code: 'notes' or 'year' (default is all)
-% #2 = target reference text
+% #1 = target reference text for oxnotes
+% #2 = target reference text for oxyear
 % #3 = bib record
 \makeatletter
-\newcommand{\bibexample}{\bgroup\obeylines\obeyspaces\@bibexample}
-\newcommand{\@bibexample}[3][notes,year]{%
+\NewDocumentCommand{\bibexample}{mm+v}{%
   \addtostream{src}{#3}
   \StrBetween*[1,1]{#3}{\@charlb}{,}[\bibkey]
-  \IfSubStr{#1}{notes}{%
-    \docbibexample{notesdoc}{#2}{\bibkey}{#3}
-  }{}
-  \IfSubStr{#1}{year}{%
+  \IfValueT{#1}{%
+    \docbibexample{notesdoc}{#1}{\bibkey}{#3}
+  }
+  \IfValueT{#2}{%
     \docbibexample{yeardoc}{#2}{\bibkey}{#3}
-  }{}
-  \egroup
+  }
 }
 \makeatother
 % \docbibexample handles the writing of the documentation code.
@@ -2747,10 +2752,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % #4 = bib record
 \newcommand{\docbibexample}[4]{%
   \addtostream{#1}{\string\begin{tcolorbox}}
-  \addtostream{#1}{\space\space\string\emph{Desired output:}\string\\}
-  \addtostream{#1}{\space\space#2}
-  \addtostream{#1}{\space\space\string\par\string\emph{Actual output:}\string\\}
-  \addtostream{#1}{\space\space\string\fullcite{#3}}
+  \addtostream{#1}{\space\space\string\fa{book} #2}
+  \addtostream{#1}{\space\space\string\par\string\fa{cog} \string\fullcite{#3}}
   \addtostream{#1}{\space\space\string\tcblower}
   \addtostream{#1}{\space\space\string\begin{verbatim}}
   \addtostream{#1}{#4\string\end{verbatim}}
@@ -3614,7 +3617,7 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 
 \begin{writeverbatim}{yeardoc}
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
-\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
+\PassOptionsToPackage{bibstyle=oxyear,citestyle=authoryear}{biblatex}
 \input{oxref-preamble}
 
 \title{Oxyear style for Biblatex}
@@ -3644,14 +3647,15 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \chapter{Sample references}
 \end{writeverbatim}
 
-\bibexample[year]%
+\bibexample
+{}%
 {Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).}%
-{@book{smith1988fag,
+|@book{smith1988fag,
   author = {Smith, T.},
   title = {Famine and Gender},
   year = {1988},
   location = {New Haven, Conn.}
-}}
+}|
 
 \begin{writeverbatim}{yeardoc}
 \nocite{*}
@@ -4452,9 +4456,6 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% COMMON PACKAGE DOCUMENTATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
-\input{oxref-preamble}
 
 % For typesetting the implementation
 \usepackage{metalogo}
