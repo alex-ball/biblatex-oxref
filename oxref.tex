@@ -2712,11 +2712,56 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \closeoutputstream{src}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTATION TOOLS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\openoutputfile{oxref.bib}{src}
+\newoutputstream{notesdoc}
+\openoutputfile{oxnotes-doc.tex}{notesdoc}
+\newoutputstream{yeardoc}
+\openoutputfile{oxyear-doc.tex}{yeardoc}
+
+\usepackage{xstring}
+% \bibexample adds a sample reference to the documentation.
+% #1 = where to send code: 'notes' or 'year' (default is all)
+% #2 = target reference text
+% #3 = bib record
+\makeatletter
+\newcommand{\bibexample}{\bgroup\obeylines\obeyspaces\@bibexample}
+\newcommand{\@bibexample}[3][notes,year]{%
+  \addtostream{src}{#3}
+  \StrBetween*[1,1]{#3}{\@charlb}{,}[\bibkey]
+  \IfSubStr{#1}{notes}{%
+    \docbibexample{notesdoc}{#2}{\bibkey}{#3}
+  }{}
+  \IfSubStr{#1}{year}{%
+    \docbibexample{yeardoc}{#2}{\bibkey}{#3}
+  }{}
+  \egroup
+}
+\makeatother
+% \docbibexample handles the writing of the documentation code.
+% #1 = name of stream to which to send code
+% #2 = target reference text
+% #3 = bib key
+% #4 = bib record
+\newcommand{\docbibexample}[4]{%
+  \addtostream{#1}{\string\begin{tcolorbox}}
+  \addtostream{#1}{\space\space\string\emph{Desired output:}\string\\}
+  \addtostream{#1}{\space\space#2}
+  \addtostream{#1}{\space\space\string\par\string\emph{Actual output:}\string\\}
+  \addtostream{#1}{\space\space\string\fullcite{#3}}
+  \addtostream{#1}{\space\space\string\tcblower}
+  \addtostream{#1}{\space\space\string\begin{verbatim}}
+  \addtostream{#1}{#4\string\end{verbatim}}
+  \addtostream{#1}{\string\end{tcolorbox}}
+  \addtostream{#1}{}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DOCUMENTATION FOR OXNOTES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newoutputstream{notesdoc}
-\openoutputfile{oxnotes-doc.tex}{notesdoc}
 \begin{writeverbatim}{notesdoc}
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
@@ -3567,8 +3612,6 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 %%% DOCUMENTATION FOR OXYEAR
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newoutputstream{yeardoc}
-\openoutputfile{oxyear-doc.tex}{yeardoc}
 \begin{writeverbatim}{yeardoc}
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
@@ -3598,19 +3641,31 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
 
 \newpage
+\chapter{Sample references}
+\end{writeverbatim}
+
+\bibexample[year]%
+{Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).}%
+{@book{smith1988fag,
+  author = {Smith, T.},
+  title = {Famine and Gender},
+  year = {1988},
+  location = {New Haven, Conn.}
+}}
+
+\begin{writeverbatim}{yeardoc}
 \nocite{*}
 \printbibliography[notcategory=reviewed]
 \end{document}
 \end{writeverbatim}
+
 \closeoutputstream{yeardoc}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% SAMPLE BIB FILE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newoutputstream{bib}
-\openoutputfile{oxref.bib}{bib}
-\begin{writeverbatim}{bib}
+\begin{writeverbatim}{src}
 % p.506
 
 @inbook{rouse.rouse1991btu,
@@ -4392,7 +4447,7 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
   url = {http://opus.bath.ac.uk/14285}
 }
 \end{writeverbatim}
-\closeoutputstream{bib}
+\closeoutputstream{src}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% COMMON PACKAGE DOCUMENTATION
