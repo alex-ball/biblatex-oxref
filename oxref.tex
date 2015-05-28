@@ -2761,6 +2761,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \addtostream{#1}{}
 }
 
+\NewDocumentCommand{\commondoc}{+v}{%
+  \addtostream{oxnotes}{#1}
+  \addtostream{oxyear}{#1}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% STYLE DOCUMENTATION -- FRONT MATTER
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2772,7 +2777,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \title{Oxnotes style for Biblatex}
 \author{Alex Ball}
+\end{writeverbatim}
 
+\begin{writeverbatim}{oxyear}
+\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
+\PassOptionsToPackage{bibstyle=oxyear,citestyle=authoryear}{biblatex}
+\input{oxref-preamble}
+
+\title{Oxyear style for Biblatex}
+\author{Alex Ball}
+\end{writeverbatim}
+
+\commondoc|
 \begin{document}
 \thispagestyle{empty}
 \begin{adjustwidth}{.2\textwidth}{0pt}
@@ -2795,41 +2811,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \newpage
 \tableofcontents*
-
-\end{writeverbatim}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{writeverbatim}{oxyear}
-\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
-\PassOptionsToPackage{bibstyle=oxyear,citestyle=authoryear}{biblatex}
-\input{oxref-preamble}
-
-\title{Oxyear style for Biblatex}
-\author{Alex Ball}
-
-\begin{document}
-\thispagestyle{empty}
-\begin{adjustwidth}{.2\textwidth}{0pt}
-  \sffamily\setlength{\parindent}{0pt}%
-  \LARGE\textsc{oxref bundle}
-  
-  \vspace{\stretch{1}}
-  \LARGE\thetitle
-  
-  \bigskip
-  \Large\theauthor
-  
-  \bigskip
-  \Large\ifx\undefined\thedate\today\else\thedate\fi
-\end{adjustwidth}
-
-\vspace{\stretch{3}}
-\noindent
-\hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
-
-\newpage
-\end{writeverbatim}
+|
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% STYLE DOCUMENTATION -- SPECIFICATION
@@ -3387,22 +3369,16 @@ The \code{inproceedings} entry type is intended for a conference paper published
 %%% STYLE DOCUMENTATION -- REFERENCE SAMPLES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{writeverbatim}{oxnotes}
+\commondoc|
 \chapter{Sample references}
 \setlength{\parindent}{0pt}\nonzeroparskip
 
 Below are a series of sample references taken from the \emph{Oxford Style Manual} (in black), each followed by a corresponding reference (in colour) generated using the \textsf{oxref} style. \textcolor{Green}{Green} references can be generated using standard \textsf{biblatex} semantics in the \texttt{.bib} file; \textcolor{red}{red} or missing references aren't currently supported properly; \textcolor{orange}{orange} references require some cheating in the \texttt{.bib} file, and so would have to be altered should a different style be chosen. The database key for each reference is given in the margin to make it easier to look up in the sample database. The section numbers refer to the location of the references in the \emph{Oxford Style Manual}.
-
-\section*{15.1} % General
-\end{writeverbatim}
-
-\begin{writeverbatim}{oxyear}
-\chapter{Sample references}
-\setlength{\parindent}{0pt}\nonzeroparskip
-
-\end{writeverbatim}
+|
 
 \begin{writeverbatim}{oxnotes}
+\section*{15.1} % General
+
 \testrow{Mary A. Rouse and Richard H. Rouse, \enquote{The Book Trade at the University of Paris, c.1250--c.1350}, in eid., \emph{Authentic Witnesses: Approaches to Medieval Texts and Manuscripts} (Publications in Medieval Studies, 17; Notre Dame, IN, 1991), 259--338 at 332.}%
 [332]{rouse.rouse1991btu}
 
@@ -3671,24 +3647,6 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
   year = {1988},
   location = {New Haven, Conn.}
 }|
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% STYLE DOCUMENTATION -- ENDMATTER
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{writeverbatim}{oxnotes}
-\printbibliography[notcategory=reviewed]
-\end{document}
-\end{writeverbatim}
-
-\begin{writeverbatim}{oxyear}
-\nocite{*}
-\printbibliography[notcategory=reviewed]
-\end{document}
-\end{writeverbatim}
-
-\closeoutputstream{oxnotes}
-\closeoutputstream{oxyear}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% SAMPLE BIB FILE
@@ -4476,6 +4434,18 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
   url = {http://opus.bath.ac.uk/14285}
 }
 \end{writeverbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% STYLE DOCUMENTATION -- ENDMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\commondoc|
+\printbibliography[notcategory=reviewed]
+\end{document}
+|
+
+\closeoutputstream{oxnotes}
+\closeoutputstream{oxyear}
 \closeoutputstream{src}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
