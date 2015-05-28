@@ -4,11 +4,14 @@
 
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 
+\newoutputstream{src}
+\newoutputstream{oxnotes}
+\newoutputstream{oxyear}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% COMMON PREAMBLE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newoutputstream{src}
 \openoutputfile{oxref-preamble.tex}{src}
 \begin{writeverbatim}{src}
 \setlrmarginsandblock{4cm}{2cm}{*}
@@ -2723,9 +2726,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \openoutputfile{oxref.bib}{src}
-\newoutputstream{oxnotes}
 \openoutputfile{oxnotes-doc.tex}{oxnotes}
-\newoutputstream{oxyear}
 \openoutputfile{oxyear-doc.tex}{oxyear}
 
 \usepackage{xstring}
@@ -2734,8 +2735,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % #2 = target reference text for oxyear
 % #3 = bib record
 \makeatletter
-\NewDocumentCommand{\bibexample}{mm+v}{%
+\NewDocumentCommand{\bibexample}{vv+v}{%
   \addtostream{src}{#3}
+  \addtostream{src}{}
   \StrBetween*[1,1]{#3}{\@charlb}{,}[\bibkey]
   \IfValueT{#1}{%
     \docbibexample{oxnotes}{#1}{\bibkey}{#3}
@@ -2753,7 +2755,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newcommand{\docbibexample}[4]{%
   \addtostream{#1}{\string\begin{tcolorbox}}
   \addtostream{#1}{\space\space\string\fa{book} #2}
-  \addtostream{#1}{\space\space\string\par\string\fa{cog} \string\fullcite{#3}}
+  \addtostream{#1}{\space\space\string\par\string\fa{cog} \string\fullcite{#3}.}
   \addtostream{#1}{\space\space\string\tcblower}
   \addtostream{#1}{\space\space\string\begin{verbatim}}
   \addtostream{#1}{#4\string\end{verbatim}}
@@ -3639,8 +3641,8 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \end{writeverbatim}
 
 \bibexample
-{}%
-{Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).}%
+||%
+|Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).|%
 |@book{smith1988fag,
   author = {Smith, T.},
   title = {Famine and Gender},
