@@ -58,7 +58,7 @@
 \newcommand{\fa}[1]{\makebox[1em][c]{\faicon{#1}}}
 
 \usepackage{tcolorbox}
-\tcbuselibrary{listingsutf8,breakable}
+\tcbuselibrary{listingsutf8,breakable,xparse}
 \lstloadlanguages{[LaTeX]TeX}
 \lstset
   { columns=fullflexible
@@ -3378,210 +3378,810 @@ The \code{inproceedings} entry type is intended for a conference paper published
 Below are a series of sample references taken from the \emph{Oxford Style Manual} (in black), each followed by a corresponding reference (in colour) generated using the \textsf{oxref} style. \textcolor{Green}{Green} references can be generated using standard \textsf{biblatex} semantics in the \texttt{.bib} file; \textcolor{red}{red} or missing references aren't currently supported properly; \textcolor{orange}{orange} references require some cheating in the \texttt{.bib} file, and so would have to be altered should a different style be chosen. The database key for each reference is given in the margin to make it easier to look up in the sample database. The section numbers refer to the location of the references in the \emph{Oxford Style Manual}.
 |
 
-\begin{writeverbatim}{oxnotes}
+\commondoc|
 \section*{15.1} % General
+|
 
-\testrow{Mary A. Rouse and Richard H. Rouse, \enquote{The Book Trade at the University of Paris, c.1250--c.1350}, in eid., \emph{Authentic Witnesses: Approaches to Medieval Texts and Manuscripts} (Publications in Medieval Studies, 17; Notre Dame, IN, 1991), 259--338 at 332.}%
-[332]{rouse.rouse1991btu}
+\bibexample
+|Mary A. Rouse and Richard H. Rouse, \enquote{The Book Trade at the University of Paris, c.1250--c.1350}, in eid., \emph{Authentic Witnesses: Approaches to Medieval Texts and Manuscripts} (Publications in Medieval Studies, 17; Notre Dame, IN, 1991), 259--338 at 332.|%
+||%
+|@inbook{rouse.rouse1991btu,
+  author = {Mary A. Rouse and Richard H. Rouse},
+  gender = {pp},
+  title = {The Book Trade at the University of Paris, c.1250--c.1350},
+  bookauthor = {Mary A. Rouse and Richard H. Rouse},
+  booktitle = {Authentic Witnesses},
+  booksubtitle = {Approaches to Medieval Texts and Manuscripts},
+  series = {Publications in Medieval Studies},
+  number = {17},
+  location = {Notre Dame, IN},
+  date = {1991},
+  pages = {259--338}
+}|
 
+\commondoc|
 \section*{15.2.1} % Books: author's name
+|
 
-\testrow{Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).}%
-{stewart.etal1994mb}
+\bibexample
+|Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).|%
+||%
+|@collection{stewart.etal1994mb,
+  editor = {Rosemary Stewart and Jean-Louis Barsoux and Alfred Kieser and Hans-Dieter Ganter and Peter Walgenbach},
+  title = {Managing in {Britain}},
+  location = {London},
+  date = {1994}
+}|
 
-\testrow{\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).}%
-{fortenbaugh.etal1991tes}
+\bibexample
+|\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).|%
+||%
+|@mvbook{fortenbaugh.etal1991tes,
+  title = {{Theophrastus} of {Eresus}},
+  subtitle = {Sources for his Life, Writings, Thought, and Influence},
+  editor = {William W. Fortenbaugh and Pamela M Huby and Robert W. Sharples and Dimitri Gutas and others},
+  volumes = {2},
+  series = {Philosophia Antiqua},
+  number = {54},
+  location = {Leiden},
+  date = {1991}
+}|
 
-\testrow{Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.}%
-{vaucouleurs1975nmn}
+\bibexample
+|Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.|%
+||%
+|@article{vaucouleurs1975nmn,
+  author = {Gerald de Vaucouleurs and J. Blunck and M. Davies and A. Dollfus and I. Koval and G. Kuiper and H. Masursky and S. Miyamoto and V Moroz and Carl Sagan},
+  title = {The New {Martian} Nomenclature of the {International} {Astronomical} {Union}},
+  journaltitle = {Icarus},
+  volume = {26},
+  date = {1975},
+  pages = {85-98}
+}|
 
-\testrow{George Eliot, \emph{Middlemarch} (New York: W. W. Norton, 1977).}%
-{eliot1977m}
+\bibexample
+|George Eliot, \emph{Middlemarch} (New York: W. W. Norton, 1977).|%
+||%
+|@book{eliot1977m,
+  author = {George Eliot},
+  title = {Middlemarch},
+  location = {New York},
+  publisher = {W. W. Norton},
+  date = {1977}
+}|
 
-\testrow{Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).}%
-{twain1971cyk}
+\bibexample
+|Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).|%
+||%
+|@book{twain1971cyk,
+  author = {Mark Twain},
+  title = {A {Connecticut} Yankee at {King} {Arthur's} Court},
+  introduction = {Justin Kaplan},
+  location = {Harmondsworth},
+  publisher = {Penguin},
+  date = {1971}
+}|
 
-\testrow{C. L. Dodgson (Lewis Carroll), \emph{Symbolic Logic} (Oxford: Clarendon Press, 1896).}%
-{dodgson1896sl}
+\bibexample
+|C. L. Dodgson (Lewis Carroll), \emph{Symbolic Logic} (Oxford: Clarendon Press, 1896).|%
+||%
+|@book{dodgson1896sl,
+  author = {C. L. Dodgson},
+  nameaddon = {Lewis Carroll},
+  title = {Symbolic Logic},
+  location = {Oxford},
+  publisher = {Clarendon Press},
+  date = {1896}
+}|
 
-\testrow{Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).}%
-{boethius1976dds}
+\bibexample
+|Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).|%
+||%
+|@book{boethius1976dds,
+  author = {Pseudo-Boethius},
+  title = {De disciplina scolarium},
+  subtitle = {Édition critique, introduction et notes},
+  editor = {Olga Weijers},
+  location = {Leiden},
+  date = {1976}
+}|
 
-\testrow{\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).}%
-{boas.botschuyver1952dc}
+\bibexample
+|\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).|%
+||%
+|@book{boas.botschuyver1952dc,
+  title = {Distichia Catonis},
+  editor = {Marcus Boas and Henricus Johannes Botschuyver},
+  location = {Amsterdam},
+  date = {1952}
+}|
 
-\testrow{{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).}%
-{balfour1768pe}
+\bibexample
+|{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).|%
+||%
+|@book{balfour1768pe,
+  author = {James Balfour},
+  authortype = {inferred},
+  title = {Philosophical Essays},
+  location = {Edinburgh},
+  date = {1768}
+}|
 
+\commondoc|
 \aside{In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the following reference; this may be an error.}
+|
 
-\testrow{{[John Gibbon]}, \emph{Day-Fatality: Or Some Observations on Days Lucky and Unlucky}, (London, 1678; rev.~edn., 1686).}%
-{gibbon1686dfs}
+\bibexample
+|{[John Gibbon]}, \emph{Day-Fatality: Or Some Observations on Days Lucky and Unlucky}, (London, 1678; rev.~edn., 1686).|%
+||%
+|@book{gibbon1686dfs,
+  author = {John Gibbon},
+  authortype = {inferred},
+  title = {Day-Fatality},
+  subtitle = {Or Some Observations on Days Lucky and Unlucky},
+  edition = {revised},
+  origlocation = {London},
+  origdate = {1678},
+  date = {1686}
+}|
 
-\testrow{\emph{Stories after Nature} (London: Allman, 1822).\quad [\enquote{Anonymous} in Bibliography]}%
-{anon1822san}
+% Do we need special handling for whether a work is marked 'Anon'?
+\bibexample
+|\emph{Stories after Nature} (London: Allman, 1822).\quad [\enquote{Anonymous} in Bibliography]|%
+||%
+|@book{anon1822san,
+  title = {Stories after Nature},
+  location = {London},
+  publisher = {Allman},
+  date = {1822}
+}|
 
-\testrow{\emph{Liber usualis} (Tournai: Desclée, 1956).}%
-{anon1956lu}
+\bibexample
+|\emph{Liber usualis} (Tournai: Desclée, 1956).|%
+||%
+|@book{anon1956lu,
+  title = {Liber usualis},
+  location = {Tournai},
+  publisher = {Desclée},
+  date = {1956}
+}|
 
+\commondoc|
 \section*{15.2.2} % Books: titles and subtitles
+|
 
-\testrow{Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).}%
-{brady.etal1994hehsa}
+\bibexample
+|Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).|%
+||%
+|@mvcollection{brady.etal1994hehsa,
+  editor = {Brady, Jr., Thomas A. and Heiko A. Oberman and James D. Tracy},
+  maintitle = {Handbook of European History, 1400–1600},
+  mainsubtitle = {{Late} {Middle} {Ages,} {Renaissance} and {Reformation}},
+  volume = {1},
+  title = {Structures and Assertions},
+  location = {Leiden},
+  publisher = {E. J. Brill},
+  date = {1994}
+}|
 
-\testrow{Antonia Tissoni Benvenuti, \emph{L'\emph{Orfeo} del Poliziano} (Padua: Editrice Antenore, 1986).}%
-{benvenuti1986op}
+\bibexample
+|Antonia Tissoni Benvenuti, \emph{L'\emph{Orfeo} del Poliziano} (Padua: Editrice Antenore, 1986).|%
+||%
+|@book{benvenuti1986op,
+  author = {Antonia Tissoni Benvenuti},
+  title = {L'\emph{Orfeo} del Poliziano},
+  location = {Padua},
+  publisher = {Editrice Antenore},
+  date = {1986}
+}|
 
-\testrow{Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the Liffey} (Dublin: HCE Press, 1977).}%
-{oconor1977sjf}
+\bibexample
+|Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the Liffey} (Dublin: HCE Press, 1977).|%
+||%
+|@book{oconor1977sjf,
+  author = {Roderick O'Conor},
+  title = {A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the {Liffey}},
+  location = {Dublin},
+  publisher = {HCE Press},
+  date = {1977}
+}|
 
+\commondoc|
 \section*{15.2.3} % Books: editions
+|
 
-\testrow{J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.}%
-[419--421]{baker1990iel}
+% The page range goes in the citation command
+\bibexample
+|J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.|%
+||%
+|@book{baker1990iel,
+  author = {J. H. Baker},
+  title = {An Introduction to {English} Legal History},
+  edition = {3},
+  date = {1990}
+}|
 
-\testrow{J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).}%
-{denniston1934gp}
+% First and later edition, same publisher
+\bibexample
+|J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).|%
+||%
+|@book{denniston1934gp,
+  author = {J. D. Denniston},
+  title = {The Greek Particles},
+  origdate = {1934},
+  edition = {2},
+  location = {Oxford},
+  date = {1954}
+}|
 
-\testrow{Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).}%
-{bettelheim1976uem}
+% First and later edition, different publisher
+\bibexample
+|Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).|%
+||%
+|@book{bettelheim1976uem,
+  author = {Bruno Bettelheim},
+  title = {The Uses of Enchantment},
+  subtitle = {The Meaning and Importance of Fairy Tales},
+  location = {Harmondsworth},
+  publisher = {Penguin Books},
+  date = {1988},
+  pubstate = {first pub\adddotspace 1976}
+}|
 
-\testrow{\emph{The Oxford Dictionary of Quotations}, 5th edn., ed. Elizabeth Knowles (Oxford, 1999).}%
-{knowles1999odq}
+% Later edition by different editor
+\bibexample
+|\emph{The Oxford Dictionary of Quotations}, 5th edn., ed. Elizabeth Knowles (Oxford, 1999).|%
+||%
+|@reference{knowles1999odq,
+  title = {The {Oxford} Dictionary of Quotations},
+  edition = {5},
+  editor = {Elizabeth Knowles},
+  publisher = {Oxford},
+  date = {1999}
+}|
 
+\commondoc|
 \section*{15.2.4} % Books: reprints, reprint editions, and facsimiles
+|
 
-\testrow{C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).}%
-{adam.tannery1897odd}
+\bibexample
+|C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).|%
+||%
+|@collection{adam.tannery1897odd,
+  editor = {C. Adam and D. Tannery},
+  title = {Œuvres de Descartes},
+  origlocation = {Paris},
+  origpublisher = {Cerf},
+  origdate = {1897/1913},
+  edition = {reprint},
+  location = {Paris},
+  publisher = {J. Vrin, CNRS},
+  date = {1964/1976}
+}|
 
-\testrow{E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).}%
-{allen1594kkk}
+% Need special handling for marking facsimile editions
+\bibexample
+|E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).|%
+||%
+|@book{allen1594kkk,
+  author = {E. Allen},
+  title = {A Knack to Know a Knave},
+  origlocation = {London},
+  origdate = {1594},
+  edition = {facsimile},
+  location = {Oxford},
+  publisher = {Malone Society Reprints},
+  date = {1963}
+}|
 
+\commondoc|
 \section*{15.2.5} % Books: co-publications and foreign editions
+|
 
+\commondoc|
 \aside{The following effect was achieved by abusing the \code{origlocation}, \code{origpublisher} and \code{origdate} fields.}
+|
 
-\testrow{L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).}%
-{holfordstrevens1988ag}
+% Multiple publishers, same title
+\bibexample
+|L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).|%
+||%
+|@book{holfordstrevens1988ag,
+  author = {L. A. Holford-Strevens},
+  title = {Aulus Gellius},
+  origlocation = {London},
+  origpublisher = {Duckworth},
+  origdate = {1988},
+  location = {Chapel Hill},
+  publisher = {University of North Carolina Press},
+  date = {1989},
+  userd = {hacked}
+}|
 
+\commondoc|
 \section*{15.2.6} % Books: volumes
+|
 
-\testrow{Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.}%
-[\nopp ii.\ \mkcomprange{367--368}]{straeten1867lmp}
+\bibexample
+|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.|%[\nopp ii.\ \mkcomprange{367--368}]
+||%
+|@mvbook{straeten1867lmp,
+    author = {Edmond Vander Straeten},
+    title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
+    volumes = {8},
+    location = {Brussels},
+    date = {1867/1888}
+}|
 
-\testrow{Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.}%
-[367--368]{straeten1867lmp.ii}
+\bibexample
+|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.|%[367--368]
+||%
+|@mvbook{straeten1867lmp.ii,
+  author = {Edmond Vander Straeten},
+  title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
+  volume = {2},
+  location = {Brussels},
+  date = {1867/1888}
+}|
 
-[In the \emph{Oxford Style Manual}, the translator is in parentheses in the following reference, but as this pattern does not occur in any other it may be an error or stylistic variation. The following effect was achieved with \code{volume = \{1--iii\}}, \code{pages = \{iv\}}, and \code{pubstate = \{London: Bohn, 1846\}}.]
+\commondoc|
+\aside{In the \emph{Oxford Style Manual}, the translator is in parentheses in the following reference, but as this pattern does not occur in any other it may be an error or stylistic variation. The following effect was achieved with \code{volume = \{1--iii\}}, \code{pages = \{iv\}}, and \code{pubstate = \{London: Bohn, 1846\}}.}
+|
 
-\testrow{Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4 vols., i--iii (Oxford: Talboys, 1838--9), iv (London: Bohn, 1846).}%
-{ritter1838hap}
+% This hack is not at all portable. Use with care, or use one of the other layouts.
+\bibexample
+|Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4 vols., i--iii (Oxford: Talboys, 1838--9), iv (London: Bohn, 1846).|%
+||%
+|@mvbook{ritter1838hap,
+  author = {Heinrich Ritter},
+  title = {The History of Ancient Philosophy},
+  translator = {Alexander J. W. Morrison},
+  volumes = {4},
+  volume = {1--iii},
+  location = {Oxford},
+  publisher = {Talboys},
+  date = {1838/1839},
+  pages = {iv},
+  pubstate = {London: Bohn, 1846},
+  userd = {hacked}
+}|
 
-\testrow{A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.}%
-[42--56]{ward.waller1932che}
+\bibexample
+|A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.|%
+||%
+|@mvcollection{ward.waller1932che,
+  editor = {A. W. Ward and A. E. Waller},
+  maintitle = {The Cambridge History of English Literature},
+  volume = {12},
+  title = {The Nineteenth Century},
+  location = {Cambridge},
+  publisher = {CUP},
+  date = {1932}
+}|
 
-\testrow{David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).}
-{fischer1989asf}
+\bibexample
+|David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).|%
+||%
+|@book{fischer1989asf,
+  entrysubtype = {sequence},
+  author = {David Hackett Fischer},
+  title = {Albion’s Seed},
+  subtitle = {Four British Folkways in America},
+  volume = {1},
+  maintitle = {America},
+  mainsubtitle = {A Cultural History},
+  location = {New York},
+  publisher = {Oxford University Press},
+  date = {1989}
+}|
 
+\commondoc|
 \section*{15.2.7} % Books: series title
+|
 
-\testrow{Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (Beihefte zum Archiv für Musikwissenschaft, 10--11; Wiesbaden, 1972).}%
-{garlandia1972dmm}
+\bibexample
+|Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (Beihefte zum Archiv für Musikwissenschaft, 10--11; Wiesbaden, 1972).|%
+||%
+|@mvbook{garlandia1972dmm,
+  author = {Johannes de Garlandia},
+  title = {De mensurabili musica},
+  editor = {Erich Reimer},
+  volumes = {2},
+  series = {Beihefte zum Archiv für Musikwissenschaft},
+  number = {10--11},
+  publisher = {Wiesbaden},
+  date = {1972}
+}|
 
+\commondoc|
 \section*{15.2.12} % Books: multi-author works
+|
 
-\testrow{\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).}%
-{icp1975pic}
+\bibexample
+|\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).|%
+||%
+|@proceedings{icp1975pic,
+  title = {Proceedings of the {XIV} {International} {Congress} of {Papyrologists}},
+  subtitle = {{Oxford}, 24--31 {July} 1974},
+  location = {London},
+  date = {1975}
+}|
 
+\commondoc|
 \section*{15.2.13} % Books: organizations
+|
 
-\testrow{Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).}{botswana1980hdr}
+\bibexample
+|Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).|%
+||%
+|@report{botswana1980hdr,
+  author = {{Government of Botswana}},
+  title = {A Human Drought Relief Programme for Botswana},
+  location = {Gabarone},
+  institution = {Ministry of Local Government and Lands},
+  date = {1980}
+}|
 
-\testrow{Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Mentally Disordered Offenders from Custody} (London, 1988).}{pac1988upt}
+\bibexample
+|Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Mentally Disordered Offenders from Custody} (London, 1988).|%
+||%
+|@report{pac1988upt,
+  author = {{Penal Affairs Consortium}},
+  title = {An Unsuitable Place for Treatment},
+  subtitle = {Diverting Mentally Disordered Offenders from Custody},
+  location = {London},
+  date = {1988}
+}|
 
+\commondoc|
 \section*{15.2.15} % Books: translations
+|
 
-\testrow{Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).}%
-{bischoff1990lpa}
+\bibexample
+|Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).|%
+||%
+|@book{bischoff1990lpa,
+  author = {Bernhard Bischoff},
+  title = {Latin Palaeography},
+  subtitle = {Antiquity and the Middle Ages},
+  translator = {Dáibhi Ó Cróinín and David Ganz},
+  location = {Cambridge},
+  date = {1990}
+}|
 
-\testrow{Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).}%
-{martorell1984tlb}
+\bibexample
+|Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).|%
+||%
+|@book{martorell1984tlb,
+  author = {Joanat Martorell},
+  title = {Tirant lo Blanc},
+  translator = {David H. Rosenthal},
+  foreword = {David H. Rosenthal},
+  location = {London},
+  date = {1984}
+}|
 
+\commondoc|
 \section*{15.3} % Chapters and articles in books
+|
 
-\testrow{John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George Holmes (ed.), \emph{Art and Politics in Renaissance Italy: British Academy Lectures} (Oxford: Clarendon Press, 1993), 185--240.}%
-{shearman1993vsf}
+\bibexample
+|John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George Holmes (ed.), \emph{Art and Politics in Renaissance Italy: British Academy Lectures} (Oxford: Clarendon Press, 1993), 185--240.|%
+||%
+|@incollection{shearman1993vsf,
+  author = {John Shearman},
+  title = {The Vatican Stanze},
+  subtitle = {Functions and Decoration},
+  editor = {George Holmes},
+  booktitle = {Art and Politics in Renaissance Italy},
+  booksubtitle = {British Academy Lectures},
+  location = {Oxford},
+  publisher = {Clarendon Press},
+  date = {1993},
+  pages = {185-240}
+}|
 
-\testrow{W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).}%
-{todd1974dhp}
+\bibexample
+|W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).|%
+||%
+|@incollection{todd1974dhp,
+  author = {W. B. Todd},
+  gender = {sm},
+  title = {David Hume},
+  subtitle = {A Preliminary Bibliography},
+  editor = {W. B. Todd},
+  booktitle = {Hume and the Enlightenment},
+  booksubtitle = {Essays Presented to Ernest Campbell Mossner},
+  location = {Edinburgh},
+  publisher = {Edinburgh University Press},
+  date = {1974}
+}|
 
-\testrow{G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).}%
-{frege1892osr}
+\bibexample
+|G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).|%
+||%
+|@bookinbook{frege1892osr,
+  author = {G. Frege},
+  gender = {sm},
+  title = {On Sense and Reference},
+  bookauthor = {G. Frege},
+  booktitle = {Philosophical Writings},
+  translator = {P. T. Geach and M. Black},
+  editor = {P. T. Geach and M. Black},
+  location = {Oxford},
+  publisher = {Blackwell},
+  date = {1952},
+  pubstate = {originally pub\adddotspace 1892}
+}|
 
-\testrow{G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.}%
-{owen1986pi}
+\bibexample
+|G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.|%
+||%
+|@periodical{osap1983,
+  journaltitle = {Oxford Studies in Ancient Philosophy},
+  volume = {1},
+  date = {1983},
+  pages = {1-25},
+  userd = {bad}
+}
+@bookinbook{owen1986pi,
+  author = {G. E. L. Owen},
+  gender = {sm},
+  title = {Philosophical Invective},
+  booktitle = {Logic, Science and Dialectic},
+  bookauthor = {G. E. L. Owen},
+  editor = {M. Nussbaum},
+  location = {Ithaca, NY},
+  publisher = {Cornell University Press},
+  date = {1986},
+  pages = {347-364},
+  related = {osap1983},
+  relatedtype = {reprintfrom}
+}|
+
+\commondoc|
+If not using Biber, instead of the related fields you would use the following:\\
+\tcbox[verbatim]{addendum = {From \fullcite[1-25]{osap1983}}}
+|
 
 % Article in yearbook
 
-\testrow{M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.}%
-{boyce1957pgi}
+\bibexample
+|M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.|%
+||%
+|@article{boyce1957pgi,
+  author = {M. Boyce},
+  title = {The Parthian \emph{Gsn} and Iranian Minstrel Tradition},
+  journaltitle = {Journal of the Royal Asiatic Society},
+  date = {1957},
+  pages = {10-45}
+}|
 
+\commondoc|
 \section*{15.4.1} % Articles in periodicals
+|
 
-\testrow{Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typification of the Ottoman Polity}, \emph{Princeton Papers in Near Eastern Studies}, 1 (1992), 49--72.}%
-{inalcik1992csm}
+\bibexample
+|Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typification of the Ottoman Polity}, \emph{Princeton Papers in Near Eastern Studies}, 1 (1992), 49--72.|%
+||%
+|@article{inalcik1992csm,
+  author = {Halil Inalcik},
+  title = {Comments on \enquote{Sultanism}},
+  subtitle = {Max Weber's Typification of the Ottoman Polity},
+  journaltitle = {Princeton Papers in Near Eastern Studies},
+  volume = {1},
+  date = {1992},
+  pages = {49-72}
+}|
 
-\testrow{Robert Goldblatt, \enquote{Diodorean Modality in Minkowski Space-Time}, \emph{Studia Logica}, 39/3 (1973), 219--36.}%
-{goldblatt1973dmm}
+\bibexample
+|Robert Goldblatt, \enquote{Diodorean Modality in Minkowski Space-Time}, \emph{Studia Logica}, 39/3 (1973), 219--36.|%
+||%
+|@article{goldblatt1973dmm,
+  author = {Robert Goldblatt},
+  title = {Diodorean Modality in Minkowski Space-Time},
+  journaltitle = {Studia Logica},
+  volume = {39},
+  number = {3},
+  date = {1973},
+  pages = {219-236}
+}|
 
-\testrow{Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.}%
-{lee1995ehf}
+\bibexample
+|Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.|%
+||%
+|@article{lee1995ehf,
+  author = {Alan Lee},
+  title = {England Haunted by Familiar Failings},
+  journaltitle = {The Times},
+  date = {1995-06-23}
+}|
 
-\testrow{\enquote{Who's Excellent Now?}, \emph{Business Week}, 5 Nov. 1984, 76--86.}%
-{bw1984wen}
+\bibexample
+|\enquote{Who's Excellent Now?}, \emph{Business Week}, 5 Nov. 1984, 76--86.|%
+||%
+|@article{bw1984wen,
+  title = {Who's Excellent Now?},
+  journaltitle = {Business Week},
+  date = {1984-11-05},
+  pages = {76-86}
+}|
 
+\commondoc|
 \aside{The following effect was achieved by added \code{\textbackslash nopunct} to the end of the journal title.}
+|
 
-\testrow{B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.}%
-{lindars1965eir}
+\bibexample
+|B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.|%
+||%
+|@article{lindars1965eir,
+  author = {B. Lindars},
+  title = {Ezechiel and Individual Responsibility},
+  journaltitle = {VT\nopunct},
+  volume = {15},
+  date = {1965},
+  pages = {452-467},
+  userd = {hacked}
+}|
 
+\commondoc|
 \aside{Here the \code{=} and journal title are given as the \code{titleaddon}, and the issue information as the \code{note}.}
+|
 
-\testrow{C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.}%
-{bec1976isc}
+% This one is \emph{weird}
+\bibexample
+|C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.|%
+||%
+|@collection{bec1976isc,
+  editor = {C. Bec},
+  title = {Italie 1500--1550},
+  subtitle = {Une situation de crise?\nopunct},
+  titleaddon = {= \emph{Annales de l'Université Jean Moulin}},
+  note = {1975/2},
+  series = {Langues étrangères},
+  number = {2},
+  location = {Lyon},
+  date = {1976},
+  pages = {99--109},
+  userd = {hacked}
+}|
 
-\testrow{F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).}%
-{trisoglio1973gnq}
+\bibexample
+|F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).|%
+||%
+|@article{trisoglio1973gnq,
+  author = {F. Trisoglio},
+  issuetitle = {Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)},
+  journaltitle = {Rivista Iasalliana},
+  volume = {40},
+  date = {1973}
+}|
 
-\testrow{X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.}%
-{zhentao.etal1989ars}
+\bibexample
+|X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.|%
+||%
+|@article{zhentao.etal1989ars,
+  author = {X. Zhentao and K. K. C. Yau and F. R. Stephenson},
+  title = {Astronomical Records on the Shang Dynasty Oracle Bones},
+  journaltitle = {Archaeoastronomy},
+  volume = {14},
+  date = {1989},
+  note = {Supplement to \fullcite{jha1989}},
+  pages = {\ppno~S61-S72}
+}
+@periodical{jha1989,
+  title = {Journal for the History of Astronomy},
+  volume = {20},
+  userd = {bad}
+}|
 
+\commondoc|
 \section*{15.4.3} % Articles in periodicals: series
+|
 
-\testrow{J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quarterly}, \textsc{ns} 21 (1971), 65--80.}%
-{barnes1971has}
+\bibexample
+|J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quarterly}, \textsc{ns} 21 (1971), 65--80.|%
+||%
+|@article{barnes1971has,
+  author = {J. Barnes},
+  title = {Homonymy in Aristotle and Speusippus},
+  journaltitle = {Classical Quarterly},
+  series = {newseries},
+  volume = {21},
+  date = {1971},
+  pages = {65--80}
+}|
 
+\commondoc|
 \section*{15.4.4} % Articles in periodicals: reviews
+|
 
-\testrow{J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.}%
-{dean1995rpb}
+% With Biber: using related field mechanism
+\bibexample
+|J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.|%
+||%
+|@review{dean1995rpb,
+  author = {J. Dean},
+  related = {basiron1994mel},
+  relatedtype = {reviewof},
+  journaltitle = {Res facta},
+  volume = {17},
+  date = {1995},
+  pages = {56-59}
+}
+@book{basiron1994mel,
+  author = {Philippe Basiron},
+  title = {My Early Life},
+  location = {Bourges},
+  year = {1994},
+  userd = {bad}
+}|
 
-\testrow{H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.}%
-{jocelyn1989pav}
+% Without Biber: need special field for reviewed document
+\bibexample
+|H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.|%
+||%
+|@review{jocelyn1989pav,
+  author = {H. D. Jocelyn},
+  title = {Probus and Virgil},
+  options = {reviewed=delvigo1987tvt},
+  journaltitle = {CR},
+  series = {newseries},
+  volume = {39},
+  date = {1989},
+  pages = {27-28}
+}
+@book{delvigo1987tvt,
+  author = {Maria Luisa Delvigo},
+  title = {Testo virgiliano e tradizione indiretta},
+  location = {Pisa},
+  date = {1987},
+  userd = {bad}
+}|
 
+\commondoc|
 \section*{15.5.1} % Theses and dissertations: terminology
+|
 
-\testrow{Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).}%
-{blackburn1970tlp}
+\bibexample
+|Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).|%
+||%
+|@thesis{blackburn1970tlp,
+  author = {Bonnie J. Blackburn},
+  title = {The Lupus Problem},
+  type = {Ph.D. diss.},
+  institution = {University of Chicago},
+  date = {1970}
+}|
 
+\commondoc|
 \section*{15.6} % Unpublished books and articles
+|
 
-\testrow{Leofranc Holford-Strevens, \enquote{Humanism and the Language of Music Theory Treatises}, paper given at the 65th Annual Meeting of the American Musicological Society, Kansas City, MO, 4--7 Nov. 1999.}%
-{holfordstrevens1999hlm}
+\bibexample
+|Leofranc Holford-Strevens, \enquote{Humanism and the Language of Music Theory Treatises}, paper given at the 65th Annual Meeting of the American Musicological Society, Kansas City, MO, 4--7 Nov. 1999.|%
+||%
+|@unpublished{holfordstrevens1999hlm,
+  author = {Leofranc Holford-Strevens},
+  title = {Humanism and the Language of Music Theory Treatises},
+  howpublished = {paper given at the 65th Annual Meeting of the American Musicological Society},
+  location = {Kansas City, MO},
+  date = {1999-11-04/1999-11-07}
+}|
 
-\testrow{E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).}%
-{gombrich1957as}
+\bibexample
+|E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).|%
+||%
+|@book{gombrich1957as,
+  author = {E. H. Gombrich},
+  title = {Art and Scholarship},
+  note = {Inaugural Lecture, University College London, 14 Feb. 1957},
+  location = {London},
+  publisher = {H. K. Lewis},
+  date = {1957}
+}|
 
+\commondoc|
 \section*{15.8} % Poems
 
 Spenser, \emph{Faerie Queene}, II. \textsc{vi}. xxxv. 7
@@ -3593,22 +4193,76 @@ W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}],
 William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Jan M. Ziolkowski, \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. Edward Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
 
 \section*{15.14.1} % Audio recordings
+|
 
-\testrow{Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).}%
-{couperin1970pdc}
+\bibexample
+|Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).|%
+||%
+|@music{couperin1970pdc,
+  author = {Francois Couperin},
+  title = {Pièces de clavecin},
+  subtitle = {Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres},
+  editor = {Huguette Dreyfus},
+  editortype = {performer},
+  series = {Valois},
+  number = {MB 797},
+  date = {1970}
+}
+|
 
-\testrow{Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).}%
-{hillier1989p}
+\bibexample
+|Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).|%
+||%
+|@music{hillier1989p,
+  author = {Paul Hillier},
+  title = {Proensa},
+  publisher = {ECM Records},
+  type = {compact disc},
+  number = {ECM 1368},
+  date = {1989}
+}|
 
-\testrow{Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) (two-volume compact disc set).}%
-{hopkinsNDcar}
+\bibexample
+|Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) (two-volume compact disc set).|%
+||%
+|@music{hopkinsNDcar,
+  author = {Lightnin’ Hopkins},
+  title = {The Complete Aladdin Recordings},
+  publisher = {EMI},
+  series = {Blues Series},
+  number = {CDP-7-96843-2},
+  pubstate = {two-volume compact disc set}
+}|
 
-\testrow{\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut}, Gothic Voices, dir. Christopher Page (Hyperion compact disc CDA 66087).}
-{pageNDmn}
+\bibexample
+|\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut}, Gothic Voices, dir. Christopher Page (Hyperion compact disc CDA 66087).|%
+||%
+|@music{pageNDmn,
+  title = {The Mirror of Narcissus},
+  subtitle = {Songs by Guillaume do Machaut},
+  editor = {Gothic Voices},
+  editortype = {performer},
+  editora = {Christopher Page},
+  editoratype = {director},
+  publisher = {Hyperion},
+  type = {compact disc},
+  number = {CDA 66087}
+}|
 
-\testrow{C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).}
-{lewis1981lww}
+\bibexample
+|C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).|%
+||%
+|@audio{lewis1981lww,
+  author = {C. S. Lewis},
+  title = {The Lion, the Witch, and the Wardrobe},
+  editor = {Sir Michael Hordern},
+  editortype = {reader},
+  howpublished = {2 audio cassettes},
+  number = {TO1611},
+  date = {1981},
+}|
 
+\commondoc|
 \section*{15.14.2} % Films, video recordings, and slides
 
 \emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
@@ -3626,19 +4280,58 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
 
 \section*{15.15.2} % Electronic data: representation
+|
 
-\testrow{Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court}, \emph{Information Today} [online journal], 18/5 (May 2001) $\langle$\url{http://www.infotoday.com/newsbreaks/nb010330-1.htm}$\rangle$, accessed 1 July 2001.}%
-{quint2001ohm}
+\bibexample
+|Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court}, \emph{Information Today} [online journal], 18/5 (May 2001) $\langle$\url{http://www.infotoday.com/newsbreaks/nb010330-1.htm}$\rangle$, accessed 1 July 2001.|%
+||%
+|@article{quint2001ohm,
+  author = {Barbara Quint},
+  title = {One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court},
+  journaltitle = {Information Today},
+  entrysubtype = {online journal},
+  volume = {18},
+  number = {5},
+  date = {2001-05},
+  url = {http://www.infotoday.com/newsbreaks/nb010330-1.htm},
+  urldate = {2001-07-01}
+}|
 
+\commondoc|
 \section*{15.15.3} % Electronic data: forms of reference
+|
 
-\testrow{R. M. Ritter, \enquote{About the Oxford Guide to Style}, \emph{Oxford Editorial} [website], (updated 10 Oct.\ 2001) $\langle$\url{http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}$\rangle$}%
-{ritter2001aog}
+\bibexample
+|R. M. Ritter, \enquote{About the Oxford Guide to Style}, \emph{Oxford Editorial} [website], (updated 10 Oct.\ 2001) $\langle$\url{http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}$\rangle$|%
+||%
+|@online{ritter2001aog,
+  author = {R. M. Ritter},
+  title = {About the Oxford Guide to Style},
+  maintitle = {Oxford Editorial},
+  entrysubtype = {website},
+  date = {2001-10-10},
+  options = {datetype=updated},
+  url = {http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}
+}|
 
-\testrow{William Strunk, Jr., \emph{The Elements of Style} (1st edn., Geneva, NY: W. P. Humphrey, 1918), published online July 1999 $\langle$\url{http://www.bartleby.com/141}$\rangle$}%
-{strunk1999tes}
+\bibexample
+|William Strunk, Jr., \emph{The Elements of Style} (1st edn., Geneva, NY: W. P. Humphrey, 1918), published online July 1999 $\langle$\url{http://www.bartleby.com/141}$\rangle$|%
+||%
+|@book{strunk1999tes,
+  author = {Strunk, Jr., William},
+  title = {The Elements of Style},
+  edition = {1},
+  location = {Geneva, NY},
+  publisher = {W. P. Humphrey},
+  date = {1918},
+  url = {http://www.bartleby.com/141},
+  urldate = {1999-07},
+  options = {urldatetype=published{\space}online}
+}|
 
-\end{writeverbatim}
+\commondoc|
+\section*{15.19.2} % Author–date system: Reference section
+|
 
 \bibexample
 ||%
@@ -3655,709 +4348,6 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{writeverbatim}{src}
-% p.506
-
-@inbook{rouse.rouse1991btu,
-  author = {Mary A. Rouse and Richard H. Rouse},
-  gender = {pp},
-  title = {The Book Trade at the University of Paris, c.1250--c.1350},
-  bookauthor = {Mary A. Rouse and Richard H. Rouse},
-  booktitle = {Authentic Witnesses},
-  booksubtitle = {Approaches to Medieval Texts and Manuscripts},
-  series = {Publications in Medieval Studies},
-  number = {17},
-  location = {Notre Dame, IN},
-  date = {1991},
-  pages = {259--338}
-}
-
-% p. 507
-
-@collection{stewart.etal1994mb,
-  editor = {Rosemary Stewart and Jean-Louis Barsoux and Alfred Kieser and Hans-Dieter Ganter and Peter Walgenbach},
-  title = {Managing in {Britain}},
-  location = {London},
-  date = {1994}
-}
-
-@mvbook{fortenbaugh.etal1991tes,
-  title = {{Theophrastus} of {Eresus}},
-  subtitle = {Sources for his Life, Writings, Thought, and Influence},
-  editor = {William W. Fortenbaugh and Pamela M Huby and Robert W. Sharples and Dimitri Gutas and others},
-  volumes = {2},
-  series = {Philosophia Antiqua},
-  number = {54},
-  location = {Leiden},
-  date = {1991}
-}
-
-@article{vaucouleurs1975nmn,
-  author = {Gerald de Vaucouleurs and J. Blunck and M. Davies and A. Dollfus and I. Koval and G. Kuiper and H. Masursky and S. Miyamoto and V Moroz and Carl Sagan},
-  title = {The New {Martian} Nomenclature of the {International} {Astronomical} {Union}},
-  journaltitle = {Icarus},
-  volume = {26},
-  date = {1975},
-  pages = {85-98}
-}
-
-@book{eliot1977m,
-  author = {George Eliot},
-  title = {Middlemarch},
-  location = {New York},
-  publisher = {W. W. Norton},
-  date = {1977}
-}
-
-@book{twain1971cyk,
-  author = {Mark Twain},
-  title = {A {Connecticut} Yankee at {King} {Arthur's} Court},
-  introduction = {Justin Kaplan},
-  location = {Harmondsworth},
-  publisher = {Penguin},
-  date = {1971}
-}
-
-@book{dodgson1896sl,
-  author = {C. L. Dodgson},
-  nameaddon = {Lewis Carroll},
-  title = {Symbolic Logic},
-  location = {Oxford},
-  publisher = {Clarendon Press},
-  date = {1896}
-}
-
-@book{boethius1976dds,
-  author = {Pseudo-Boethius},
-  title = {De disciplina scolarium},
-  subtitle = {Édition critique, introduction et notes},
-  editor = {Olga Weijers},
-  location = {Leiden},
-  date = {1976}
-}
-
-% p.508
-
-@book{boas.botschuyver1952dc,
-  title = {Distichia Catonis},
-  editor = {Marcus Boas and Henricus Johannes Botschuyver},
-  location = {Amsterdam},
-  date = {1952}
-}
-
-@book{balfour1768pe,
-  author = {James Balfour},
-  authortype = {inferred},
-  title = {Philosophical Essays},
-  location = {Edinburgh},
-  date = {1768}
-}
-
-@book{gibbon1686dfs,
-  author = {John Gibbon},
-  authortype = {inferred},
-  title = {Day-Fatality},
-  subtitle = {Or Some Observations on Days Lucky and Unlucky},
-  edition = {revised},
-  origlocation = {London},
-  origdate = {1678},
-  date = {1686}
-}
-
-% Do we need special handling for whether a work is marked 'Anon'?
-@book{anon1822san,
-  title = {Stories after Nature},
-  location = {London},
-  publisher = {Allman},
-  date = {1822}
-}
-
-@book{anon1956lu,
-  title = {Liber usualis},
-  location = {Tournai},
-  publisher = {Desclée},
-  date = {1956}
-}
-
-% p. 511
-
-@mvcollection{brady.etal1994hehsa,
-  editor = {Brady, Jr., Thomas A. and Heiko A. Oberman and James D. Tracy},
-  maintitle = {Handbook of European History, 1400–1600},
-  mainsubtitle = {{Late} {Middle} {Ages,} {Renaissance} and {Reformation}},
-  volume = {1},
-  title = {Structures and Assertions},
-  location = {Leiden},
-  publisher = {E. J. Brill},
-  date = {1994}
-}
-
-@book{benvenuti1986op,
-  author = {Antonia Tissoni Benvenuti},
-  title = {L'\emph{Orfeo} del Poliziano},
-  location = {Padua},
-  publisher = {Editrice Antenore},
-  date = {1986}
-}
-
-% p. 512
-
-@book{oconor1977sjf,
-  author = {Roderick O'Conor},
-  title = {A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the {Liffey}},
-  location = {Dublin},
-  publisher = {HCE Press},
-  date = {1977}
-}
-
-% p. 513
-
-% The page range goes in the citation command
-@book{baker1990iel,
-  author = {J. H. Baker},
-  title = {An Introduction to {English} Legal History},
-  edition = {3},
-  date = {1990}
-}
-
-% First and later edition, same publisher
-@book{denniston1934gp,
-  author = {J. D. Denniston},
-  title = {The Greek Particles},
-  origdate = {1934},
-  edition = {2},
-  location = {Oxford},
-  date = {1954}
-}
-
-% First and later edition, different publisher
-@book{bettelheim1976uem,
-  author = {Bruno Bettelheim},
-  title = {The Uses of Enchantment},
-  subtitle = {The Meaning and Importance of Fairy Tales},
-  location = {Harmondsworth},
-  publisher = {Penguin Books},
-  date = {1988},
-  pubstate = {first pub\adddotspace 1976}
-}
-
-% p. 514
-
-% Later edition by different editor
-@reference{knowles1999odq,
-  title = {The {Oxford} Dictionary of Quotations},
-  edition = {5},
-  editor = {Elizabeth Knowles},
-  publisher = {Oxford},
-  date = {1999}
-}
-
-@collection{adam.tannery1897odd,
-  editor = {C. Adam and D. Tannery},
-  title = {Œuvres de Descartes},
-  origlocation = {Paris},
-  origpublisher = {Cerf},
-  origdate = {1897/1913},
-  edition = {reprint},
-  location = {Paris},
-  publisher = {J. Vrin, CNRS},
-  date = {1964/1976}
-}
-
-% p. 515
-
-% Need special handling for marking facsimile editions
-@book{allen1594kkk,
-  author = {E. Allen},
-  title = {A Knack to Know a Knave},
-  origlocation = {London},
-  origdate = {1594},
-  edition = {facsimile},
-  location = {Oxford},
-  publisher = {Malone Society Reprints},
-  date = {1963}
-}
-% doombar
-% p. 516
-
-% Multiple publishers, same title
-@book{holfordstrevens1988ag,
-  author = {L. A. Holford-Strevens},
-  title = {Aulus Gellius},
-  origlocation = {London},
-  origpublisher = {Duckworth},
-  origdate = {1988},
-  location = {Chapel Hill},
-  publisher = {University of North Carolina Press},
-  date = {1989},
-  userd = {hacked}
-}
-
-% p. 517
-
-@mvbook{straeten1867lmp,
-  author = {Edmond Vander Straeten},
-  title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
-  volumes = {8},
-  location = {Brussels},
-  date = {1867/1888}
-}
-
-@mvbook{straeten1867lmp.ii,
-  author = {Edmond Vander Straeten},
-  title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
-  volume = {2},
-  location = {Brussels},
-  date = {1867/1888}
-}
-
-% This hack is not at all portable. Use with care, or use one of the other layouts.
-@mvbook{ritter1838hap,
-  author = {Heinrich Ritter},
-  title = {The History of Ancient Philosophy},
-  translator = {Alexander J. W. Morrison},
-  volumes = {4},
-  volume = {1--iii},
-  location = {Oxford},
-  publisher = {Talboys},
-  date = {1838/1839},
-  pages = {iv},
-  pubstate = {London: Bohn, 1846},
-  userd = {hacked}
-}
-
-@mvcollection{ward.waller1932che,
-  editor = {A. W. Ward and A. E. Waller},
-  maintitle = {The Cambridge History of English Literature},
-  volume = {12},
-  title = {The Nineteenth Century},
-  location = {Cambridge},
-  publisher = {CUP},
-  date = {1932}
-}
-
-@book{fischer1989asf,
-  entrysubtype = {sequence},
-  author = {David Hackett Fischer},
-  title = {Albion’s Seed},
-  subtitle = {Four British Folkways in America},
-  volume = {1},
-  maintitle = {America},
-  mainsubtitle = {A Cultural History},
-  location = {New York},
-  publisher = {Oxford University Press},
-  date = {1989}
-}
-
-% p. 518
-
-@mvbook{garlandia1972dmm,
-  author = {Johannes de Garlandia},
-  title = {De mensurabili musica},
-  editor = {Erich Reimer},
-  volumes = {2},
-  series = {Beihefte zum Archiv für Musikwissenschaft},
-  number = {10--11},
-  publisher = {Wiesbaden},
-  date = {1972}
-}
-
-% p. 523
-
-@proceedings{icp1975pic,
-  title = {Proceedings of the {XIV} {International} {Congress} of {Papyrologists}},
-  subtitle = {{Oxford}, 24--31 {July} 1974},
-  location = {London},
-  date = {1975}
-}
-
-% p. 524
-
-@report{botswana1980hdr,
-  author = {{Government of Botswana}},
-  title = {A Human Drought Relief Programme for Botswana},
-  location = {Gabarone},
-  institution = {Ministry of Local Government and Lands},
-  date = {1980}
-}
-
-@report{pac1988upt,
-  author = {{Penal Affairs Consortium}},
-  title = {An Unsuitable Place for Treatment},
-  subtitle = {Diverting Mentally Disordered Offenders from Custody},
-  location = {London},
-  date = {1988}
-}
-
-@book{bischoff1990lpa,
-  author = {Bernhard Bischoff},
-  title = {Latin Palaeography},
-  subtitle = {Antiquity and the Middle Ages},
-  translator = {Dáibhi Ó Cróinín and David Ganz},
-  location = {Cambridge},
-  date = {1990}
-}
-
-@book{martorell1984tlb,
-  author = {Joanat Martorell},
-  title = {Tirant lo Blanc},
-  translator = {David H. Rosenthal},
-  foreword = {David H. Rosenthal},
-  location = {London},
-  date = {1984}
-}
-
-% p. 525
-
-@incollection{shearman1993vsf,
-  author = {John Shearman},
-  title = {The Vatican Stanze},
-  subtitle = {Functions and Decoration},
-  editor = {George Holmes},
-  booktitle = {Art and Politics in Renaissance Italy},
-  booksubtitle = {British Academy Lectures},
-  location = {Oxford},
-  publisher = {Clarendon Press},
-  date = {1993},
-  pages = {185-240}
-}
-
-@incollection{todd1974dhp,
-  author = {W. B. Todd},
-  gender = {sm},
-  title = {David Hume},
-  subtitle = {A Preliminary Bibliography},
-  editor = {W. B. Todd},
-  booktitle = {Hume and the Enlightenment},
-  booksubtitle = {Essays Presented to Ernest Campbell Mossner},
-  location = {Edinburgh},
-  publisher = {Edinburgh University Press},
-  date = {1974}
-}
-
-% p. 526
-
-@bookinbook{frege1892osr,
-  author = {G. Frege},
-  gender = {sm},
-  title = {On Sense and Reference},
-  bookauthor = {G. Frege},
-  booktitle = {Philosophical Writings},
-  translator = {P. T. Geach and M. Black},
-  editor = {P. T. Geach and M. Black},
-  location = {Oxford},
-  publisher = {Blackwell},
-  date = {1952},
-  pubstate = {originally pub\adddotspace 1892}
-}
-
-@periodical{osap1983,
-  journaltitle = {Oxford Studies in Ancient Philosophy},
-  volume = {1},
-  date = {1983},
-  pages = {1-25},
-  userd = {bad}
-}
-
-@bookinbook{owen1986pi,
-  author = {G. E. L. Owen},
-  gender = {sm},
-  title = {Philosophical Invective},
-  booktitle = {Logic, Science and Dialectic},
-  bookauthor = {G. E. L. Owen},
-  editor = {M. Nussbaum},
-  location = {Ithaca, NY},
-  publisher = {Cornell University Press},
-  date = {1986},
-  pages = {347-364},
-  related = {osap1983},
-  relatedtype = {reprintfrom}
-}
-% If not using Biber, you would use
-% addendum = {From \fullcite[1-25]{osap1983}}
-% instead of the related fields
-
-@article{boyce1957pgi,
-  author = {M. Boyce},
-  title = {The Parthian \emph{Gsn} and Iranian Minstrel Tradition},
-  journaltitle = {Journal of the Royal Asiatic Society},
-  date = {1957},
-  pages = {10-45}
-}
-
-% p. 527
-
-@article{inalcik1992csm,
-  author = {Halil Inalcik},
-  title = {Comments on \enquote{Sultanism}},
-  subtitle = {Max Weber's Typification of the Ottoman Polity},
-  journaltitle = {Princeton Papers in Near Eastern Studies},
-  volume = {1},
-  date = {1992},
-  pages = {49-72}
-}
-
-@article{goldblatt1973dmm,
-  author = {Robert Goldblatt},
-  title = {Diodorean Modality in Minkowski Space-Time},
-  journaltitle = {Studia Logica},
-  volume = {39},
-  number = {3},
-  date = {1973},
-  pages = {219-236}
-}
-
-% p. 528
-
-@article{lee1995ehf,
-  author = {Alan Lee},
-  title = {England Haunted by Familiar Failings},
-  journaltitle = {The Times},
-  date = {1995-06-23}
-}
-
-@article{bw1984wen,
-  title = {Who's Excellent Now?},
-  journaltitle = {Business Week},
-  date = {1984-11-05},
-  pages = {76-86}
-}
-
-% p. 529
-
-@article{lindars1965eir,
-  author = {B. Lindars},
-  title = {Ezechiel and Individual Responsibility},
-  journaltitle = {VT\nopunct},
-  volume = {15},
-  date = {1965},
-  pages = {452-467},
-  userd = {hacked}
-}
-
-% This one is \emph{weird}
-@collection{bec1976isc,
-  editor = {C. Bec},
-  title = {Italie 1500--1550},
-  subtitle = {Une situation de crise?\nopunct},
-  titleaddon = {= \emph{Annales de l'Université Jean Moulin}},
-  note = {1975/2},
-  series = {Langues étrangères},
-  number = {2},
-  location = {Lyon},
-  date = {1976},
-  pages = {99--109},
-  userd = {hacked}
-}
-
-@article{trisoglio1973gnq,
-  author = {F. Trisoglio},
-  issuetitle = {Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)},
-  journaltitle = {Rivista Iasalliana},
-  volume = {40},
-  date = {1973}
-}
-
-@article{zhentao.etal1989ars,
-  author = {X. Zhentao and K. K. C. Yau and F. R. Stephenson},
-  title = {Astronomical Records on the Shang Dynasty Oracle Bones},
-  journaltitle = {Archaeoastronomy},
-  volume = {14},
-  date = {1989},
-  note = {Supplement to \fullcite{jha1989}},
-  pages = {\ppno~S61-S72}
-}
-
-@periodical{jha1989,
-  title = {Journal for the History of Astronomy},
-  volume = {20},
-  userd = {bad}
-}
-
-% p. 530
-
-@article{barnes1971has,
-  author = {J. Barnes},
-  title = {Homonymy in Aristotle and Speusippus},
-  journaltitle = {Classical Quarterly},
-  series = {newseries},
-  volume = {21},
-  date = {1971},
-  pages = {65--80}
-}
-
-% With Biber: using related field mechanism
-@review{dean1995rpb,
-  author = {J. Dean},
-  related = {basiron1994mel},
-  relatedtype = {reviewof},
-  journaltitle = {Res facta},
-  volume = {17},
-  date = {1995},
-  pages = {56-59}
-}
-
-@book{basiron1994mel,
-  author = {Philippe Basiron},
-  title = {My Early Life},
-  location = {Bourges},
-  year = {1994},
-  userd = {bad}
-}
-
-% Without Biber: need special field for reviewed document
-@review{jocelyn1989pav,
-  author = {H. D. Jocelyn},
-  title = {Probus and Virgil},
-  options = {reviewed=delvigo1987tvt},
-  journaltitle = {CR},
-  series = {newseries},
-  volume = {39},
-  date = {1989},
-  pages = {27-28}
-}
-
-@book{delvigo1987tvt,
-  author = {Maria Luisa Delvigo},
-  title = {Testo virgiliano e tradizione indiretta},
-  location = {Pisa},
-  date = {1987},
-  userd = {bad}
-}
-
-% p. 531
-
-@thesis{blackburn1970tlp,
-  author = {Bonnie J. Blackburn},
-  title = {The Lupus Problem},
-  type = {Ph.D. diss.},
-  institution = {University of Chicago},
-  date = {1970}
-}
-
-% p. 533
-
-@unpublished{holfordstrevens1999hlm,
-  author = {Leofranc Holford-Strevens},
-  title = {Humanism and the Language of Music Theory Treatises},
-  howpublished = {paper given at the 65th Annual Meeting of the American Musicological Society},
-  location = {Kansas City, MO},
-  date = {1999-11-04/1999-11-07}
-}
-
-@book{gombrich1957as,
-  author = {E. H. Gombrich},
-  title = {Art and Scholarship},
-  note = {Inaugural Lecture, University College London, 14 Feb. 1957},
-  location = {London},
-  publisher = {H. K. Lewis},
-  date = {1957}
-}
-
-% p. 534
-
-% Spenser
-
-% Auden
-
-% Blois
-
-% p. 543
-
-@music{couperin1970pdc,
-  author = {Francois Couperin},
-  title = {Pièces de clavecin},
-  subtitle = {Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres},
-  editor = {Huguette Dreyfus},
-  editortype = {performer},
-  series = {Valois},
-  number = {MB 797},
-  date = {1970}
-}
-
-@music{hillier1989p,
-  author = {Paul Hillier},
-  title = {Proensa},
-  publisher = {ECM Records},
-  type = {compact disc},
-  number = {ECM 1368},
-  date = {1989}
-}
-
-@music{hopkinsNDcar,
-  author = {Lightnin’ Hopkins},
-  title = {The Complete Aladdin Recordings},
-  publisher = {EMI},
-  series = {Blues Series},
-  number = {CDP-7-96843-2},
-  pubstate = {two-volume compact disc set}
-}
-
-@music{pageNDmn,
-  title = {The Mirror of Narcissus},
-  subtitle = {Songs by Guillaume do Machaut},
-  editor = {Gothic Voices},
-  editortype = {performer},
-  editora = {Christopher Page},
-  editoratype = {director},
-  publisher = {Hyperion},
-  type = {compact disc},
-  number = {CDA 66087}
-}
-
-% p. 544
-
-% Lewis
-@audio{lewis1981lww,
-  author = {C. S. Lewis},
-  title = {The Lion, the Witch, and the Wardrobe},
-  editor = {Sir Michael Hordern},
-  editortype = {reader},
-  howpublished = {2 audio cassettes},
-  number = {TO1611},
-  date = {1981},
-}
-
-% p. 545
-
-% Sunday Grandstand
-
-% p. 546
-
-@article{quint2001ohm,
-  author = {Barbara Quint},
-  title = {One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court},
-  journaltitle = {Information Today},
-  entrysubtype = {online journal},
-  volume = {18},
-  number = {5},
-  date = {2001-05},
-  url = {http://www.infotoday.com/newsbreaks/nb010330-1.htm},
-  urldate = {2001-07-01}
-}
-
-% p. 548
-
-@online{ritter2001aog,
-  author = {R. M. Ritter},
-  title = {About the Oxford Guide to Style},
-  maintitle = {Oxford Editorial},
-  entrysubtype = {website},
-  date = {2001-10-10},
-  options = {datetype=updated},
-  url = {http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}
-}
-
-@book{strunk1999tes,
-  author = {Strunk, Jr., William},
-  title = {The Elements of Style},
-  edition = {1},
-  location = {Geneva, NY},
-  publisher = {W. P. Humphrey},
-  date = {1918},
-  url = {http://www.bartleby.com/141},
-  urldate = {1999-07},
-  options = {urldatetype=published{\space}online}
-}
 
 % Extensions
 
