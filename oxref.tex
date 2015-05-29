@@ -2737,10 +2737,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \addtostream{src}{#3}
   \addtostream{src}{}
   \StrBetween*[1,1]{#3}{\@charlb}{,}[\bibkey]
-  \IfValueT{#1}{%
+  \IfStrEq{#1}{}{}{%
     \docbibexample{oxnotes}{#1}{\bibkey}{#3}
   }
-  \IfValueT{#2}{%
+  \IfStrEq{#2}{}{}{%
     \docbibexample{oxyear}{#2}{\bibkey}{#3}
   }
 }
