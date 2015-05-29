@@ -37,18 +37,16 @@
 \usepackage[british]{babel}
 %   \DeclareUnicodeCharacter{2212}{\textminus}
 \usepackage{libertine}
-\ifluatex
+\makeatletter
+\@ifpackageloaded{fontspec}{%
   \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
-\else
-  \ifxetex
-  \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
-  \else
-    \usepackage[utf8]{inputenc}
-    \usepackage[varl]{zi4}
-  \fi
-\fi
+}{%
+  \usepackage[utf8]{inputenc}
+  \usepackage[varl]{zi4}
+}
+\makeatother
 
-\usepackage{xpatch,url-apa,csquotes,xcolor,xparse,multicol,fontawesome}
+\usepackage{xpatch,csquotes,xcolor,xparse,multicol,fontawesome}
 \definecolor{Green}{rgb}{0,.5,0}
 \colorlet{ok}{Green}
 \colorlet{bad}{red}
