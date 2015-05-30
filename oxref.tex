@@ -36,7 +36,7 @@
 
 \usepackage[british]{babel}
 %   \DeclareUnicodeCharacter{2212}{\textminus}
-\usepackage{libertine}
+\usepackage[mono=false,defaultfeatures={SmallCapsFeatures={Letters=SmallCaps,Renderer=Basic,Ligatures=NoCommon}}]{libertine}
 \makeatletter
 \@ifpackageloaded{fontspec}{%
   \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
@@ -52,7 +52,7 @@
 }
 \makeatother
 
-\usepackage{xpatch,csquotes,xcolor,xparse,multicol}
+\usepackage{microtype,xpatch,csquotes,xcolor,xparse,multicol}
 \definecolor{Green}{rgb}{0,.5,0}
 \colorlet{ok}{Green}
 \colorlet{bad}{red}
