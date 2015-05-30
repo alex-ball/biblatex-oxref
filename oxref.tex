@@ -131,9 +131,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \openoutputfile{oxnotes.bbx}{src}
-\begin{writeverbatim}{src}
-\ProvidesFile{oxnotes.bbx}
-\end{writeverbatim}
+\addtostream{src}{\string\ProvidesFile{oxnotes.bbx}}
 \addtostream{src}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{src}
 
@@ -1099,7 +1097,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printlist{organization}%
   \newunit\newblock
-  \iffieldundef{date}{}{%
+  \iffieldundef{year}{}{%
     \printtext[parens]{\usebibmacro{date}}%
   }%
   \newunit\newblock
@@ -1517,9 +1515,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \openoutputfile{oxyear.bbx}{src}
-\begin{writeverbatim}{src}
-\ProvidesFile{oxyear.bbx}
-\end{writeverbatim}
+\addtostream{src}{\string\ProvidesFile{oxyear.bbx}}
 \addtostream{src}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{src}
 
