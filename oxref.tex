@@ -40,20 +40,26 @@
 \makeatletter
 \@ifpackageloaded{fontspec}{%
   \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
+  \usepackage{fontawesome}
+  \newcommand{\booksym}[1]{\makebox[1em][c]{\faicon{book}}}
+  \newcommand{\cogsym}[1]{\makebox[1em][c]{\faicon{cog}}}
 }{%
   \usepackage[utf8]{inputenc}
   \usepackage[varl]{zi4}
+  \usepackage{dictsym}
+  \newcommand{\booksym}[1]{\makebox[1em][c]{\dsliterary}}
+  \newcommand{\cogsym}[1]{\makebox[1em][c]{\dstechnical}}
 }
 \makeatother
 
-\usepackage{xpatch,csquotes,xcolor,xparse,multicol,fontawesome}
+\usepackage{xpatch,csquotes,xcolor,xparse,multicol}
 \definecolor{Green}{rgb}{0,.5,0}
 \colorlet{ok}{Green}
 \colorlet{bad}{red}
 \colorlet{hacked}{orange}
 \colorlet{manual}{purple}
 
-\newcommand{\fa}[1]{\makebox[1em][c]{\faicon{#1}}}
+
 
 \usepackage{tcolorbox}
 \tcbuselibrary{listingsutf8,breakable,xparse}
@@ -2748,8 +2754,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % #4 = bib record
 \newcommand{\docbibexample}[4]{%
   \addtostream{#1}{\string\begin{tcolorbox}}
-  \addtostream{#1}{\space\space\string\fa{book} #2}
-  \addtostream{#1}{\space\space\string\par\string\fa{cog} \string\fullcite{#3}.}
+  \addtostream{#1}{\space\space\string\booksym{} #2}
+  \addtostream{#1}{\space\space\string\par\string\cogsym{} \string\fullcite{#3}.}
   \addtostream{#1}{\space\space\string\tcblower}
   \addtostream{#1}{\space\space\string\begin{verbatim}}
   \addtostream{#1}{#4\string\end{verbatim}}
