@@ -103,12 +103,24 @@
   \egroup
 }
 \makeatother
-\newtcolorbox{bibexbox}[1][ok]%
+\NewTColorBox{bibexbox}{D(){ok}d<>om}%
   {skin=bicolor
   ,colframe = #1
   ,colback = #1!5!white
   ,colbacklower = white
   ,fontlower = \footnotesize
+  ,before upper = {\hangfrom{\booksym\space}}
+  ,IfNoValueTF={#3}%
+    {after upper = {\par\hangfrom{\cogsym\space}\fullcite{#4}.}
+    }%
+    {after upper = {\par\hangfrom{\cogsym\space}\fullcite[#3]{#4}.}
+    ,title = {\texttt{\string\fullcite[#3]\{#4\}}}
+    }
+  ,IfNoValueTF={#2}{}%
+    {overlay = {
+      \node[anchor=south east,text=teal] at (frame.south east) {#2};
+      }
+    }
   }
 % \testrow compares target format with generated format. Arguments:
 % #1 = target format
@@ -2737,19 +2749,30 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \usepackage{xstring}
 % \bibexample adds a sample reference to the documentation.
-% #1 = target reference text for oxnotes
-% #2 = target reference text for oxyear
-% #3 = bib record
+% #1 = status (ok, hacked, bad)
+% #2 = section from which drawn
+% #3 = target reference text for oxnotes
+% #4 = target reference text for oxyear
+% #5 = bib record
+% #6 = page reference
 \makeatletter
-\NewDocumentCommand{\bibexample}{vv+v}{%
-  \addtostream{src}{#3}
+\NewDocumentCommand{\bibexample}{d()d<>vv+vo}{%
+  \addtostream{src}{#5}
   \addtostream{src}{}
-  \StrBetween*[1,1]{#3}{\@charlb}{,}[\bibkey]
-  \ifstrempty{#1}{}{%
-    \docbibexample{oxnotes}{#1}{\bibkey}{#3}
+  \StrBetween*[1,1]{#5}{\@charlb}{,}[\bibkey]
+  \ifstrempty{#3}{}{%
+    \docbibexample{oxnotes}{#3}{\bibkey}{#5}{%
+      \IfValueT{#1}{(#1)}%
+      \IfValueT{#2}{<#2>}%
+      \IfValueT{#6}{[#6]}%
+    }%
   }
-  \ifstrempty{#2}{}{%
-    \docbibexample{oxyear}{#2}{\bibkey}{#3}
+  \ifstrempty{#4}{}{%
+    \docbibexample{oxyear}{#4}{\bibkey}{#5}{%
+      \IfValueT{#1}{(#1)}%
+      \IfValueT{#2}{<#2>}%
+      \IfValueT{#6}{[#6]}%
+    }%
   }
 }
 \makeatother
@@ -2758,10 +2781,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % #2 = target reference text
 % #3 = bib key
 % #4 = bib record
-\newcommand{\docbibexample}[4]{%
-  \addtostream{#1}{\string\begin{bibexbox}}
-  \addtostream{#1}{\space\space\string\booksym{} #2}
-  \addtostream{#1}{\space\space\string\par\string\cogsym{} \string\fullcite{#3}.}
+% #5 = extra options
+\NewDocumentCommand{\docbibexample}{mmmmm}{%
+  \addtostream{#1}{\string\begin{bibexbox}#5{#3}}
+  \addtostream{#1}{\space\space #2}
   \addtostream{#1}{\space\space\string\tcblower}
   \addtostream{#1}{\space\space\string\begin{verbatim}}
   \addtostream{#1}{#4\string\end{verbatim}}
@@ -3388,7 +3411,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.1} % General
 |
 
-\bibexample
+\bibexample<OGS \S15.1>
 |Mary A. Rouse and Richard H. Rouse, \enquote{The Book Trade at the University of Paris, c.1250--c.1350}, in eid., \emph{Authentic Witnesses: Approaches to Medieval Texts and Manuscripts} (Publications in Medieval Studies, 17; Notre Dame, IN, 1991), 259--338 at 332.|%
 ||%
 |@inbook{rouse.rouse1991btu,
@@ -3403,13 +3426,13 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   location = {Notre Dame, IN},
   date = {1991},
   pages = {259--338}
-}|
+}|[332]
 
 \commondoc|
 \section*{15.2.1} % Books: author's name
 |
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).|%
 ||%
 |@collection{stewart.etal1994mb,
@@ -3419,7 +3442,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1994}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).|%
 ||%
 |@mvbook{fortenbaugh.etal1991tes,
@@ -3433,7 +3456,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1991}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.|%
 ||%
 |@article{vaucouleurs1975nmn,
@@ -3445,7 +3468,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   pages = {85-98}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |George Eliot, \emph{Middlemarch} (New York: W. W. Norton, 1977).|%
 ||%
 |@book{eliot1977m,
@@ -3456,7 +3479,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1977}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).|%
 ||%
 |@book{twain1971cyk,
@@ -3468,7 +3491,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1971}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |C. L. Dodgson (Lewis Carroll), \emph{Symbolic Logic} (Oxford: Clarendon Press, 1896).|%
 ||%
 |@book{dodgson1896sl,
@@ -3480,7 +3503,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1896}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).|%
 ||%
 |@book{boethius1976dds,
@@ -3492,7 +3515,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1976}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).|%
 ||%
 |@book{boas.botschuyver1952dc,
@@ -3502,7 +3525,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1952}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).|%
 ||%
 |@book{balfour1768pe,
@@ -3517,7 +3540,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \aside{In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the following reference; this may be an error.}
 |
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |{[John Gibbon]}, \emph{Day-Fatality: Or Some Observations on Days Lucky and Unlucky}, (London, 1678; rev.~edn., 1686).|%
 ||%
 |@book{gibbon1686dfs,
@@ -3532,7 +3555,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 }|
 
 % Do we need special handling for whether a work is marked 'Anon'?
-\bibexample
+\bibexample<OGS \S15.2.1>
 |\emph{Stories after Nature} (London: Allman, 1822).\quad [\enquote{Anonymous} in Bibliography]|%
 ||%
 |@book{anon1822san,
@@ -3542,7 +3565,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1822}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.1>
 |\emph{Liber usualis} (Tournai: Desclée, 1956).|%
 ||%
 |@book{anon1956lu,
@@ -3556,7 +3579,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.2.2} % Books: titles and subtitles
 |
 
-\bibexample
+\bibexample<OGS \S15.2.2>
 |Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).|%
 ||%
 |@mvcollection{brady.etal1994hehsa,
@@ -3570,7 +3593,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1994}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.2>
 |Antonia Tissoni Benvenuti, \emph{L'\emph{Orfeo} del Poliziano} (Padua: Editrice Antenore, 1986).|%
 ||%
 |@book{benvenuti1986op,
@@ -3581,7 +3604,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1986}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.2>
 |Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the Liffey} (Dublin: HCE Press, 1977).|%
 ||%
 |@book{oconor1977sjf,
@@ -3596,8 +3619,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.2.3} % Books: editions
 |
 
-% The page range goes in the citation command
-\bibexample
+\bibexample<OGS \S15.2.3>
 |J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.|%
 ||%
 |@book{baker1990iel,
@@ -3605,10 +3627,10 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   title = {An Introduction to {English} Legal History},
   edition = {3},
   date = {1990}
-}|
+}|[419-421]
 
 % First and later edition, same publisher
-\bibexample
+\bibexample<OGS \S15.2.3>
 |J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).|%
 ||%
 |@book{denniston1934gp,
@@ -3621,7 +3643,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 }|
 
 % First and later edition, different publisher
-\bibexample
+\bibexample<OGS \S15.2.3>
 |Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).|%
 ||%
 |@book{bettelheim1976uem,
@@ -3635,7 +3657,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 }|
 
 % Later edition by different editor
-\bibexample
+\bibexample<OGS \S15.2.3>
 |\emph{The Oxford Dictionary of Quotations}, 5th edn., ed. Elizabeth Knowles (Oxford, 1999).|%
 ||%
 |@reference{knowles1999odq,
@@ -3650,7 +3672,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.2.4} % Books: reprints, reprint editions, and facsimiles
 |
 
-\bibexample
+\bibexample<OGS \S15.2.4>
 |C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).|%
 ||%
 |@collection{adam.tannery1897odd,
@@ -3666,7 +3688,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 }|
 
 % Need special handling for marking facsimile editions
-\bibexample
+\bibexample<OGS \S15.2.4>
 |E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).|%
 ||%
 |@book{allen1594kkk,
@@ -3689,7 +3711,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 |
 
 % Multiple publishers, same title
-\bibexample
+\bibexample(hacked)<OGS \S15.2.5>
 |L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).|%
 ||%
 |@book{holfordstrevens1988ag,
@@ -3700,16 +3722,15 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   origdate = {1988},
   location = {Chapel Hill},
   publisher = {University of North Carolina Press},
-  date = {1989},
-  userd = {hacked}
+  date = {1989}
 }|
 
 \commondoc|
 \section*{15.2.6} % Books: volumes
 |
 
-\bibexample
-|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.|%[\nopp ii.\ \mkcomprange{367--368}]
+\bibexample<OGS \S15.2.6>
+|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.|
 ||%
 |@mvbook{straeten1867lmp,
     author = {Edmond Vander Straeten},
@@ -3717,10 +3738,15 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
     volumes = {8},
     location = {Brussels},
     date = {1867/1888}
-}|
+}|[ii.~367--8]
 
-\bibexample
-|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.|%[367--368]
+\commondoc|
+A more portable way of expressing the same citation would be\\
+\lstinline!\fullcite[\nopp ii.~\mkcomprange{367--368}]{straeten1867lmp}!.
+|
+
+\bibexample<OGS \S15.2.6>
+|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.|%
 ||%
 |@mvbook{straeten1867lmp.ii,
   author = {Edmond Vander Straeten},
@@ -3728,14 +3754,14 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   volume = {2},
   location = {Brussels},
   date = {1867/1888}
-}|
+}|[367-368]
 
 \commondoc|
 \aside{In the \emph{Oxford Style Manual}, the translator is in parentheses in the following reference, but as this pattern does not occur in any other it may be an error or stylistic variation. The following effect was achieved with \code{volume = \{1--iii\}}, \code{pages = \{iv\}}, and \code{pubstate = \{London: Bohn, 1846\}}.}
 |
 
 % This hack is not at all portable. Use with care, or use one of the other layouts.
-\bibexample
+\bibexample(hacked)<OGS \S15.2.6>
 |Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4 vols., i--iii (Oxford: Talboys, 1838--9), iv (London: Bohn, 1846).|%
 ||%
 |@mvbook{ritter1838hap,
@@ -3748,11 +3774,10 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   publisher = {Talboys},
   date = {1838/1839},
   pages = {iv},
-  pubstate = {London: Bohn, 1846},
-  userd = {hacked}
+  pubstate = {London: Bohn, 1846}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.6>
 |A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.|%
 ||%
 |@mvcollection{ward.waller1932che,
@@ -3763,9 +3788,9 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   location = {Cambridge},
   publisher = {CUP},
   date = {1932}
-}|
+}|[42-56]
 
-\bibexample
+\bibexample<OGS \S15.2.6>
 |David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).|%
 ||%
 |@book{fischer1989asf,
@@ -3785,7 +3810,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.2.7} % Books: series title
 |
 
-\bibexample
+\bibexample<OGS \S15.2.7>
 |Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (Beihefte zum Archiv für Musikwissenschaft, 10--11; Wiesbaden, 1972).|%
 ||%
 |@mvbook{garlandia1972dmm,
@@ -3803,7 +3828,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.2.12} % Books: multi-author works
 |
 
-\bibexample
+\bibexample<OGS \S15.2.12>
 |\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).|%
 ||%
 |@proceedings{icp1975pic,
@@ -3817,7 +3842,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.2.13} % Books: organizations
 |
 
-\bibexample
+\bibexample<OGS \S15.2.13>
 |Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).|%
 ||%
 |@report{botswana1980hdr,
@@ -3828,7 +3853,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1980}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.13>
 |Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Mentally Disordered Offenders from Custody} (London, 1988).|%
 ||%
 |@report{pac1988upt,
@@ -3843,7 +3868,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.2.15} % Books: translations
 |
 
-\bibexample
+\bibexample<OGS \S15.2.15>
 |Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).|%
 ||%
 |@book{bischoff1990lpa,
@@ -3855,7 +3880,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1990}
 }|
 
-\bibexample
+\bibexample<OGS \S15.2.15>
 |Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).|%
 ||%
 |@book{martorell1984tlb,
@@ -3871,7 +3896,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 \section*{15.3} % Chapters and articles in books
 |
 
-\bibexample
+\bibexample<OGS \S15.3>
 |John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George Holmes (ed.), \emph{Art and Politics in Renaissance Italy: British Academy Lectures} (Oxford: Clarendon Press, 1993), 185--240.|%
 ||%
 |@incollection{shearman1993vsf,
@@ -3887,7 +3912,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   pages = {185-240}
 }|
 
-\bibexample
+\bibexample<OGS \S15.3>
 |W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).|%
 ||%
 |@incollection{todd1974dhp,
@@ -3903,7 +3928,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1974}
 }|
 
-\bibexample
+\bibexample<OGS \S15.3>
 |G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).|%
 ||%
 |@bookinbook{frege1892osr,
@@ -3920,7 +3945,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   pubstate = {originally pub\adddotspace 1892}
 }|
 
-\bibexample
+\bibexample<OGS \S15.3>
 |G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.|%
 ||%
 |@bookinbook{owen1986pi,
@@ -3941,8 +3966,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   journaltitle = {Oxford Studies in Ancient Philosophy},
   volume = {1},
   date = {1983},
-  pages = {1-25},
-  userd = {bad}
+  pages = {1-25}
 }|
 
 \commondoc|
@@ -3952,7 +3976,7 @@ If not using Biber, instead of the related fields you would use the following:\\
 
 % Article in yearbook
 
-\bibexample
+\bibexample<OGS \S15.3>
 |M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.|%
 ||%
 |@article{boyce1957pgi,
@@ -3967,7 +3991,7 @@ If not using Biber, instead of the related fields you would use the following:\\
 \section*{15.4.1} % Articles in periodicals
 |
 
-\bibexample
+\bibexample<OGS \S15.4.1>
 |Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typification of the Ottoman Polity}, \emph{Princeton Papers in Near Eastern Studies}, 1 (1992), 49--72.|%
 ||%
 |@article{inalcik1992csm,
@@ -3980,7 +4004,7 @@ If not using Biber, instead of the related fields you would use the following:\\
   pages = {49-72}
 }|
 
-\bibexample
+\bibexample<OGS \S15.4.1>
 |Robert Goldblatt, \enquote{Diodorean Modality in Minkowski Space-Time}, \emph{Studia Logica}, 39/3 (1973), 219--36.|%
 ||%
 |@article{goldblatt1973dmm,
@@ -3993,7 +4017,7 @@ If not using Biber, instead of the related fields you would use the following:\\
   pages = {219-236}
 }|
 
-\bibexample
+\bibexample<OGS \S15.4.1>
 |Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.|%
 ||%
 |@article{lee1995ehf,
@@ -4003,7 +4027,7 @@ If not using Biber, instead of the related fields you would use the following:\\
   date = {1995-06-23}
 }|
 
-\bibexample
+\bibexample<OGS \S15.4.1>
 |\enquote{Who's Excellent Now?}, \emph{Business Week}, 5 Nov. 1984, 76--86.|%
 ||%
 |@article{bw1984wen,
@@ -4017,7 +4041,7 @@ If not using Biber, instead of the related fields you would use the following:\\
 \aside{The following effect was achieved by added \code{\textbackslash nopunct} to the end of the journal title.}
 |
 
-\bibexample
+\bibexample(hacked)<OGS \S15.4.1>
 |B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.|%
 ||%
 |@article{lindars1965eir,
@@ -4027,7 +4051,6 @@ If not using Biber, instead of the related fields you would use the following:\\
   volume = {15},
   date = {1965},
   pages = {452-467},
-  userd = {hacked}
 }|
 
 \commondoc|
@@ -4035,7 +4058,7 @@ If not using Biber, instead of the related fields you would use the following:\\
 |
 
 % This one is \emph{weird}
-\bibexample
+\bibexample(hacked)<OGS \S15.4.1>
 |C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.|%
 ||%
 |@collection{bec1976isc,
@@ -4048,11 +4071,10 @@ If not using Biber, instead of the related fields you would use the following:\\
   number = {2},
   location = {Lyon},
   date = {1976},
-  pages = {99--109},
-  userd = {hacked}
+  pages = {99--109}
 }|
 
-\bibexample
+\bibexample<OGS \S15.4.1>
 |F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).|%
 ||%
 |@article{trisoglio1973gnq,
@@ -4063,7 +4085,7 @@ If not using Biber, instead of the related fields you would use the following:\\
   date = {1973}
 }|
 
-\bibexample
+\bibexample<OGS \S15.4.1>
 |X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.|%
 ||%
 |@article{zhentao.etal1989ars,
@@ -4077,15 +4099,14 @@ If not using Biber, instead of the related fields you would use the following:\\
 }
 @periodical{jha1989,
   title = {Journal for the History of Astronomy},
-  volume = {20},
-  userd = {bad}
+  volume = {20}
 }|
 
 \commondoc|
 \section*{15.4.3} % Articles in periodicals: series
 |
 
-\bibexample
+\bibexample<OGS \S15.4.3>
 |J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quarterly}, \textsc{ns} 21 (1971), 65--80.|%
 ||%
 |@article{barnes1971has,
@@ -4103,7 +4124,7 @@ If not using Biber, instead of the related fields you would use the following:\\
 |
 
 % With Biber: using related field mechanism
-\bibexample
+\bibexample<OGS \S15.4.4>
 |J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.|%
 ||%
 |@review{dean1995rpb,
@@ -4119,12 +4140,11 @@ If not using Biber, instead of the related fields you would use the following:\\
   author = {Philippe Basiron},
   title = {My Early Life},
   location = {Bourges},
-  year = {1994},
-  userd = {bad}
+  year = {1994}
 }|
 
 % Without Biber: need special field for reviewed document
-\bibexample
+\bibexample<OGS \S15.4.4>
 |H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.|%
 ||%
 |@review{jocelyn1989pav,
@@ -4141,15 +4161,14 @@ If not using Biber, instead of the related fields you would use the following:\\
   author = {Maria Luisa Delvigo},
   title = {Testo virgiliano e tradizione indiretta},
   location = {Pisa},
-  date = {1987},
-  userd = {bad}
+  date = {1987}
 }|
 
 \commondoc|
 \section*{15.5.1} % Theses and dissertations: terminology
 |
 
-\bibexample
+\bibexample<OGS \S15.5.1>
 |Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).|%
 ||%
 |@thesis{blackburn1970tlp,
@@ -4164,7 +4183,7 @@ If not using Biber, instead of the related fields you would use the following:\\
 \section*{15.6} % Unpublished books and articles
 |
 
-\bibexample
+\bibexample<OGS \S15.6>
 |Leofranc Holford-Strevens, \enquote{Humanism and the Language of Music Theory Treatises}, paper given at the 65th Annual Meeting of the American Musicological Society, Kansas City, MO, 4--7 Nov. 1999.|%
 ||%
 |@unpublished{holfordstrevens1999hlm,
@@ -4175,7 +4194,7 @@ If not using Biber, instead of the related fields you would use the following:\\
   date = {1999-11-04/1999-11-07}
 }|
 
-\bibexample
+\bibexample<OGS \S15.6>
 |E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).|%
 ||%
 |@book{gombrich1957as,
@@ -4201,7 +4220,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 \section*{15.14.1} % Audio recordings
 |
 
-\bibexample
+\bibexample<OGS \S15.14.1>
 |Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).|%
 ||%
 |@music{couperin1970pdc,
@@ -4216,7 +4235,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 }
 |
 
-\bibexample
+\bibexample<OGS \S15.14.1>
 |Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).|%
 ||%
 |@music{hillier1989p,
@@ -4228,7 +4247,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   date = {1989}
 }|
 
-\bibexample
+\bibexample<OGS \S15.14.1>
 |Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) (two-volume compact disc set).|%
 ||%
 |@music{hopkinsNDcar,
@@ -4240,7 +4259,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   pubstate = {two-volume compact disc set}
 }|
 
-\bibexample
+\bibexample<OGS \S15.14.1>
 |\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut}, Gothic Voices, dir. Christopher Page (Hyperion compact disc CDA 66087).|%
 ||%
 |@music{pageNDmn,
@@ -4255,7 +4274,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   number = {CDA 66087}
 }|
 
-\bibexample
+\bibexample<OGS \S15.14.1>
 |C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).|%
 ||%
 |@audio{lewis1981lww,
@@ -4288,7 +4307,7 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \section*{15.15.2} % Electronic data: representation
 |
 
-\bibexample
+\bibexample<OGS \S15.15.2>
 |Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court}, \emph{Information Today} [online journal], 18/5 (May 2001) $\langle$\url{http://www.infotoday.com/newsbreaks/nb010330-1.htm}$\rangle$, accessed 1 July 2001.|%
 ||%
 |@article{quint2001ohm,
@@ -4307,8 +4326,8 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \section*{15.15.3} % Electronic data: forms of reference
 |
 
-\bibexample
-|R. M. Ritter, \enquote{About the Oxford Guide to Style}, \emph{Oxford Editorial} [website], (updated 10 Oct.\ 2001) $\langle$\url{http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}$\rangle$|%
+\bibexample<OGS \S15.15.3>
+|R. M. Ritter, \enquote{About the Oxford Guide to Style}, \emph{Oxford Editorial} [website], (updated 10~Oct.\ 2001) $\langle$\url{http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}$\rangle$|%
 ||%
 |@online{ritter2001aog,
   author = {R. M. Ritter},
@@ -4320,7 +4339,7 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
   url = {http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}
 }|
 
-\bibexample
+\bibexample<OGS \S15.15.3>
 |William Strunk, Jr., \emph{The Elements of Style} (1st edn., Geneva, NY: W. P. Humphrey, 1918), published online July 1999 $\langle$\url{http://www.bartleby.com/141}$\rangle$|%
 ||%
 |@book{strunk1999tes,
@@ -4339,7 +4358,7 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \section*{15.19.2} % Author–date system: Reference section
 |
 
-\bibexample
+\bibexample<OGS \S15.19.2>
 ||%
 |Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).|%
 |@book{smith1988fag,
