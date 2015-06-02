@@ -59,10 +59,8 @@
 \colorlet{hacked}{orange}
 \colorlet{manual}{purple}
 
-
-
 \usepackage{tcolorbox}
-\tcbuselibrary{listingsutf8,breakable,xparse}
+\tcbuselibrary{listingsutf8,breakable,skins,xparse}
 \lstloadlanguages{[LaTeX]TeX}
 \lstset
   { columns=fullflexible
@@ -105,14 +103,21 @@
   \egroup
 }
 \makeatother
+\newtcolorbox{bibexbox}[1][ok]%
+  {skin=bicolor
+  ,colframe = #1
+  ,colback = #1!5!white
+  ,colbacklower = white
+  ,fontlower = \footnotesize
+  }
 % \testrow compares target format with generated format. Arguments:
 % #1 = target format
 % #2 = page range
 % #3 = bib key
-\NewDocumentCommand\testrow{mom}{\parbox{\textwidth}{\biburlsetup #1\\%
+\NewDocumentCommand\testrow{mom}{\biburlsetup #1\\%
   \makebox[0pt][r]{\footnotesize\textcolor{teal}{#3}\quad}%
   \IfNoValueTF{#2}{\dbgcolor{#3}{\fullcite{#3}.}}%
-  {\dbgcolor{#3}{\fullcite[#2]{#3}.}}\par}}
+  {\dbgcolor{#3}{\fullcite[#2]{#3}.}}\par}
 % \egcite gives a citation as an example. Arguments:
 % #1 = page range
 % #2 = bib key
@@ -2740,10 +2745,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \addtostream{src}{#3}
   \addtostream{src}{}
   \StrBetween*[1,1]{#3}{\@charlb}{,}[\bibkey]
-  \IfStrEq{#1}{}{}{%
+  \ifstrempty{#1}{}{%
     \docbibexample{oxnotes}{#1}{\bibkey}{#3}
   }
-  \IfStrEq{#2}{}{}{%
+  \ifstrempty{#2}{}{%
     \docbibexample{oxyear}{#2}{\bibkey}{#3}
   }
 }
@@ -2754,13 +2759,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % #3 = bib key
 % #4 = bib record
 \newcommand{\docbibexample}[4]{%
-  \addtostream{#1}{\string\begin{tcolorbox}}
+  \addtostream{#1}{\string\begin{bibexbox}}
   \addtostream{#1}{\space\space\string\booksym{} #2}
   \addtostream{#1}{\space\space\string\par\string\cogsym{} \string\fullcite{#3}.}
   \addtostream{#1}{\space\space\string\tcblower}
   \addtostream{#1}{\space\space\string\begin{verbatim}}
   \addtostream{#1}{#4\string\end{verbatim}}
-  \addtostream{#1}{\string\end{tcolorbox}}
+  \addtostream{#1}{\string\end{bibexbox}}
   \addtostream{#1}{}
 }
 
