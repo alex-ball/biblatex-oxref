@@ -41,14 +41,14 @@
 \@ifpackageloaded{fontspec}{%
   \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
   \usepackage{fontawesome}
-  \newcommand{\booksym}[1]{\makebox[1em][c]{\faicon{book}}}
-  \newcommand{\cogsym}[1]{\makebox[1em][c]{\faicon{cog}}}
+  \newcommand{\booksym}{\makebox[1em][c]{\faicon{book}}}
+  \newcommand{\cogsym}{\makebox[1em][c]{\faicon{cog}}}
 }{%
   \usepackage[utf8]{inputenc}
   \usepackage[varl]{zi4}
   \usepackage{dictsym}
-  \newcommand{\booksym}[1]{\makebox[1em][c]{\dsliterary}}
-  \newcommand{\cogsym}[1]{\makebox[1em][c]{\dstechnical}}
+  \newcommand{\booksym}{\makebox[1em][c]{\dsliterary}}
+  \newcommand{\cogsym}{\makebox[1em][c]{\dstechnical}}
 }
 \makeatother
 
