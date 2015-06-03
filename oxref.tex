@@ -2848,144 +2848,37 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %%% STYLE DOCUMENTATION -- SPECIFICATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{writeverbatim}{oxnotes}
-\chapter{Supported entry types}
+\commondoc|
+\chapter{Introduction}
 
-The Oxref family of Biblatex styles supports the following entry types:
+\section{Loading the style}
+
+\section{How to use this document}
+
+OGS = \emph{Oxford Guide to Style} (2002) ed.~R.~M.\ Ritter.
+
+NHR = \emph{New Hart's Rules: The Oxford Style Guide} (2nd ed., 2014) ed.~R.~M.\ Ritter.
+
+\section{To do}
+
+The Oxref family of Biblatex styles does not yet support the following entry types
+(or at least, they have not yet been styled appropriately):
 
 \begin{multicols}{2}
   \begin{itemize}\firmlist
-    \item\hyperref[sec:article]{article}
-    \item\hyperref[sec:book]{book}
-    \item\hyperref[sec:book]{mvbook}
-    \item\hyperref[sec:inx]{inbook}
-    \item\hyperref[sec:inx]{bookinbook}
-    \item\hyperref[sec:inx]{suppbook}
-    \item booklet \aside{to do}
-    \item\hyperref[sec:book]{collection}
-    \item\hyperref[sec:book]{mvcollection}
-    \item\hyperref[sec:inx]{incollection}
-    \item\hyperref[sec:inx]{suppcollection}
-    \item manual \aside{to do}
-    \item misc \aside{to do}
-    \item\hyperref[sec:electronic]{online}
-    \item patent \aside{to do}
-    \item periodical \aside{to do}
-    \item suppperiodical \aside{to do}
-    \item\hyperref[sec:proceedings]{proceedings}
-    \item\hyperref[sec:proceedings]{mvproceedings}
-    \item\hyperref[sec:inproceedings]{inproceedings}
-    \item\hyperref[sec:book]{reference}
-    \item\hyperref[sec:book]{mvreference}
-    \item\hyperref[sec:inx]{inreference}
-    \item\hyperref[sec:report]{report}
-    \item\hyperref[sec:thesis]{thesis}
-    \item\hyperref[sec:unpublished]{unpublished}
-    \item\hyperref[sec:audiovideo]{audio}
-    \item\hyperref[sec:audiovideo]{movie}
-    \item\hyperref[sec:audiovideo]{music}
-    \item\hyperref[sec:article]{review}
-    \item\hyperref[sec:audiovideo]{video}
+    \item booklet
+    \item manual
+    \item misc
+    \item patent
+    \item periodical
+    \item suppperiodical
   \end{itemize}
 \end{multicols}
 
-\chapter{Style Specification}
+\chapter{Books, collections and reference works}\label{sec:book}
+\chapterprecis{book, mvbook, collection, mvcollection, reference, mvreference}
 
-The preferred method of citation in the Oxford style is by footnotes or endnotes; this is the method employed by the Oxnotes citation style and assumed by the Oxnotes bibliography style. The sections below specify the form taken by citation notes. References in a bibliography are formatted in the same way except for one specific change: authors' names are inverted and printed in full and small capitals.
-
-\begin{itemize}
-  \item
-  \textsc{Author, First}, \lit{and} \textsc{Author, Second}, \emph{Title} (Location: Publisher, Year).
-\end{itemize}
-
-\section{General formatting}
-
-\subsection{Author's Name}
-
-\begin{itemize}
-  \item Author names are not inverted (except in the bibliography).
-  
-  \item Full names are not reduced to initials, but if they are given in the work as initials they need not be expanded.
-  
-  \item No more than three authors are given:
-  \begin{enumerate}
-    \item First Author
-    \\\egcite{eliot1977m}
-    
-    \item First Author and Second Author
-    \\\egcite{rouse.rouse1991btu}
-    
-    \item First Author, Second Author, and Third Author
-    \\\egcite{brady.etal1994hehsa}
-    
-    \item First Author et al.
-    \\\egcite{stewart.etal1994mb} % This is actually five authors
-  \end{enumerate}
-  
-  \item If adding a famous pseudonym to a work published under a real name: Real Name (Pen Name). \aside{Use \textsf{biblatex} field \code{nameaddon} for the alternative name.}\\\egcite{dodgson1896sl}
-  
-  \item Pseudo-Name should convert to \textsc{Name (Ps.-)} or \textsc{Name (Pseudo-)} in bibliography. \aside{To do, low priority}
-  
-  \item If square brackets are used for inferred authorship \aside{by giving as the value of the \textsf{biblatex} field \code{authortype} the definition of the macro \texttt{\textbackslash isInferred}, by default \enquote{inferred}}, the name should be alphabetized as if the brackets weren't there. Repetitions still get replaced by a rule.\\\egcite{balfour1768pe}
-  
-  \item Anonymous works: Author missed out from footnotes, can be replaced by \enquote{Anonymous} in bibliography. \aside{To do}
-  \\\egcite{anon1822san}
-  \\\egcite{anon1956lu}
-\end{itemize}
-
-\subsection{Titles and subtitles}
-
-\begin{itemize}
-  \item Titles are not converted to lowercase.
-  
-  \item Subtitles are separated from titles by a colon.
-  
-  \item Subtitles are given an initial capital.
-  \par\egcite{bettelheim1976uem}
-\end{itemize}
-
-\subsection{Publishers}
-
-\begin{itemize}
-  \item If the place of publication is absent, replace with n.p.
-\end{itemize}
-
-\aside{Publisher names may be uniformly omitted from all citations and bibliography entries. There may be a package option to switch off publisher names in future.}
-
-\subsection{Dates}
-
-\begin{itemize}
-  \item Months should be abbreviated to three or four letters: Apr.\ May June July Sept. % Already so by default.
-\end{itemize}
-
-\subsection{Foliation}
-
-\begin{itemize}
-  \item Page number format: 32.
-  \item Volume and page number format: iv.\ 32.
-  \item Volume and preliminary page number format: vol.\ iv, p.\ xxxii.
-  \item Page ranges should be compact: 32--3.\\\egcite{dean1995rpb}
-  \item If a particular page is required the first time a source is cited, it should be given after the full page range: 259--338 at 332.\\\egcite[332]{rouse.rouse1991btu}
-\end{itemize}
-
-\subsection{Repeated citations}
-
-Oxford style does not prescribe a particular way of abbreviating the second and subsequent citations of a work, but does suggest the following shorthand expressions for use with closely proximate repeated citations:
-
-\begin{itemize}
-  \item Ibid. = in the same place = same author and title as immediately preceding citation.
-  \item Author, op. cit. = in the cited work = same title as the last cited work by the specified author. Best suited to occasions where a work is being singled out from a recently cited list of works. 
-  \item Author, art. cit. = in the cited article = same title as the last cited article by the specified author. Best suited to occasions where a work is being singled out from a recently cited list of works.
-  \item Author, loc. cit. = at the cited place = same title and page range as the last cited work by the specified author. Rarely needed.
-  \item Id. = same = same male author as the immediately preceding citation.
-  \item Ead. = same = same female author as the immediately preceding citation.
-  \item Eid. = same = same male authors, or male and female authors, as the immediately preceding citation.
-  \item Eaed. = same = same female authors as the immediately preceding citation.
-\end{itemize}
-
-\section{Books, collections and reference works}\label{sec:book}
-
-\subsection{Books}
+\section{Books}
 
 Biblatex defines \code{book} as a monograph, written either by a single author, or by several authors who have joint responsibility for the entire work. An editor in this context has a modest role selecting or annotating the content, and therefore in Oxford style is given after the title even if the author is not given.
 
@@ -3006,7 +2899,7 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
   \\\egcite{boas.botschuyver1952dc}
 \end{description}
 
-\subsection{Collections}
+\section{Collections}
 
 Biblatex defines \code{collection} as a book made up of multiple self-contained contributions from distinct authors. There is no overall author: use the regular \code{book} entry type for collections of a single author’s work. The editor in this case has a more active role and therefore comes before the title.
 
@@ -3017,7 +2910,7 @@ Biblatex defines \code{collection} as a book made up of multiple self-contained 
   \\\egcite{stewart.etal1994mb}
 \end{description}
 
-\subsection{Reference works}
+\section{Reference works}
 
 Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). Unlike standard Biblatex, though, Oxford style considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first.
 
@@ -3027,7 +2920,7 @@ Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are ty
   \\\egcite{fortenbaugh.etal1991tes}
 \end{description}
 
-\subsection{Multi-volume works}
+\section{Multi-volume works}
 
 Biblatex provides additional entry types for multi-volume works: \code{mvbook}, \code{mvcollection} and \code{mvreference} respectively. These can be used to cite all the volumes at once, or just one volume from the set.
 
@@ -3054,7 +2947,7 @@ Biblatex provides additional entry types for multi-volume works: \code{mvbook}, 
   \\\egcite{fischer1989asf}
 \end{description}
 
-\subsection{Common variations}
+\section{Common variations}
 
 \begin{description}
   \item[Works with notable additions] Used where works have significant introductions, forewords, afterwords, illustrations, etc.\par
@@ -3111,7 +3004,8 @@ Biblatex provides additional entry types for multi-volume works: \code{mvbook}, 
   \par Author, \emph{Title} (nth \lit{ser.}, Year).
 \end{description}
 
-\section{Reports}\label{sec:report}
+\chapter{Reports}\label{sec:report}
+\chapterprecis{report}
 
 Oxford style does not have any special rules for referencing reports. Its provision for books, however, is sufficient for most purposes.
 
@@ -3128,9 +3022,10 @@ Oxford style does not have any special rules for referencing reports. Its provis
   Author, \emph{Title} (Type, Number; Location: Institution, Year).
 \end{description} 
 
-\section{Proceedings}\label{sec:proceedings}
+\chapter{Proceedings}\label{sec:proceedings}
+\chapterprecis{proceedings, mvproceedings}
 
-\subsection{Single volume proceedings}
+\section{Single volume proceedings}
 
 The \code{proceedings} entry type is intended for a set of conference papers that have been collected together into a single volume.
 
@@ -3144,7 +3039,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
   \\\egcite{ecdl2009}
 \end{description}
 
-\subsection{Multi-volume proceedings}
+\section{Multi-volume proceedings}
 
 Biblatex provides \code{mvproceedings} for multi-volume proceedings.
 
@@ -3159,9 +3054,10 @@ Biblatex provides \code{mvproceedings} for multi-volume proceedings.
   
 \end{description}
 
-\section{Works in books, collections and reference works}\label{sec:inx}
+\chapter{Works in books, collections and reference works}\label{sec:inx}
+\chapterprecis{inbook, incollection, inreference, bookinbook}
 
-\subsection{Works in books}
+\section{Works in books}
 
 The \code{inbook} entry type is intended for books that consist of several self-contained works by the same author, for citing one of these works. 
 
@@ -3172,7 +3068,7 @@ The \code{inbook} entry type is intended for books that consist of several self-
   \par Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.
 \end{description}
 
-\subsection{Works in collections}
+\section{Works in collections}
 
 The \code{incollection} entry type is intended for citing one of a collection of self-contained works by different authors.
 
@@ -3187,7 +3083,7 @@ The \code{incollection} entry type is intended for citing one of a collection of
   
 \end{description}
 
-\subsection{Anthologies of independently published works}
+\section{Anthologies of independently published works}
 
 Biblatex provides the \code{bookinbook} entry type for citing a part of an anthology that has previously been published as a book in its own right. Oxford style provides two different mechanisms for this, depending on circumstance.
 
@@ -3200,7 +3096,8 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
   \\\egcite{frege1892osr}
 \end{description}
 
-\section{Papers in proceedings}\label{sec:inproceedings}
+\chapter{Papers in proceedings}\label{sec:inproceedings}
+\chapterprecis{inproceedings}
 
 The \code{inproceedings} entry type is intended for a conference paper published as part of a proceedings volume. For papers that have not been collected into a proceedings volume, or presentation slide sets, use the \code{unpublished} entry type instead.
 
@@ -3215,7 +3112,8 @@ The \code{inproceedings} entry type is intended for a conference paper published
   \\\egcite{gombrich1957as}
 \end{description}
 
-\section{Articles in periodicals}\label{sec:article}
+\chapter{Articles in periodicals}\label{sec:article}
+\chapterprecis{article}
 
 \begin{description}
   \item[Article in issue with no volume or number]~
@@ -3257,7 +3155,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
   %\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol (Number): Pages.
 \end{description}
 
-\subsection{Notes}
+\section{Notes}
 
 \begin{itemize}
   \item Oxford style permits volumes and part numbers to be written like 23: 2 instead of 23/2. \aside{To do, as a package option.}
@@ -3266,7 +3164,8 @@ The \code{inproceedings} entry type is intended for a conference paper published
   \\\egcite{lindars1965eir}
 \end{itemize}
 
-\section{Theses and dissertations}\label{sec:thesis}
+\chapter{Theses and dissertations}\label{sec:thesis}
+\chapterprecis{thesis}
 
 \begin{description}
   \item[Preferred]~\par Author, \enquote{Title}, Type (Institution, Year).
@@ -3280,7 +3179,8 @@ The \code{inproceedings} entry type is intended for a conference paper published
 %\item \enquote{Dissertation} should be abbreviated to \enquote{diss.} if the degree/level is given before it, or \enquote{Diss.} otherwise (i.e. German or Dutch dissertations).
 %\end{itemize}
 
-\section{Unpublished works}\label{sec:unpublished}
+\chapter{Unpublished works}\label{sec:unpublished}
+\chapterprecis{unpublished}
 
 \begin{description}
   \item[Accepted journal article, pre-publication]~\par
@@ -3298,7 +3198,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
 %\item Description (of oration) is capitalized if derived from a place or event (Sermon on the Mount; Gettysburg Address) but not if derived from a time (Easter sermon; speech in the House of Lords, 18 March 1751).
 %\end{itemize}
 
-\section{Poems}\label{sec:poem}
+\chapter{Poems}\label{sec:poem}
 
 \begin{description}
   \item[Long poems] Used for poems divided into cantos
@@ -3309,14 +3209,15 @@ The \code{inproceedings} entry type is intended for a conference paper published
   \par Author, \enquote{Title}, in\dots
 \end{description}
 
-\subsection{Notes}
+\section{Notes}
+
 \begin{itemize}
   \item When using numerals, Book uses full capital roman, Canto uses small capital roman, Stanza uses lowercase roman, Line uses arabic: II. \textsc{iv}. xxxi. 7.
   
   \item When using words (i.e. when citing whole stanzas or greater), use small capital roman numerals: bk. ii, canto iv, stanza xxxi.
 \end{itemize}
 
-\section{Plays}\label{sec:play}
+\chapter{Plays}\label{sec:play}
 
 \begin{description}
   \item[Basic form]~
@@ -3324,7 +3225,8 @@ The \code{inproceedings} entry type is intended for a conference paper published
   \par Author, \emph{Title}, \lit{Act} Act, \lit{Scene} Scene, \lit{line} Line.
 \end{description}
 
-\subsection{Notes}
+\section{Notes}
+
 \begin{itemize}
   \item When using numerals only in a parenthetical citation, Act uses small capital roman numerals. Otherwise, Act uses full capital roman numerals.
   
@@ -3333,20 +3235,21 @@ The \code{inproceedings} entry type is intended for a conference paper published
   \item The words \enquote{Act} and \enquote{Scene} are capitalized, whereas \enquote{line} is not: Act IV, Scene iii, line 10.
 \end{itemize}
 
-\section{Manuscripts}\label{sec:ms}
+\chapter{Manuscripts}\label{sec:ms}
 
 \begin{description}
   \item[Form]~
   \item Author, Title, City, Archive, Collection Series, Volume.
 \end{description}
 
-\subsection{Notes}
+\section{Notes}
+
 \begin{itemize}
   \item Volume means any lower level division (file, bundle, box). Use whatever system the archive uses.
   \item Abbreviate folio to fo. (or fos.). Superscript \textsuperscript{r} and \textsuperscript{v} for recto and verso: fo. 7\textsuperscript{r--v}, fos. 117\textsuperscript{v}--121\textsuperscript{r}.
 \end{itemize}
 
-\section{Audio and visual broadcasts and recordings}\label{sec:audiovideo}
+\chapter{Audio and visual broadcasts and recordings}\label{sec:audiovideo}
 
 \begin{description}
   \item[Audio recordings] Oxref provides the additional editor types \code{performer}, \code{director} and \code{reader}.
@@ -3370,12 +3273,13 @@ The \code{inproceedings} entry type is intended for a conference paper published
   \par \enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.
 \end{description}
 
-\subsection{Notes}
+\section{Notes}
+
 \begin{itemize}
   \item Credit means a string like \enquote{edition and project supervision by Editor}.
 \end{itemize}
 
-\section{Electronic data}\label{sec:electronic}
+\chapter{Electronic data}\label{sec:electronic}
 
 \begin{description}
   \item[Accessible by URL]~
@@ -3385,7 +3289,8 @@ The \code{inproceedings} entry type is intended for a conference paper published
   \par Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$\lit{DOI} DOI$\rangle$ Division.
 \end{description}
 
-\subsection{Notes}
+\section{Notes}
+
 \begin{itemize}
   \item Indicate missing date of publication with n.d.
   \item Clarify meaning of date if needed: posted 10 Oct. 2001.
@@ -3394,7 +3299,100 @@ The \code{inproceedings} entry type is intended for a conference paper published
   \item Division can include instruction to search: s.v. \enquote{trignonometry}.
 \end{itemize}
 
-\end{writeverbatim}
+\chapter{General formatting}
+
+\section{Citation and bibliography styles}
+
+The preferred method of citation in the Oxford style is by footnotes or endnotes; this is the method employed by the Oxnotes citation style and assumed by the Oxnotes bibliography style. The sections below specify the form taken by citation notes. References in a bibliography are formatted in the same way except for one specific change: authors' names are inverted and printed in full and small capitals.
+
+\begin{itemize}
+  \item
+  \textsc{Author, First}, \lit{and} \textsc{Author, Second}, \emph{Title} (Location: Publisher, Year).
+\end{itemize}
+
+\section{Author's Name}
+
+\begin{itemize}
+  \item Author names are not inverted (except in the bibliography).
+  
+  \item Full names are not reduced to initials, but if they are given in the work as initials they need not be expanded.
+  
+  \item No more than three authors are given:
+  \begin{enumerate}
+    \item First Author
+    \\\egcite{eliot1977m}
+    
+    \item First Author and Second Author
+    \\\egcite{rouse.rouse1991btu}
+    
+    \item First Author, Second Author, and Third Author
+    \\\egcite{brady.etal1994hehsa}
+    
+    \item First Author et al.
+    \\\egcite{stewart.etal1994mb} % This is actually five authors
+  \end{enumerate}
+  
+  \item If adding a famous pseudonym to a work published under a real name: Real Name (Pen Name). \aside{Use \textsf{biblatex} field \code{nameaddon} for the alternative name.}\\\egcite{dodgson1896sl}
+  
+  \item Pseudo-Name should convert to \textsc{Name (Ps.-)} or \textsc{Name (Pseudo-)} in bibliography. \aside{To do, low priority}
+  
+  \item If square brackets are used for inferred authorship \aside{by giving as the value of the \textsf{biblatex} field \code{authortype} the definition of the macro \texttt{\textbackslash isInferred}, by default \enquote{inferred}}, the name should be alphabetized as if the brackets weren't there. Repetitions still get replaced by a rule.\\\egcite{balfour1768pe}
+  
+  \item Anonymous works: Author missed out from footnotes, can be replaced by \enquote{Anonymous} in bibliography. \aside{To do}
+  \\\egcite{anon1822san}
+  \\\egcite{anon1956lu}
+\end{itemize}
+
+\section{Titles and subtitles}
+
+\begin{itemize}
+  \item Titles are not converted to lowercase.
+  
+  \item Subtitles are separated from titles by a colon.
+  
+  \item Subtitles are given an initial capital.
+  \par\egcite{bettelheim1976uem}
+\end{itemize}
+
+\section{Publishers}
+
+\begin{itemize}
+  \item If the place of publication is absent, replace with n.p.
+\end{itemize}
+
+\aside{Publisher names may be uniformly omitted from all citations and bibliography entries. There may be a package option to switch off publisher names in future.}
+
+\section{Dates}
+
+\begin{itemize}
+  \item Months should be abbreviated to three or four letters: Apr.\ May June July Sept. % Already so by default.
+\end{itemize}
+
+\section{Foliation}
+
+\begin{itemize}
+  \item Page number format: 32.
+  \item Volume and page number format: iv.\ 32.
+  \item Volume and preliminary page number format: vol.\ iv, p.\ xxxii.
+  \item Page ranges should be compact: 32--3.\\\egcite{dean1995rpb}
+  \item If a particular page is required the first time a source is cited, it should be given after the full page range: 259--338 at 332.\\\egcite[332]{rouse.rouse1991btu}
+\end{itemize}
+
+\section{Repeated citations}
+
+Oxford style does not prescribe a particular way of abbreviating the second and subsequent citations of a work, but does suggest the following shorthand expressions for use with closely proximate repeated citations:
+
+\begin{itemize}
+  \item Ibid. = in the same place = same author and title as immediately preceding citation.
+  \item Author, op. cit. = in the cited work = same title as the last cited work by the specified author. Best suited to occasions where a work is being singled out from a recently cited list of works. 
+  \item Author, art. cit. = in the cited article = same title as the last cited article by the specified author. Best suited to occasions where a work is being singled out from a recently cited list of works.
+  \item Author, loc. cit. = at the cited place = same title and page range as the last cited work by the specified author. Rarely needed.
+  \item Id. = same = same male author as the immediately preceding citation.
+  \item Ead. = same = same female author as the immediately preceding citation.
+  \item Eid. = same = same male authors, or male and female authors, as the immediately preceding citation.
+  \item Eaed. = same = same female authors as the immediately preceding citation.
+\end{itemize}
+|
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% STYLE DOCUMENTATION -- REFERENCE SAMPLES
