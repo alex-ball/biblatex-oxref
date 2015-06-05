@@ -33,6 +33,8 @@
 }
 \pagestyle{myheadings}
 \aliaspagestyle{title}{empty}
+% Paragraphs and lists
+\setlength{\parindent}{0pt}\nonzeroparskip
 
 \usepackage[british]{babel}
 %   \DeclareUnicodeCharacter{2212}{\textminus}
@@ -83,7 +85,7 @@
 
 \newcommand*{\lit}[1]{\textsf{#1}}
 \newcommand*{\code}[1]{`\textsf{#1}'}
-\newcommand*{\aside}[1]{\textcolor{violet}{\emph{[#1]}}}
+\newcommand*{\aside}[1]{\textcolor{violet}{[\textsc{tip:} #1]}}
 
 % For debugging; userd is either ‘bad’, ‘hacked’, ‘manual’
 \makeatletter
@@ -2783,13 +2785,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % #4 = bib record
 % #5 = extra options
 \NewDocumentCommand{\docbibexample}{mmmmm}{%
+  \addtostream{#1}{}
   \addtostream{#1}{\string\begin{bibexbox}#5{#3}}
   \addtostream{#1}{\space\space #2}
   \addtostream{#1}{\space\space\string\tcblower}
   \addtostream{#1}{\space\space\string\begin{verbatim}}
   \addtostream{#1}{#4\string\end{verbatim}}
   \addtostream{#1}{\string\end{bibexbox}}
-  \addtostream{#1}{}
 }
 
 \NewDocumentCommand{\todoc}{O{oxnotes,oxyear}+v}{%
@@ -2877,12 +2879,11 @@ The Oxref family of Biblatex styles does not yet support the following entry typ
 
 Biblatex defines \code{book} as a monograph, written either by a single author, or by several authors who have joint responsibility for the entire work. An editor in this context has a modest role selecting or annotating the content, and therefore in Oxford style is given after the title even if the author is not given.
 
-\begin{description}
-  \item[Basic form]~\par
+\subsection{Basic form}
 |
 
 \todoc[oxnotes]|
-  Author, \emph{Title} (Location: Publisher, Year).
+Author, \emph{Title} (Location: Publisher, Year).
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2919,11 +2920,11 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 }|
 
 \todoc|
-  \item[No publisher]~\par
+\subsection{No publisher}
 |
 
 \todoc[oxnotes]|
-  Author, \emph{Title} (Location, Year).
+Author, \emph{Title} (Location, Year).
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2938,11 +2939,11 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 }|
 
 \todoc|
-  \item[Edited book]~\par
+\subsection{Edited book}
 |
 
 \todoc[oxnotes]|
-  Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2958,7 +2959,7 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 }|
 
 \todoc[oxnotes]|
-  \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2972,56 +2973,176 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 }|
 
 \todoc|
-\end{description}
-
 \section{Collections}
 
 Biblatex defines \code{collection} as a book made up of multiple self-contained contributions from distinct authors. There is no overall author: use the regular \code{book} entry type for collections of a single author’s work. The editor in this case has a more active role and therefore comes before the title.
 
-\begin{description}
-  \item[Edited collection]~\par
-  Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).\par
-  Editor \lit{et al.} (\lit{eds.}), \emph{Title} (Location: Publisher, Year).
-  \\\egcite{stewart.etal1994mb}
-\end{description}
+Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).\par
+|
 
+\bibexample<OGS \S15.2.1>
+|Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).|%
+||%
+|@collection{stewart.etal1994mb,
+  editor = {Rosemary Stewart and Jean-Louis Barsoux and Alfred Kieser and Hans-Dieter Ganter and Peter Walgenbach},
+  title = {Managing in {Britain}},
+  location = {London},
+  date = {1994}
+}|
+
+\todoc|
 \section{Reference works}
 
 Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). Unlike standard Biblatex, though, Oxford style considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first.
 
-\begin{description}
-  \item[Edited reference work]~\par
-  \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
-  \\\egcite{fortenbaugh.etal1991tes}
-\end{description}
+\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+|
 
+\bibexample<OGS \S15.2.1>
+|\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).|%
+||%
+|@mvreference{fortenbaugh.etal1991tes,
+  title = {{Theophrastus} of {Eresus}},
+  subtitle = {Sources for his Life, Writings, Thought, and Influence},
+  editor = {William W. Fortenbaugh and Pamela M Huby and Robert W. Sharples and Dimitri Gutas and others},
+  volumes = {2},
+  series = {Philosophia Antiqua},
+  number = {54},
+  location = {Leiden},
+  date = {1991}
+}|
+
+\todoc|
 \section{Multi-volume works}
 
 Biblatex provides additional entry types for multi-volume works: \code{mvbook}, \code{mvcollection} and \code{mvreference} respectively. These can be used to cite all the volumes at once, or just one volume from the set.
 
-\begin{description}
-  \item[All volumes (form 1)] Used where all volumes were published consistently.
-  \par Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.
-  \\\egcite{straeten1867lmp}
-  
-  \item[All volumes (form 2)] Used where the publisher changed between volumes.
-  \par Author, \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher, Year), VolNo (Location: Publisher, Year).
-  \\\egcite{ritter1838hap}
-  
-  \item[One volume from several (form 1)] Used where the volumes are merely numbered. \aside{Use \code{title} but not \code{maintitle}.}
-  \par Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.
-  \\\egcite{straeten1867lmp.ii}
-  
-  \item[One volume from several (form 2)] Used where the volumes each have their own (sub)title, and they were all published at once (more or less). \aside{Use both \code{title} and \code{maintitle}.}
-  \par Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.
-  \\\egcite{brady.etal1994hehsa}
-  \\\egcite{ward.waller1932che}
-  
-  \item[One volume from several (form 3)] Used where the volumes each have their own (sub)title, and there are many volumes spanning years and possibly publishers. \aside{Use entry subtype \code{sequence}.}
-  \par Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.
-  \\\egcite{fischer1989asf}
-\end{description}
+\subsection{All volumes}
 
+Where all volumes were published consistently, the following form is used:
+
+Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.
+|
+
+\bibexample<OGS \S15.2.6>
+|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.|
+||%
+|@mvbook{straeten1867lmp,
+    author = {Edmond Vander Straeten},
+    title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
+    volumes = {8},
+    location = {Brussels},
+    date = {1867/1888}
+}|[ii.~367--8]
+
+\todoc|
+NB. A more portable way of expressing the above citation would be\\
+\lstinline!\fullcite[\nopp ii.~\mkcomprange{367--368}]{straeten1867lmp}!.
+
+Where the publisher changed between volumes, the following form is used:
+
+Author, \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher, Year), VolNo (Location: Publisher, Year).
+|
+
+\bibexample(hacked)<OGS \S15.2.6>
+|Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i--iii (Oxford: Talboys, 1838--9), iv (London: Bohn, 1846).|%
+||%
+|@mvbook{ritter1838hap,
+  author = {Heinrich Ritter},
+  title = {The History of Ancient Philosophy},
+  translator = {Alexander J. W. Morrison},
+  volumes = {4},
+  volume = {1--iii},
+  location = {Oxford},
+  publisher = {Talboys},
+  date = {1838/1839},
+  pages = {iv},
+  pubstate = {London: Bohn, 1846}
+}|
+
+\todoc|
+NB. In the \emph{Oxford Style Manual}, the translator in the above reference is in parentheses,
+but as this pattern does not occur in any other it may be an error or stylistic variation.
+
+\subsection{One volume from several}
+
+Where the volumes are merely numbered, the following form is used
+\aside{Use \code{title} but not \code{maintitle}}:
+
+Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.
+|
+
+\bibexample<OGS \S15.2.6>
+|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.|%
+||%
+|@mvbook{straeten1867lmp.ii,
+  author = {Edmond Vander Straeten},
+  title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
+  volume = {2},
+  location = {Brussels},
+  date = {1867/1888}
+}|[367-368]
+
+\todoc|
+Where the volumes each have their own (sub)title,
+and they were all published at once (more or less),
+the following form is used \aside{Use both \code{title} and \code{maintitle}}:
+
+Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.
+|
+
+\bibexample<OGS \S15.2.2>
+|Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).|%
+||%
+|@mvcollection{brady.etal1994hehsa,
+  editor = {Brady, Jr., Thomas A. and Heiko A. Oberman and James D. Tracy},
+  maintitle = {Handbook of European History, 1400–1600},
+  mainsubtitle = {{Late} {Middle} {Ages,} {Renaissance} and {Reformation}},
+  volume = {1},
+  title = {Structures and Assertions},
+  location = {Leiden},
+  publisher = {E. J. Brill},
+  date = {1994}
+}|
+
+\bibexample<OGS \S15.2.6>
+|A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.|%
+||%
+|@mvcollection{ward.waller1932che,
+  editor = {A. W. Ward and A. E. Waller},
+  maintitle = {The Cambridge History of English Literature},
+  volume = {12},
+  title = {The Nineteenth Century},
+  location = {Cambridge},
+  publisher = {CUP},
+  date = {1932}
+}|[42-56]
+
+\todoc|
+Where the volumes each have their own (sub)title,
+and there are many volumes spanning years and possibly publishers,
+the following form is used \aside{Use entry subtype \code{sequence}.}:
+
+Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.
+|
+
+\bibexample<OGS \S15.2.6>
+|David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).|%
+||%
+|@book{fischer1989asf,
+  entrysubtype = {sequence},
+  author = {David Hackett Fischer},
+  title = {Albion’s Seed},
+  subtitle = {Four British Folkways in America},
+  volume = {1},
+  maintitle = {America},
+  mainsubtitle = {A Cultural History},
+  location = {New York},
+  publisher = {Oxford University Press},
+  date = {1989}
+}|
+
+\todoc|
 \section{Common variations}
 
 \begin{description}
@@ -3475,7 +3596,6 @@ Oxford style does not prescribe a particular way of abbreviating the second and 
 
 \todoc|
 \chapter{Sample references}
-\setlength{\parindent}{0pt}\nonzeroparskip
 
 Below are a series of sample references taken from the \emph{Oxford Style Manual} (in black), each followed by a corresponding reference (in colour) generated using the \textsf{oxref} style. \textcolor{Green}{Green} references can be generated using standard \textsf{biblatex} semantics in the \texttt{.bib} file; \textcolor{red}{red} or missing references aren't currently supported properly; \textcolor{orange}{orange} references require some cheating in the \texttt{.bib} file, and so would have to be altered should a different style be chosen. The database key for each reference is given in the margin to make it easier to look up in the sample database. The section numbers refer to the location of the references in the \emph{Oxford Style Manual}.
 |
@@ -3497,29 +3617,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   pages = {259--338}
 }|[332]
 
-\bibexample<OGS \S15.2.1>
-|Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).|%
-||%
-|@collection{stewart.etal1994mb,
-  editor = {Rosemary Stewart and Jean-Louis Barsoux and Alfred Kieser and Hans-Dieter Ganter and Peter Walgenbach},
-  title = {Managing in {Britain}},
-  location = {London},
-  date = {1994}
-}|
-
-\bibexample<OGS \S15.2.1>
-|\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).|%
-||%
-|@mvbook{fortenbaugh.etal1991tes,
-  title = {{Theophrastus} of {Eresus}},
-  subtitle = {Sources for his Life, Writings, Thought, and Influence},
-  editor = {William W. Fortenbaugh and Pamela M Huby and Robert W. Sharples and Dimitri Gutas and others},
-  volumes = {2},
-  series = {Philosophia Antiqua},
-  number = {54},
-  location = {Leiden},
-  date = {1991}
-}|
 
 \bibexample<OGS \S15.2.1>
 |Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.|%
@@ -3597,19 +3694,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1956}
 }|
 
-\bibexample<OGS \S15.2.2>
-|Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).|%
-||%
-|@mvcollection{brady.etal1994hehsa,
-  editor = {Brady, Jr., Thomas A. and Heiko A. Oberman and James D. Tracy},
-  maintitle = {Handbook of European History, 1400–1600},
-  mainsubtitle = {{Late} {Middle} {Ages,} {Renaissance} and {Reformation}},
-  volume = {1},
-  title = {Structures and Assertions},
-  location = {Leiden},
-  publisher = {E. J. Brill},
-  date = {1994}
-}|
 
 
 \bibexample<OGS \S15.2.3>
@@ -3710,82 +3794,15 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1989}
 }|
 
-\bibexample<OGS \S15.2.6>
-|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.|
-||%
-|@mvbook{straeten1867lmp,
-    author = {Edmond Vander Straeten},
-    title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
-    volumes = {8},
-    location = {Brussels},
-    date = {1867/1888}
-}|[ii.~367--8]
+
 
 \todoc|
-A more portable way of expressing the same citation would be\\
-\lstinline!\fullcite[\nopp ii.~\mkcomprange{367--368}]{straeten1867lmp}!.
-|
-
-\bibexample<OGS \S15.2.6>
-|Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.|%
-||%
-|@mvbook{straeten1867lmp.ii,
-  author = {Edmond Vander Straeten},
-  title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
-  volume = {2},
-  location = {Brussels},
-  date = {1867/1888}
-}|[367-368]
-
-\todoc|
-\aside{In the \emph{Oxford Style Manual}, the translator is in parentheses in the following reference, but as this pattern does not occur in any other it may be an error or stylistic variation. The following effect was achieved with \code{volume = \{1--iii\}}, \code{pages = \{iv\}}, and \code{pubstate = \{London: Bohn, 1846\}}.}
+\aside{ The following effect was achieved with \code{volume = \{1--iii\}}, \code{pages = \{iv\}}, and \code{pubstate = \{London: Bohn, 1846\}}.}
 |
 
 % This hack is not at all portable. Use with care, or use one of the other layouts.
-\bibexample(hacked)<OGS \S15.2.6>
-|Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4 vols., i--iii (Oxford: Talboys, 1838--9), iv (London: Bohn, 1846).|%
-||%
-|@mvbook{ritter1838hap,
-  author = {Heinrich Ritter},
-  title = {The History of Ancient Philosophy},
-  translator = {Alexander J. W. Morrison},
-  volumes = {4},
-  volume = {1--iii},
-  location = {Oxford},
-  publisher = {Talboys},
-  date = {1838/1839},
-  pages = {iv},
-  pubstate = {London: Bohn, 1846}
-}|
 
-\bibexample<OGS \S15.2.6>
-|A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.|%
-||%
-|@mvcollection{ward.waller1932che,
-  editor = {A. W. Ward and A. E. Waller},
-  maintitle = {The Cambridge History of English Literature},
-  volume = {12},
-  title = {The Nineteenth Century},
-  location = {Cambridge},
-  publisher = {CUP},
-  date = {1932}
-}|[42-56]
 
-\bibexample<OGS \S15.2.6>
-|David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).|%
-||%
-|@book{fischer1989asf,
-  entrysubtype = {sequence},
-  author = {David Hackett Fischer},
-  title = {Albion’s Seed},
-  subtitle = {Four British Folkways in America},
-  volume = {1},
-  maintitle = {America},
-  mainsubtitle = {A Cultural History},
-  location = {New York},
-  publisher = {Oxford University Press},
-  date = {1989}
-}|
 
 \bibexample<OGS \S15.2.7>
 |Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (Beihefte zum Archiv für Musikwissenschaft, 10--11; Wiesbaden, 1972).|%
