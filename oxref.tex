@@ -2792,34 +2792,29 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \addtostream{#1}{}
 }
 
-\NewDocumentCommand{\commondoc}{+v}{%
-  \addtostream{oxnotes}{#1}
-  \addtostream{oxyear}{#1}
+\NewDocumentCommand{\todoc}{O{oxnotes,oxyear}+v}{%
+  \renewcommand{\do}[1]{\addtostream{##1}{#2}}
+  \docsvlist{#1}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% STYLE DOCUMENTATION -- FRONT MATTER
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{writeverbatim}{oxnotes}
-\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
-\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
-\input{oxref-preamble}
+\todoc|\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}|
 
-\title{Oxnotes style for Biblatex}
-\author{Alex Ball}
-\end{writeverbatim}
+\todoc[oxnotes]|\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}|
+\todoc[oxyear]|\PassOptionsToPackage{bibstyle=oxyear,citestyle=authoryear}{biblatex}|
 
-\begin{writeverbatim}{oxyear}
-\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
-\PassOptionsToPackage{bibstyle=oxyear,citestyle=authoryear}{biblatex}
-\input{oxref-preamble}
+\todoc|\input{oxref-preamble}|
 
-\title{Oxyear style for Biblatex}
-\author{Alex Ball}
-\end{writeverbatim}
+\todoc[oxnotes]|
+\title{Oxnotes style for Biblatex}|
+\todoc[oxyear]|
+\title{Oxyear style for Biblatex}|
 
-\commondoc|
+\todoc|\author{Alex Ball}
+
 \begin{document}
 \thispagestyle{empty}
 \begin{adjustwidth}{.2\textwidth}{0pt}
@@ -2848,7 +2843,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %%% STYLE DOCUMENTATION -- SPECIFICATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\commondoc|
+\todoc|
 \chapter{Introduction}
 
 \section{Loading the style}
@@ -3398,7 +3393,7 @@ Oxford style does not prescribe a particular way of abbreviating the second and 
 %%% STYLE DOCUMENTATION -- REFERENCE SAMPLES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\commondoc|
+\todoc|
 \chapter{Sample references}
 \setlength{\parindent}{0pt}\nonzeroparskip
 
@@ -3526,7 +3521,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1768}
 }|
 
-\commondoc|
+\todoc|
 \aside{In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the following reference; this may be an error.}
 |
 
@@ -3680,7 +3675,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1963}
 }|
 
-\commondoc|
+\todoc|
 \aside{The following effect was achieved by abusing the \code{origlocation}, \code{origpublisher} and \code{origdate} fields.}
 |
 
@@ -3710,7 +3705,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
     date = {1867/1888}
 }|[ii.~367--8]
 
-\commondoc|
+\todoc|
 A more portable way of expressing the same citation would be\\
 \lstinline!\fullcite[\nopp ii.~\mkcomprange{367--368}]{straeten1867lmp}!.
 |
@@ -3726,7 +3721,7 @@ A more portable way of expressing the same citation would be\\
   date = {1867/1888}
 }|[367-368]
 
-\commondoc|
+\todoc|
 \aside{In the \emph{Oxford Style Manual}, the translator is in parentheses in the following reference, but as this pattern does not occur in any other it may be an error or stylistic variation. The following effect was achieved with \code{volume = \{1--iii\}}, \code{pages = \{iv\}}, and \code{pubstate = \{London: Bohn, 1846\}}.}
 |
 
@@ -3919,7 +3914,7 @@ A more portable way of expressing the same citation would be\\
   pages = {1-25}
 }|
 
-\commondoc|
+\todoc|
 If not using Biber, instead of the related fields you would use the following:\\
 \tcboxverb{addendum = {From \fullcite[1-25]{osap1983}}}
 |
@@ -3983,7 +3978,7 @@ If not using Biber, instead of the related fields you would use the following:\\
   pages = {76-86}
 }|
 
-\commondoc|
+\todoc|
 \aside{The following effect was achieved by added \code{\textbackslash nopunct} to the end of the journal title.}
 |
 
@@ -3999,7 +3994,7 @@ If not using Biber, instead of the related fields you would use the following:\\
   pages = {452-467},
 }|
 
-\commondoc|
+\todoc|
 \aside{Here the \code{=} and journal title are given as the \code{titleaddon}, and the issue information as the \code{note}.}
 |
 
@@ -4136,7 +4131,7 @@ If not using Biber, instead of the related fields you would use the following:\\
   date = {1957}
 }|
 
-\commondoc|
+\todoc|
 \section*{15.8} % Poems
 
 Spenser, \emph{Faerie Queene}, II. \textsc{vi}. xxxv. 7
@@ -4215,7 +4210,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   date = {1981},
 }|
 
-\commondoc|
+\todoc|
 \section*{15.14.2} % Films, video recordings, and slides
 
 \emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
@@ -4374,7 +4369,7 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 %%% STYLE DOCUMENTATION -- ENDMATTER
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\commondoc|
+\todoc|
 \printbibliography[notcategory=reviewed]
 \end{document}
 |
