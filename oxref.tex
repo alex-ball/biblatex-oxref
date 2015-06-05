@@ -2879,19 +2879,99 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 
 \begin{description}
   \item[Basic form]~\par
+|
+
+\todoc[oxnotes]|
   Author, \emph{Title} (Location: Publisher, Year).
-  \\\egcite{eliot1977m}
-  \\\egcite{benvenuti1986op}
-  \\\egcite{oconor1977sjf}
-  
+|
+
+\bibexample<OGS \S15.2.1>
+|George Eliot, \emph{Middlemarch} (New York: W. W. Norton, 1977).|%
+||%
+|@book{eliot1977m,
+  author = {George Eliot},
+  title = {Middlemarch},
+  location = {New York},
+  publisher = {W. W. Norton},
+  date = {1977}
+}|
+
+\bibexample<OGS \S15.2.2>
+|Antonia Tissoni Benvenuti, \emph{L'\emph{Orfeo} del Poliziano} (Padua: Editrice Antenore, 1986).|%
+||%
+|@book{benvenuti1986op,
+  author = {Antonia Tissoni Benvenuti},
+  title = {L'\emph{Orfeo} del Poliziano},
+  location = {Padua},
+  publisher = {Editrice Antenore},
+  date = {1986}
+}|
+
+\bibexample<OGS \S15.2.2>
+|Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the Liffey} (Dublin: HCE Press, 1977).|%
+||%
+|@book{oconor1977sjf,
+  author = {Roderick O'Conor},
+  title = {A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the {Liffey}},
+  location = {Dublin},
+  publisher = {HCE Press},
+  date = {1977}
+}|
+
+\todoc|
   \item[No publisher]~\par
+|
+
+\todoc[oxnotes]|
   Author, \emph{Title} (Location, Year).
-  \\\egcite{balfour1768pe}
-  
+|
+
+\bibexample<OGS \S15.2.1>
+|{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).|%
+||%
+|@book{balfour1768pe,
+  author = {James Balfour},
+  authortype = {inferred},
+  title = {Philosophical Essays},
+  location = {Edinburgh},
+  date = {1768}
+}|
+
+\todoc|
   \item[Edited book]~\par
-  Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year). \\\egcite{boethius1976dds}\par
+|
+
+\todoc[oxnotes]|
+  Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.1>
+|Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).|%
+||%
+|@book{boethius1976dds,
+  author = {Pseudo-Boethius},
+  title = {De disciplina scolarium},
+  subtitle = {Édition critique, introduction et notes},
+  editor = {Olga Weijers},
+  location = {Leiden},
+  date = {1976}
+}|
+
+\todoc[oxnotes]|
   \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
-  \\\egcite{boas.botschuyver1952dc}
+|
+
+\bibexample<OGS \S15.2.1>
+|\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).|%
+||%
+|@book{boas.botschuyver1952dc,
+  title = {Distichia Catonis},
+  editor = {Marcus Boas and Henricus Johannes Botschuyver},
+  location = {Amsterdam},
+  date = {1952}
+}|
+
+\todoc|
 \end{description}
 
 \section{Collections}
@@ -3453,16 +3533,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   pages = {85-98}
 }|
 
-\bibexample<OGS \S15.2.1>
-|George Eliot, \emph{Middlemarch} (New York: W. W. Norton, 1977).|%
-||%
-|@book{eliot1977m,
-  author = {George Eliot},
-  title = {Middlemarch},
-  location = {New York},
-  publisher = {W. W. Norton},
-  date = {1977}
-}|
 
 \bibexample<OGS \S15.2.1>
 |Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).|%
@@ -3486,39 +3556,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   location = {Oxford},
   publisher = {Clarendon Press},
   date = {1896}
-}|
-
-\bibexample<OGS \S15.2.1>
-|Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).|%
-||%
-|@book{boethius1976dds,
-  author = {Pseudo-Boethius},
-  title = {De disciplina scolarium},
-  subtitle = {Édition critique, introduction et notes},
-  editor = {Olga Weijers},
-  location = {Leiden},
-  date = {1976}
-}|
-
-\bibexample<OGS \S15.2.1>
-|\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).|%
-||%
-|@book{boas.botschuyver1952dc,
-  title = {Distichia Catonis},
-  editor = {Marcus Boas and Henricus Johannes Botschuyver},
-  location = {Amsterdam},
-  date = {1952}
-}|
-
-\bibexample<OGS \S15.2.1>
-|{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).|%
-||%
-|@book{balfour1768pe,
-  author = {James Balfour},
-  authortype = {inferred},
-  title = {Philosophical Essays},
-  location = {Edinburgh},
-  date = {1768}
 }|
 
 \todoc|
@@ -3574,27 +3611,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1994}
 }|
 
-\bibexample<OGS \S15.2.2>
-|Antonia Tissoni Benvenuti, \emph{L'\emph{Orfeo} del Poliziano} (Padua: Editrice Antenore, 1986).|%
-||%
-|@book{benvenuti1986op,
-  author = {Antonia Tissoni Benvenuti},
-  title = {L'\emph{Orfeo} del Poliziano},
-  location = {Padua},
-  publisher = {Editrice Antenore},
-  date = {1986}
-}|
-
-\bibexample<OGS \S15.2.2>
-|Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the Liffey} (Dublin: HCE Press, 1977).|%
-||%
-|@book{oconor1977sjf,
-  author = {Roderick O'Conor},
-  title = {A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the {Liffey}},
-  location = {Dublin},
-  publisher = {HCE Press},
-  date = {1977}
-}|
 
 \bibexample<OGS \S15.2.3>
 |J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.|%
