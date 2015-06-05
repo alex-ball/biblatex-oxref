@@ -3145,60 +3145,244 @@ Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher,
 \todoc|
 \section{Common variations}
 
-\begin{description}
-  \item[Works with notable additions] Used where works have significant introductions, forewords, afterwords, illustrations, etc.\par
-  Author, \emph{Title}, \lit{with an} Addition \lit{by} Addition Author (Location: Publisher, Year).
-  \\\egcite{twain1971cyk}
+\subsection{Additions and translations}
+
+Where works have significant introductions, forewords, afterwords, illustrations, etc.\ this may be noted as follows:
+
+Author, \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.1>
+|Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).|%
+||%
+|@book{twain1971cyk,
+  author = {Mark Twain},
+  title = {A {Connecticut} Yankee at {King} {Arthur's} Court},
+  introduction = {Justin Kaplan},
+  location = {Harmondsworth},
+  publisher = {Penguin},
+  date = {1971}
+}|
+
+\todoc|
+Translators are credited as follows:
+
+Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.15>
+|Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).|%
+||%
+|@book{bischoff1990lpa,
+  author = {Bernhard Bischoff},
+  title = {Latin Palaeography},
+  subtitle = {Antiquity and the Middle Ages},
+  translator = {Dáibhi Ó Cróinín and David Ganz},
+  location = {Cambridge},
+  date = {1990}
+}|
+
+\todoc|
+Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.15>
+|Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).|%
+||%
+|@book{martorell1984tlb,
+  author = {Joanat Martorell},
+  title = {Tirant lo Blanc},
+  translator = {David H. Rosenthal},
+  foreword = {David H. Rosenthal},
+  location = {London},
+  date = {1984}
+}|
+
+\todoc|
+\subsection{Revision}
+
+Where a work has been lightly revised, the following form is used:
+
+Author, \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher, Year).
+
+Where a work has been extensively revised, the following form is used:
+
+Author, \lit{rev.} Reviser, \emph{Title}, (Location: Publisher, Year).
+
+\subsection{Later edition}
+
+Where the editor is common to both, the following form is used \aside{Use entry type \code{book}}:
+
+Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.3>
+|J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.|%
+||%
+|@book{baker1990iel,
+  author = {J. H. Baker},
+  title = {An Introduction to {English} Legal History},
+  edition = {3},
+  date = {1990}
+}|[419-421]
+
+\todoc|
+Where the editor has changed, the following form is used \aside{Use entry type \code{reference}}:
+
+\emph{Title}, nth \lit{edn.}, \lit{ed.} Editor (Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.3>
+|\emph{The Oxford Dictionary of Quotations}, 5th edn., ed. Elizabeth Knowles (Oxford, 1999).|%
+||%
+|@reference{knowles1999odq,
+  title = {The {Oxford} Dictionary of Quotations},
+  edition = {5},
+  editor = {Elizabeth Knowles},
+  publisher = {Oxford},
+  date = {1999}
+}|
+
+\todoc|
+\subsection{First and later edition}
+
+Where the publisher is common to both, the following form is used \aside{Use the \code{orig} fields}:
+
+Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.3>
+|J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).|%
+||%
+|@book{denniston1934gp,
+  author = {J. D. Denniston},
+  title = {The Greek Particles},
+  origdate = {1934},
+  edition = {2},
+  location = {Oxford},
+  date = {1954}
+}|
+
+\bibexample<OGS \S15.2.1>
+|{[John Gibbon]}, \emph{Day-Fatality: Or Some Observations on Days Lucky and Unlucky}, (London, 1678; rev.~edn., 1686).|%
+||%
+|@book{gibbon1686dfs,
+  author = {John Gibbon},
+  authortype = {inferred},
+  title = {Day-Fatality},
+  subtitle = {Or Some Observations on Days Lucky and Unlucky},
+  edition = {revised},
+  origlocation = {London},
+  origdate = {1678},
+  date = {1686}
+}|
   
-  \item[Translated works]~\par
-  Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).
-  \\\egcite{bischoff1990lpa}
+\todoc|
+In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the above reference; this may be an error.
+
+Used where the publisher has changed, the following form is used \aside{Use \code{pubstate} for the original publication date}:
+
+Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).
+|
+
+\bibexample<OGS \S15.2.3>
+|Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).|%
+||%
+|@book{bettelheim1976uem,
+  author = {Bruno Bettelheim},
+  title = {The Uses of Enchantment},
+  subtitle = {The Meaning and Importance of Fairy Tales},
+  location = {Harmondsworth},
+  publisher = {Penguin Books},
+  date = {1988},
+  pubstate = {first pub\adddotspace 1976}
+}|
   
-  \item[Modified works with notable additions]~\par
-  Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher, Year).
-  \\\egcite{martorell1984tlb}
-  
-  \item[Revised works (form 1)] Used for light revisions.
-  \par Author, \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher, Year).
-  
-  \item[Revised works (form 2)] Used for extensive revisions.
-  \par Author, \lit{rev.} Reviser, \emph{Title}, (Location: Publisher, Year).
-  
-  \item[Later edition (form 1)] Used where the editor is common to both. \aside{Use entry type \code{book}.}
-  \par Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).
-  \\\egcite{baker1990iel}
-  
-  \item[Later edition (form 2)] Used where the editor has changed. \aside{Use entry type \code{reference}.}
-  \par \emph{Title}, nth \lit{edn.}, \lit{ed.} Editor (Location: Publisher, Year).
-  \\\egcite{knowles1999odq}
-  
-  \item[First and later edition (form 1)] Used where the publisher is common to both. \aside{Use the \code{orig} fields.}
-  \par Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).
-  \\\egcite{denniston1934gp}
-  \\\egcite{gibbon1686dfs}
-  
-  \item[First and later edition (form 2)] Used where the publisher has changed. \aside{Use \code{pubstate} for the original publication date.}
-  \par Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).
-  \\\egcite{bettelheim1976uem}
-  
-  \item[Reprint] \aside{Use localization key \code{reprint} as the edition.}\par 
-  Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).
-  \\\egcite{adam.tannery1897odd}
-  
-  \item[Facsimile Edition] \aside{Use localization key \code{facsimile} as the edition.}\par 
-  Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).
-  \\\egcite{allen1594kkk}
-  
-  \item[Multiple publishers, same title]~\par 
-  Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).
-  \\\egcite{holfordstrevens1988ag}
-  
-  \item[Work from a series]~
-  \par Author, \emph{Title} (Series; Location: Publisher, Year).
-  \par Author, \emph{Title} (Series, Number; Location: Publisher, Year).
-  \\\egcite{garlandia1972dmm}
-  \par Author, \emph{Title} (nth \lit{ser.}, Year).
-\end{description}
+\todoc|
+\subsection{Reprint}
+
+\aside{Use localization key \code{reprint} as the edition.}\par 
+Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.4>
+|C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).|%
+||%
+|@collection{adam.tannery1897odd,
+  editor = {C. Adam and D. Tannery},
+  title = {Œuvres de Descartes},
+  origlocation = {Paris},
+  origpublisher = {Cerf},
+  origdate = {1897/1913},
+  edition = {reprint},
+  location = {Paris},
+  publisher = {J. Vrin, CNRS},
+  date = {1964/1976}
+}|
+
+\todoc|
+\aside{Use localization key \code{facsimile} as the edition.}\par 
+Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.4>
+|E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).|%
+||%
+|@book{allen1594kkk,
+  author = {E. Allen},
+  title = {A Knack to Know a Knave},
+  origlocation = {London},
+  origdate = {1594},
+  edition = {facsimile},
+  location = {Oxford},
+  publisher = {Malone Society Reprints},
+  date = {1963}
+}|
+
+\todoc|
+\subsection{Multiple publishers}
+
+Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).
+|
+
+\bibexample(hacked)<OGS \S15.2.5>
+|L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).|%
+||%
+|@book{holfordstrevens1988ag,
+  author = {L. A. Holford-Strevens},
+  title = {Aulus Gellius},
+  origlocation = {London},
+  origpublisher = {Duckworth},
+  origdate = {1988},
+  location = {Chapel Hill},
+  publisher = {University of North Carolina Press},
+  date = {1989}
+}|
+
+\todoc|
+\subsection{Work from a series}
+
+Author, \emph{Title} (Series; Location: Publisher, Year).
+
+Author, \emph{Title} (Series, Number; Location: Publisher, Year).
+|
+
+\bibexample<OGS \S15.2.7>
+|Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (Beihefte zum Archiv für Musikwissenschaft, 10--11; Wiesbaden, 1972).|%
+||%
+|@mvbook{garlandia1972dmm,
+  author = {Johannes de Garlandia},
+  title = {De mensurabili musica},
+  editor = {Erich Reimer},
+  volumes = {2},
+  series = {Beihefte zum Archiv für Musikwissenschaft},
+  number = {10--11},
+  publisher = {Wiesbaden},
+  date = {1972}
+}|
+
+\todoc|
+\par Author, \emph{Title} (nth \lit{ser.}, Year).
 
 \chapter{Reports}\label{sec:report}
 \chapterprecis{report}
@@ -3632,18 +3816,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 
 
 \bibexample<OGS \S15.2.1>
-|Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).|%
-||%
-|@book{twain1971cyk,
-  author = {Mark Twain},
-  title = {A {Connecticut} Yankee at {King} {Arthur's} Court},
-  introduction = {Justin Kaplan},
-  location = {Harmondsworth},
-  publisher = {Penguin},
-  date = {1971}
-}|
-
-\bibexample<OGS \S15.2.1>
 |C. L. Dodgson (Lewis Carroll), \emph{Symbolic Logic} (Oxford: Clarendon Press, 1896).|%
 ||%
 |@book{dodgson1896sl,
@@ -3653,24 +3825,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   location = {Oxford},
   publisher = {Clarendon Press},
   date = {1896}
-}|
-
-\todoc|
-\aside{In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the following reference; this may be an error.}
-|
-
-\bibexample<OGS \S15.2.1>
-|{[John Gibbon]}, \emph{Day-Fatality: Or Some Observations on Days Lucky and Unlucky}, (London, 1678; rev.~edn., 1686).|%
-||%
-|@book{gibbon1686dfs,
-  author = {John Gibbon},
-  authortype = {inferred},
-  title = {Day-Fatality},
-  subtitle = {Or Some Observations on Days Lucky and Unlucky},
-  edition = {revised},
-  origlocation = {London},
-  origdate = {1678},
-  date = {1686}
 }|
 
 % Do we need special handling for whether a work is marked 'Anon'?
@@ -3696,127 +3850,18 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 
 
 
-\bibexample<OGS \S15.2.3>
-|J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.|%
-||%
-|@book{baker1990iel,
-  author = {J. H. Baker},
-  title = {An Introduction to {English} Legal History},
-  edition = {3},
-  date = {1990}
-}|[419-421]
-
 % First and later edition, same publisher
-\bibexample<OGS \S15.2.3>
-|J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).|%
-||%
-|@book{denniston1934gp,
-  author = {J. D. Denniston},
-  title = {The Greek Particles},
-  origdate = {1934},
-  edition = {2},
-  location = {Oxford},
-  date = {1954}
-}|
-
 % First and later edition, different publisher
-\bibexample<OGS \S15.2.3>
-|Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).|%
-||%
-|@book{bettelheim1976uem,
-  author = {Bruno Bettelheim},
-  title = {The Uses of Enchantment},
-  subtitle = {The Meaning and Importance of Fairy Tales},
-  location = {Harmondsworth},
-  publisher = {Penguin Books},
-  date = {1988},
-  pubstate = {first pub\adddotspace 1976}
-}|
 
 % Later edition by different editor
-\bibexample<OGS \S15.2.3>
-|\emph{The Oxford Dictionary of Quotations}, 5th edn., ed. Elizabeth Knowles (Oxford, 1999).|%
-||%
-|@reference{knowles1999odq,
-  title = {The {Oxford} Dictionary of Quotations},
-  edition = {5},
-  editor = {Elizabeth Knowles},
-  publisher = {Oxford},
-  date = {1999}
-}|
-
-\bibexample<OGS \S15.2.4>
-|C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).|%
-||%
-|@collection{adam.tannery1897odd,
-  editor = {C. Adam and D. Tannery},
-  title = {Œuvres de Descartes},
-  origlocation = {Paris},
-  origpublisher = {Cerf},
-  origdate = {1897/1913},
-  edition = {reprint},
-  location = {Paris},
-  publisher = {J. Vrin, CNRS},
-  date = {1964/1976}
-}|
 
 % Need special handling for marking facsimile editions
-\bibexample<OGS \S15.2.4>
-|E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).|%
-||%
-|@book{allen1594kkk,
-  author = {E. Allen},
-  title = {A Knack to Know a Knave},
-  origlocation = {London},
-  origdate = {1594},
-  edition = {facsimile},
-  location = {Oxford},
-  publisher = {Malone Society Reprints},
-  date = {1963}
-}|
 
 \todoc|
 \aside{The following effect was achieved by abusing the \code{origlocation}, \code{origpublisher} and \code{origdate} fields.}
 |
 
 % Multiple publishers, same title
-\bibexample(hacked)<OGS \S15.2.5>
-|L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).|%
-||%
-|@book{holfordstrevens1988ag,
-  author = {L. A. Holford-Strevens},
-  title = {Aulus Gellius},
-  origlocation = {London},
-  origpublisher = {Duckworth},
-  origdate = {1988},
-  location = {Chapel Hill},
-  publisher = {University of North Carolina Press},
-  date = {1989}
-}|
-
-
-
-\todoc|
-\aside{ The following effect was achieved with \code{volume = \{1--iii\}}, \code{pages = \{iv\}}, and \code{pubstate = \{London: Bohn, 1846\}}.}
-|
-
-% This hack is not at all portable. Use with care, or use one of the other layouts.
-
-
-
-\bibexample<OGS \S15.2.7>
-|Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (Beihefte zum Archiv für Musikwissenschaft, 10--11; Wiesbaden, 1972).|%
-||%
-|@mvbook{garlandia1972dmm,
-  author = {Johannes de Garlandia},
-  title = {De mensurabili musica},
-  editor = {Erich Reimer},
-  volumes = {2},
-  series = {Beihefte zum Archiv für Musikwissenschaft},
-  number = {10--11},
-  publisher = {Wiesbaden},
-  date = {1972}
-}|
 
 \bibexample<OGS \S15.2.12>
 |\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).|%
@@ -3850,29 +3895,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1988}
 }|
 
-\bibexample<OGS \S15.2.15>
-|Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).|%
-||%
-|@book{bischoff1990lpa,
-  author = {Bernhard Bischoff},
-  title = {Latin Palaeography},
-  subtitle = {Antiquity and the Middle Ages},
-  translator = {Dáibhi Ó Cróinín and David Ganz},
-  location = {Cambridge},
-  date = {1990}
-}|
-
-\bibexample<OGS \S15.2.15>
-|Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).|%
-||%
-|@book{martorell1984tlb,
-  author = {Joanat Martorell},
-  title = {Tirant lo Blanc},
-  translator = {David H. Rosenthal},
-  foreword = {David H. Rosenthal},
-  location = {London},
-  date = {1984}
-}|
 
 \bibexample<OGS \S15.3>
 |John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George Holmes (ed.), \emph{Art and Politics in Renaissance Italy: British Academy Lectures} (Oxford: Clarendon Press, 1993), 185--240.|%
