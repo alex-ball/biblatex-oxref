@@ -106,7 +106,7 @@
 }
 \makeatother
 \NewTColorBox{bibexbox}{D(){ok}d<>om}%
-  {skin=bicolor
+  {bicolor
   ,colframe = #1
   ,colback = #1!5!white
   ,colbacklower = white
@@ -124,6 +124,15 @@
       }
     }
   }
+\NewTotalTColorBox{\spec}{m}%
+  {enhanced
+  ,sharp corners = west
+  ,colframe = teal
+  ,colback = teal!5!white
+  ,toprule = 0pt
+  ,bottomrule = 0pt
+  ,rightrule = 0pt
+  }{#1}
 % \testrow compares target format with generated format. Arguments:
 % #1 = target format
 % #2 = page range
@@ -2883,7 +2892,10 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 |
 
 \todoc[oxnotes]|
-Author, \emph{Title} (Location: Publisher, Year).
+\spec{Author, \emph{Title} (Location: Publisher, Year).}
+|
+\todoc[oxyear]|
+\spec{Author (Date), \emph{Title} (Location: Publisher).}
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2919,12 +2931,36 @@ Author, \emph{Title} (Location: Publisher, Year).
   date = {1977}
 }|
 
+\bibexample<NHR \S18.5>
+||%
+|Lyons, J. (1981a), \emph{Language and Linguistics: An Introduction} (Cambridge: Cambridge University Press).|%
+|@book{lyons1981lli,
+  author = {John Lyons},
+  date = {1981},
+  title = {Language and Linguistics},
+  subtitle = {An Introduction},
+  location = {Cambridge},
+  publisher = {Cambridge University Press}
+}|
+
+\bibexample<NHR \S18.5>
+||%
+|Lyons, J. (1981b), \emph{Language, Meaning and Context} (London: Fontana Paperbacks).|%
+|@book{lyons1981lmc,
+  author = {John Lyons},
+  date = {1981},
+  title = {Language, Meaning and Context},
+  location = {London},
+  publisher = {Fontana Paperbacks}
+}|
+
+
 \todoc|
 \subsection{No publisher}
 |
 
 \todoc[oxnotes]|
-Author, \emph{Title} (Location, Year).
+\spec{Author, \emph{Title} (Location, Year).}
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2943,7 +2979,7 @@ Author, \emph{Title} (Location, Year).
 |
 
 \todoc[oxnotes]|
-Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+\spec{Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2959,7 +2995,7 @@ Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
 }|
 
 \todoc[oxnotes]|
-\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2977,7 +3013,7 @@ Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
 
 Biblatex defines \code{collection} as a book made up of multiple self-contained contributions from distinct authors. There is no overall author: use the regular \code{book} entry type for collections of a single author’s work. The editor in this case has a more active role and therefore comes before the title.
 
-Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).\par
+\spec{Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.1>
@@ -2995,7 +3031,7 @@ Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).\par
 
 Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). Unlike standard Biblatex, though, Oxford style considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first.
 
-\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).
+\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.1>
@@ -3021,7 +3057,7 @@ Biblatex provides additional entry types for multi-volume works: \code{mvbook}, 
 
 Where all volumes were published consistently, the following form is used:
 
-Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.
+\spec{Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.}
 |
 
 \bibexample<OGS \S15.2.6>
@@ -3041,7 +3077,7 @@ NB. A more portable way of expressing the above citation would be\\
 
 Where the publisher changed between volumes, the following form is used:
 
-Author, \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher, Year), VolNo (Location: Publisher, Year).
+\spec{Author, \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher, Year), VolNo (Location: Publisher, Year).}
 |
 
 \bibexample(hacked)<OGS \S15.2.6>
@@ -3069,7 +3105,7 @@ but as this pattern does not occur in any other it may be an error or stylistic 
 Where the volumes are merely numbered, the following form is used
 \aside{Use \code{title} but not \code{maintitle}}:
 
-Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.
+\spec{Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.}
 |
 
 \bibexample<OGS \S15.2.6>
@@ -3088,7 +3124,7 @@ Where the volumes each have their own (sub)title,
 and they were all published at once (more or less),
 the following form is used \aside{Use both \code{title} and \code{maintitle}}:
 
-Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.
+\spec{Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.}
 |
 
 \bibexample<OGS \S15.2.2>
@@ -3123,7 +3159,7 @@ Where the volumes each have their own (sub)title,
 and there are many volumes spanning years and possibly publishers,
 the following form is used \aside{Use entry subtype \code{sequence}.}:
 
-Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.
+\spec{Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.}
 |
 
 \bibexample<OGS \S15.2.6>
@@ -3149,7 +3185,7 @@ Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher,
 
 Where works have significant introductions, forewords, afterwords, illustrations, etc.\ this may be noted as follows:
 
-Author, \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Publisher, Year).
+\spec{Author, \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.1>
@@ -3167,7 +3203,7 @@ Author, \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Pub
 \todoc|
 Translators are credited as follows:
 
-Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).
+\spec{Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.15>
@@ -3183,7 +3219,7 @@ Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).
 }|
 
 \todoc|
-Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher, Year).
+\spec{Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.15>
@@ -3203,17 +3239,17 @@ Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publi
 
 Where a work has been lightly revised, the following form is used:
 
-Author, \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher, Year).
+\spec{Author, \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher, Year).}
 
 Where a work has been extensively revised, the following form is used:
 
-Author, \lit{rev.} Reviser, \emph{Title}, (Location: Publisher, Year).
+\spec{Author, \lit{rev.} Reviser, \emph{Title}, (Location: Publisher, Year).}
 
 \subsection{Later edition}
 
 Where the editor is common to both, the following form is used \aside{Use entry type \code{book}}:
 
-Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).
+\spec{Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.3>
@@ -3229,7 +3265,7 @@ Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).
 \todoc|
 Where the editor has changed, the following form is used \aside{Use entry type \code{reference}}:
 
-\emph{Title}, nth \lit{edn.}, \lit{ed.} Editor (Location: Publisher, Year).
+\spec{\emph{Title}, nth \lit{edn.}, \lit{ed.} Editor (Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.3>
@@ -3248,7 +3284,7 @@ Where the editor has changed, the following form is used \aside{Use entry type \
 
 Where the publisher is common to both, the following form is used \aside{Use the \code{orig} fields}:
 
-Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).
+\spec{Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.3>
@@ -3282,7 +3318,7 @@ In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in th
 
 Used where the publisher has changed, the following form is used \aside{Use \code{pubstate} for the original publication date}:
 
-Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).
+\spec{Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).}
 |
 
 \bibexample<OGS \S15.2.3>
@@ -3302,7 +3338,7 @@ Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub
 \subsection{Reprint}
 
 \aside{Use localization key \code{reprint} as the edition.}\par 
-Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).
+\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.4>
@@ -3322,7 +3358,7 @@ Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher
 
 \todoc|
 \aside{Use localization key \code{facsimile} as the edition.}\par 
-Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).
+\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.4>
@@ -3342,7 +3378,7 @@ Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Pub
 \todoc|
 \subsection{Multiple publishers}
 
-Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).
+\spec{Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).}
 |
 
 \bibexample(hacked)<OGS \S15.2.5>
@@ -3362,9 +3398,9 @@ Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).
 \todoc|
 \subsection{Work from a series}
 
-Author, \emph{Title} (Series; Location: Publisher, Year).
+\spec{Author, \emph{Title} (Series; Location: Publisher, Year).}
 
-Author, \emph{Title} (Series, Number; Location: Publisher, Year).
+\spec{Author, \emph{Title} (Series, Number; Location: Publisher, Year).}
 |
 
 \bibexample<OGS \S15.2.7>
@@ -3382,7 +3418,7 @@ Author, \emph{Title} (Series, Number; Location: Publisher, Year).
 }|
 
 \todoc|
-\par Author, \emph{Title} (nth \lit{ser.}, Year).
+\spec{Author, \emph{Title} (nth \lit{ser.}, Year).}
 
 \chapter{Reports}\label{sec:report}
 \chapterprecis{report}
@@ -3847,21 +3883,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   publisher = {Desclée},
   date = {1956}
 }|
-
-
-
-% First and later edition, same publisher
-% First and later edition, different publisher
-
-% Later edition by different editor
-
-% Need special handling for marking facsimile editions
-
-\todoc|
-\aside{The following effect was achieved by abusing the \code{origlocation}, \code{origpublisher} and \code{origdate} fields.}
-|
-
-% Multiple publishers, same title
 
 \bibexample<OGS \S15.2.12>
 |\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).|%
