@@ -3425,18 +3425,42 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
 
 Oxford style does not have any special rules for referencing reports. Its provision for books, however, is sufficient for most purposes.
 
-\begin{description}
-  \item[Basic form]~\par
-  Author, \emph{Title} (Location: Institution, Year).
-  \\\egcite{botswana1980hdr}
+\spec{Author, \emph{Title} (Location: Institution, Year).}
+|
+
+\bibexample<OGS \S15.2.13>
+|Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).|%
+||%
+|@report{botswana1980hdr,
+  author = {{Government of Botswana}},
+  title = {A Human Drought Relief Programme for Botswana},
+  location = {Gabarone},
+  institution = {Ministry of Local Government and Lands},
+  date = {1980}
+}|
   
-  \item[Publisher as author]~\par
-  Author, \emph{Title} (Location, Year).
-  \\\egcite{pac1988upt}
+\todoc|
+If the report does not specify an author, the institution moves to the author position:
+
+\spec{Author, \emph{Title} (Location, Year).}
+|
+
+\bibexample<OGS \S15.2.13>
+|Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Mentally Disordered Offenders from Custody} (London, 1988).|%
+||%
+|@report{pac1988upt,
+  author = {{Penal Affairs Consortium}},
+  title = {An Unsuitable Place for Treatment},
+  subtitle = {Diverting Mentally Disordered Offenders from Custody},
+  location = {London},
+  date = {1988}
+}|
   
-  \item[Report in series] \aside{Extension}\par
-  Author, \emph{Title} (Type, Number; Location: Institution, Year).
-\end{description} 
+
+\todoc|
+\textsc{Extension} – Reports sometimes have a type, which can be treated like a series especially if a number is also provided:
+
+\spec{Author, \emph{Title} (Type, Number; Location: Institution, Year).}
 
 \chapter{Proceedings}\label{sec:proceedings}
 \chapterprecis{proceedings, mvproceedings}
@@ -3894,27 +3918,7 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1975}
 }|
 
-\bibexample<OGS \S15.2.13>
-|Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).|%
-||%
-|@report{botswana1980hdr,
-  author = {{Government of Botswana}},
-  title = {A Human Drought Relief Programme for Botswana},
-  location = {Gabarone},
-  institution = {Ministry of Local Government and Lands},
-  date = {1980}
-}|
 
-\bibexample<OGS \S15.2.13>
-|Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Mentally Disordered Offenders from Custody} (London, 1988).|%
-||%
-|@report{pac1988upt,
-  author = {{Penal Affairs Consortium}},
-  title = {An Unsuitable Place for Treatment},
-  subtitle = {Diverting Mentally Disordered Offenders from Custody},
-  location = {London},
-  date = {1988}
-}|
 
 
 \bibexample<OGS \S15.3>
