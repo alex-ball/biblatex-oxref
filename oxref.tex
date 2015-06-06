@@ -3469,31 +3469,90 @@ If the report does not specify an author, the institution moves to the author po
 
 The \code{proceedings} entry type is intended for a set of conference papers that have been collected together into a single volume.
 
-\begin{description}
-  \item[Basic form]~\par
-  \emph{Title}, \lit{ed.} Editor (Location: Publisher, Year).
-  \\\egcite{icp1975pic}
-  
-  \item[Event details not in title] \aside{Extension}\par
-  \emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).
-  \\\egcite{ecdl2009}
-\end{description}
+\spec{\emph{Title}, \lit{ed.} Editor (Location: Publisher, Year).}
+|
 
+\bibexample<OGS \S15.2.12>
+|\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).|%
+||%
+|@proceedings{icp1975pic,
+  title = {Proceedings of the {XIV} {International} {Congress} of {Papyrologists}},
+  subtitle = {{Oxford}, 24--31 {July} 1974},
+  location = {London},
+  date = {1975}
+}|
+
+\todoc|
+\textsc{Extension} – Sometimes the title of the proceedings does not relate to the conference; in which case the following form might be used:
+
+\spec{\emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
+|
+
+\bibexample
+|(not in book)|%
+||%
+|@proceedings{ecdl2009,
+  editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos Papatheodorou and Giannis Tsakonas},
+  title = {Research and Advanced Technology for Digital Libraries},
+  eventtitle = {13th European Conference, ECDL 2009},
+  venue = {Corfu, Greece},
+  eventdate = {2009-09-27/2009-10-02},
+  series = {Lecture Notes in Computer Science},
+  number = {5714},
+  location = {Berlin},
+  publisher = {Springer},
+  date = {2009}
+}|
+
+\todoc|
 \section{Multi-volume proceedings}
 
-Biblatex provides \code{mvproceedings} for multi-volume proceedings.
+\textsc{Extension} – Biblatex provides \code{mvproceedings} for multi-volume proceedings.
+The examples here are a combination of Oxford style for proceedings and multi-volume books.
 
-\begin{description}
-  \item[All volumes] \aside{Extension}\par
-  \emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year).
-  \\\egcite{iced2009}
-  
-  \item[One volume] \aside{Extension}\par
-  \emph{Title}, VolNo: \emph{VolTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).
-  \\\egcite{iced2009dik}
-  
-\end{description}
+\subsection{All volumes}
 
+\spec{\emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year).}
+|
+
+\bibexample
+|(not in book)|%
+||%
+|@proceedings{iced2009,
+  title = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
+  volumes = {10},
+  editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
+  venue = {Stanford, CA},
+  eventdate = {2009-08-24/2009-08-27},
+  location = {Glasgow},
+  publisher = {Design Society},
+  date = {2009},
+  isbn = {978-1-904670-12-4}
+}|
+
+\todoc|
+\subsection{One volume}
+
+\spec{\emph{Title}, VolNo: \emph{VolTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
+|
+
+\bibexample
+|(not in book)|%
+||%
+|@proceedings{iced2009dik,
+  maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
+  title = {Design Information and Knowledge},
+  volume = {8},
+  editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
+  venue = {Stanford, CA},
+  eventdate = {2009-08-24/2009-08-27},
+  location = {Glasgow},
+  publisher = {Design Society},
+  date = {2009},
+  isbn = {978-1-904670-12-4}
+}|
+
+\todoc|
 \chapter{Works in books, collections and reference works}\label{sec:inx}
 \chapterprecis{inbook, incollection, inreference, bookinbook}
 
@@ -3908,15 +3967,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1956}
 }|
 
-\bibexample<OGS \S15.2.12>
-|\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).|%
-||%
-|@proceedings{icp1975pic,
-  title = {Proceedings of the {XIV} {International} {Congress} of {Papyrologists}},
-  subtitle = {{Oxford}, 24--31 {July} 1974},
-  location = {London},
-  date = {1975}
-}|
 
 
 
@@ -4369,21 +4419,6 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 
 % Extensions
 
-@proceedings{ecdl2009,
-  editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos Papatheodorou and Giannis Tsakonas},
-  title = {Research and Advanced Technology for Digital Libraries},
-  eventtitle = {13th European Conference, ECDL 2009},
-  venue = {Corfu, Greece},
-  eventdate = {2009-09-27/2009-10-02},
-  series = {Lecture Notes in Computer Science},
-  number = {5714},
-  location = {Berlin},
-  publisher = {Springer},
-  date = {2009},
-  isbn = {978-3-642-04345-1},
-  issn = {0302-9743}
-}
-
 @inproceedings{tonkin.strelnikov2009iem,
   author = {Emma Tonkin and Alexey Strelnikov},
   title = {Information Environment Metadata Schema Registry},
@@ -4400,31 +4435,6 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
   pages = {487-488},
   isbn = {978-3-642-04345-1},
   issn = {0302-9743}
-}
-
-@proceedings{iced2009,
-  title = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
-  volumes = {10},
-  editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
-  venue = {Stanford, CA},
-  eventdate = {2009-08-24/2009-08-27},
-  location = {Glasgow},
-  publisher = {Design Society},
-  date = {2009},
-  isbn = {978-1-904670-12-4}
-}
-
-@proceedings{iced2009dik,
-  maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
-  title = {Design Information and Knowledge},
-  volume = {8},
-  editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
-  venue = {Stanford, CA},
-  eventdate = {2009-08-24/2009-08-27},
-  location = {Glasgow},
-  publisher = {Design Society},
-  date = {2009},
-  isbn = {978-1-904670-12-4}
 }
 
 @inproceedings{ding.etal2009sfc,
