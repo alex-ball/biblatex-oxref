@@ -35,6 +35,7 @@
 \aliaspagestyle{title}{empty}
 % Paragraphs and lists
 \setlength{\parindent}{0pt}\nonzeroparskip
+\firmlists
 
 \usepackage[british]{babel}
 %   \DeclareUnicodeCharacter{2212}{\textminus}
@@ -161,21 +162,33 @@
 \input{oxref-preamble}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% OXNOTES BBX
+%%% OXREF BBX (Common settings)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\openoutputfile{oxnotes.bbx}{src}
-\addtostream{src}{\string\ProvidesFile{oxnotes.bbx}}
-\addtostream{src}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
+\openoutputfile{oxref.bbx}{src}
+\addtostream{src}{\string\ProvidesFile{oxref.bbx}}
+\addtostream{src}{\space\space\space\space[\Version\space Base settings for biblatex styles inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{src}
-
-% New defaults
-
+%
+% For ease of maintenance, we patch some definitions instead of writing
+% out our own in full.
+%
+\RequirePackage{xpatch}
+%
+% Here we set some defaults different to the standard ones. The author
+% can still override them.
+%
 \ExecuteBibliographyOptions{urldate=comp,pagetracker}
-
-% Tweaks to language style
-
+%
+% Language support may be widened in future, but for now we support the
+% following:
+%
+\DeclareLanguageMapping{english}{british-oxref}
 \DeclareLanguageMapping{british}{british-oxref}
+\DeclareLanguageMapping{american}{british-oxref}
+%
+% We provide some additional bibliography strings.
+%
 \NewBibliographyString{at}
 \NewBibliographyString{under}
 \NewBibliographyString{facsimile}
@@ -183,89 +196,147 @@
 \NewBibliographyString{byperformer}
 \NewBibliographyString{bydirector}
 \NewBibliographyString{byreader}
-
-% Controlled vocabulary
-
-\def\isInferred{inferred} % Where authorship isn't explicit
-\def\whenPublished{published} % URL date is when published online
-
-% Standard style is not far off
-
+%
+% We provide some magic values for triggering formatting changes.
+%
+% \begin{itemize}
+% \item |\isInferred| relates to author names;
+% \item |\whenPublished| relates to URL dates.
+% \end{itemize}
+%
+\def\isInferred{inferred}
+\def\whenPublished{published}
+%
+% We base our styles on the standard on the principle of least surprise
+% (and to aid with maintenance in the face of new 'biblatex' versions).
+%
 \RequireBibliographyStyle{standard}
-
-% Punctuation conventions
-
+%
+% Here are the default punctuation conventions:
+%
 \renewcommand*{\labelnamepunct}{\addcomma\space}
 \renewcommand*{\newunitpunct}{\addcomma\space}
 \renewcommand*{\subtitlepunct}{\addcolon\space}
 \renewcommand*{\intitlepunct}{\nopunct\space}
 \renewcommand*{\bibnamedash}{\rule[0.5ex]{2em}{\normalrulethickness}\addthinspace}
 \renewcommand*{\revsdnamedelim}{\addcomma}
-
-% Names generally
-
-\DeclareNameFormat{entrystartname}{%
-  \ifbibliography
-  {\ifnumequal{\value{listcount}}{1}
-    {\iffirstinits
-      {\usebibmacro{name:last-first-sc}{#1}{#4}{#5}{#7}}
-      {\usebibmacro{name:last-first-sc}{#1}{#3}{#5}{#7}}%
+%
+% Traditionally, Oxford style (for the humanities) is to write author
+% names in small capitals in the bibliography, surname first; but in
+% citations, they are written in normal case in natural order.
+%
+\DeclareNameFormat{scstartname}{%
+  \ifbibliography{%
+    \ifnumequal{\value{listcount}}{1}{%
+      \iffirstinits{%
+        \usebibmacro{name:last-first}%
+          {\ifblank{#1}{}{\textsc{#1}}}%
+          {\ifblank{#4}{}{\textsc{#4}}}%
+          {\ifblank{#5}{}{\textsc{#5}}}%
+          {\ifblank{#7}{}{\textsc{#7}}}%
+      }{%
+        \usebibmacro{name:last-first}%
+          {\ifblank{#1}{}{\textsc{#1}}}%
+          {\ifblank{#3}{}{\textsc{#3}}}%
+          {\ifblank{#5}{}{\textsc{#5}}}%
+          {\ifblank{#7}{}{\textsc{#7}}}%
+      }%
       \ifblank{#3#5}
-      {}
-      {\usebibmacro{name:revsdelim}}}
-    {\iffirstinits
-      {\usebibmacro{name:last-first-sc}{#1}{#4}{#5}{#7}}
-      {\usebibmacro{name:last-first-sc}{#1}{#3}{#5}{#7}}}}%
-  {\iffirstinits
-    {\usebibmacro{name:first-last}{#1}{#4}{#5}{#7}}
-    {\usebibmacro{name:first-last}{#1}{#3}{#5}{#7}}}%
-  \usebibmacro{name:andothers}}
+        {}
+        {\usebibmacro{name:revsdelim}}%
+    }{%
+      \iffirstinits{%
+        \usebibmacro{name:last-first}%
+          {\ifblank{#1}{}{\textsc{#1}}}%
+          {\ifblank{#4}{}{\textsc{#4}}}%
+          {\ifblank{#5}{}{\textsc{#5}}}%
+          {\ifblank{#7}{}{\textsc{#7}}}%
+      }{%
+        \usebibmacro{name:last-first}%
+          {\ifblank{#1}{}{\textsc{#1}}}%
+          {\ifblank{#3}{}{\textsc{#3}}}%
+          {\ifblank{#5}{}{\textsc{#5}}}%
+          {\ifblank{#7}{}{\textsc{#7}}}%
+      }%
+    }%
+  }{%
+    \iffirstinits
+      {\usebibmacro{name:first-last}{#1}{#4}{#5}{#7}}%
+      {\usebibmacro{name:first-last}{#1}{#3}{#5}{#7}}%
+  }%
+  \usebibmacro{name:andothers}%
+}
+%
+% The small caps aspect of this seems to be falling out of favour so we
+% provide a facility for authors to switch it off.
+%
+\DeclareNameFormat{lcstartname}{%
+  \ifbibliography{%
+    \ifnumequal{\value{listcount}}{1}{%
+      \iffirstinits
+        {\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}%
+        {\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
+      \ifblank{#3#5}
+        {}
+        {\usebibmacro{name:revsdelim}}%
+    }{%
+      \iffirstinits
+        {\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}%
+        {\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
+    }%
+  }{%
+    \iffirstinits
+      {\usebibmacro{name:first-last}{#1}{#4}{#5}{#7}}%
+      {\usebibmacro{name:first-last}{#1}{#3}{#5}{#7}}%
+  }%
+  \usebibmacro{name:andothers}%
+}
+%
+% When using natural order for names, there is no comma before numeric
+% suffixes, but there is before textual ones (e.g. ‘junior’).
+%
+\xpatchbibmacro{name:first-last}%
+  {\bibnamedelimd\mkbibnameaffix{#4}}%
+  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnameaffix{#4}}{}{}
+%
+% There is no more.
+%
+\endinput
+\end{writeverbatim}
+\closeoutputstream{src}
 
-\DeclareNameAlias{author}{entrystartname}
-\DeclareNameAlias[book]{editor}{entrystartname}
-\DeclareNameAlias[booklet]{editor}{entrystartname}
-\DeclareNameAlias[collection]{editor}{entrystartname}
-\DeclareNameAlias[manual]{editor}{entrystartname}
-\DeclareNameAlias[misc]{editor}{entrystartname}
-\DeclareNameAlias[mvbook]{editor}{entrystartname}
-\DeclareNameAlias[mvcollection]{editor}{entrystartname}
-\DeclareNameAlias[mvproceedings]{editor}{entrystartname}
-\DeclareNameAlias[mvreference]{editor}{entrystartname}
-\DeclareNameAlias[online]{editor}{entrystartname}
-\DeclareNameAlias[proceedings]{editor}{entrystartname}
-\DeclareNameAlias[reference]{editor}{entrystartname}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% OXNOTES BBX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newbibmacro*{name:last-first-sc}[4]{%
-  \ifuseprefix
-  {\usebibmacro{name:delim}{\textsc{#3}\textsc{#1}}%
-    \usebibmacro{name:hook}{\textsc{#3}\textsc{#1}}%
-    \ifblank{\textsc{#3}}{}{%
-      \ifcapital
-      {\mkbibnameprefix{\MakeCapital{\textsc{#3}}}\isdot}
-      {\mkbibnameprefix{\textsc{#3}}\isdot}%
-      \ifpunctmark{'}{}{\bibnamedelimc}}%
-    \mkbibnamelast{\textsc{#1}}\isdot
-    \ifblank{\textsc{#4}}{}{\bibnamedelimd\mkbibnameaffix{\textsc{#4}}\isdot}%
-    \ifblank{\textsc{#2}}{}{\addcomma\bibnamedelimd\mkbibnamefirst{\textsc{#2}}\isdot}}
-  {\usebibmacro{name:delim}{\textsc{#1}}%
-    \usebibmacro{name:hook}{\textsc{#1}}%
-    \mkbibnamelast{\textsc{#1}}\isdot
-    \ifblank{\textsc{#4}}{}{\bibnamedelimd\mkbibnameaffix{\textsc{#4}}\isdot}%
-    \ifblank{\textsc{#2}\textsc{#3}}{}{\addcomma}%
-    \ifblank{\textsc{#2}}{}{\bibnamedelimd\mkbibnamefirst{\textsc{#2}}\isdot}%
-    \ifblank{\textsc{#3}}{}{\bibnamedelimd\mkbibnameprefix{\textsc{#3}}\isdot}}}
-
-\renewbibmacro*{name:first-last}[4]{%
-  \usebibmacro{name:delim}{#2#3#1}%
-  \usebibmacro{name:hook}{#2#3#1}%
-  \ifblank{#2}{}{\mkbibnamefirst{#2}\isdot\bibnamedelimd}%
-  \ifblank{#3}{}{%
-    \mkbibnameprefix{#3}\isdot
-    \ifpunctmark{'}%
-    {}%
-    {\ifuseprefix{\bibnamedelimc}{\bibnamedelimd}}}%
-  \mkbibnamelast{#1}\isdot
-  \ifblank{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnameaffix{#4}\isdot}}
+\openoutputfile{oxnotes.bbx}{oxnotes}
+\addtostream{oxnotes}{\string\ProvidesFile{oxnotes.bbx}}
+\addtostream{oxnotes}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
+\begin{writeverbatim}{oxnotes}
+%
+% First we load the common oxref features.
+%
+\RequireBibliographyStyle{oxref}
+%
+% To make it easier for authors to switch between name formats, we
+% provide a layer of indirection. The default is to have names at the
+% start of a bibliography entry in small capitals. Authors can switch
+% this off with |\DeclareNameAlias{oxrefstartname}{lcstartname}|.
+%
+\DeclareNameAlias{oxrefstartname}{scstartname}
+\DeclareNameAlias{author}{oxrefstartname}
+\DeclareNameAlias[book]{editor}{oxrefstartname}
+\DeclareNameAlias[booklet]{editor}{oxrefstartname}
+\DeclareNameAlias[collection]{editor}{oxrefstartname}
+\DeclareNameAlias[manual]{editor}{oxrefstartname}
+\DeclareNameAlias[misc]{editor}{oxrefstartname}
+\DeclareNameAlias[mvbook]{editor}{oxrefstartname}
+\DeclareNameAlias[mvcollection]{editor}{oxrefstartname}
+\DeclareNameAlias[mvproceedings]{editor}{oxrefstartname}
+\DeclareNameAlias[mvreference]{editor}{oxrefstartname}
+\DeclareNameAlias[online]{editor}{oxrefstartname}
+\DeclareNameAlias[proceedings]{editor}{oxrefstartname}
+\DeclareNameAlias[reference]{editor}{oxrefstartname}
 
 % Authors
 
@@ -1543,1070 +1614,24 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \endinput
 \end{writeverbatim}
-\closeoutputstream{src}
+\closeoutputstream{oxnotes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% OXYEAR BBX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\openoutputfile{oxyear.bbx}{src}
-\addtostream{src}{\string\ProvidesFile{oxyear.bbx}}
-\addtostream{src}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
-\begin{writeverbatim}{src}
-
-% New defaults
-
-\ExecuteBibliographyOptions{urldate=comp,pagetracker}
-
-% Entry options
-
-\def\dateType{}
-\DeclareEntryOption{datetype}{\def\dateType{#1\space}}
-\DeclareEntryOption{urldatetype}{%
-  \renewbibmacro*{url+urldate}{%
-    \printtext{#1}\space\printurldate\space
-    \printfield{url}%
-    \iffieldundef{url}{}{\nopunct}}%
-}
-\DeclareBibliographyCategory{reviewed}
-\DeclareEntryOption{reviewed}{%
-  \renewbibmacro*{reviewof}{%
-    \bibstring{reviewof}\addspace
-    \fullcite{#1}%
-  }%
-  \addtocategory{reviewed}{#1}%
-}
-% Tweaks to language style
-
-\DeclareLanguageMapping{british}{british-oxref}
-\NewBibliographyString{at}
-\NewBibliographyString{under}
-\NewBibliographyString{facsimile}
-\NewBibliographyString{revised}
-\NewBibliographyString{byperformer}
-\NewBibliographyString{bydirector}
-\NewBibliographyString{byreader}
-
-% Controlled vocabulary
-
-\def\isInferred{inferred} % Where authorship isn't explicit
-\def\whenPublished{published} % URL date is when published online
-
-% Standard style is not far off
-
-\RequireBibliographyStyle{standard}
-
-% Punctuation conventions
-
-\renewcommand*{\labelnamepunct}{\addcomma\space}
-\renewcommand*{\newunitpunct}{\addcomma\space}
-\renewcommand*{\subtitlepunct}{\addcolon\space}
-\renewcommand*{\intitlepunct}{\nopunct\space}
-\renewcommand*{\bibnamedash}{\rule[0.5ex]{2em}{\normalrulethickness}\addthinspace}
-\renewcommand*{\revsdnamedelim}{\addcomma}
-
-% Names generally
-
-\DeclareNameFormat{entrystartname}{%
-  \ifbibliography
-  {\ifnumequal{\value{listcount}}{1}
-    {\iffirstinits
-      {\usebibmacro{name:last-first-sc}{#1}{#4}{#5}{#7}}
-      {\usebibmacro{name:last-first-sc}{#1}{#3}{#5}{#7}}%
-      \ifblank{#3#5}
-      {}
-      {\usebibmacro{name:revsdelim}}}
-    {\iffirstinits
-      {\usebibmacro{name:last-first-sc}{#1}{#4}{#5}{#7}}
-      {\usebibmacro{name:last-first-sc}{#1}{#3}{#5}{#7}}}}%
-  {\iffirstinits
-    {\usebibmacro{name:first-last}{#1}{#4}{#5}{#7}}
-    {\usebibmacro{name:first-last}{#1}{#3}{#5}{#7}}}%
-  \usebibmacro{name:andothers}}
-
-\DeclareNameAlias{author}{entrystartname}
-\DeclareNameAlias[book]{editor}{entrystartname}
-\DeclareNameAlias[booklet]{editor}{entrystartname}
-\DeclareNameAlias[collection]{editor}{entrystartname}
-\DeclareNameAlias[manual]{editor}{entrystartname}
-\DeclareNameAlias[misc]{editor}{entrystartname}
-\DeclareNameAlias[mvbook]{editor}{entrystartname}
-\DeclareNameAlias[mvcollection]{editor}{entrystartname}
-\DeclareNameAlias[mvproceedings]{editor}{entrystartname}
-\DeclareNameAlias[mvreference]{editor}{entrystartname}
-\DeclareNameAlias[online]{editor}{entrystartname}
-\DeclareNameAlias[proceedings]{editor}{entrystartname}
-\DeclareNameAlias[reference]{editor}{entrystartname}
-
-\newbibmacro*{name:last-first-sc}[4]{%
-  \ifuseprefix
-  {\usebibmacro{name:delim}{\textsc{#3}\textsc{#1}}%
-    \usebibmacro{name:hook}{\textsc{#3}\textsc{#1}}%
-    \ifblank{\textsc{#3}}{}{%
-      \ifcapital
-      {\mkbibnameprefix{\MakeCapital{\textsc{#3}}}\isdot}
-      {\mkbibnameprefix{\textsc{#3}}\isdot}%
-      \ifpunctmark{'}{}{\bibnamedelimc}}%
-    \mkbibnamelast{\textsc{#1}}\isdot
-    \ifblank{\textsc{#4}}{}{\bibnamedelimd\mkbibnameaffix{\textsc{#4}}\isdot}%
-    \ifblank{\textsc{#2}}{}{\addcomma\bibnamedelimd\mkbibnamefirst{\textsc{#2}}\isdot}}
-  {\usebibmacro{name:delim}{\textsc{#1}}%
-    \usebibmacro{name:hook}{\textsc{#1}}%
-    \mkbibnamelast{\textsc{#1}}\isdot
-    \ifblank{\textsc{#4}}{}{\bibnamedelimd\mkbibnameaffix{\textsc{#4}}\isdot}%
-    \ifblank{\textsc{#2}\textsc{#3}}{}{\addcomma}%
-    \ifblank{\textsc{#2}}{}{\bibnamedelimd\mkbibnamefirst{\textsc{#2}}\isdot}%
-    \ifblank{\textsc{#3}}{}{\bibnamedelimd\mkbibnameprefix{\textsc{#3}}\isdot}}}
-
-\renewbibmacro*{name:first-last}[4]{%
-  \usebibmacro{name:delim}{#2#3#1}%
-  \usebibmacro{name:hook}{#2#3#1}%
-  \ifblank{#2}{}{\mkbibnamefirst{#2}\isdot\bibnamedelimd}%
-  \ifblank{#3}{}{%
-    \mkbibnameprefix{#3}\isdot
-    \ifpunctmark{'}%
-    {}%
-    {\ifuseprefix{\bibnamedelimc}{\bibnamedelimd}}}%
-  \mkbibnamelast{#1}\isdot
-  \ifblank{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnameaffix{#4}\isdot}}
-
-% Authors
-
-\DeclareFieldFormat{nameaddon}{\mkbibparens{#1}}
-
-\InitializeBibliographyStyle{%
-  \global\undef\bbx@lasthash}
-
-\newbibmacro*{bbx:savehash}{%
-  \savefield{fullhash}{\bbx@lasthash}}
-
-\newbibmacro*{bbx:dashcheck}[2]{%
-  \ifboolexpr{
-    test {\iffieldequals{fullhash}{\bbx@lasthash}}
-    and
-    not test \iffirstonpage
-    and
-    (
-    not bool {bbx@inset}
-    or
-    test {\iffieldequalstr{entrysetcount}{1}}
-    )
-  }
-  {#1}
-  {#2}}
-
-\newbool{bbx@inset}
-\DeclareBibliographyDriver{set}{%
-  \booltrue{bbx@inset}%
-  \entryset{}{}%
-  \newunit\newblock
-  \usebibmacro{setpageref}%
-  \finentry}
-
-\renewbibmacro*{author}{%
-  \ifboolexpr{
-    test \ifuseauthor
-    and
-    not test {\ifnameundef{author}}
-  }
-  {\usebibmacro{bbx:dashcheck}
-    {\bibnamedash}
-    {\usebibmacro{bbx:savehash}%
-      \iffieldequals{authortype}{\isInferred}
-      {\mkbibbrackets{\printnames{author}}\clearfield{authortype}}%
-      {\printnames{author}}%
-      \iffieldundef{nameaddon}
-      {}
-      {\setunit{\addspace}%
-        \printfield{nameaddon}}%
-      \iffieldundef{authortype}
-      {\setunit{\addspace}}
-      {\setunit{\addcomma\space}}}%
-    \iffieldundef{authortype}
-    {}
-    {\usebibmacro{authorstrg}%
-      \setunit{\addspace}}}%
-  {\global\undef\bbx@lasthash}}
-
-% Editors
-
-\renewbibmacro*{editor}{%
-  \usebibmacro{bbx:editor}{editorstrg}}
-\renewbibmacro*{editor+others}{%
-  \usebibmacro{bbx:editor}{editor+othersstrg}}
-\newbibmacro*{bbx:editor}[1]{%
-  \ifboolexpr{
-    test \ifuseeditor
-    and
-    not test {\ifnameundef{editor}}
-  }
-  {\usebibmacro{bbx:dashcheck}
-    {\bibnamedash}
-    {\usebibmacro{bbx:savehash}%
-      \printnames{editor}%
-      \addspace}%
-    \mkbibparens{\usebibmacro{#1}}%
-    \clearname{editor}%
-    \setunit{\addspace}}%
-  {\global\undef\bbx@lasthash}}
-
-% Book authors
-
-\renewbibmacro*{bybookauthor}{%
-  \ifnamesequal{author}{bookauthor}%
-  {\bibstring{idem\thefield{gender}}}%
-  {\printnames{bookauthor}}}
-
-\newbibmacro*{bookeditor}{%
-  \ifnamesequal{author}{editor}%
-  {\bibstring{idem\thefield{gender}}%
-    \addspace%
-    \mkbibparens{\usebibmacro{editor+othersstrg}}%
-    \clearname{editor}}%
-  {\undef\bbx@lasthash\usebibmacro{editor+others}}}
-
-% Dates generally
-
-\RequirePackage{xstring}
-% This command is extracted and adapted from code by Marco Daniel:
-% see http://tex.stackexchange.com/questions/23483/
-% It compares two years, and outputs a full or truncated version of
-% the second year, depending on how similar it is to the first.
-\newcommand{\blx@ox@compyear}[2]{%
-  \def\num@one{#1}%
-  \def\num@two{#2}%
-  \StrLen{\num@one}[\num@one@len]%
-  \StrLen{\num@two}[\num@two@len]%
-  \IfEq{\num@one@len}{\num@two@len}%
-  {\StrCompare{\num@one}{\num@two}[\Result]%
-    \ifnum\num@two@len>3%
-    \IfStrEq{\Result}{2}{\def\Result{1}}{}%
-    \fi
-    \StrGobbleLeft{0\num@two}{\Result}}%
-  {\num@two}
-}
-
-\renewrobustcmd*{\mkbibrangetrunc}[2]{%
-  \iffieldundef{#2year}
-  {}
-  {\printtext{%
-      \iffieldsequal{#2year}{#2endyear}
-      {\iffieldsequal{#2month}{#2endmonth}
-        {\csuse{mkbibdate#1}{}{}{#2day}}
-        {\csuse{mkbibdate#1}{}{#2month}{#2day}}}
-      {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
-      \iffieldundef{#2endyear}
-      {}
-      {\iffieldequalstr{#2endyear}{}
-        {\mbox{\bibdatedash}}
-        {\bibdatedash
-          % In the original, only the false part of the following occurs
-          \iffieldundef{#2month}%
-          {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
-          {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}}
-
-\renewrobustcmd*{\mkbibrangetruncextra}[2]{%
-  \iffieldundef{#2year}
-  {}
-  {\printtext{%
-      \iffieldsequal{#2year}{#2endyear}
-      {\iffieldsequal{#2month}{#2endmonth}
-        {\csuse{mkbibdate#1}{}{}{#2day}}
-        {\csuse{mkbibdate#1}{}{#2month}{#2day}}}
-      {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
-    \iffieldundef{#2endyear}
-    {\printfield{extrayear}}
-    {\iffieldequalstr{#2endyear}{}
-      {\printfield{extrayear}%
-        \printtext{\mbox{\bibdatedash}}}
-      {\printtext{%
-          \bibdatedash
-          % In the original, only the false part of the following occurs
-          \iffieldundef{#2month}%
-          {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
-          {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
-          \printfield{extrayear}}}}}}
-
-\renewbibmacro*{date}{\printtext{\dateType}\printdate}
-
-% Editions
-
-\DeclareFieldFormat{edition}{%
-  \ifinteger{#1}
-  {\mkbibordedition{#1}~\bibstring{edition}}
-  {\ifbibstring{#1}{\bibstring{#1}}{#1\isdot}}}
-
-% Pages (no pp.)
-
-\DeclareFieldFormat{pages}{\mkcomprange{#1}}
-\DeclareFieldFormat{postnote}{\iffieldundef{pages}{}%
-  {\bibstring{at}\addspace}%
-  \mkcomprange{#1}}
-
-\renewbibmacro*{postnote}{%
-  \iffieldundef{postnote}
-  {}
-  % This test makes a lot of assumptions and needs more sophistication
-  {\iffieldundef{pages}
-    {\setunit{\postnotedelim}}
-    {}%
-    \printfield{postnote}}}
-
-% URLs
-
-\DeclareFieldFormat{url}{$\langle$\url{#1}$\rangle$}
-\DeclareFieldFormat{urldate}{\bibstring{urlseen}\space#1}
-\DeclareFieldFormat{urldatepublished}{\bibstring{epublished}\space#1}
-
-\renewbibmacro*{url+urldate}{%
-  \iffieldundef{url}{}{\nopunct}%
-  \printfield{url}%
-  \iffieldundef{urlyear}
-  {\iffieldundef{url}{}{\nopunct}}
-  {\newunit
-    \printtext[urldate]{\printurldate}}}
-
-% Addenda
-
-\renewbibmacro*{addendum+pubstate}{%
-  \iffieldundef{pubstate}{}{\nopunct}%
-  \printfield[parens]{pubstate}%
-  \setunit{\addperiod\addspace}\newblock
-  \printfield{addendum}}
-
-% Adjustments to articles
-
-\DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
-
-\newbibmacro*{journaltype}{%
-  \iffieldequalstr{entrysubtype}{online journal}%
-  {\nopunct\printfield{entrysubtype}}{}%
-}
-
-\renewbibmacro*{journal+issuetitle}{%
-  \ifboolexpr{
-    test {\iffieldundef{title}}
-    and
-    not test {\iffieldundef{issuetitle}}
-  }{%
-    \usebibmacro{issue}%
-    \clearfield{issuetitle}%
-    \setunit{\addspace =\addspace}}{}%
-  \usebibmacro{journal}%
-  \usebibmacro{journaltype}%
-  \setunit*{\addspace}%
-  \iffieldundef{series}
-  {\newunit}
-  {\newunit
-    \printfield{series}%
-    \setunit{\addspace}}%
-  \usebibmacro{volume+number+eid}%
-  \setunit{\addspace}%
-  \usebibmacro{issue+date}%
-  \setunit{\addsemicolon\space}%
-  \usebibmacro{issue}%
-  \newunit}
-
-\renewbibmacro*{title+issuetitle}{%
-  \usebibmacro{periodical}%
-  \usebibmacro{journaltype}%
-  \setunit*{\addspace}%
-  \iffieldundef{series}
-  {\newunit}
-  {\newunit
-    \printfield{series}%
-    \setunit{\addspace}}%
-  \usebibmacro{volume+number+eid}%
-  \setunit{\addspace}%
-  \usebibmacro{issue+date}%
-  \setunit{\addcolon\space}%
-  \usebibmacro{issue}%
-  \newunit}
-
-\renewbibmacro*{volume+number+eid}{%
-  \printfield{volume}%
-  \setunit*{\addslash}%
-  \printfield{number}%
-  \setunit{\addcomma\space}%
-  \printfield{eid}}
-
-\renewbibmacro*{issue+date}{%
-  \ifboolexpr{(
-    test {\iffieldundef{volume}}
-    and
-    test {\iffieldundef{number}}
-    ) and
-    test {\iffieldundef{eid}}
-  }%
-  {\newunit\printtext{%
-      \iffieldundef{issue}
-      {\usebibmacro{date}}
-      {\printfield{issue}%
-        \setunit*{\addspace}%
-        \usebibmacro{date}}}}%
-  {\ifboolexpr{
-      test {\iffieldundef{issue}}
-      and
-      test {\iffieldundef{year}}
-    }{}{%
-      \printtext[parens]{%
-        \iffieldundef{issue}
-        {\usebibmacro{date}}
-        {\printfield{issue}%
-          \setunit*{\addspace}%
-          \usebibmacro{date}}}}}%
-  \newunit}
-
-% Adjustments to books
-
-\DeclareFieldFormat[book,inbook,collection,incollection,proceedings,inproceedings,reference,inreference]{volume}{\Rn{#1}}
-
-\renewbibmacro*{series+number}{%
-  \printfield{series}%
-  \newunit
-  \printfield{number}}
-
-\newbibmacro*{origdate}{\printorigdate}
-
-\newbibmacro*{edition+publisher+location+date}{%
-  \printlist{origlocation}%
-  \iflistundef{origpublisher}%
-  {\setunit*{\addcomma\space}}%
-  {\setunit*{\addcolon\space}}%
-  \printlist{origpublisher}%
-  \setunit*{\addcomma\space}%
-  \usebibmacro{origdate}%
-  \setunit*{\addsemicolon\space}%
-  \printfield{edition}%
-  \setunit*{\addcomma\space}%
-  \printlist{location}%
-  \iflistundef{publisher}%
-  {\setunit*{\addcomma\space}}%
-  {\setunit*{\addcolon\space}}%
-  \printlist{publisher}%
-  \setunit*{\addcomma\space}%
-  \usebibmacro{date}%
-}
-
-\DeclareFieldFormat{publication}{\mkbibparens{#1}}
-
-\newbibmacro*{series+number+edition+publisher+location+date}{%
-  \nopunct\printtext[publication]{%
-    \usebibmacro{series+number}%
-    \setunit{\addsemicolon\space}%
-    \usebibmacro{edition+publisher+location+date}%
-  }%
-}
-
-\newbibmacro*{maintitle+volume}{%
-  \ifboolexpr{
-    test {\iffieldundef{maintitle}}
-    or
-    test {\iffieldundef{volume}}
-  }{}%
-  {\printtext[publication]{\bibstring{volume}\addspace
-      \printfield{volume}\addspace\bibstring{ofseries}\addspace
-      \usebibmacro{maintitle}}}
-}
-
-% Adjustments to online
-
-\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
-
-% Adjustments to proceedings
-
-\renewbibmacro*{event+venue+date}{%
-  \printfield{eventtitle}%
-  \ifboolexpr{
-    test {\iffieldundef{venue}}
-    and
-    test {\iffieldundef{eventyear}}
-  }
-  {}
-  {\ifboolexpr{
-      test {\iffieldundef{language}}
-      and
-      test {\iffieldundef{eventtitle}}
-    }{\setunit{\mkbibemph{\addcolon}\addspace}}%
-    {\setunit{\addcolon\addspace}}%
-    \printfield{venue}%
-    \setunit*{\addcomma\space}%
-    \printeventdate}%
-  \newunit}
-
-% Adjustments to reference
-
-\newbibmacro*{series+number+publisher+location+date}{%
-  \nopunct\printtext[publication]{%
-    \usebibmacro{series+number}%
-    \setunit{\addsemicolon\space}%
-    \usebibmacro{publisher+location+date}%
-  }%
-}
-
-% Adjustments to reports and theses
-
-\newbibmacro*{type+number}{%
-  \printfield{type}%
-  \newunit
-  \printfield{number}}
-
-\renewbibmacro*{institution+location+date}{%
-  \nopunct\printtext[publication]{%
-    \printlist{location}%
-    \iflistundef{institution}%
-    {\setunit*{\addcomma\space}}%
-    {\setunit*{\addcolon\space}}%
-    \printlist{institution}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
-
-\newbibmacro*{type+number+edition+institution+location+date}{%
-  \nopunct\printtext[publication]{%
-    \usebibmacro{type+number}%
-    \setunit{\addsemicolon\space}%
-    \printfield{edition}%
-    \setunit*{\addcomma\space}%
-    \printlist{location}%
-    \iflistundef{institution}%
-    {\setunit*{\addcomma\space}}%
-    {\setunit*{\addcolon\space}}%
-    \printlist{institution}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
-
-% Adjustments to review
-
-\DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[review]{volume}{#1}% volume of a journal
-\DeclareFieldFormat[review]{number}{#1}% number of a journal
-\DeclareFieldFormat[review]{series}{% series of a journal
-  \ifinteger{#1}
-  {\mkbibordseries{#1}~\bibstring{jourser}}
-  {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
-
-\newbibmacro*{reviewof}{}
-
-% Adjustments to aliases
-
-\DeclareBibliographyAlias{mvreference}{reference}
-
-% Adjustments to existing drivers
-
-\DeclareBibliographyDriver{article}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{bytranslator+others}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit\newblock
-  \usebibmacro{journal+issuetitle}%
-  \newunit
-  \usebibmacro{byeditor+others}%
-  \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
-  \usebibmacro{note+pages}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{issn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{book}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{title}}%
-  {\usebibmacro{maintitle+title}}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{inbook}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{bybookauthor}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{booktitle}}%
-  {\usebibmacro{maintitle+booktitle}}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{collection}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{editor+others}%
-  \setunit{\labelnamepunct}\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{title}}%
-  {\usebibmacro{maintitle+title}}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{incollection}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{bookeditor}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{booktitle}}%
-  {\usebibmacro{maintitle+booktitle}}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{online}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/editor+others/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \usebibmacro{maintitle}
-  \setunit{\addspace}\newblock
-  \printfield{entrysubtype}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit\newblock
-  \printtext[parens]{\usebibmacro{date}}%
-  \newunit\newblock
-  \iftoggle{bbx:eprint}
-  {\usebibmacro{eprint}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{url+urldate}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{proceedings}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{maintitle+title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{event+venue+date}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{inproceedings}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{maintitle+booktitle}%
-  \newunit\newblock
-  \usebibmacro{event+venue+date}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{reference}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{title}}%
-  {\usebibmacro{maintitle+title}}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \printfield{edition}%
-  \newunit
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
-  \usebibmacro{series+number+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{inreference}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{bookeditor}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{booktitle}}%
-  {\usebibmacro{maintitle+booktitle}}%
-  \newunit\newblock
-  \printfield{edition}%
-  \newunit
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
-  \usebibmacro{series+number+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{report}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \usebibmacro{type+number+edition+institution+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isrn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{review}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{bytranslator+others}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit\newblock
-  \usebibmacro{reviewof}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{journal+issuetitle}%
-  \newunit
-  \usebibmacro{byeditor+others}%
-  \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
-  \usebibmacro{note+pages}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{issn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
+\openoutputfile{oxyear.bbx}{oxyear}
+\addtostream{oxyear}{\string\ProvidesFile{oxyear.bbx}}
+\addtostream{oxyear}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
+\begin{writeverbatim}{oxyear}
+%
+% First we load the common oxref features.
+%
+\RequireBibliographyStyle{oxref}
 
 \endinput
 \end{writeverbatim}
-\closeoutputstream{src}
+\closeoutputstream{oxyear}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% BRITISH-OXREF LBX
@@ -4565,8 +3590,17 @@ to the separate documentation.
   { basicstyle=\footnotesize\ttfamily
   , breaklines=true
   , escapechar=
+  , numbers=left
+  , numberstyle=\footnotesize\itshape\color{gray}
+  , numbersep=20pt
   }%
 \useNiceVerb
+\bgroup\let\tt\ttfamily
+
+\chapter{oxnotes.bbx}
+
+\renewcommand*{\mdJobName}{oxref}
+\MakeInputJobDoc[bbx]{0}{\ProcessInputWith{PScomment}}
 
 \chapter{oxnotes.bbx}
 
@@ -4583,5 +3617,6 @@ to the separate documentation.
 \renewcommand*{\mdJobName}{british-oxref}
 \MakeInputJobDoc[lbx]{0}{\ProcessInputWith{PScomment}}
 
+\egroup
 \noNiceVerb
 \end{document}
