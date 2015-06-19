@@ -170,10 +170,17 @@
 \addtostream{src}{\space\space\space\space[\Version\space Base settings for biblatex styles inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{src}
 %
-% For ease of maintenance, we patch some definitions instead of writing
-% out our own in full.
+% Dependencies:
+% \begin{itemize}
+% \item
+% For ease of maintenance, we will patch some definitions with 'xpatch'
+% instead of writing out our own in full.
+% \item
+% We will manipulate strings with 'xstring'.
+% \end{itemize}
 %
 \RequirePackage{xpatch}
+\RequirePackage{xstring}
 %
 % Here we set some defaults different to the standard ones. The author
 % can still override them.
@@ -299,6 +306,171 @@
   {\bibnamedelimd\mkbibnameaffix{#4}}%
   {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnameaffix{#4}}{}{}
 %
+% For pseudonyms, Oxford style is to put the other name in parentheses
+% after the main one. We use |nameaddon| for this.
+%
+\DeclareFieldFormat{nameaddon}{\mkbibparens{#1}}
+%
+% Oxford style is to use dashes instead of repeating author names.
+% Note that 'biblatex' sets are treated differently.
+%
+\InitializeBibliographyStyle{%
+  \global\undef\bbx@lasthash}
+\newbibmacro*{bbx:savehash}{%
+  \savefield{fullhash}{\bbx@lasthash}}
+\newbool{bbx@inset}
+\DeclareBibliographyDriver{set}{%
+  \booltrue{bbx@inset}%
+  \entryset{}{}%
+  \newunit\newblock
+  \usebibmacro{setpageref}%
+  \finentry}
+\newbibmacro*{bbx:dashcheck}[2]{%
+  \ifboolexpr{
+    test {\iffieldequals{fullhash}{\bbx@lasthash}}
+    and
+    not test \iffirstonpage
+    and
+    (
+    not bool {bbx@inset}
+    or
+    test {\iffieldequalstr{entrysetcount}{1}}
+    )
+  }
+  {#1}
+  {#2}}
+%
+% Macro for author names.
+%
+\renewbibmacro*{author}{%
+  \ifboolexpr{
+    test \ifuseauthor
+    and
+    not test {\ifnameundef{author}}
+  }
+  {\usebibmacro{bbx:dashcheck}
+    {\bibnamedash}
+    {\usebibmacro{bbx:savehash}%
+      \iffieldequals{authortype}{\isInferred}
+      {\mkbibbrackets{\printnames{author}}\clearfield{authortype}}%
+      {\printnames{author}}%
+      \iffieldundef{nameaddon}
+      {}
+      {\setunit{\addspace}%
+        \printfield{nameaddon}}%
+      \iffieldundef{authortype}
+      {\setunit{\addspace}}
+      {\setunit{\addcomma\space}}}%
+    \iffieldundef{authortype}
+    {}
+    {\usebibmacro{authorstrg}%
+      \setunit{\addspace}}}%
+  {\global\undef\bbx@lasthash}}
+%
+% Macro for editor names.
+%
+\renewbibmacro*{editor}{%
+  \usebibmacro{bbx:editor}{editorstrg}}
+\renewbibmacro*{editor+others}{%
+  \usebibmacro{bbx:editor}{editor+othersstrg}}
+\newbibmacro*{bbx:editor}[1]{%
+  \ifboolexpr{
+    test \ifuseeditor
+    and
+    not test {\ifnameundef{editor}}
+  }
+  {\usebibmacro{bbx:dashcheck}
+    {\bibnamedash}
+    {\usebibmacro{bbx:savehash}%
+      \printnames{editor}%
+      \addspace}%
+    \mkbibparens{\usebibmacro{#1}}%
+    \clearname{editor}%
+    \setunit{\addspace}}%
+  {\global\undef\bbx@lasthash}}
+%
+% Macro for author of a collection.
+%
+\renewbibmacro*{bybookauthor}{%
+  \ifnamesequal{author}{bookauthor}%
+  {\bibstring{idem\thefield{gender}}}%
+  {\printnames{bookauthor}}}
+%
+% Macro for editor of a collection.
+%
+\newbibmacro*{bookeditor}{%
+  \ifnamesequal{author}{editor}%
+  {\bibstring{idem\thefield{gender}}%
+    \addspace%
+    \mkbibparens{\usebibmacro{editor+othersstrg}}%
+    \clearname{editor}}%
+  {\undef\bbx@lasthash\usebibmacro{editor+others}}}
+%
+% Year ranges are truncated (e.g.~2012–3). Therefore, we provide a
+% command that compares two years, and outputs a full or truncated
+% version of the second year, depending on how similar it is to the
+% first. It is extracted and adapted from code by Marco Daniel.%
+% \footnote{\url{http://tex.stackexchange.com/questions/23483/}}
+%
+\newcommand{\blx@ox@compyear}[2]{%
+  \def\num@one{#1}%
+  \def\num@two{#2}%
+  \StrLen{\num@one}[\num@one@len]%
+  \StrLen{\num@two}[\num@two@len]%
+  \IfEq{\num@one@len}{\num@two@len}%
+  {\StrCompare{\num@one}{\num@two}[\Result]%
+    \ifnum\num@two@len>3%
+    \IfStrEq{\Result}{2}{\def\Result{1}}{}%
+    \fi
+    \StrGobbleLeft{0\num@two}{\Result}}%
+  {\num@two}%
+}
+%
+% We use this to create some truncated date formats.
+% TODO: convert these to patched commands.
+%
+\renewrobustcmd*{\mkbibrangetrunc}[2]{%
+  \iffieldundef{#2year}%
+  {}%
+  {\printtext{%
+      \iffieldsequal{#2year}{#2endyear}%
+      {\iffieldsequal{#2month}{#2endmonth}%
+        {\csuse{mkbibdate#1}{}{}{#2day}}%
+        {\csuse{mkbibdate#1}{}{#2month}{#2day}}}%
+      {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
+      \iffieldundef{#2endyear}%
+      {}%
+      {\iffieldequalstr{#2endyear}{}%
+        {\mbox{\bibdatedash}}%
+        {\bibdatedash
+          % In the original, only the false part of the following occurs
+          \iffieldundef{#2month}%
+          {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+          {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}%
+}
+\renewrobustcmd*{\mkbibrangetruncextra}[2]{%
+  \iffieldundef{#2year}%
+  {}%
+  {\printtext{%
+      \iffieldsequal{#2year}{#2endyear}%
+      {\iffieldsequal{#2month}{#2endmonth}%
+        {\csuse{mkbibdate#1}{}{}{#2day}}%
+        {\csuse{mkbibdate#1}{}{#2month}{#2day}}}%
+      {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
+    \iffieldundef{#2endyear}%
+    {\printfield{extrayear}}%
+    {\iffieldequalstr{#2endyear}{}%
+      {\printfield{extrayear}%
+        \printtext{\mbox{\bibdatedash}}}%
+      {\printtext{%
+          \bibdatedash
+          % In the original, only the false part of the following occurs
+          \iffieldundef{#2month}%
+          {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+          {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+          \printfield{extrayear}}}}}%
+}
+%
 % There is no more.
 %
 \endinput
@@ -338,164 +510,8 @@
 \DeclareNameAlias[proceedings]{editor}{oxrefstartname}
 \DeclareNameAlias[reference]{editor}{oxrefstartname}
 
-% Authors
-
-\DeclareFieldFormat{nameaddon}{\mkbibparens{#1}}
-
-\InitializeBibliographyStyle{%
-  \global\undef\bbx@lasthash}
-
-\newbibmacro*{bbx:savehash}{%
-  \savefield{fullhash}{\bbx@lasthash}}
-
-\newbibmacro*{bbx:dashcheck}[2]{%
-  \ifboolexpr{
-    test {\iffieldequals{fullhash}{\bbx@lasthash}}
-    and
-    not test \iffirstonpage
-    and
-    (
-    not bool {bbx@inset}
-    or
-    test {\iffieldequalstr{entrysetcount}{1}}
-    )
-  }
-  {#1}
-  {#2}}
-
-\newbool{bbx@inset}
-\DeclareBibliographyDriver{set}{%
-  \booltrue{bbx@inset}%
-  \entryset{}{}%
-  \newunit\newblock
-  \usebibmacro{setpageref}%
-  \finentry}
-
-\renewbibmacro*{author}{%
-  \ifboolexpr{
-    test \ifuseauthor
-    and
-    not test {\ifnameundef{author}}
-  }
-  {\usebibmacro{bbx:dashcheck}
-    {\bibnamedash}
-    {\usebibmacro{bbx:savehash}%
-      \iffieldequals{authortype}{\isInferred}
-      {\mkbibbrackets{\printnames{author}}\clearfield{authortype}}%
-      {\printnames{author}}%
-      \iffieldundef{nameaddon}
-      {}
-      {\setunit{\addspace}%
-        \printfield{nameaddon}}%
-      \iffieldundef{authortype}
-      {\setunit{\addspace}}
-      {\setunit{\addcomma\space}}}%
-    \iffieldundef{authortype}
-    {}
-    {\usebibmacro{authorstrg}%
-      \setunit{\addspace}}}%
-  {\global\undef\bbx@lasthash}}
-
-% Editors
-
-\renewbibmacro*{editor}{%
-  \usebibmacro{bbx:editor}{editorstrg}}
-\renewbibmacro*{editor+others}{%
-  \usebibmacro{bbx:editor}{editor+othersstrg}}
-\newbibmacro*{bbx:editor}[1]{%
-  \ifboolexpr{
-    test \ifuseeditor
-    and
-    not test {\ifnameundef{editor}}
-  }
-  {\usebibmacro{bbx:dashcheck}
-    {\bibnamedash}
-    {\usebibmacro{bbx:savehash}%
-      \printnames{editor}%
-      \addspace}%
-    \mkbibparens{\usebibmacro{#1}}%
-    \clearname{editor}%
-    \setunit{\addspace}}%
-  {\global\undef\bbx@lasthash}}
-
-% Book authors
-
-\renewbibmacro*{bybookauthor}{%
-  \ifnamesequal{author}{bookauthor}%
-  {\bibstring{idem\thefield{gender}}}%
-  {\printnames{bookauthor}}}
-
-\newbibmacro*{bookeditor}{%
-  \ifnamesequal{author}{editor}%
-  {\bibstring{idem\thefield{gender}}%
-    \addspace%
-    \mkbibparens{\usebibmacro{editor+othersstrg}}%
-    \clearname{editor}}%
-  {\undef\bbx@lasthash\usebibmacro{editor+others}}}
-
 % Dates generally
 
-\RequirePackage{xstring}
-% This command is extracted and adapted from code by Marco Daniel:
-% see http://tex.stackexchange.com/questions/23483/
-% It compares two years, and outputs a full or truncated version of
-% the second year, depending on how similar it is to the first.
-\newcommand{\blx@ox@compyear}[2]{%
-  \def\num@one{#1}%
-  \def\num@two{#2}%
-  \StrLen{\num@one}[\num@one@len]%
-  \StrLen{\num@two}[\num@two@len]%
-  \IfEq{\num@one@len}{\num@two@len}%
-  {\StrCompare{\num@one}{\num@two}[\Result]%
-    \ifnum\num@two@len>3%
-    \IfStrEq{\Result}{2}{\def\Result{1}}{}%
-    \fi
-    \StrGobbleLeft{0\num@two}{\Result}}%
-  {\num@two}%
-}
-
-\renewrobustcmd*{\mkbibrangetrunc}[2]{%
-  \iffieldundef{#2year}%
-  {}%
-  {\printtext{%
-      \iffieldsequal{#2year}{#2endyear}%
-      {\iffieldsequal{#2month}{#2endmonth}%
-        {\csuse{mkbibdate#1}{}{}{#2day}}%
-        {\csuse{mkbibdate#1}{}{#2month}{#2day}}}%
-      {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
-      \iffieldundef{#2endyear}%
-      {}%
-      {\iffieldequalstr{#2endyear}{}%
-        {\mbox{\bibdatedash}}%
-        {\bibdatedash
-          % In the original, only the false part of the following occurs
-          \iffieldundef{#2month}%
-          {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
-          {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}%
-}
-
-\renewrobustcmd*{\mkbibrangetruncextra}[2]{%
-  \iffieldundef{#2year}%
-  {}%
-  {\printtext{%
-      \iffieldsequal{#2year}{#2endyear}%
-      {\iffieldsequal{#2month}{#2endmonth}%
-        {\csuse{mkbibdate#1}{}{}{#2day}}%
-        {\csuse{mkbibdate#1}{}{#2month}{#2day}}}%
-      {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
-    \iffieldundef{#2endyear}%
-    {\printfield{extrayear}}%
-    {\iffieldequalstr{#2endyear}{}%
-      {\printfield{extrayear}%
-        \printtext{\mbox{\bibdatedash}}}%
-      {\printtext{%
-          \bibdatedash
-          % In the original, only the false part of the following occurs
-          \iffieldundef{#2month}%
-          {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
-          {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
-          \printfield{extrayear}}}}}%
-}
 % - allow date to be prefaced by a type
 \let\dateType\@empty
 \DeclareEntryOption{datetype}{\def\dateType{#1\addspace}}
