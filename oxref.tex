@@ -427,49 +427,21 @@
 }
 %
 % We use this to create some truncated date formats.
-% TODO: convert these to patched commands.
 %
-\renewrobustcmd*{\mkbibrangetrunc}[2]{%
-  \iffieldundef{#2year}%
-  {}%
-  {\printtext{%
-      \iffieldsequal{#2year}{#2endyear}%
-      {\iffieldsequal{#2month}{#2endmonth}%
-        {\csuse{mkbibdate#1}{}{}{#2day}}%
-        {\csuse{mkbibdate#1}{}{#2month}{#2day}}}%
-      {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
-      \iffieldundef{#2endyear}%
-      {}%
-      {\iffieldequalstr{#2endyear}{}%
-        {\mbox{\bibdatedash}}%
-        {\bibdatedash
-          % In the original, only the false part of the following occurs
-          \iffieldundef{#2month}%
-          {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
-          {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}%
-}
-\renewrobustcmd*{\mkbibrangetruncextra}[2]{%
-  \iffieldundef{#2year}%
-  {}%
-  {\printtext{%
-      \iffieldsequal{#2year}{#2endyear}%
-      {\iffieldsequal{#2month}{#2endmonth}%
-        {\csuse{mkbibdate#1}{}{}{#2day}}%
-        {\csuse{mkbibdate#1}{}{#2month}{#2day}}}%
-      {\csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
-    \iffieldundef{#2endyear}%
-    {\printfield{extrayear}}%
-    {\iffieldequalstr{#2endyear}{}%
-      {\printfield{extrayear}%
-        \printtext{\mbox{\bibdatedash}}}%
-      {\printtext{%
-          \bibdatedash
-          % In the original, only the false part of the following occurs
-          \iffieldundef{#2month}%
-          {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
-          {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
-          \printfield{extrayear}}}}}%
-}
+\patchcmd{\mkbibrangetrunc}{%
+  \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
+}{%
+  \iffieldundef{#2month}%
+    {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+    {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+}{}{}
+\patchcmd{\mkbibrangetruncextra}{%
+  \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
+}{%
+  \iffieldundef{#2month}%
+    {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+    {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+}{}{}
 % Dates generally
 
 % - allow date to be prefaced by a type
