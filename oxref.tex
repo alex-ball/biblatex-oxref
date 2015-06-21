@@ -1615,7 +1615,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % First we load the common oxref features.
 %
 \RequireBibliographyStyle{oxref}
-
+%
+% Here we set some defaults different to the standard ones. The author
+% can still override them.
+%
+\ExecuteBibliographyOptions{firstinits}
+\DeclareNameAlias{author}{last-first}
+\DeclareNameAlias{editor}{last-first}
 \endinput
 \end{writeverbatim}
 \closeoutputstream{oxyear}
