@@ -931,46 +931,30 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareNameAlias[online]{editor}{oxrefstartname}
 \DeclareNameAlias[proceedings]{editor}{oxrefstartname}
 \DeclareNameAlias[reference]{editor}{oxrefstartname}
-
-% Adjustments to existing drivers
-
-\DeclareBibliographyDriver{article}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{bytranslator+others}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit\newblock
+%
+% Patch 'article' driver to remove the ‘in’ bibmacro and adjust punctuation
+% after editors and page references.
+%
+\xpatchbibdriver{article}{%
+  \usebibmacro{in:}%
   \usebibmacro{journal+issuetitle}%
+}{%
+  \usebibmacro{journal+issuetitle}%
+}{}{}
+\xpatchbibdriver{article}{%
+  \usebibmacro{byeditor+others}%
   \newunit
+}{%
   \usebibmacro{byeditor+others}%
   \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
-  \usebibmacro{note+pages}%
+}{}{}
+\xpatchbibdriver{article}{%
+  \usebibmacro{pageref}%
   \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{issn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
+}{%
   \usebibmacro{pageref}%
   \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
+}{}{}
 \DeclareBibliographyDriver{book}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
