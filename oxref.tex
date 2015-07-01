@@ -426,7 +426,8 @@
   {\num@two}%
 }
 %
-% We use this to create some truncated date formats.
+% We use this to create some truncated date formats. (Note that the
+% base macros are defined in standard |lbx| files.)
 %
 \patchcmd{\mkbibrangetrunc}{%
   \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
@@ -442,45 +443,54 @@
     {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
     {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
 }{}{}
-% Dates generally
-
-% - allow date to be prefaced by a type
+%
+% We provide a way of prefacing dates with a type. This is mainly
+% intended for online resources.
+%
 \let\dateType\@empty
 \DeclareEntryOption{datetype}{\def\dateType{#1\addspace}}
 \renewbibmacro*{date}{%
   \ifx\@empty\dateType\else\printtext{\dateType}\fi
   \printdate}
-
-% Editions
-
+%
+% Numbered editions take ordinals.
+%
 \DeclareFieldFormat{edition}{%
   \ifinteger{#1}
   {\mkbibordedition{#1}~\bibstring{edition}}
   {\ifbibstring{#1}{\bibstring{#1}}{#1\isdot}}}
-
-% Pages (no pp.)
-
+%
+% Page ranges are compressed, but are not usually marked with ‘pp.’.
+%
 \DeclareFieldFormat{pages}{\mkcomprange{#1}}
+%
+% If specifying a page within a range, Oxford style is to format that
+% as ‘\emph{range} at \emph{page}’.
+% TODO: Check if this needs to be 'oxnotes'-specific.
+%
 \DeclareFieldFormat{postnote}{\iffieldundef{pages}{}%
   {\addspace\bibstring{at}\addspace}%
   \mkcomprange{#1}}
-
 \renewbibmacro*{postnote}{%
   \iffieldundef{postnote}
   {}
-  % This test makes a lot of assumptions and needs more sophistication
+% This test makes a lot of assumptions and needs more sophistication
   {\iffieldundef{pages}
-    % The \printtext following is a complete hack as print tracker has become unreliable
+% The |\printtext| following is a complete hack as print tracker has become unreliable.
     {\printtext{\unspace}\setunit{\postnotedelim}\newblock\printfield{postnote}}
     {\printfield{postnote}}%
   }}
-
-% URLs
-
+%
+% Initial convention was to enclose URLs in angle brackets, but not any
+% more.
+%
 \DeclareFieldFormat{url}{$\langle$\url{#1}$\rangle$}
+%
+% We support a standard verb for URL dates, but also allow authors to
+% use a different verb if they want to.
+%
 \DeclareFieldFormat{urldate}{\bibstring{urlseen}\space#1}
 \DeclareFieldFormat{urldatepublished}{\bibstring{epublished}\space#1}
-
 \renewbibmacro*{url+urldate}{%
   \iffieldundef{url}{}{\nopunct}%
   \printfield{url}%
@@ -488,7 +498,6 @@
   {\iffieldundef{url}{}{\nopunct}}
   {\newunit
     \printtext[urldate]{\printurldate}}}
-% - allow custom urldate type (these have a different position)
 \DeclareEntryOption{urldatetype}{%
   \DeclareFieldFormat{urldate}{\printtext{#1}\space##1}%
   \renewbibmacro*{url+urldate}{%
@@ -501,9 +510,10 @@
     }%
   }%
 }
-
-% Addenda
-
+%
+% Publication state is given in parenthesis. Other addenda are added
+% plain.
+%
 \renewbibmacro*{addendum+pubstate}{%
   \iffieldundef{pubstate}{}{\nopunct}%
   \printfield[parens]{pubstate}%
