@@ -519,9 +519,10 @@
   \printfield[parens]{pubstate}%
   \setunit{\addperiod\addspace}\newblock
   \printfield{addendum}}
-
-% Relationships: reprints
-
+%
+% We take advantage of the Biber-specific mechanism of relating items
+% in order to handle reprints.
+%
 \renewbibmacro*{related:reprintfrom}[1]{%
   \entrydata*{#1}{%
     \iffieldundef{journaltitle}{% Reprint from book
@@ -553,11 +554,13 @@
       }%
       \usebibmacro{note+pages}%
     }}}
-
-% Adjustments to articles
-
+%
+% Subtypes for articles and similar are in square brackets.
+%
 \DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
-
+%
+% Journal types are also in square brackets.
+%
 \newbibmacro*{journaltype}{%
   \iffieldequalstr{entrysubtype}{online journal}%
   {\nopunct\printfield{entrysubtype}}{}%
