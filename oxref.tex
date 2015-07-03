@@ -880,48 +880,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
 }
 
-% Adjustments to aliases
-
-\DeclareBibliographyAlias{mvreference}{reference}
-%
-% There is no more.
-%
-\endinput
-\end{writeverbatim}
-\closeoutputstream{src}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% OXNOTES BBX
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\openoutputfile{oxnotes.bbx}{oxnotes}
-\addtostream{oxnotes}{\string\ProvidesFile{oxnotes.bbx}}
-\addtostream{oxnotes}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
-\begin{writeverbatim}{oxnotes}
-%
-% First we load the common oxref features.
-%
-\RequireBibliographyStyle{oxref}
-%
-% To make it easier for authors to switch between name formats, we
-% provide a layer of indirection. The default is to have names at the
-% start of a bibliography entry in small capitals. Authors can switch
-% this off with |\DeclareNameAlias{oxrefstartname}{lcstartname}|.
-%
-\DeclareNameAlias{oxrefstartname}{scstartname}
-\DeclareNameAlias{author}{oxrefstartname}
-\DeclareNameAlias[book]{editor}{oxrefstartname}
-\DeclareNameAlias[booklet]{editor}{oxrefstartname}
-\DeclareNameAlias[collection]{editor}{oxrefstartname}
-\DeclareNameAlias[manual]{editor}{oxrefstartname}
-\DeclareNameAlias[misc]{editor}{oxrefstartname}
-\DeclareNameAlias[mvbook]{editor}{oxrefstartname}
-\DeclareNameAlias[mvcollection]{editor}{oxrefstartname}
-\DeclareNameAlias[mvproceedings]{editor}{oxrefstartname}
-\DeclareNameAlias[mvreference]{editor}{oxrefstartname}
-\DeclareNameAlias[online]{editor}{oxrefstartname}
-\DeclareNameAlias[proceedings]{editor}{oxrefstartname}
-\DeclareNameAlias[reference]{editor}{oxrefstartname}
 %
 % Patch 'article' driver to remove the ‘in’ bibmacro and adjust punctuation
 % after editors and page references.
@@ -1651,6 +1609,45 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{finentry}}
 
 \DeclareBibliographyAlias{music}{audio}
+%
+% There is no more.
+%
+\endinput
+\end{writeverbatim}
+\closeoutputstream{src}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% OXNOTES BBX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\openoutputfile{oxnotes.bbx}{oxnotes}
+\addtostream{oxnotes}{\string\ProvidesFile{oxnotes.bbx}}
+\addtostream{oxnotes}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
+\begin{writeverbatim}{oxnotes}
+%
+% First we load the common oxref features.
+%
+\RequireBibliographyStyle{oxref}
+%
+% To make it easier for authors to switch between name formats, we
+% provide a layer of indirection. The default is to have names at the
+% start of a bibliography entry in small capitals. Authors can switch
+% this off with |\DeclareNameAlias{oxrefstartname}{lcstartname}|.
+%
+\DeclareNameAlias{oxrefstartname}{scstartname}
+\DeclareNameAlias{author}{oxrefstartname}
+\DeclareNameAlias[book]{editor}{oxrefstartname}
+\DeclareNameAlias[booklet]{editor}{oxrefstartname}
+\DeclareNameAlias[collection]{editor}{oxrefstartname}
+\DeclareNameAlias[manual]{editor}{oxrefstartname}
+\DeclareNameAlias[misc]{editor}{oxrefstartname}
+\DeclareNameAlias[mvbook]{editor}{oxrefstartname}
+\DeclareNameAlias[mvcollection]{editor}{oxrefstartname}
+\DeclareNameAlias[mvproceedings]{editor}{oxrefstartname}
+\DeclareNameAlias[mvreference]{editor}{oxrefstartname}
+\DeclareNameAlias[online]{editor}{oxrefstartname}
+\DeclareNameAlias[proceedings]{editor}{oxrefstartname}
+\DeclareNameAlias[reference]{editor}{oxrefstartname}
 
 %% \DeclareBibliographyDriver{movie}{%
 %% \DeclareBibliographyDriver{video}{%
