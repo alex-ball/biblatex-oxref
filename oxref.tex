@@ -822,9 +822,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \iffieldundef{journaltitle}{% Review of book
       \usebibmacro{author}%
       \setunit{\labelnamepunct}\newblock
-      \iffieldequalstr{entrysubtype}{sequence}%
-      {\usebibmacro{title}}%
-      {\usebibmacro{maintitle+title}}%
+      \usebibmacro{maintitle+title}%
       \newunit
       \printlist{language}%
       \newunit\newblock
@@ -832,22 +830,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \newunit\newblock
       \usebibmacro{byeditor+others}%
       \newunit\newblock
-      \iffieldequalstr{entrysubtype}{sequence}{%
-        \printfield{note}%
-        \newunit\newblock
-        \usebibmacro{maintitle+volume}%
-        \newunit
-      }{%
-        \printfield{volumes}%
-        \newunit\newblock
-        \iffieldundef{maintitle}{%
-          \printfield{volume}%
-          \printfield{part}%
-        }{}%
-        \newunit
-        \printfield{note}%
-        \newunit\newblock
-      }%
+      \printfield{volumes}%
+      \newunit\newblock
+      \iffieldundef{maintitle}{%
+        \printfield{volume}%
+        \printfield{part}%
+      }{}%
+      \newunit
+      \printfield{note}%
+      \newunit\newblock
       \usebibmacro{series+number+edition+publisher+location+date}%
     }{% Review of periodical
       \usebibmacro{author/translator+others}%
@@ -955,14 +946,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{pageref}%
   \setunit{\addperiod\addspace}\newblock
 }{}{}
+%
+% Patch 'book'
+%
 \DeclareBibliographyDriver{book}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{title}}%
-  {\usebibmacro{maintitle+title}}%
+  \usebibmacro{title}%
   \newunit
   \printlist{language}%
   \newunit\newblock
@@ -970,20 +962,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{maintitle+volume}%
+  \newunit
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -1006,6 +988,50 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   {}%
   \usebibmacro{finentry}}
 
+\DeclareBibliographyDriver{mvbook}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+  
 \DeclareBibliographyDriver{inbook}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1020,26 +1046,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{in:}%
   \usebibmacro{bybookauthor}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{booktitle}}%
-  {\usebibmacro{maintitle+booktitle}}%
+  \usebibmacro{maintitle+booktitle}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
     {\printfield{volume}%
       \printfield{part}}
     {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -1065,28 +1084,58 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{begentry}%
   \usebibmacro{editor+others}%
   \setunit{\labelnamepunct}\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{title}}%
-  {\usebibmacro{maintitle+title}}%
+  \usebibmacro{title}%
   \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{maintitle+volume}%
+  \newunit
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{mvcollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{editor+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
     {\printfield{volume}%
       \printfield{part}}
     {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -1123,24 +1172,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{in:}%
   \usebibmacro{bookeditor}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{booktitle}}%
-  {\usebibmacro{maintitle+booktitle}}%
+  \usebibmacro{maintitle+booktitle}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
     {\printfield{volume}%
       \printfield{part}}
     {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -1302,9 +1344,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{begentry}%
   \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{title}}%
-  {\usebibmacro{maintitle+title}}%
+  \usebibmacro{title}%
   \newunit
   \printlist{language}%
   \newunit\newblock
@@ -1314,20 +1354,56 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit
   \usebibmacro{byeditor+others}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{maintitle+volume}%
+  \newunit
+  \usebibmacro{series+number+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{mvreference}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{edition}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
     {\printfield{volume}%
       \printfield{part}}
     {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock}
   \usebibmacro{series+number+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -1364,28 +1440,21 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{in:}%
   \usebibmacro{bookeditor}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{booktitle}}%
-  {\usebibmacro{maintitle+booktitle}}%
+  \usebibmacro{maintitle+booktitle}%
   \newunit\newblock
   \printfield{edition}%
   \newunit
   \usebibmacro{byeditor+others}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
     {\printfield{volume}%
       \printfield{part}}
     {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock%
   \usebibmacro{series+number+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -1542,9 +1611,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{begentry}%
   \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\usebibmacro{title}}%
-  {\usebibmacro{maintitle+title}}%
+  \usebibmacro{maintitle+title}%
   \newunit
   \printlist{language}%
   \newunit\newblock
@@ -1552,20 +1619,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
-  \iffieldequalstr{entrysubtype}{sequence}%
-  {\printfield{note}%
-    \newunit\newblock
-    \usebibmacro{maintitle+volume}%
-    \newunit}
-  {\printfield{volumes}%
-    \newunit\newblock
-    \iffieldundef{maintitle}
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
     {\printfield{volume}%
       \printfield{part}}
     {}%
-    \newunit
-    \printfield{note}%
-    \newunit\newblock}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock%
   \usebibmacro{publisher+type+series+number+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -2169,7 +2231,7 @@ the following form is used \aside{Use both \code{title} and \code{maintitle}}:
 \todoc|
 Where the volumes each have their own (sub)title,
 and there are many volumes spanning years and possibly publishers,
-the following form is used \aside{Use entry subtype \code{sequence}.}:
+the following form is used \aside{Use \code{book} instead of \code{mvbook}.}:
 
 \spec{Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.}
 |
@@ -2178,7 +2240,6 @@ the following form is used \aside{Use entry subtype \code{sequence}.}:
 |David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).|%
 ||%
 |@book{fischer1989asf,
-  entrysubtype = {sequence},
   author = {David Hackett Fischer},
   title = {Albion’s Seed},
   subtitle = {Four British Folkways in America},
