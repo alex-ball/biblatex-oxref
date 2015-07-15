@@ -40,18 +40,15 @@
 \usepackage[british]{babel}
 %   \DeclareUnicodeCharacter{2212}{\textminus}
 \usepackage[mono=false,defaultfeatures={SmallCapsFeatures={Letters=SmallCaps,Renderer=Basic,Ligatures=NoCommon}}]{libertine}
+\usepackage{fontawesome}[2015/07/07]
+\newcommand{\booksym}{\makebox[1em][c]{\faicon{book}}}
+\newcommand{\cogsym}{\makebox[1em][c]{\faicon{cog}}}
 \makeatletter
 \@ifpackageloaded{fontspec}{%
   \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
-  \usepackage{fontawesome}
-  \newcommand{\booksym}{\makebox[1em][c]{\faicon{book}}}
-  \newcommand{\cogsym}{\makebox[1em][c]{\faicon{cog}}}
 }{%
   \usepackage[utf8]{inputenc}
   \usepackage[varl]{zi4}
-  \usepackage{dictsym}
-  \newcommand{\booksym}{\makebox[1em][c]{\dsliterary}}
-  \newcommand{\cogsym}{\makebox[1em][c]{\dstechnical}}
 }
 \makeatother
 
