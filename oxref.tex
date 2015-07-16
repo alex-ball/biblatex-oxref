@@ -155,9 +155,6 @@
 \end{writeverbatim}
 \closeoutputstream{src}
 
-\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
-\input{oxref-preamble}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% OXREF BBX (Common settings)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2076,6 +2073,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \openoutputfile{oxref.bib}{src}
 \openoutputfile{oxnotes-doc.tex}{oxnotes}
 \openoutputfile{oxyear-doc.tex}{oxyear}
+
+\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
+\input{oxref-preamble}
 
 \usepackage{xstring}
 % \bibexample adds a sample reference to the documentation.
