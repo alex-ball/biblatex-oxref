@@ -2878,28 +2878,93 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 
 The \code{inbook} entry type is intended for books that consist of several self-contained works by the same author, for citing one of these works. 
 
-\begin{description}
-  \item[One from a collection of single author's works] \aside{\code{author} $=$ \code{bookauthor} $\neq$ \code{editor}}
-  \par Author, \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.
-  \\\egcite{owen1986pi}
-  \par Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.
-\end{description}
+\subsection{One from a collection of single author's works}
+
+Express this in the database by setting \code{author} $=$ \code{bookauthor} $\neq$ \code{editor}.
+
+\spec{Author, \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
+|
+\bibexample<OGS \S15.3>
+|G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.|%
+||%
+|@bookinbook{owen1986pi,
+  author = {G. E. L. Owen},
+  gender = {sm},
+  title = {Philosophical Invective},
+  booktitle = {Logic, Science and Dialectic},
+  bookauthor = {G. E. L. Owen},
+  editor = {M. Nussbaum},
+  location = {Ithaca, NY},
+  publisher = {Cornell University Press},
+  date = {1986},
+  pages = {347-364},
+  related = {osap1983},
+  relatedtype = {reprintfrom}
+}
+@periodical{osap1983,
+  journaltitle = {Oxford Studies in Ancient Philosophy},
+  volume = {1},
+  date = {1983},
+  pages = {1-25}
+}|
+\todoc|
+In the above example, if not using Biber, instead of the related fields you would use the following:\\
+\tcboxverb{addendum = {From \fullcite[1-25]{osap1983}}}
+
+\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
 
 \section{Works in collections}
 
 The \code{incollection} entry type is intended for citing one of a collection of self-contained works by different authors.
 
-\begin{description}
-  \item[Work in mixed collection] \aside{\code{author} $\neq$ \code{editor}, no \code{bookauthor}}
-  \par Author, \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher, Year), Pages.
-  \\\egcite{shearman1993vsf}
-  
-  \item[Work by the editor in mixed collection] Replace the editor's name with \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.} \aside{\code{author} $=$ \code{editor}, no \code{bookauthor}}
-  \par Author, \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher, Year), Pages.
-  \\\egcite{todd1974dhp}
-  
-\end{description}
+\subsection{Work in mixed collection}
 
+Express this in the database by setting \code{author} $\neq$ \code{editor}, and omitting the \code{bookauthor}.
+
+\spec{Author, \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
+|
+
+\bibexample<OGS \S15.3>
+|John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George Holmes (ed.), \emph{Art and Politics in Renaissance Italy: British Academy Lectures} (Oxford: Clarendon Press, 1993), 185--240.|%
+||%
+|@incollection{shearman1993vsf,
+  author = {John Shearman},
+  title = {The Vatican Stanze},
+  subtitle = {Functions and Decoration},
+  editor = {George Holmes},
+  booktitle = {Art and Politics in Renaissance Italy},
+  booksubtitle = {British Academy Lectures},
+  location = {Oxford},
+  publisher = {Clarendon Press},
+  date = {1993},
+  pages = {185-240}
+}|
+
+\todoc|
+\subsection{Work by the editor in mixed collection}
+
+In Oxford style, the editor's name is replaced with \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.} Express this in the database by setting \code{author} $=$ \code{editor}, omitting the \code{bookauthor}, and setting the correct gender.
+
+\spec{Author, \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
+|
+
+\bibexample<OGS \S15.3>
+|W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).|%
+||%
+|@incollection{todd1974dhp,
+  author = {W. B. Todd},
+  gender = {sm},
+  title = {David Hume},
+  subtitle = {A Preliminary Bibliography},
+  editor = {W. B. Todd},
+  booktitle = {Hume and the Enlightenment},
+  booksubtitle = {Essays Presented to Ernest Campbell Mossner},
+  location = {Edinburgh},
+  publisher = {Edinburgh University Press},
+  date = {1974}
+}|
+
+\todoc|
 \section{Anthologies of independently published works}
 
 Biblatex provides the \code{bookinbook} entry type for citing a part of an anthology that has previously been published as a book in its own right. Oxford style provides two different mechanisms for this, depending on circumstance.
@@ -3285,42 +3350,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1956}
 }|
 
-
-
-
-
-\bibexample<OGS \S15.3>
-|John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George Holmes (ed.), \emph{Art and Politics in Renaissance Italy: British Academy Lectures} (Oxford: Clarendon Press, 1993), 185--240.|%
-||%
-|@incollection{shearman1993vsf,
-  author = {John Shearman},
-  title = {The Vatican Stanze},
-  subtitle = {Functions and Decoration},
-  editor = {George Holmes},
-  booktitle = {Art and Politics in Renaissance Italy},
-  booksubtitle = {British Academy Lectures},
-  location = {Oxford},
-  publisher = {Clarendon Press},
-  date = {1993},
-  pages = {185-240}
-}|
-
-\bibexample<OGS \S15.3>
-|W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).|%
-||%
-|@incollection{todd1974dhp,
-  author = {W. B. Todd},
-  gender = {sm},
-  title = {David Hume},
-  subtitle = {A Preliminary Bibliography},
-  editor = {W. B. Todd},
-  booktitle = {Hume and the Enlightenment},
-  booksubtitle = {Essays Presented to Ernest Campbell Mossner},
-  location = {Edinburgh},
-  publisher = {Edinburgh University Press},
-  date = {1974}
-}|
-
 \bibexample<OGS \S15.3>
 |G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).|%
 ||%
@@ -3337,35 +3366,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1952},
   pubstate = {originally pub\adddotspace 1892}
 }|
-
-\bibexample<OGS \S15.3>
-|G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.|%
-||%
-|@bookinbook{owen1986pi,
-  author = {G. E. L. Owen},
-  gender = {sm},
-  title = {Philosophical Invective},
-  booktitle = {Logic, Science and Dialectic},
-  bookauthor = {G. E. L. Owen},
-  editor = {M. Nussbaum},
-  location = {Ithaca, NY},
-  publisher = {Cornell University Press},
-  date = {1986},
-  pages = {347-364},
-  related = {osap1983},
-  relatedtype = {reprintfrom}
-}
-@periodical{osap1983,
-  journaltitle = {Oxford Studies in Ancient Philosophy},
-  volume = {1},
-  date = {1983},
-  pages = {1-25}
-}|
-
-\todoc|
-If not using Biber, instead of the related fields you would use the following:\\
-\tcboxverb{addendum = {From \fullcite[1-25]{osap1983}}}
-|
 
 % Article in yearbook
 
