@@ -3389,16 +3389,29 @@ The following form is also shown: in future this might be supported as a package
 \chapter{Unpublished works}\label{sec:unpublished}
 \chapterprecis{unpublished}
 
-\begin{description}
-  \item[Accepted journal article, pre-publication]~\par
-  Author, \enquote{Title} (\lit{to be published in} \emph{JournalTitle}, Year).
+\section{Accepted journal article, pre-publication}
+
+\spec{Author, \enquote{Title} (\lit{to be published in} \emph{JournalTitle}, Year).}
   
-  \item[Unpublished conference paper]~\par
-  Author, \enquote{Title}, \lit{paper given at the} ConfTitle, Venue, EventDate.
-  \\\egcite{holfordstrevens1999hlm}
+\section{Unpublished conference paper}
+\spec{Author, \enquote{Title}, \lit{paper given at the} ConfTitle, Venue, EventDate.}
+|
+
+\bibexample<OGS \S15.6>
+|Leofranc Holford-Strevens, \enquote{Humanism and the Language of Music Theory Treatises}, paper given at the 65th Annual Meeting of the American Musicological Society, Kansas City, MO, 4--7 Nov. 1999.|%
+||%
+|@unpublished{holfordstrevens1999hlm,
+  author = {Leofranc Holford-Strevens},
+  title = {Humanism and the Language of Music Theory Treatises},
+  howpublished = {paper given at the 65th Annual Meeting of the American Musicological Society},
+  location = {Kansas City, MO},
+  date = {1999-11-04/1999-11-07}
+}|
   
-  \item[Unpublished orations, addresses, lectures, and speeches]~\par Author, \enquote{Title}, Description.
-\end{description}
+\todoc|
+\section{Unpublished orations, addresses, lectures, and speeches}
+
+\spec{Author, \enquote{Title}, Description.}
 
 %\subsection{Notes}
 %\begin{itemize}
