@@ -3362,12 +3362,24 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 \chapter{Theses and dissertations}\label{sec:thesis}
 \chapterprecis{thesis}
 
-\begin{description}
-  \item[Preferred]~\par Author, \enquote{Title}, Type (Institution, Year).
-  \\\egcite{blackburn1970tlp}
-  
-  \item[Alternative] \aside{To do, as package option.}\par Author, \enquote{Title}, (Type, Institution, Year).
-\end{description}
+\spec{Author, \enquote{Title}, Type (Institution, Year).}
+|
+
+\bibexample<OGS \S15.5.1>
+|Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).|%
+||%
+|@thesis{blackburn1970tlp,
+  author = {Bonnie J. Blackburn},
+  title = {The Lupus Problem},
+  type = {Ph.D. diss.},
+  institution = {University of Chicago},
+  date = {1970}
+}|
+
+\todoc|
+The following form is also shown: in future this might be supported as a package option.
+
+\spec{Author, \enquote{Title}, (Type, Institution, Year).}
 
 %\subsection{Notes}
 %\begin{itemize}
