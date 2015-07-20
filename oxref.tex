@@ -3597,20 +3597,48 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 
 \chapter{Electronic data}\label{sec:electronic}
 
-\begin{description}
-  \item[Accessible by URL]~
-  \par Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$URL$\rangle$ Division, \lit{accessed} URLDate.
-  \\\egcite{quint2001ohm}
-  \item[Accessible by DOI]~
-  \par Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$\lit{DOI} DOI$\rangle$ Division.
-\end{description}
+\spec{Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$URL$\rangle$ Division, \lit{accessed} URLDate.}
+|
+
+\bibexample<OGS \S15.15.2>
+|Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court}, \emph{Information Today} [online journal], 18/5 (May 2001) $\langle$\url{http://www.infotoday.com/newsbreaks/nb010330-1.htm}$\rangle$, accessed 1 July 2001.|%
+||%
+|@article{quint2001ohm,
+  author = {Barbara Quint},
+  title = {One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court},
+  journaltitle = {Information Today},
+  entrysubtype = {online journal},
+  volume = {18},
+  number = {5},
+  date = {2001-05},
+  url = {http://www.infotoday.com/newsbreaks/nb010330-1.htm},
+  urldate = {2001-07-01}
+}|
+
+\todoc|
+\spec{Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$\lit{DOI} DOI$\rangle$ Division.}
 
 \section{Notes}
 
 \begin{itemize}
   \item Indicate missing date of publication with n.d.
   \item Clarify meaning of date if needed: posted 10 Oct. 2001.
-  \\\egcite{ritter2001aog}
+|  
+
+\bibexample<OGS \S15.15.3>
+|R. M. Ritter, \enquote{About the Oxford Guide to Style}, \emph{Oxford Editorial} [website], (updated 10~Oct.\ 2001) $\langle$\url{http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}$\rangle$|%
+||%
+|@online{ritter2001aog,
+  author = {R. M. Ritter},
+  title = {About the Oxford Guide to Style},
+  maintitle = {Oxford Editorial},
+  entrysubtype = {website},
+  date = {2001-10-10},
+  options = {datetype=updated},
+  url = {http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}
+}|
+
+\todoc|  
   \item Access date can be omitted if publication date is given.
   \item Division can include instruction to search: s.v. \enquote{trignonometry}.
 \end{itemize}
@@ -3771,34 +3799,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1956}
 }|
 
-
-\bibexample<OGS \S15.15.2>
-|Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court}, \emph{Information Today} [online journal], 18/5 (May 2001) $\langle$\url{http://www.infotoday.com/newsbreaks/nb010330-1.htm}$\rangle$, accessed 1 July 2001.|%
-||%
-|@article{quint2001ohm,
-  author = {Barbara Quint},
-  title = {One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court},
-  journaltitle = {Information Today},
-  entrysubtype = {online journal},
-  volume = {18},
-  number = {5},
-  date = {2001-05},
-  url = {http://www.infotoday.com/newsbreaks/nb010330-1.htm},
-  urldate = {2001-07-01}
-}|
-
-\bibexample<OGS \S15.15.3>
-|R. M. Ritter, \enquote{About the Oxford Guide to Style}, \emph{Oxford Editorial} [website], (updated 10~Oct.\ 2001) $\langle$\url{http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}$\rangle$|%
-||%
-|@online{ritter2001aog,
-  author = {R. M. Ritter},
-  title = {About the Oxford Guide to Style},
-  maintitle = {Oxford Editorial},
-  entrysubtype = {website},
-  date = {2001-10-10},
-  options = {datetype=updated},
-  url = {http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}
-}|
 
 \bibexample<OGS \S15.15.3>
 |William Strunk, Jr., \emph{The Elements of Style} (1st edn., Geneva, NY: W. P. Humphrey, 1918), published online July 1999 $\langle$\url{http://www.bartleby.com/141}$\rangle$|%
