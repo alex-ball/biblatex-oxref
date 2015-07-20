@@ -2904,32 +2904,22 @@ Express this in the database by setting \code{author} $=$ \code{bookauthor} $\ne
 
 \spec{Author, \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
 |
-\bibexample<OGS \S15.3>
-|G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.|%
+
+\bibexample<OGS \S15.2.11>
+|Paul Oskar Kristeller, \enquote{The Aristotelian Tradition}, in id., \emph{Renaissance Thought and Its Sources}, ed. Michael Mooney (New York: Columbia University Press, 1979).|%
 ||%
-|@bookinbook{owen1986pi,
-  author = {G. E. L. Owen},
+|@incollection{kristeller1979thm,
+  author = {Paul Oskar Kristeller},
   gender = {sm},
-  title = {Philosophical Invective},
-  booktitle = {Logic, Science and Dialectic},
-  bookauthor = {G. E. L. Owen},
-  editor = {M. Nussbaum},
-  location = {Ithaca, NY},
-  publisher = {Cornell University Press},
-  date = {1986},
-  pages = {347-364},
-  related = {osap1983},
-  relatedtype = {reprintfrom}
-}
-@periodical{osap1983,
-  journaltitle = {Oxford Studies in Ancient Philosophy},
-  volume = {1},
-  date = {1983},
-  pages = {1-25}
+  title = {The Aristotelian Tradition},
+  booktitle = {Renaissance Thought and Its Sources},
+  editor = {Michael Mooney},
+  location = {New York},
+  publisher = {Columbia University Press},
+  date = {1979}
 }|
+
 \todoc|
-In the above example, if not using Biber, instead of the related fields you would use the following:\\
-\tcboxverb{addendum = {From \fullcite[1-25]{osap1983}}}
 
 \spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
 
@@ -2989,15 +2979,63 @@ In Oxford style, the editor's name is replaced with \enquote{id.}\slash \enquote
 
 Biblatex provides the \code{bookinbook} entry type for citing a part of an anthology that has previously been published as a book in its own right. Oxford style provides two different mechanisms for this, depending on circumstance.
 
-\begin{description}
-  \item[Both versions equally accessible] \aside{If using Biber, put the key of the original work in \code{related}, and in \code{relatedtype} use the keyword \code{reprintfrom}. Otherwise, use \code{addendum} to give \enquote{From} and the reference to the original, but omit \code{author} and \code{title} from the entry for the original work.}\par
-  Later Reference. From Earlier Reference.
-  \\\egcite{owen1986pi}
-  \item[Later version more accessible] \aside{Use \code{pubstate} to give the date of original publication.}\par
-  \par Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).
-  \\\egcite{frege1892osr}
-\end{description}
+\subsection{Both versions equally accessible}
 
+If using Biber, put the key of the original work in \code{related}, and in \code{relatedtype} use the keyword \code{reprintfrom}. Otherwise, use \code{addendum} to give \enquote{From} and the reference to the original, but omit \code{author} and \code{title} from the entry for the original work.
+
+\spec{Later Reference. From Earlier Reference.}
+|
+
+\bibexample<OGS \S15.3>
+|G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.|%
+||%
+|@bookinbook{owen1986pi,
+  author = {G. E. L. Owen},
+  gender = {sm},
+  title = {Philosophical Invective},
+  booktitle = {Logic, Science and Dialectic},
+  bookauthor = {G. E. L. Owen},
+  editor = {M. Nussbaum},
+  location = {Ithaca, NY},
+  publisher = {Cornell University Press},
+  date = {1986},
+  pages = {347-364},
+  related = {osap1983},
+  relatedtype = {reprintfrom}
+}
+@periodical{osap1983,
+  journaltitle = {Oxford Studies in Ancient Philosophy},
+  volume = {1},
+  date = {1983},
+  pages = {1-25}
+}|
+
+\todoc|
+\subsection{Later version more accessible}
+
+Use \code{pubstate} to give the date of original publication.
+
+\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).}
+|
+
+\bibexample<OGS \S15.3>
+|G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).|%
+||%
+|@bookinbook{frege1892osr,
+  author = {G. Frege},
+  gender = {sm},
+  title = {On Sense and Reference},
+  bookauthor = {G. Frege},
+  booktitle = {Philosophical Writings},
+  translator = {P. T. Geach and M. Black},
+  editor = {P. T. Geach and M. Black},
+  location = {Oxford},
+  publisher = {Blackwell},
+  date = {1952},
+  pubstate = {originally pub\adddotspace 1892}
+}|
+
+\todoc|
 \chapter{Papers in proceedings}\label{sec:inproceedings}
 \chapterprecis{inproceedings}
 
@@ -3368,23 +3406,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   location = {Tournai},
   publisher = {Desclée},
   date = {1956}
-}|
-
-\bibexample<OGS \S15.3>
-|G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).|%
-||%
-|@bookinbook{frege1892osr,
-  author = {G. Frege},
-  gender = {sm},
-  title = {On Sense and Reference},
-  bookauthor = {G. Frege},
-  booktitle = {Philosophical Writings},
-  translator = {P. T. Geach and M. Black},
-  editor = {P. T. Geach and M. Black},
-  location = {Oxford},
-  publisher = {Blackwell},
-  date = {1952},
-  pubstate = {originally pub\adddotspace 1892}
 }|
 
 % Article in yearbook
