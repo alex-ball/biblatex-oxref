@@ -3476,27 +3476,123 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 
 \chapter{Audio and visual broadcasts and recordings}\label{sec:audiovideo}
 
-\begin{description}
-  \item[Audio recordings] Oxref provides the additional editor types \code{performer}, \code{director} and \code{reader}.
-  \par Composer, \emph{Title}, Artist (Series, Number, Year).
-  \\\egcite{couperin1970pdc}
-  \par Composer, \emph{Title}, Ensemble, \lit{dir.} Director; Credit (Publisher Type Number, Year).
-  \\\egcite{pageNDmn}
-  \par Composer, \emph{Title}, Artist (Publisher Series, Number, Year) (Medium).
-  \\\egcite{hopkinsNDcar}
-  \par Author, \emph{Title}, \lit{read by} Reader (Medium, Number, Year).
-  \\\egcite{lewis1981lww}
-  \par Speaker, \emph{Title} (Publisher, Number, Year).
-  \item[Video recordings]~
-  \par \emph{Title} (Publisher, Number, Year).
-  \par \enquote{EpisodeTitle}, \emph{SeriesTitle} \lit{series} (Publisher, Number, Year).
-  \par Director (\lit{dir.}), \emph{Title} (Publisher, Number, Year).
-  \par \emph{Title}, \lit{dir.} Director (Publisher, Number, Year).
-  \par \emph{Title} (Publisher, Number, Year), Credit.
-  \item[Broadcasts]~
-  \par \emph{Title}, Channel, Date.
-  \par \enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.
-\end{description}
+\section{Audio recordings}
+
+Oxref provides the additional editor types \code{performer}, \code{director} and \code{reader}.
+
+\spec{Composer, \emph{Title}, Artist (Series, Number, Year).}
+|
+
+\bibexample<OGS \S15.14.1>
+|Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).|%
+||%
+|@music{couperin1970pdc,
+  author = {Francois Couperin},
+  title = {Pièces de clavecin},
+  subtitle = {Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres},
+  editor = {Huguette Dreyfus},
+  editortype = {performer},
+  series = {Valois},
+  number = {MB 797},
+  date = {1970}
+}|
+
+\todoc|
+\spec{Composer, \emph{Title}, Ensemble, \lit{dir.} Director; Credit (Publisher Type Number, Year).}
+|
+
+\bibexample<OGS \S15.14.1>
+|Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).|%
+||%
+|@music{hillier1989p,
+  author = {Paul Hillier},
+  title = {Proensa},
+  publisher = {ECM Records},
+  type = {compact disc},
+  number = {ECM 1368},
+  date = {1989}
+}|
+
+\bibexample<OGS \S15.14.1>
+|\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut}, Gothic Voices, dir. Christopher Page (Hyperion compact disc CDA 66087).|%
+||%
+|@music{pageNDmn,
+  title = {The Mirror of Narcissus},
+  subtitle = {Songs by Guillaume do Machaut},
+  editor = {Gothic Voices},
+  editortype = {performer},
+  editora = {Christopher Page},
+  editoratype = {director},
+  publisher = {Hyperion},
+  type = {compact disc},
+  number = {CDA 66087}
+}|
+
+\todoc|
+\spec{Composer, \emph{Title}, Artist (Publisher Series, Number, Year) (Medium).}
+|
+
+\bibexample<OGS \S15.14.1>
+|Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) (two-volume compact disc set).|%
+||%
+|@music{hopkinsNDcar,
+  author = {Lightnin’ Hopkins},
+  title = {The Complete Aladdin Recordings},
+  publisher = {EMI},
+  series = {Blues Series},
+  number = {CDP-7-96843-2},
+  pubstate = {two-volume compact disc set}
+}|
+
+\todoc|
+\spec{Author, \emph{Title}, \lit{read by} Reader (Medium, Number, Year).}
+|
+
+\bibexample<OGS \S15.14.1>
+|C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).|%
+||%
+|@audio{lewis1981lww,
+  author = {C. S. Lewis},
+  title = {The Lion, the Witch, and the Wardrobe},
+  editor = {Sir Michael Hordern},
+  editortype = {reader},
+  howpublished = {2 audio cassettes},
+  number = {TO1611},
+  date = {1981},
+}|
+
+\todoc|
+\spec{Speaker, \emph{Title} (Publisher, Number, Year).}
+
+\section{Video recordings}
+
+\spec{\emph{Title} (Publisher, Number, Year).}
+
+\emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
+
+\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle} \lit{series} (Publisher, Number, Year).}
+
+\enquote{Percy and Harold and Other Stories}, \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224, 1986).
+
+\spec{Director (\lit{dir.}), \emph{Title} (Publisher, Number, Year).}
+
+Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
+
+\spec{\emph{Title}, \lit{dir.} Director (Publisher, Number, Year).}
+
+\emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi}, dir.\ Rob Reiner (Embassy Pictures, 1983).
+
+\spec{\emph{Title} (Publisher, Number, Year), Credit.}
+
+\emph{Leningrad Cowboys Go America} (Villealfa Filmproductions, 1989), dir.\ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki, Mato Valtonen.
+
+\section{Broadcasts}
+
+\spec{\emph{Title}, Channel, Date.}
+
+\emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
+
+\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.}
 
 \section{Notes}
 
@@ -3680,125 +3776,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1956}
 }|
 
-
-\bibexample<OGS \S15.5.1>
-|Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).|%
-||%
-|@thesis{blackburn1970tlp,
-  author = {Bonnie J. Blackburn},
-  title = {The Lupus Problem},
-  type = {Ph.D. diss.},
-  institution = {University of Chicago},
-  date = {1970}
-}|
-
-\bibexample<OGS \S15.6>
-|Leofranc Holford-Strevens, \enquote{Humanism and the Language of Music Theory Treatises}, paper given at the 65th Annual Meeting of the American Musicological Society, Kansas City, MO, 4--7 Nov. 1999.|%
-||%
-|@unpublished{holfordstrevens1999hlm,
-  author = {Leofranc Holford-Strevens},
-  title = {Humanism and the Language of Music Theory Treatises},
-  howpublished = {paper given at the 65th Annual Meeting of the American Musicological Society},
-  location = {Kansas City, MO},
-  date = {1999-11-04/1999-11-07}
-}|
-
-\todoc|
-\section*{15.8} % Poems
-
-Spenser, \emph{Faerie Queene}, II. \textsc{vi}. xxxv. 7
-
-Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
-
-W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}], in \enquote{The German Auden: Six Early Poems}, trans. David Constantine, in Katherine Bucknell and Nicholas Jenkins (eds.), \emph{W. H. Auden, \enquote{The Map of All my Youth}: Early Works, Friends, and Influences} (Auden Studies, 1; Oxford, 1990), 1--15 at 6.
-
-William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Jan M. Ziolkowski, \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. Edward Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
-|
-
-\bibexample<OGS \S15.14.1>
-|Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).|%
-||%
-|@music{couperin1970pdc,
-  author = {Francois Couperin},
-  title = {Pièces de clavecin},
-  subtitle = {Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres},
-  editor = {Huguette Dreyfus},
-  editortype = {performer},
-  series = {Valois},
-  number = {MB 797},
-  date = {1970}
-}
-|
-
-\bibexample<OGS \S15.14.1>
-|Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).|%
-||%
-|@music{hillier1989p,
-  author = {Paul Hillier},
-  title = {Proensa},
-  publisher = {ECM Records},
-  type = {compact disc},
-  number = {ECM 1368},
-  date = {1989}
-}|
-
-\bibexample<OGS \S15.14.1>
-|Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) (two-volume compact disc set).|%
-||%
-|@music{hopkinsNDcar,
-  author = {Lightnin’ Hopkins},
-  title = {The Complete Aladdin Recordings},
-  publisher = {EMI},
-  series = {Blues Series},
-  number = {CDP-7-96843-2},
-  pubstate = {two-volume compact disc set}
-}|
-
-\bibexample<OGS \S15.14.1>
-|\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut}, Gothic Voices, dir. Christopher Page (Hyperion compact disc CDA 66087).|%
-||%
-|@music{pageNDmn,
-  title = {The Mirror of Narcissus},
-  subtitle = {Songs by Guillaume do Machaut},
-  editor = {Gothic Voices},
-  editortype = {performer},
-  editora = {Christopher Page},
-  editoratype = {director},
-  publisher = {Hyperion},
-  type = {compact disc},
-  number = {CDA 66087}
-}|
-
-\bibexample<OGS \S15.14.1>
-|C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).|%
-||%
-|@audio{lewis1981lww,
-  author = {C. S. Lewis},
-  title = {The Lion, the Witch, and the Wardrobe},
-  editor = {Sir Michael Hordern},
-  editortype = {reader},
-  howpublished = {2 audio cassettes},
-  number = {TO1611},
-  date = {1981},
-}|
-
-\todoc|
-\section*{15.14.2} % Films, video recordings, and slides
-
-\emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
-
-Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
-
-\emph{Leningrad Cowboys Go America} (Villealfa Filmproductions, 1989), dir.\ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki, Mato Valtonen.
-
-\enquote{Percy and Harold and Other Stories}, \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224, 1986).
-
-\emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi}, dir.\ Rob Reiner (Embassy Pictures, 1983).
-
-\section*{15.14.3} % Television and radio programmes
-
-\emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
-|
 
 \bibexample<OGS \S15.15.2>
 |Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court}, \emph{Information Today} [online journal], 18/5 (May 2001) $\langle$\url{http://www.infotoday.com/newsbreaks/nb010330-1.htm}$\rangle$, accessed 1 July 2001.|%
