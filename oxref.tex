@@ -3041,17 +3041,78 @@ Use \code{pubstate} to give the date of original publication.
 
 The \code{inproceedings} entry type is intended for a conference paper published as part of a proceedings volume. For papers that have not been collected into a proceedings volume, or presentation slide sets, use the \code{unpublished} entry type instead.
 
-\begin{description}
-  \item[Published conference paper] \aside{Extension}\par
-  Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).
-  \\\egcite{tonkin.strelnikov2009iem}\par
-  Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year), VolNo. Pages.
-  \\\egcite{ding.etal2009sfc}
-  
-  \item[Published orations, addresses, lectures, and speeches] Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enquote{Romanes Lecture}.\par Author, \emph{Title}, Type, Venue, Date (Location: Publisher, Year).
-  \\\egcite{gombrich1957as}
-\end{description}
+\section{Published conference paper}
+\aside{Extension}
 
+\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
+|
+
+\bibexample
+||%
+||%
+|@inproceedings{tonkin.strelnikov2009iem,
+  author = {Emma Tonkin and Alexey Strelnikov},
+  title = {Information Environment Metadata Schema Registry},
+  editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos Papatheodorou and Giannis Tsakonas},
+  booktitle = {Research and Advanced Technology for Digital Libraries},
+  eventtitle = {13th European Conference, ECDL 2009},
+  venue = {Corfu, Greece},
+  eventdate = {2009-09-27/2009-10-02},
+  series = {Lecture Notes in Computer Science},
+  number = {5714},
+  location = {Berlin},
+  publisher = {Springer},
+  date = {2009},
+  pages = {487-488},
+  isbn = {978-3-642-04345-1},
+  issn = {0302-9743}
+}|
+
+\todoc|
+\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year), VolNo. Pages.}
+|
+
+\bibexample
+||%
+||%
+|@inproceedings{ding.etal2009sfc,
+  author = {Lian Ding and Alex Ball and Manjula Patel and Jason Matthews and Glen Mullineux},
+  title = {Strategies for the Collaborative Use of CAD Product Models},
+  maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
+  booktitle = {Design Information and Knowledge},
+  volume = {8},
+  editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
+  venue = {Stanford, CA},
+  eventdate = {2009-08-24/2009-08-27},
+  location = {Glasgow},
+  publisher = {Design Society},
+  date = {2009},
+  pages = {123-134},
+  isbn = {978-1-904670-12-4},
+  url = {http://opus.bath.ac.uk/14285}
+}|
+
+\todoc|
+\section{Published orations, addresses, lectures, and speeches}
+
+Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enquote{Romanes Lecture}.
+
+\spec{Author, \emph{Title}, Type, Venue, Date (Location: Publisher, Year).}
+|
+
+\bibexample<OGS \S15.6>
+|E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).|%
+||%
+|@book{gombrich1957as,
+  author = {E. H. Gombrich},
+  title = {Art and Scholarship},
+  note = {Inaugural Lecture, University College London, 14 Feb. 1957},
+  location = {London},
+  publisher = {H. K. Lewis},
+  date = {1957}
+}|
+
+\todoc|
 \chapter{Articles in periodicals}\label{sec:article}
 \chapterprecis{article}
 
@@ -3608,18 +3669,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1999-11-04/1999-11-07}
 }|
 
-\bibexample<OGS \S15.6>
-|E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).|%
-||%
-|@book{gombrich1957as,
-  author = {E. H. Gombrich},
-  title = {Art and Scholarship},
-  note = {Inaugural Lecture, University College London, 14 Feb. 1957},
-  location = {London},
-  publisher = {H. K. Lewis},
-  date = {1957}
-}|
-
 \todoc|
 \section*{15.8} % Poems
 
@@ -3770,49 +3819,6 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
   location = {New Haven, Conn.}
 }|
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% SAMPLE BIB FILE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{writeverbatim}{src}
-
-% Extensions
-
-@inproceedings{tonkin.strelnikov2009iem,
-  author = {Emma Tonkin and Alexey Strelnikov},
-  title = {Information Environment Metadata Schema Registry},
-  editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos Papatheodorou and Giannis Tsakonas},
-  booktitle = {Research and Advanced Technology for Digital Libraries},
-  eventtitle = {13th European Conference, ECDL 2009},
-  venue = {Corfu, Greece},
-  eventdate = {2009-09-27/2009-10-02},
-  series = {Lecture Notes in Computer Science},
-  number = {5714},
-  location = {Berlin},
-  publisher = {Springer},
-  date = {2009},
-  pages = {487-488},
-  isbn = {978-3-642-04345-1},
-  issn = {0302-9743}
-}
-
-@inproceedings{ding.etal2009sfc,
-  author = {Lian Ding and Alex Ball and Manjula Patel and Jason Matthews and Glen Mullineux},
-  title = {Strategies for the Collaborative Use of CAD Product Models},
-  maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
-  booktitle = {Design Information and Knowledge},
-  volume = {8},
-  editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
-  venue = {Stanford, CA},
-  eventdate = {2009-08-24/2009-08-27},
-  location = {Glasgow},
-  publisher = {Design Society},
-  date = {2009},
-  pages = {123-134},
-  isbn = {978-1-904670-12-4},
-  url = {http://opus.bath.ac.uk/14285}
-}
-\end{writeverbatim}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% STYLE DOCUMENTATION -- ENDMATTER
