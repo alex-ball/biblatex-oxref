@@ -3117,55 +3117,248 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
 \chapter{Articles in periodicals}\label{sec:article}
 \chapterprecis{article}
 
-\begin{description}
-  \item[Article in issue with no volume or number]~
-  \par Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.
-  \\\egcite{boyce1957pgi}
-  \\\egcite{lee1995ehf}
-  \\\egcite{bw1984wen}
-  
-  \item[Article in issue with volume/number]~
-  \par Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.
-  \\\egcite{vaucouleurs1975nmn}
-  \\\egcite{inalcik1992csm}
-  \\\egcite{goldblatt1973dmm}
-  
-  \item[Periodicals with series]~
-  \par Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.
-  \par Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.
-  \\\egcite{barnes1971has}
-  
-  \item[Work published as an issue] Taking the monograph edition as primary \aside{For this, abuse the appropriate monograph entry type: \code{book} or \code{collection}.}
-  \par Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher, Year), pages.
-  \\\egcite{bec1976isc}
-  
-  \item[Work published as an issue] Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \code{title}.}
-  \par Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Year).
-  \\\egcite{trisoglio1973gnq}
-  
-  \item[Article in issue that is a supplement to another issue] \aside{Use \code{note} field to write ‘Supplement to’ and a reference to a \code{periodical}.}
-  \par Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number (Year), Pages.
-  \\\egcite{zhentao.etal1989ars}
-  
-  \item[Review] \aside{If using Biber, use \code{related} to give the key of the reviewed item, and in \code{relatedtype} give the keyword \code{reviewof}. Otherwise, set the option \code{reviewed} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired.}
-  \par Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.
-  \\\egcite{dean1995rpb}
-  \\\egcite{jocelyn1989pav}
-  %\item[Alternative styles]~
-  %\par Author, \enquote{Title}, \emph{JournalTitle}, Vol: Number (Year), Pages.
-  %\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.
-  %\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol (Number): Pages.
-\end{description}
+\section{Article in issue with no volume or number}
 
+\spec{Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.}
+|
+
+\bibexample<OGS \S15.3>
+|M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.|%
+||%
+|@article{boyce1957pgi,
+  author = {M. Boyce},
+  title = {The Parthian \emph{Gsn} and Iranian Minstrel Tradition},
+  journaltitle = {Journal of the Royal Asiatic Society},
+  date = {1957},
+  pages = {10-45}
+}|
+
+\bibexample<OGS \S15.4.1>
+|Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.|%
+||%
+|@article{lee1995ehf,
+  author = {Alan Lee},
+  title = {England Haunted by Familiar Failings},
+  journaltitle = {The Times},
+  date = {1995-06-23}
+}|
+
+\bibexample<OGS \S15.4.1>
+|\enquote{Who's Excellent Now?}, \emph{Business Week}, 5 Nov. 1984, 76--86.|%
+||%
+|@article{bw1984wen,
+  title = {Who's Excellent Now?},
+  journaltitle = {Business Week},
+  date = {1984-11-05},
+  pages = {76-86}
+}|
+  
+\todoc|
+\section{Article in issue with volume/number}
+
+\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.}
+|
+
+\bibexample<OGS \S15.2.1>
+|Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.|%
+||%
+|@article{vaucouleurs1975nmn,
+  author = {Gerald de Vaucouleurs and J. Blunck and M. Davies and A. Dollfus and I. Koval and G. Kuiper and H. Masursky and S. Miyamoto and V Moroz and Carl Sagan},
+  title = {The New {Martian} Nomenclature of the {International} {Astronomical} {Union}},
+  journaltitle = {Icarus},
+  volume = {26},
+  date = {1975},
+  pages = {85-98}
+}|
+
+\bibexample<OGS \S15.4.1>
+|Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typification of the Ottoman Polity}, \emph{Princeton Papers in Near Eastern Studies}, 1 (1992), 49--72.|%
+||%
+|@article{inalcik1992csm,
+  author = {Halil Inalcik},
+  title = {Comments on \enquote{Sultanism}},
+  subtitle = {Max Weber's Typification of the Ottoman Polity},
+  journaltitle = {Princeton Papers in Near Eastern Studies},
+  volume = {1},
+  date = {1992},
+  pages = {49-72}
+}|
+
+\bibexample<OGS \S15.4.1>
+|Robert Goldblatt, \enquote{Diodorean Modality in Minkowski Space-Time}, \emph{Studia Logica}, 39/3 (1973), 219--36.|%
+||%
+|@article{goldblatt1973dmm,
+  author = {Robert Goldblatt},
+  title = {Diodorean Modality in Minkowski Space-Time},
+  journaltitle = {Studia Logica},
+  volume = {39},
+  number = {3},
+  date = {1973},
+  pages = {219-236}
+}|
+  
+\todoc|
+\section{Periodicals with series}
+
+\spec{Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.}
+
+\spec{Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.}
+|
+
+\bibexample<OGS \S15.4.3>
+|J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quarterly}, \textsc{ns} 21 (1971), 65--80.|%
+||%
+|@article{barnes1971has,
+  author = {J. Barnes},
+  title = {Homonymy in Aristotle and Speusippus},
+  journaltitle = {Classical Quarterly},
+  series = {newseries},
+  volume = {21},
+  date = {1971},
+  pages = {65--80}
+}|
+  
+\todoc|
+\section{Work published as an issue}
+
+Taking the monograph edition as primary \aside{For this, abuse the appropriate monograph entry type: \code{book} or \code{collection}.}
+
+\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher, Year), pages.}
+|
+
+\bibexample(hacked)<OGS \S15.4.1>
+|C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.|%
+||%
+|@collection{bec1976isc,
+  editor = {C. Bec},
+  title = {Italie 1500--1550},
+  subtitle = {Une situation de crise?\nopunct},
+  titleaddon = {= \emph{Annales de l'Université Jean Moulin}},
+  note = {1975/2},
+  series = {Langues étrangères},
+  number = {2},
+  location = {Lyon},
+  date = {1976},
+  pages = {99--109}
+}|
+  
+\todoc|
+Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \code{title}.}
+
+\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Year).}
+|
+
+\bibexample<OGS \S15.4.1>
+|F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).|%
+||%
+|@article{trisoglio1973gnq,
+  author = {F. Trisoglio},
+  issuetitle = {Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)},
+  journaltitle = {Rivista Iasalliana},
+  volume = {40},
+  date = {1973}
+}|
+  
+\todoc|
+\section{Article in issue that is a supplement to another issue}
+
+\aside{Use \code{note} field to write ‘Supplement to’ and a reference to a \code{periodical}.}
+
+\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number (Year), Pages.}
+|
+
+\bibexample<OGS \S15.4.1>
+|X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.|%
+||%
+|@article{zhentao.etal1989ars,
+  author = {X. Zhentao and K. K. C. Yau and F. R. Stephenson},
+  title = {Astronomical Records on the Shang Dynasty Oracle Bones},
+  journaltitle = {Archaeoastronomy},
+  volume = {14},
+  date = {1989},
+  note = {Supplement to \fullcite{jha1989}},
+  pages = {\ppno~S61-S72}
+}
+@periodical{jha1989,
+  title = {Journal for the History of Astronomy},
+  volume = {20}
+}|
+  
+\todoc|
+\section{Review}
+
+\aside{If using Biber, use \code{related} to give the key of the reviewed item, and in \code{relatedtype} give the keyword \code{reviewof}. Otherwise, set the option \code{reviewed} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired.}
+
+\spec{Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.}
+|
+
+\bibexample<OGS \S15.4.4>
+|J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.|%
+||%
+|@review{dean1995rpb,
+  author = {J. Dean},
+  related = {basiron1994mel},
+  relatedtype = {reviewof},
+  journaltitle = {Res facta},
+  volume = {17},
+  date = {1995},
+  pages = {56-59}
+}
+@book{basiron1994mel,
+  author = {Philippe Basiron},
+  title = {My Early Life},
+  location = {Bourges},
+  year = {1994}
+}|
+
+\bibexample<OGS \S15.4.4>
+|H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.|%
+||%
+|@review{jocelyn1989pav,
+  author = {H. D. Jocelyn},
+  title = {Probus and Virgil},
+  options = {reviewed=delvigo1987tvt},
+  journaltitle = {CR},
+  series = {newseries},
+  volume = {39},
+  date = {1989},
+  pages = {27-28}
+}
+@book{delvigo1987tvt,
+  author = {Maria Luisa Delvigo},
+  title = {Testo virgiliano e tradizione indiretta},
+  location = {Pisa},
+  date = {1987}
+}|
+
+%\item[Alternative styles]~
+%\par Author, \enquote{Title}, \emph{JournalTitle}, Vol: Number (Year), Pages.
+%\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.
+%\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol (Number): Pages.
+
+\todoc|
 \section{Notes}
 
 \begin{itemize}
   \item Oxford style permits volumes and part numbers to be written like 23: 2 instead of 23/2. \aside{To do, as a package option.}
   
-  \item If the last\slash only word of the JournalTitle is abbreviated (indicated by point or capital letter), it does not need a comma after it.
-  \\\egcite{lindars1965eir}
+  \item If the last\slash only word of the JournalTitle is abbreviated (indicated by point or capital letter), it does not need a comma after it. This can be achieved by adding \code{\textbackslash nopunct} to the end of the journal title.
 \end{itemize}
+|
 
+\bibexample(hacked)<OGS \S15.4.1>
+|B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.|%
+||%
+|@article{lindars1965eir,
+  author = {B. Lindars},
+  title = {Ezechiel and Individual Responsibility},
+  journaltitle = {VT\nopunct},
+  volume = {15},
+  date = {1965},
+  pages = {452-467},
+}|
+
+\todoc|
 \chapter{Theses and dissertations}\label{sec:thesis}
 \chapterprecis{thesis}
 
@@ -3425,19 +3618,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
 
 
 \bibexample<OGS \S15.2.1>
-|Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.|%
-||%
-|@article{vaucouleurs1975nmn,
-  author = {Gerald de Vaucouleurs and J. Blunck and M. Davies and A. Dollfus and I. Koval and G. Kuiper and H. Masursky and S. Miyamoto and V Moroz and Carl Sagan},
-  title = {The New {Martian} Nomenclature of the {International} {Astronomical} {Union}},
-  journaltitle = {Icarus},
-  volume = {26},
-  date = {1975},
-  pages = {85-98}
-}|
-
-
-\bibexample<OGS \S15.2.1>
 |C. L. Dodgson (Lewis Carroll), \emph{Symbolic Logic} (Oxford: Clarendon Press, 1896).|%
 ||%
 |@book{dodgson1896sl,
@@ -3470,183 +3650,6 @@ Below are a series of sample references taken from the \emph{Oxford Style Manual
   date = {1956}
 }|
 
-% Article in yearbook
-
-\bibexample<OGS \S15.3>
-|M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.|%
-||%
-|@article{boyce1957pgi,
-  author = {M. Boyce},
-  title = {The Parthian \emph{Gsn} and Iranian Minstrel Tradition},
-  journaltitle = {Journal of the Royal Asiatic Society},
-  date = {1957},
-  pages = {10-45}
-}|
-
-\bibexample<OGS \S15.4.1>
-|Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typification of the Ottoman Polity}, \emph{Princeton Papers in Near Eastern Studies}, 1 (1992), 49--72.|%
-||%
-|@article{inalcik1992csm,
-  author = {Halil Inalcik},
-  title = {Comments on \enquote{Sultanism}},
-  subtitle = {Max Weber's Typification of the Ottoman Polity},
-  journaltitle = {Princeton Papers in Near Eastern Studies},
-  volume = {1},
-  date = {1992},
-  pages = {49-72}
-}|
-
-\bibexample<OGS \S15.4.1>
-|Robert Goldblatt, \enquote{Diodorean Modality in Minkowski Space-Time}, \emph{Studia Logica}, 39/3 (1973), 219--36.|%
-||%
-|@article{goldblatt1973dmm,
-  author = {Robert Goldblatt},
-  title = {Diodorean Modality in Minkowski Space-Time},
-  journaltitle = {Studia Logica},
-  volume = {39},
-  number = {3},
-  date = {1973},
-  pages = {219-236}
-}|
-
-\bibexample<OGS \S15.4.1>
-|Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.|%
-||%
-|@article{lee1995ehf,
-  author = {Alan Lee},
-  title = {England Haunted by Familiar Failings},
-  journaltitle = {The Times},
-  date = {1995-06-23}
-}|
-
-\bibexample<OGS \S15.4.1>
-|\enquote{Who's Excellent Now?}, \emph{Business Week}, 5 Nov. 1984, 76--86.|%
-||%
-|@article{bw1984wen,
-  title = {Who's Excellent Now?},
-  journaltitle = {Business Week},
-  date = {1984-11-05},
-  pages = {76-86}
-}|
-
-\todoc|
-\aside{The following effect was achieved by added \code{\textbackslash nopunct} to the end of the journal title.}
-|
-
-\bibexample(hacked)<OGS \S15.4.1>
-|B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.|%
-||%
-|@article{lindars1965eir,
-  author = {B. Lindars},
-  title = {Ezechiel and Individual Responsibility},
-  journaltitle = {VT\nopunct},
-  volume = {15},
-  date = {1965},
-  pages = {452-467},
-}|
-
-\todoc|
-\aside{Here the \code{=} and journal title are given as the \code{titleaddon}, and the issue information as the \code{note}.}
-|
-
-% This one is \emph{weird}
-\bibexample(hacked)<OGS \S15.4.1>
-|C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.|%
-||%
-|@collection{bec1976isc,
-  editor = {C. Bec},
-  title = {Italie 1500--1550},
-  subtitle = {Une situation de crise?\nopunct},
-  titleaddon = {= \emph{Annales de l'Université Jean Moulin}},
-  note = {1975/2},
-  series = {Langues étrangères},
-  number = {2},
-  location = {Lyon},
-  date = {1976},
-  pages = {99--109}
-}|
-
-\bibexample<OGS \S15.4.1>
-|F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).|%
-||%
-|@article{trisoglio1973gnq,
-  author = {F. Trisoglio},
-  issuetitle = {Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)},
-  journaltitle = {Rivista Iasalliana},
-  volume = {40},
-  date = {1973}
-}|
-
-\bibexample<OGS \S15.4.1>
-|X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.|%
-||%
-|@article{zhentao.etal1989ars,
-  author = {X. Zhentao and K. K. C. Yau and F. R. Stephenson},
-  title = {Astronomical Records on the Shang Dynasty Oracle Bones},
-  journaltitle = {Archaeoastronomy},
-  volume = {14},
-  date = {1989},
-  note = {Supplement to \fullcite{jha1989}},
-  pages = {\ppno~S61-S72}
-}
-@periodical{jha1989,
-  title = {Journal for the History of Astronomy},
-  volume = {20}
-}|
-
-\bibexample<OGS \S15.4.3>
-|J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quarterly}, \textsc{ns} 21 (1971), 65--80.|%
-||%
-|@article{barnes1971has,
-  author = {J. Barnes},
-  title = {Homonymy in Aristotle and Speusippus},
-  journaltitle = {Classical Quarterly},
-  series = {newseries},
-  volume = {21},
-  date = {1971},
-  pages = {65--80}
-}|
-
-% With Biber: using related field mechanism
-\bibexample<OGS \S15.4.4>
-|J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.|%
-||%
-|@review{dean1995rpb,
-  author = {J. Dean},
-  related = {basiron1994mel},
-  relatedtype = {reviewof},
-  journaltitle = {Res facta},
-  volume = {17},
-  date = {1995},
-  pages = {56-59}
-}
-@book{basiron1994mel,
-  author = {Philippe Basiron},
-  title = {My Early Life},
-  location = {Bourges},
-  year = {1994}
-}|
-
-% Without Biber: need special field for reviewed document
-\bibexample<OGS \S15.4.4>
-|H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.|%
-||%
-|@review{jocelyn1989pav,
-  author = {H. D. Jocelyn},
-  title = {Probus and Virgil},
-  options = {reviewed=delvigo1987tvt},
-  journaltitle = {CR},
-  series = {newseries},
-  volume = {39},
-  date = {1989},
-  pages = {27-28}
-}
-@book{delvigo1987tvt,
-  author = {Maria Luisa Delvigo},
-  title = {Testo virgiliano e tradizione indiretta},
-  location = {Pisa},
-  date = {1987}
-}|
 
 \bibexample<OGS \S15.5.1>
 |Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).|%
