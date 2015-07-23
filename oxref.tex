@@ -2255,7 +2255,7 @@ Where a source is provided, it refers to a section from one of the reference wor
 
 \section{To do}
 
-The Oxref family of Biblatex styles does not yet support the following entry types
+The Oxref family of \textsf{biblatex} styles does not yet support the following standard entry types
 (or at least, they have not yet been styled appropriately):
 
 \begin{multicols}{2}
@@ -2268,6 +2268,31 @@ The Oxref family of Biblatex styles does not yet support the following entry typ
     \item suppperiodical
   \end{itemize}
 \end{multicols}
+
+Support is also planned for the following additional types (starred types are not defined by \textsf{biblatex}):
+
+\begin{multicols}{2}
+  \begin{itemize}\firmlist
+    \item dataset*
+    \item image
+    \item letter
+    \item manuscript*
+    \item play*
+    \item poem*
+    \item software
+    \item standard
+    \item video
+  \end{itemize}
+\end{multicols}
+
+Additional tasks:
+
+\begin{itemize}
+  \item Provide options for how journal divisions are rendered.
+  \item Provide mechanism for properly rendering pseudepigraphical names.
+  \item Provide mechanism for using ‘Anonymous’ as an author name.
+  \item Provide citation style that matches the \emph{OGS} suggestions for shorthand expressions in notes.
+\end{itemize}
 
 \chapter{Books, collections and reference works}\label{sec:book}
 \chapterprecis{book, mvbook, collection, mvcollection, reference, mvreference}
