@@ -491,13 +491,13 @@
   \iffieldundef{urlyear}
   {\iffieldundef{url}{}{\nopunct}}
   {\newunit
-    \printtext[urldate]{\printurldate}}}
+    \printurldate}}
 \DeclareEntryOption{urldatetype}{%
   \DeclareFieldFormat{urldate}{\printtext{#1}\space##1}%
   \renewbibmacro*{url+urldate}{%
     \iffieldundef{url}{}{%
       \newunit
-      \printtext[urldate]{\printurldate}%
+      \printurldate%
       \setunit*{\addspace}%
       \printfield{url}%
       \nopunct
