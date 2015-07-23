@@ -3763,36 +3763,36 @@ and indeed loads the generic \textsf{biblatex} one.
 \todoc|
 \section{Author's Name}
 
-\begin{itemize}
+\subsection{Name format}
 |
 \todoc[oxnotes]|
-  \item
-  Forenames are not reduced to initials.
-  In notes, authors' names are written in natural order. In the bibliography,
-  they are inverted and (optionally) written in small capitals:
-  \spec{\textsc{Author, First}, \lit{and} \textsc{Author, Second}, \emph{Title} (Location: Publisher, Year).}
-  By default, Oxnotes uses small capitals if available;
-  to use normal case instead, issue the following command after loading the style:
-  \lstinline!\DeclareNameAlias{oxrefstartname}{lcstartname}!
+Forenames are not reduced to initials.
+In notes, authors' names are written in natural order. In the bibliography,
+they are inverted and (optionally) written in small capitals:
+\spec{\textsc{Author, First}, \lit{and} \textsc{Author, Second}, \emph{Title} (Location: Publisher, Year).}
+By default, Oxnotes uses small capitals if available;
+to use normal case instead, issue the following command after loading the style:
+\lstinline!\DeclareNameAlias{oxrefstartname}{lcstartname}!
 |
 \todoc[oxyear]|
-  \item
-  Authors' names are written inverted, with forenames reduced to initials.
+Authors' names are written inverted, with forenames reduced to initials.
 |
 
 \todoc|
-  \item
-  No more than three authors are given:\par
-  \egcite{eliot1977m}\par
-  \egcite{rouse.rouse1991btu}\par
-  \egcite{brady.etal1994hehsa}\par
-  \egcite{stewart.etal1994mb} % This is actually five authors
-  
-  \item
-  If adding a famous pseudonym to a work published under a real name,
-  the name should be styled as follows:
-  \spec{Real Name (Pen Name)}
-  Use the \textsf{biblatex} field \code{nameaddon} for the alternative name.
+\subsection{Number of authors printed}
+
+No more than three authors are given:\par
+\egcite{eliot1977m}\par
+\egcite{rouse.rouse1991btu}\par
+\egcite{brady.etal1994hehsa}\par
+\egcite{stewart.etal1994mb} % This is actually five authors
+
+\subsection{Pseudonyms}
+
+If adding a famous pseudonym to a work published under a real name,
+the name should be styled as follows:
+\spec{Real Name (Pen Name)}
+Use the \textsf{biblatex} field \code{nameaddon} for the alternative name.
 |
 
 \bibexample<OGS \S15.2.1>
@@ -3808,32 +3808,28 @@ and indeed loads the generic \textsf{biblatex} one.
 }|
 
 \todoc[oxnotes]|
-  \item
-  In the Humanities, authors are sometimes marked with ‘Pseudo’ to indicate
-  pseudepigraphy, i.e.\ the work was falsely attributed. This renders as
-  ‘Pseudo-Name’ in notes and as ‘\textsc{Name (Ps.-)}’ or ‘\textsc{Name (Pseudo-)}’
-  in the bibliography. A mechanism for this has not yet been added to the style,
-  but may be in future.
+In the Humanities, authors are sometimes marked with ‘Pseudo’ to indicate
+pseudepigraphy, i.e.\ the work was falsely attributed. This renders as
+‘Pseudo-Name’ in notes and as ‘\textsc{Name (Ps.-)}’ or ‘\textsc{Name (Pseudo-)}’
+in the bibliography. A mechanism for this has not yet been added to the style,
+but may be in future.
 |
 \todoc|
-  \item
-  If the authorship of a work has been inferred, in some disciplines it is usual
-  to enclose the name in square brackets (though this does not affect how the work
-  is alphabetized). Oxref provides a special author type for this: \code{inferred}.
-  For possible compatibility with other styles, the type that triggers this formatting
-  can be changed to something else with \lstinline!\renewcommand*{\isInferred}{something else}!.
-  
-  Repetitions still get replaced by a rule.\\\egcite{balfour1768pe}
-|
-\todoc|
-  \item
-  If a work is not attributed to an author, it may be listed in the bibliography
-  under the author name \enquote{Anonymous}.
-|
-\todoc[oxnotes]|  (In note text, however, no author name is given.)|
-\todoc|
-  Currently Oxref does not do this; the work is simply listed under its title.
-  Future versions may however provide this functionality.
+\subsection{Missing attribution}
+
+If the authorship of a work has been inferred, in some disciplines it is usual
+to enclose the name in square brackets (though this does not affect how the work
+is alphabetized). Oxref provides a special author type for this: \code{inferred}.
+For possible compatibility with other styles, the type that triggers this formatting
+can be changed to something else with \lstinline!\renewcommand*{\isInferred}{something else}!.
+
+Repetitions still get replaced by a rule.\\\egcite{balfour1768pe}
+
+If a work is not attributed to an author, it may be listed in the bibliography
+under the author name \enquote{Anonymous}.|
+\todoc[oxnotes]|(In note text, however, no author name is given.)|
+\todoc|Currently Oxref does not do this; the work is simply listed under its title.
+Future versions may however provide this functionality.
 |
 
 \bibexample<OGS \S15.2.1>
@@ -3857,7 +3853,6 @@ and indeed loads the generic \textsf{biblatex} one.
 }|
 
 \todoc|
-\end{itemize}
 
 \section{Titles and subtitles}
 
@@ -3875,22 +3870,15 @@ and indeed loads the generic \textsf{biblatex} one.
 
 \section{Publishers}
 
-\begin{itemize}
-  \item
-  If the place of publication is absent, replace with n.p.
+If the place of publication is absent, replace with n.p.
 
-  \item
-  Publisher names may be uniformly omitted from all citations and bibliography entries.
-  There may be a package option to switch off publisher names in future.
-\end{itemize}
+Publisher names may be uniformly omitted from all citations and bibliography entries.
+There may be a package option to switch off publisher names in future.
 
 \section{Dates}
 
-\begin{itemize}
-  \item
-  Happily, Oxford style matches the default \textsf{biblatex} behaviour of
-  abbreviating months to three letters except for May, June, July, and Sept.
-\end{itemize}
+Happily, Oxford style matches the default \textsf{biblatex} behaviour of
+abbreviating months to three letters except for May, June, July, and Sept.
 
 \section{Foliation}
 
@@ -3899,8 +3887,11 @@ and indeed loads the generic \textsf{biblatex} one.
   \item Volume and page number format: iv.\ 32.
   \item Volume and preliminary page number format: vol.\ iv, p.\ xxxii.
   \item Page ranges should be compact: 32--3.\\\egcite{dean1995rpb}
-  \item If a particular page is required the first time a source is cited, it should be given after the full page range:
 \end{itemize}
+|
+
+\todoc[oxnotes]|
+If a particular page is required the first time a source is cited, it should be given after the full page range:
 |
 
 \bibexample<OGS \S15.1>
