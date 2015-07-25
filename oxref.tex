@@ -2200,9 +2200,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \section{How to use this document}
 
-Bibliographical items are given throughout this document, and serve two purposes:
+Bibliographical items are given throughout this document, and serve three purposes:
 
 \begin{itemize}
+  \item
+  To demonstrate which of the variations of style discussed by the
+  \emph{Oxford Guide to Style} and \emph{New Hart's Rules} have been chosen
+  in this document.
   \item
   To help me, as package author, check that the style is working as intended.
   \item
@@ -2252,6 +2256,36 @@ Where a source is provided, it refers to a section from one of the reference wor
 \item[NHR]
 \fullcite{waddingham2014nhr}
 \end{description}
+
+\section{Design philosophy}
+
+The stipulations given by the \emph{Oxford Guide to Style} regarding citations and references
+amount not so much to a consistent style as a body of advice for creating one.
+Unlike the style manuals published by the American Psychological Association,
+the Modern Language Association, and the University of Chicago,
+the emphasis of the Oxford guide is to describe good practice rather than prescribe it.
+This means that when it comes to \textsf{oxref}, there are decisions to be made
+as to which variations to support by default, which to support as options,
+and which to quietly ignore.
+
+The situation is complicated further by the nature of the available versions.
+The 2002 guide remains the most comprehensive in terms of rules, principles and examples.
+The succeeding versions, under the title \emph{New Hart's Rules},
+update the aspects of the 2002 guide that now seem somewhat dated,
+such as its handling of URLs and DOIs,
+and have more of an eye on machine processing of bibliographies.
+They do, however, introduce some more variations with less of a steer on what is preferred,
+and are considerably shorter with fewer examples.
+
+The approach of \textsf{oxref} is to follow the 2014 \emph{New Hart's Rules} as much as possible,
+but where variations are given without strong preference, or where guidance is lacking,
+to follow the preferences of the 2002 guide.
+Where the practices of the humanities and the sciences are contrasted,
+the former are followed for \textsf{oxnotes} and the latter for \textsf{oxyear}.
+
+Where it is practical to do so,
+ways and means of achieving the variations defined by the two guides are provided,
+but by no means all of them will be supported.
 
 \section{To do}
 
