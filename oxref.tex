@@ -2282,6 +2282,9 @@ but where variations are given without strong preference, or where guidance is l
 to follow the preferences of the 2002 guide.
 Where the practices of the humanities and the sciences are contrasted,
 the former are followed for \textsf{oxnotes} and the latter for \textsf{oxyear}.
+Where neither version gives explicit guidance on citing a resource supported by \textsf{biblatex},
+\textsf{oxref} extrapolates from what is provided, guided by standard \textsf{biblatex}
+and other major referencing styles.
 
 Where it is practical to do so,
 ways and means of achieving the variations defined by the two guides are provided,
@@ -2522,7 +2525,7 @@ Where all volumes were published consistently, the following form is used:
 |Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.|
 ||%
 |@mvbook{straeten1867lmp,
-    author = {Edmond Vander Straeten},
+    author = {Edmond {Vander Straeten}},
     title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
     volumes = {8},
     location = {Brussels},
@@ -2570,7 +2573,7 @@ Where the volumes are merely numbered, the following form is used
 |Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.|%
 ||%
 |@mvbook{straeten1867lmp.ii,
-  author = {Edmond Vander Straeten},
+  author = {Edmond {Vander Straeten}},
   title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
   volume = {2},
   location = {Brussels},
@@ -3271,7 +3274,7 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
   date = {1984-11-05},
   pages = {76-86}
 }|
-  
+
 \todoc|
 \section{Article in issue with volume/number}
 
@@ -3315,7 +3318,21 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
   date = {1973},
   pages = {219-236}
 }|
-  
+
+\bibexample<NHR \S17.3.2>
+||%
+|Unwin, T. (1994), ‘Structural Change in Estonian Agriculture: From Command Economy to Privatisation’, \emph{Geography}, 79/3: 246–61.|%
+|@article{unwin1994sce,
+  author = {Unwin, Tim},
+  year = {1994},
+  title = {Structural Change in Estonian Agriculture},
+  subtitle = {From Command Economy to Privatisation},
+  journaltitle = {Geography},
+  volume = {79},
+  number = {3},
+  pages = {246-261}
+}|
+
 \todoc|
 \section{Periodicals with series}
 
