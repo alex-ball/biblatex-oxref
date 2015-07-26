@@ -1669,7 +1669,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here we set some defaults different to the standard ones. The author
 % can still override them.
 %
-\ExecuteBibliographyOptions{firstinits}
+\ExecuteBibliographyOptions{uniquename=init,firstinits}
 \DeclareNameAlias{author}{last-first}
 \DeclareNameAlias{editor}{last-first}
 \DeclareNameAlias{translator}{last-first}
@@ -3180,6 +3180,19 @@ Express this in the database by setting \code{author} $\neq$ \code{editor}, and 
   pages = {185-240}
 }|
 
+\bibexample<NHR \S17.3.2>
+||%
+|Jessop, B. (1997), ‘The Governance of Complexity and Complexity of Governance’, in A. Amin and J. Hausner (eds.), \emph{Beyond Markets and Hierarchy}, (Aldershot: Edward Elgar).|%
+|@incollection{jessop1997gcc,
+  author = {Bob Jessop},
+  date = {1997},
+  title = {The Governance of Complexity and Complexity of Governance},
+  editor = {Ash Amin and Jerzy Hausner},
+  booktitle = {Beyond Markets and Hierarchy},
+  location = {Aldershot},
+  publisher = {Edward Elgar}
+}|
+
 \todoc|
 \subsection{Work by the editor in mixed collection}
 
@@ -3371,6 +3384,22 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
   date = {1957},
   pages = {10-45}
 }|
+
+\bibexample<OGS \S15.19.2>
+||%
+|Marx, K. (1842), \enquote{Der Kommunismus und die Augsburger \foreignquote{german}{Allgemeine Zeitung}}, \emph{Rheinische Zeitung} (16 Oct.), 1–2.|%
+|@article{marx1842kaa,
+  author = {Karl Marx},
+  title = {Der Kommunismus und die Augsburger \foreignquote{german}{Allgemeine Zeitung}},
+  journaltitle = {Rheinische Zeitung},
+  date = {1842-10-16},
+  pages = {1-2}
+}|
+
+\todoc[oxyear]|
+NB. The above example as it appears in the \emph{Oxford Guide to Style} is both incomplete and wildly inaccurate.
+I have completed and corrected it as best I can ascertain.
+|
 
 \bibexample<OGS \S15.4.1>
 |Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.|%
