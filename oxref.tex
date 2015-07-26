@@ -2127,6 +2127,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \docsvlist{#1}
 }
 
+\NewDocumentCommand{\specs}{vv}{%
+  \addtostream{oxnotes}{\spec{#1}}%
+  \addtostream{oxyear}{\spec{#2}}%
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% STYLE DOCUMENTATION -- FRONT MATTER
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2329,6 +2334,7 @@ Additional tasks:
   \item Provide mechanism for properly rendering pseudepigraphical names.
   \item Provide mechanism for using ‘Anonymous’ as an author name.
   \item Provide option that suppresses the printing of publisher names.
+  \item Provide option to render thesis types within publication block.
   \item Provide citation style that matches the \emph{OGS} suggestions for shorthand expressions in notes.
 \end{itemize}
 
@@ -2342,12 +2348,9 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 \subsection{Basic form}
 |
 
-\todoc[oxnotes]|
-\spec{Author, \emph{Title} (Location: Publisher, Year).}
-|
-\todoc[oxyear]|
-\spec{Author (Date), \emph{Title} (Location: Publisher).}
-|
+\specs
+|Author, \emph{Title} (Location: Publisher, Year).|%
+|Author (Year), \emph{Title} (Location: Publisher).|
 
 \bibexample<OGS \S15.2.1>
 |George Eliot, \emph{Middlemarch} (New York: W. W. Norton, 1977).|%
@@ -2382,16 +2385,6 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
   date = {1977}
 }|
 
-\bibexample<OGS \S15.19.2>
-||%
-|Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).|%
-|@book{smith1988fag,
-  author = {Smith, T.},
-  title = {Famine and Gender},
-  year = {1988},
-  location = {New Haven, Conn.}
-}|
-
 \bibexample<NHR \S18.5>
 ||%
 |Lyons, J. (1981a), \emph{Language and Linguistics: An Introduction} (Cambridge: Cambridge University Press).|%
@@ -2420,9 +2413,9 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 \subsection{No publisher}
 |
 
-\todoc[oxnotes]|
-\spec{Author, \emph{Title} (Location, Year).}
-|
+\specs
+|Author, \emph{Title} (Location, Year).|%
+|Author (Year), \emph{Title} (Location).|
 
 \bibexample<OGS \S15.2.1>
 |{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).|%
@@ -2435,13 +2428,23 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
   date = {1768}
 }|
 
+\bibexample<OGS \S15.19.2>
+||%
+|Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).|%
+|@book{smith1988fag,
+  author = {Smith, T.},
+  title = {Famine and Gender},
+  year = {1988},
+  location = {New Haven, Conn.}
+}|
+
 \todoc|
 \subsection{Edited book}
 |
 
-\todoc[oxnotes]|
-\spec{Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
-|
+\specs
+|Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).|%
+|Author (Year), \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher).|
 
 \bibexample<OGS \S15.2.1>
 |Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).|%
@@ -2455,9 +2458,9 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
   date = {1976}
 }|
 
-\todoc[oxnotes]|
-\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
-|
+\specs
+|\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).|%
+|\emph{Title} (Year), \lit{ed.} Editor(s) (Location: Publisher).|
 
 \bibexample<OGS \S15.2.1>
 |\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).|%
@@ -2473,9 +2476,11 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 \section{Collections}
 
 Biblatex defines \code{collection} as a book made up of multiple self-contained contributions from distinct authors. There is no overall author: use the regular \code{book} entry type for collections of a single author’s work. The editor in this case has a more active role and therefore comes before the title.
-
-\spec{Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).}
 |
+
+\specs
+|Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).|%
+|Editor (Year) (\lit{ed.}), \emph{Title} (Location: Publisher).|
 
 \bibexample<OGS \S15.2.1>
 |Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).|%
@@ -2487,13 +2492,26 @@ Biblatex defines \code{collection} as a book made up of multiple self-contained 
   date = {1994}
 }|
 
+\bibexample<OGS \S15.19.2>
+||%
+|Barnes, J., and Griffin, M. T. (1989) (eds.), \emph{Philosophia Togata: Essays on Philosophy and Roman Society} (Oxford).|%
+|@collection{barnes.griffin1989pte,
+  editor = {Jonathan Barnes and Miriam T. Griffin},
+  date = {1989},
+  title = {Philosophia Togata},
+  subtitle = {Essays on Philosophy and Roman Society},
+  location = {Oxford}
+}|%
+
 \todoc|
 \section{Reference works}
 
 Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). Unlike standard Biblatex, though, Oxford style considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first.
-
-\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 |
+
+\specs
+|\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).|%
+|\emph{Title} (Year), \lit{ed.} Editor(s) (Location: Publisher).|
 
 \bibexample<OGS \S15.2.1>
 |\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).|%
@@ -2517,9 +2535,11 @@ Biblatex provides additional entry types for multi-volume works: \code{mvbook}, 
 \subsection{All volumes}
 
 Where all volumes were published consistently, the following form is used:
-
-\spec{Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.}
 |
+
+\specs
+|Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.|%
+|Author (Year), \emph{Title}, n \lit{vols.} (Location: Publisher), VolNo. Pages.|
 
 \bibexample<OGS \S15.2.6>
 |Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.|
@@ -2532,14 +2552,18 @@ Where all volumes were published consistently, the following form is used:
     date = {1867/1888}
 }|[ii.~367--8]
 
-\todoc|
+\todoc[oxnotes]|
 NB. A more portable way of expressing the above citation would be\\
 \lstinline!\fullcite[\nopp ii.~\mkcomprange{367--368}]{straeten1867lmp}!.
-
-Where the publisher changed between volumes, the following form is used:
-
-\spec{Author, \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher, Year), VolNo (Location: Publisher, Year).}
 |
+
+\todoc|
+Where the publisher changed between volumes, the following form is used:
+|
+
+\specs
+|Author, \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher, Year), VolNo (Location: Publisher, Year).|%
+|Author (Year–Year), \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher), VolNo (Location: Publisher).|
 
 \bibexample(hacked)<OGS \S15.2.6>
 |Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i--iii (Oxford: Talboys, 1838--9), iv (London: Bohn, 1846).|%
@@ -2557,17 +2581,21 @@ Where the publisher changed between volumes, the following form is used:
   pubstate = {London: Bohn, 1846}
 }|
 
-\todoc|
+\todoc[oxnotes]|
 NB. In the \emph{Oxford Style Manual}, the translator in the above reference is in parentheses,
 but as this pattern does not occur in any other it may be an error or stylistic variation.
+|
 
+\todoc|
 \subsection{One volume from several}
 
 Where the volumes are merely numbered, the following form is used
 \aside{Use \code{title} but not \code{maintitle}}:
-
-\spec{Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.}
 |
+
+\specs
+|Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.|%
+|Author (Year), \emph{Title}, VolNo (Location: Publisher), Pages.|
 
 \bibexample<OGS \S15.2.6>
 |Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.|%
@@ -2580,13 +2608,26 @@ Where the volumes are merely numbered, the following form is used
   date = {1867/1888}
 }|[367-368]
 
+\bibexample<OGS \S15.19.2>
+||%
+|Annas, J. (1983) (ed.), \emph{Oxford Studies in Ancient Philosophy}, i (Oxford).|%
+|@mvcollection{annas1983osa,
+  editor = {Annas, Julia},
+  date = {1983},
+  title = {Oxford Studies in Ancient Philosophy},
+  volume = {1},
+  location = {Oxford}
+}|
+
 \todoc|
 Where the volumes each have their own (sub)title,
 and they were all published at once (more or less),
 the following form is used \aside{Use both \code{title} and \code{maintitle}}:
-
-\spec{Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.}
 |
+
+\specs
+|Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.|%
+|Author (Year), \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher), Pages.|
 
 \bibexample<OGS \S15.2.2>
 |Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).|%
@@ -2619,9 +2660,11 @@ the following form is used \aside{Use both \code{title} and \code{maintitle}}:
 Where the volumes each have their own (sub)title,
 and there are many volumes spanning years and possibly publishers,
 the following form is used \aside{Use \code{book} instead of \code{mvbook}.}:
-
-\spec{Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.}
 |
+
+\specs
+|Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.|%
+|Author (Year), \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher), Pages.|
 
 \bibexample<OGS \S15.2.6>
 |David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).|%
@@ -2644,9 +2687,11 @@ the following form is used \aside{Use \code{book} instead of \code{mvbook}.}:
 \subsection{Additions and translations}
 
 Where works have significant introductions, forewords, afterwords, illustrations, etc.\ this may be noted as follows:
-
-\spec{Author, \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Publisher, Year).}
 |
+
+\specs
+|Author, \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Publisher, Year).|%
+|Author (Year), \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Publisher).|
 
 \bibexample<OGS \S15.2.1>
 |Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).|%
@@ -2662,9 +2707,11 @@ Where works have significant introductions, forewords, afterwords, illustrations
 
 \todoc|
 Translators are credited as follows:
-
-\spec{Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).}
 |
+
+\specs
+|Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).|%
+|Author (Year), \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher).|
 
 \bibexample<OGS \S15.2.15>
 |Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).|%
@@ -2678,9 +2725,9 @@ Translators are credited as follows:
   date = {1990}
 }|
 
-\todoc|
-\spec{Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher, Year).}
-|
+\specs
+|Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher, Year).|%
+|Author (Year), \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher).|
 
 \bibexample<OGS \S15.2.15>
 |Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).|%
@@ -2698,19 +2745,29 @@ Translators are credited as follows:
 \subsection{Revision}
 
 Where a work has been lightly revised, the following form is used:
+|
 
-\spec{Author, \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher, Year).}
+\specs
+|Author, \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher, Year).|%
+|Author (Year), \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher).|%
 
+\todoc|
 Where a work has been extensively revised, the following form is used:
+|
 
-\spec{Author, \lit{rev.} Reviser, \emph{Title}, (Location: Publisher, Year).}
+\specs
+|Author, \lit{rev.} Reviser, \emph{Title}, (Location: Publisher, Year).|%
+|Author (Year), \lit{rev.} Reviser, \emph{Title}, (Location: Publisher).|
 
+\todoc|
 \subsection{Later edition}
 
 Where the editor is common to both, the following form is used \aside{Use entry type \code{book}}:
-
-\spec{Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).}
 |
+
+\specs
+|Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).|%
+|Author (Year), \emph{Title} (nth \lit{edn.}, Location: Publisher).|
 
 \bibexample<OGS \S15.2.3>
 |J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.|%
@@ -2743,9 +2800,11 @@ Where the editor has changed, the following form is used \aside{Use entry type \
 \subsection{First and later edition}
 
 Where the publisher is common to both, the following form is used \aside{Use the \code{orig} fields}:
-
-\spec{Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).}
 |
+
+\specs
+|Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).|%
+|Author (Year), \emph{Title} (Year; nth \lit{edn.}, Location: Publisher).|
 
 \bibexample<OGS \S15.2.3>
 |J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).|%
@@ -2773,13 +2832,17 @@ Where the publisher is common to both, the following form is used \aside{Use the
   date = {1686}
 }|
   
-\todoc|
-In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the above reference; this may be an error.
-
-Used where the publisher has changed, the following form is used \aside{Use \code{pubstate} for the original publication date}:
-
-\spec{Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).}
+\todoc[oxnotes]|
+NB. In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the above reference; this may be an error.
 |
+
+\todoc|
+Used where the publisher has changed, the following form is used \aside{Use \code{pubstate} for the original publication date}:
+|
+
+\specs
+|Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).|%
+|Author (Year), \emph{Title} (nth \lit{edn.}, Location: Publisher) (\lit{first pub.} Year).|
 
 \bibexample<OGS \S15.2.3>
 |Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).|%
@@ -2797,9 +2860,12 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
 \todoc|
 \subsection{Reprint}
 
-\aside{Use localization key \code{reprint} as the edition.}\par 
-\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).}
+\aside{Use localization key \code{reprint} as the edition.}
 |
+
+\specs
+|Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).|%
+|Author (Year/Year), \emph{Title} (Location: Publisher; \lit{repr.} Location: Publisher).|
 
 \bibexample<OGS \S15.2.4>
 |C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).|%
@@ -2817,9 +2883,12 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
 }|
 
 \todoc|
-\aside{Use localization key \code{facsimile} as the edition.}\par 
-\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).}
+\aside{Use localization key \code{facsimile} as the edition.}
 |
+
+\specs
+|Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).|%
+|Author (Year/Year), \emph{Title} (Location: Publisher; \lit{facs. edn.}, Location: Publisher).|
 
 \bibexample<OGS \S15.2.4>
 |E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).|%
@@ -2837,9 +2906,11 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
 
 \todoc|
 \subsection{Multiple publishers}
-
-\spec{Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).}
 |
+
+\specs
+|Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).|%
+|Author (Year/Year), \emph{Title} (Location: Publisher; Location: Publisher).|
 
 \bibexample(hacked)<OGS \S15.2.5>
 |L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).|%
@@ -2857,11 +2928,14 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
 
 \todoc|
 \subsection{Work from a series}
-
-\spec{Author, \emph{Title} (Series; Location: Publisher, Year).}
-
-\spec{Author, \emph{Title} (Series, Number; Location: Publisher, Year).}
 |
+
+\specs
+|Author, \emph{Title} (Series; Location: Publisher, Year).|%
+|Author (Year), \emph{Title} (Series; Location: Publisher).|
+\specs
+|Author, \emph{Title} (Series, Number; Location: Publisher, Year).|%
+|Author (Year), \emph{Title} (Series, Number; Location: Publisher).|
 
 \bibexample<OGS \S15.2.7>
 |Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (Beihefte zum Archiv für Musikwissenschaft, 10--11; Wiesbaden, 1972).|%
@@ -2877,16 +2951,31 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
   date = {1972}
 }|
 
-\todoc|
-\spec{Author, \emph{Title} (nth \lit{ser.}, Year).}
+\bibexample<OGS \S15.19.2>
+||%
+|Barnes, J. (1982), \emph{Aristotle} (Past Masters; Oxford).|%
+|@book{barnes1982ari,
+  author = {Jonathan Barnes},
+  date = {1982},
+  title = {Aristotle},
+  series = {Past Masters},
+  location = {Oxford}
+}|
 
+\specs
+|Author, \emph{Title} (nth \lit{ser.}, Year).|%
+|Author (Year), \emph{Title} (nth \lit{ser.}).|
+
+\todoc|
 \chapter{Reports}\label{sec:report}
 \chapterprecis{report}
 
 Oxford style does not have any special rules for referencing reports. Its provision for books, however, is sufficient for most purposes.
-
-\spec{Author, \emph{Title} (Location: Institution, Year).}
 |
+
+\specs
+|Author, \emph{Title} (Location: Institution, Year).|%
+|Author (Year), \emph{Title} (Location: Institution).|
 
 \bibexample<OGS \S15.2.13>
 |Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).|%
@@ -2901,9 +2990,11 @@ Oxford style does not have any special rules for referencing reports. Its provis
   
 \todoc|
 If the report does not specify an author, the institution moves to the author position:
-
-\spec{Author, \emph{Title} (Location, Year).}
 |
+
+\specs
+|Author, \emph{Title} (Location, Year).|%
+|Author (Year), \emph{Title} (Location).|
 
 \bibexample<OGS \S15.2.13>
 |Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Mentally Disordered Offenders from Custody} (London, 1988).|%
@@ -2915,22 +3006,27 @@ If the report does not specify an author, the institution moves to the author po
   location = {London},
   date = {1988}
 }|
-  
 
 \todoc|
 \textsc{Extension} – Reports sometimes have a type, which can be treated like a series especially if a number is also provided:
+|
 
-\spec{Author, \emph{Title} (Type, Number; Location: Institution, Year).}
+\specs
+|Author, \emph{Title} (Type, Number; Location: Institution, Year).|%
+|Author (Year), \emph{Title} (Type, Number; Location: Institution).|
 
+\todoc|
 \chapter{Proceedings}\label{sec:proceedings}
 \chapterprecis{proceedings, mvproceedings}
 
 \section{Single volume proceedings}
 
 The \code{proceedings} entry type is intended for a set of conference papers that have been collected together into a single volume.
-
-\spec{\emph{Title}, \lit{ed.} Editor (Location: Publisher, Year).}
 |
+
+\specs
+|\emph{Title}, \lit{ed.} Editor (Location: Publisher, Year).|%
+|\emph{Title} (Year), \lit{ed.} Editor (Location: Publisher).|
 
 \bibexample<OGS \S15.2.12>
 |\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).|%
@@ -2944,9 +3040,11 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 
 \todoc|
 \textsc{Extension} – Sometimes the title of the proceedings does not relate to the conference; in which case the following form might be used:
-
-\spec{\emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
 |
+
+\specs
+|\emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).|%
+|\emph{Title} (Year), EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).|
 
 \bibexample
 |(not in book)|%
@@ -2971,9 +3069,11 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 The examples here are a combination of Oxford style for proceedings and multi-volume books.
 
 \subsection{All volumes}
-
-\spec{\emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year).}
 |
+
+\specs
+|\emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year).|%
+|\emph{Title} (Year), EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher).|
 
 \bibexample
 |(not in book)|%
@@ -2992,9 +3092,11 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 
 \todoc|
 \subsection{One volume}
-
-\spec{\emph{Title}, VolNo: \emph{VolTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
 |
+
+\specs
+|\emph{Title}, VolNo: \emph{VolTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).|%
+|\emph{Title} (Year), VolNo: \emph{VolTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).|
 
 \bibexample
 |(not in book)|%
@@ -3023,9 +3125,11 @@ The \code{inbook} entry type is intended for books that consist of several self-
 \subsection{One from a collection of single author's works}
 
 Express this in the database by setting \code{author} $=$ \code{bookauthor} $\neq$ \code{editor}.
-
-\spec{Author, \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
 |
+
+\specs
+|Author, \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.|%
+|Author (Year), \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher), Pages.|
 
 \bibexample<OGS \S15.2.11>
 |Paul Oskar Kristeller, \enquote{The Aristotelian Tradition}, in id., \emph{Renaissance Thought and Its Sources}, ed. Michael Mooney (New York: Columbia University Press, 1979).|%
@@ -3042,10 +3146,11 @@ Express this in the database by setting \code{author} $=$ \code{bookauthor} $\ne
   date = {1979}
 }|
 
+\specs
+|Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.|%
+|Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher), Pages.|
+
 \todoc|
-
-\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
-
 \section{Works in collections}
 
 The \code{incollection} entry type is intended for citing one of a collection of self-contained works by different authors.
@@ -3053,9 +3158,11 @@ The \code{incollection} entry type is intended for citing one of a collection of
 \subsection{Work in mixed collection}
 
 Express this in the database by setting \code{author} $\neq$ \code{editor}, and omitting the \code{bookauthor}.
-
-\spec{Author, \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
 |
+
+\specs
+|Author, \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher, Year), Pages.|%
+|Author (Year), \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher), Pages.|
 
 \bibexample<OGS \S15.3>
 |John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George Holmes (ed.), \emph{Art and Politics in Renaissance Italy: British Academy Lectures} (Oxford: Clarendon Press, 1993), 185--240.|%
@@ -3077,9 +3184,11 @@ Express this in the database by setting \code{author} $\neq$ \code{editor}, and 
 \subsection{Work by the editor in mixed collection}
 
 In Oxford style, the editor's name is replaced with \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.} Express this in the database by setting \code{author} $=$ \code{editor}, omitting the \code{bookauthor}, and setting the correct gender.
-
-\spec{Author, \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
 |
+
+\specs
+|Author, \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher, Year), Pages.|%
+|Author (Year), \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher), Pages.|
 
 \bibexample<OGS \S15.3>
 |W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).|%
@@ -3137,9 +3246,11 @@ If using Biber, put the key of the original work in \code{related}, and in \code
 \subsection{Later version more accessible}
 
 Use \code{pubstate} to give the date of original publication.
-
-\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).}
 |
+
+\specs
+|Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).|%
+|Author (Year), \emph{Title} (Location: Publisher) (\lit{originally pub.} Year).|
 
 \bibexample<OGS \S15.3>
 |G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).|%
@@ -3166,9 +3277,11 @@ The \code{inproceedings} entry type is intended for a conference paper published
 
 \section{Published conference paper}
 \aside{Extension}
-
-\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
 |
+
+\specs
+|Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).|%
+|Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).|
 
 \bibexample
 ||%
@@ -3191,9 +3304,9 @@ The \code{inproceedings} entry type is intended for a conference paper published
   issn = {0302-9743}
 }|
 
-\todoc|
-\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year), VolNo. Pages.}
-|
+\specs
+|Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year), VolNo. Pages.|%
+|Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher), VolNo. Pages.|
 
 \bibexample
 ||%
@@ -3219,9 +3332,11 @@ The \code{inproceedings} entry type is intended for a conference paper published
 \section{Published orations, addresses, lectures, and speeches}
 
 Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enquote{Romanes Lecture}.
-
-\spec{Author, \emph{Title}, Type, Venue, Date (Location: Publisher, Year).}
 |
+
+\specs
+|Author, \emph{Title}, Type, Venue, Date (Location: Publisher, Year).|%
+|Author (Year), \emph{Title}, Type, Venue, Date (Location: Publisher).|
 
 \bibexample<OGS \S15.6>
 |E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).|%
@@ -3240,9 +3355,11 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
 \chapterprecis{article}
 
 \section{Article in issue with no volume or number}
-
-\spec{Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.}
 |
+
+\specs
+|Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.|%
+|Author (Day Month Year), \enquote{Title}, \emph{JournalTitle}, Pages.|
 
 \bibexample<OGS \S15.3>
 |M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.|%
@@ -3277,9 +3394,11 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
 
 \todoc|
 \section{Article in issue with volume/number}
-
-\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.}
 |
+
+\specs
+|Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.|%
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number, Pages.|
 
 \bibexample<OGS \S15.2.1>
 |Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.|%
@@ -3335,11 +3454,15 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
 
 \todoc|
 \section{Periodicals with series}
-
-\spec{Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.}
-
-\spec{Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.}
 |
+
+\specs
+|Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.|%
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number, Pages.|
+
+\specs
+|Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.|%
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number, Pages.|
 
 \bibexample<OGS \S15.4.3>
 |J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quarterly}, \textsc{ns} 21 (1971), 65--80.|%
@@ -3358,9 +3481,11 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
 \section{Work published as an issue}
 
 Taking the monograph edition as primary \aside{For this, abuse the appropriate monograph entry type: \code{book} or \code{collection}.}
-
-\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher, Year), pages.}
 |
+
+\specs
+|Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher, Year), pages.|%
+|Author (Year), \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher), pages.|
 
 \bibexample(hacked)<OGS \S15.4.1>
 |C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.|%
@@ -3380,9 +3505,11 @@ Taking the monograph edition as primary \aside{For this, abuse the appropriate m
   
 \todoc|
 Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \code{title}.}
-
-\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Year).}
 |
+
+\specs
+|Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Year).|%
+|Author (Year), \emph{Title} = \emph{JournalTitle}, Vol/Number.|
 
 \bibexample<OGS \S15.4.1>
 |F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).|%
@@ -3399,9 +3526,11 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 \section{Article in issue that is a supplement to another issue}
 
 \aside{Use \code{note} field to write ‘Supplement to’ and a reference to a \code{periodical}.}
-
-\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number (Year), Pages.}
 |
+
+\specs
+|Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number, Pages.|%
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number; \lit{Supplement to} \emph{MainJournalTitle} Vol/Number, Pages.|
 
 \bibexample<OGS \S15.4.1>
 |X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.|%
@@ -3424,9 +3553,11 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 \section{Review}
 
 \aside{If using Biber, use \code{related} to give the key of the reviewed item, and in \code{relatedtype} give the keyword \code{reviewof}. Otherwise, set the option \code{reviewed} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired.}
-
-\spec{Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.}
 |
+
+\specs
+|Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.|%
+|Author (Year), \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number, Pages.|
 
 \bibexample<OGS \S15.4.4>
 |J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.|%
@@ -3497,9 +3628,11 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 \todoc|
 \chapter{Theses and dissertations}\label{sec:thesis}
 \chapterprecis{thesis}
-
-\spec{Author, \enquote{Title}, Type (Institution, Year).}
 |
+
+\specs
+|Author, \enquote{Title}, Type (Institution, Year).|%
+|Author (Year), \enquote{Title}, Type (Institution).|
 
 \bibexample<OGS \S15.5.1>
 |Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).|%
@@ -3514,24 +3647,35 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 
 \todoc|
 The following form is also shown: in future this might be supported as a package option.
+|
 
-\spec{Author, \enquote{Title}, (Type, Institution, Year).}
+\specs
+|Author, \enquote{Title}, (Type, Institution, Year).|%
+|Author (Year), \enquote{Title}, (Type, Institution).|
 
 %\subsection{Notes}
 %\begin{itemize}
 %\item \enquote{Dissertation} should be abbreviated to \enquote{diss.} if the degree/level is given before it, or \enquote{Diss.} otherwise (i.e. German or Dutch dissertations).
 %\end{itemize}
 
+\todoc|
 \chapter{Unpublished works}\label{sec:unpublished}
 \chapterprecis{unpublished}
 
 \section{Accepted journal article, pre-publication}
-
-\spec{Author, \enquote{Title} (\lit{to be published in} \emph{JournalTitle}, Year).}
-  
-\section{Unpublished conference paper}
-\spec{Author, \enquote{Title}, \lit{paper given at the} ConfTitle, Venue, EventDate.}
 |
+
+\specs
+|Author, \enquote{Title} (\lit{to be published in} \emph{JournalTitle}, Year).|%
+|Author (Year), \enquote{Title} (\lit{to be published in} \emph{JournalTitle}).|
+
+\todoc|
+\section{Unpublished conference paper}
+|
+
+\specs
+|Author, \enquote{Title}, \lit{paper given at the} ConfTitle, Venue, EventDate.|%
+|Author (Year), \enquote{Title}, \lit{paper given at the} ConfTitle, Venue, EventDate.|
 
 \bibexample<OGS \S15.6>
 |Leofranc Holford-Strevens, \enquote{Humanism and the Language of Music Theory Treatises}, paper given at the 65th Annual Meeting of the American Musicological Society, Kansas City, MO, 4--7 Nov. 1999.|%
@@ -3546,14 +3690,18 @@ The following form is also shown: in future this might be supported as a package
   
 \todoc|
 \section{Unpublished orations, addresses, lectures, and speeches}
+|
 
-\spec{Author, \enquote{Title}, Description.}
+\specs
+|Author, \enquote{Title}, Description.|%
+|Author (Year), \enquote{Title}, Description.|
 
 %\subsection{Notes}
 %\begin{itemize}
 %\item Description (of oration) is capitalized if derived from a place or event (Sermon on the Mount; Gettysburg Address) but not if derived from a time (Easter sermon; speech in the House of Lords, 18 March 1751).
 %\end{itemize}
 
+\todoc|
 \chapter{Poems}\label{sec:poem}
 
 \section{Long poems}
@@ -3611,9 +3759,11 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 \section{Audio recordings}
 
 Oxref provides the additional editor types \code{performer}, \code{director} and \code{reader}.
-
-\spec{Composer, \emph{Title}, Artist (Series, Number, Year).}
 |
+
+\specs
+|Composer, \emph{Title}, Artist (Series, Number, Year).|%
+|Composer (Year), \emph{Title}, Artist (Series, Number).|
 
 \bibexample<OGS \S15.14.1>
 |Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).|%
@@ -3629,9 +3779,9 @@ Oxref provides the additional editor types \code{performer}, \code{director} and
   date = {1970}
 }|
 
-\todoc|
-\spec{Composer, \emph{Title}, Ensemble, \lit{dir.} Director; Credit (Publisher Type Number, Year).}
-|
+\specs
+|Composer, \emph{Title}, Ensemble, \lit{dir.} Director; Credit (Publisher Type Number, Year).|%
+|Composer (Year), \emph{Title}, Ensemble, \lit{dir.} Director; Credit (Publisher Type Number).|
 
 \bibexample<OGS \S15.14.1>
 |Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).|%
@@ -3660,9 +3810,9 @@ Oxref provides the additional editor types \code{performer}, \code{director} and
   number = {CDA 66087}
 }|
 
-\todoc|
-\spec{Composer, \emph{Title}, Artist (Publisher Series, Number, Year) (Medium).}
-|
+\specs
+|Composer, \emph{Title}, Artist (Publisher Series, Number, Year) (Medium).|%
+|Composer (Year), \emph{Title}, Artist (Publisher Series, Number) (Medium).|
 
 \bibexample<OGS \S15.14.1>
 |Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) (two-volume compact disc set).|%
@@ -3676,9 +3826,9 @@ Oxref provides the additional editor types \code{performer}, \code{director} and
   pubstate = {two-volume compact disc set}
 }|
 
-\todoc|
-\spec{Author, \emph{Title}, \lit{read by} Reader (Medium, Number, Year).}
-|
+\specs
+|Author, \emph{Title}, \lit{read by} Reader (Medium, Number, Year).|%
+|Author (Year), \emph{Title}, \lit{read by} Reader (Medium, Number).|
 
 \bibexample<OGS \S15.14.1>
 |C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).|%
@@ -3693,39 +3843,69 @@ Oxref provides the additional editor types \code{performer}, \code{director} and
   date = {1981},
 }|
 
+\specs
+|Speaker, \emph{Title} (Publisher, Number, Year).|%
+|Speaker (Year), \emph{Title} (Publisher, Number).|
+
 \todoc|
-\spec{Speaker, \emph{Title} (Publisher, Number, Year).}
-
 \section{Video recordings}
+|
 
-\spec{\emph{Title} (Publisher, Number, Year).}
+\specs
+|\emph{Title} (Publisher, Number, Year).|%
+|\emph{Title} (Year) (Publisher, Number).|
 
+\todoc|
 \emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
+|
 
-\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle} \lit{series} (Publisher, Number, Year).}
+\specs
+|\enquote{EpisodeTitle}, \emph{SeriesTitle} \lit{series} (Publisher, Number, Year).|%
+|\enquote{EpisodeTitle} (Year), \emph{SeriesTitle} \lit{series} (Publisher, Number).|
 
+\todoc|
 \enquote{Percy and Harold and Other Stories}, \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224, 1986).
+|
 
-\spec{Director (\lit{dir.}), \emph{Title} (Publisher, Number, Year).}
+\specs
+|Director (\lit{dir.}), \emph{Title} (Publisher, Number, Year).|%
+|Director (Year) (\lit{dir.}), \emph{Title} (Publisher, Number).|
 
+\todoc|
 Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
+|
 
-\spec{\emph{Title}, \lit{dir.} Director (Publisher, Number, Year).}
+\specs
+|\emph{Title}, \lit{dir.} Director (Publisher, Number, Year).|%
+|\emph{Title} (Year), \lit{dir.} Director (Publisher, Number).|
 
+\todoc|
 \emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi}, dir.\ Rob Reiner (Embassy Pictures, 1983).
+|
 
-\spec{\emph{Title} (Publisher, Number, Year), Credit.}
+\specs
+|\emph{Title} (Publisher, Number, Year), Credit.|%
+|\emph{Title} (Year) (Publisher, Number), Credit.|
 
+\todoc|
 \emph{Leningrad Cowboys Go America} (Villealfa Filmproductions, 1989), dir.\ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki, Mato Valtonen.
 
 \section{Broadcasts}
+|
 
-\spec{\emph{Title}, Channel, Date.}
+\specs
+|\emph{Title}, Channel, Date.|%
+|\emph{Title} (Date), Channel.|
 
+\todoc|
 \emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
+|
 
-\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.}
+\specs
+|\enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.|%
+|\enquote{EpisodeTitle} (Date), \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel.|
 
+\todoc|
 \section{Notes}
 
 \begin{itemize}
@@ -3733,9 +3913,11 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \end{itemize}
 
 \chapter{Electronic data}\label{sec:electronic}
-
-\spec{Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$URL$\rangle$ Division, \lit{accessed} URLDate.}
 |
+
+\specs
+|Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$URL$\rangle$ Division, \lit{accessed} URLDate.|%
+|Author (Date), \enquote{SectionTitle}, \emph{Title} [Medium], $\langle$URL$\rangle$ Division, \lit{accessed} URLDate.|
 
 \bibexample<OGS \S15.15.2>
 |Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at the Supreme Court}, \emph{Information Today} [online journal], 18/5 (May 2001) $\langle$\url{http://www.infotoday.com/newsbreaks/nb010330-1.htm}$\rangle$, accessed 1 July 2001.|%
@@ -3767,9 +3949,11 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
   options = {urldatetype=published{\space}online}
 }|
 
-\todoc|
-\spec{Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$\lit{DOI} DOI$\rangle$ Division.}
+\specs
+|Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$\lit{DOI} DOI$\rangle$ Division.|%
+|Author (Date), \enquote{SectionTitle}, \emph{Title} [Medium], $\langle$\lit{DOI} DOI$\rangle$ Division.|
 
+\todoc|
 \section{Notes}
 
 \begin{itemize}
