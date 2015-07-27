@@ -2971,6 +2971,8 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
 \chapterprecis{report}
 
 Oxford style does not have any special rules for referencing reports. Its provision for books, however, is sufficient for most purposes.
+
+\section{Reports with a personal author}
 |
 
 \specs
@@ -2989,6 +2991,8 @@ Oxford style does not have any special rules for referencing reports. Its provis
 }|
   
 \todoc|
+\section{Reports with a corporate author}
+
 If the report does not specify an author, the institution moves to the author position:
 |
 
@@ -3007,13 +3011,75 @@ If the report does not specify an author, the institution moves to the author po
   date = {1988}
 }|
 
+\bibexample<OGS \S15.9.1>
+||%
+|WHO (World Health Organization) (1986), \emph{Nutrition and Development in East Africa} (Geneva: WHO)|%
+|@report{who1986nde,
+  author = {{World Health Organization}},
+  shortauthor = {WHO},
+  title = {Nutrition and Development in {East Africa}},
+  date = {1986},
+  location = {Geneva},
+  institution = {WHO}
+}|
+
+\bibexample(hacked)<NHR \S17.3.2>
+||%
+|CNNR/GMH (Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria Historica) (2008), \emph{Trujilla: Una Tragedia que no Cesa [Trujilla: A Tragedy Without End]}, (Bogotá, Columbia: CNRR).|%
+|@report{cnnr2008tut,
+  shortauthor = {CNNR/GMH},
+  author = {{Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria Historica}},
+  date = {2008},
+  title = {Trujilla},
+  subtitle = {Una Tragedia que no Cesa [{Trujilla:} {A} Tragedy Without End]},
+  location = {Bogotá, Columbia},
+  institution = {CNRR}
+}|
+
 \todoc|
-\textsc{Extension} – Reports sometimes have a type, which can be treated like a series especially if a number is also provided:
+\section{Reports with a type or series}
 |
 
 \specs
 |Author, \emph{Title} (Type, Number; Location: Institution, Year).|%
 |Author (Year), \emph{Title} (Type, Number; Location: Institution).|
+
+\bibexample<OGS \S15.19.2>
+||%
+|Office of Population Censuses and Surveys (1979), \emph{Area Mortality Tables: The Registrar-General's Decennial Supplement for England and Wales 1969–1973}, Series DS, No.~3 (London)|%
+|@report{opcs1979amt,
+  author = {{Office of Population Censuses and Surveys}},
+  date = {1979},
+  title = {Area Mortality Tables},
+  subtitle = {The Registrar-General's Decennial Supplement for England and Wales 1969–1973},
+  series = {Series DS},
+  number = {3},
+  location = {London}
+}|
+
+\bibexample<OGS \S15.19.2>
+||%
+|Office of Population Censuses and Surveys (1979), \emph{Projections of the New Commonwealth and Pakistani Population}, OPCS Monitor PP2 79/1 (London)|%
+|@report{opcs1979amt,
+  author = {{Office of Population Censuses and Surveys}},
+  date = {1979},
+  title = {Projections of the {New Commonwealth} and {Pakistani} Population},
+  type = {OPCS Monitor},
+  number = {PP2 79/1},
+  location = {London}
+}|
+
+\bibexample<NHR \S17.3.2>
+||%
+|Rosenblatt, J., et al. (1988), \emph{The Common Agricultural Policy of the European Community}, International Monetary Fund, occasional paper 62, Nov.|%
+|@report{rosenblatt.etal1988cap,
+  author = {Julius Rosenblatt and others},
+  title = {The {Common Agricultural Policy} of the {European Community}},
+  date = {1988-11},
+  institution = {International Monetary Fund},
+  type = {occasional paper},
+  number = {62}
+}|%
 
 \todoc|
 \chapter{Proceedings}\label{sec:proceedings}
@@ -3372,7 +3438,7 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
 
 \specs
 |Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.|%
-|Author (Day Month Year), \enquote{Title}, \emph{JournalTitle}, Pages.|
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, Day Month, Pages.|
 
 \bibexample<OGS \S15.3>
 |M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.|%
@@ -3384,22 +3450,6 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
   date = {1957},
   pages = {10-45}
 }|
-
-\bibexample<OGS \S15.19.2>
-||%
-|Marx, K. (1842), \enquote{Der Kommunismus und die Augsburger \foreignquote{german}{Allgemeine Zeitung}}, \emph{Rheinische Zeitung} (16 Oct.), 1–2.|%
-|@article{marx1842kaa,
-  author = {Karl Marx},
-  title = {Der Kommunismus und die Augsburger \foreignquote{german}{Allgemeine Zeitung}},
-  journaltitle = {Rheinische Zeitung},
-  date = {1842-10-16},
-  pages = {1-2}
-}|
-
-\todoc[oxyear]|
-NB. The above example as it appears in the \emph{Oxford Guide to Style} is both incomplete and wildly inaccurate.
-I have completed and corrected it as best I can ascertain.
-|
 
 \bibexample<OGS \S15.4.1>
 |Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.|%
@@ -3420,6 +3470,34 @@ I have completed and corrected it as best I can ascertain.
   date = {1984-11-05},
   pages = {76-86}
 }|
+
+\bibexample<OGS \S15.19.2>
+||%
+|WHO (World Health Organization) (1983), \enquote{Nutrition: Sex Bias of Nutritional Status of Children 0–4 Years}, \emph{Weekly Epidemiologial Record}, 20 May.|%
+|@article{who1983nsb,
+  shortauthor = {WHO},
+  author = {World Health Organization},
+  date = {1983-05-20},
+  title = {Nutrition},
+  subtitle = {Sex Bias of Nutritional Status of Children 0–4 Years},
+  journaltitle = {Weekly Epidemiologial Record}
+}|
+
+\bibexample<OGS \S15.19.2>
+||%
+|Marx, K. (1842), \enquote{Der Kommunismus und die Augsburger \foreignquote{german}{Allgemeine Zeitung}}, \emph{Rheinische Zeitung}, 16 Oct., 1–2.|%
+|@article{marx1842kaa,
+  author = {Karl Marx},
+  title = {Der Kommunismus und die Augsburger \foreignquote{german}{Allgemeine Zeitung}},
+  journaltitle = {Rheinische Zeitung},
+  date = {1842-10-16},
+  pages = {1-2}
+}|
+
+\todoc[oxyear]|
+NB. The above example as it appears in the \emph{Oxford Guide to Style} is both incomplete and wildly inaccurate.
+I have completed and corrected it as best I can ascertain.
+|
 
 \todoc|
 \section{Article in issue with volume/number}
