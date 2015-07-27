@@ -4365,7 +4365,7 @@ A \textsf{biblatex} implementation of this may be added in future.
 \noindent
 \hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
 
-\chapter{Introduction}
+\chapter*{Preface}
 
 This document provides the documented sources for the \textsf{oxref}
 biblography styles:
@@ -4375,8 +4375,10 @@ biblography styles:
   \item
   \textsf{oxyear}: a style similar to the standard \textsf{authoryear}, intended for use with parenthetical in-text citations.
 \end{itemize}
-For information on how to use the styles, please refer
-to the separate documentation.
+For information on how to use the styles, please refer to the separate documentation files
+\texttt{oxnotes-doc.pdf} and \texttt{oxyear-doc.pdf} respectively.
+
+\tableofcontents*
 
 \lstset
   { basicstyle=\footnotesize\ttfamily
@@ -4389,7 +4391,7 @@ to the separate documentation.
 \useNiceVerb
 \bgroup\let\tt\ttfamily
 
-\chapter{oxnotes.bbx}
+\chapter{oxref.bbx}
 
 \renewcommand*{\mdJobName}{oxref}
 \MakeInputJobDoc[bbx]{0}{\ProcessInputWith{PScomment}}
