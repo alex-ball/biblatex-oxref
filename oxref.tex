@@ -2448,7 +2448,7 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 
 \bibexample<OGS \S15.2.1>
 |Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).|%
-||%
+|Pseudo-Boethius (1976), \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden).|%
 |@book{boethius1976dds,
   author = {Pseudo-Boethius},
   title = {De disciplina scolarium},
@@ -2464,7 +2464,7 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 
 \bibexample<OGS \S15.2.1>
 |\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).|%
-||%
+|\emph{Distichia Catonis} (1952), ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam).|%
 |@book{boas.botschuyver1952dc,
   title = {Distichia Catonis},
   editor = {Marcus Boas and Henricus Johannes Botschuyver},
@@ -2502,6 +2502,16 @@ Biblatex defines \code{collection} as a book made up of multiple self-contained 
   subtitle = {Essays on Philosophy and Roman Society},
   location = {Oxford}
 }|%
+
+\bibexample<OGS \S15.19.2>
+||%
+|Hankinson, R. J. (1988) (ed.), \emph{Method, Medicine, and Metaphysics} (Edmonton, Alta.).|%
+|@collection{hankinson1988mmm,
+  editor = {R. J. Hankinson},
+  year = {1988},
+  title = {Method, Medicine, and Metaphysics},
+  location = {Edmonton, Alta.}
+}|
 
 \todoc|
 \section{Reference works}
@@ -2723,6 +2733,20 @@ Translators are credited as follows:
   translator = {Dáibhi Ó Cróinín and David Ganz},
   location = {Cambridge},
   date = {1990}
+}|
+
+\bibexample<OGS \S15.19.2>
+||%
+|Marx, K. (1867), \emph{Capital: A Critique of Political Economy}, i, trans. B. Fowkes (New York, 1977).|%
+|@mvbook{marx1867ccp,
+  author = {K. Marx},
+  origdate = {1867},
+  title = {Capital},
+  subtitle = {A Critique of Political Economy},
+  volume = {1},
+  translator = {B. Fowkes},
+  location = {New York},
+  year = {1977}
 }|
 
 \specs
@@ -2967,6 +2991,24 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
 |Author (Year), \emph{Title} (nth \lit{ser.}).|
 
 \todoc|
+\section{Pre-publication book}
+|
+
+\specs
+|Author, \emph{Title} (Location: Publisher, \lit{forthcoming}).|%
+|Author (\lit{forthcoming}), \emph{Title} (Location: Publisher).|
+
+\bibexample<OGS \S15.19.2>
+||%
+|Smith, P. (forthcoming), \emph{Gender and Famine}, 2 vols. (London).|%
+|@mvbook{smithFCgaf,
+  author = {P. Smith},
+  title = {Gender and Famine},
+  volumes = {2},
+  location = {London}
+}|
+
+\todoc|
 \chapter{Reports}\label{sec:report}
 \chapterprecis{report}
 
@@ -3031,7 +3073,8 @@ If the report does not specify an author, the institution moves to the author po
   author = {{Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria Historica}},
   date = {2008},
   title = {Trujilla},
-  subtitle = {Una Tragedia que no Cesa [{Trujilla:} {A} Tragedy Without End]},
+  subtitle = {Una Tragedia que no Cesa},
+  origtitle = {{Trujilla:} {A} Tragedy Without End},
   location = {Bogotá, Columbia},
   institution = {CNRR}
 }|
@@ -3080,6 +3123,29 @@ If the report does not specify an author, the institution moves to the author po
   type = {occasional paper},
   number = {62}
 }|%
+
+\todoc|
+\section{Report available online}
+|
+
+\specs
+|Author, \emph{Title} (Location: Institution, Year), URL, \lit{accessed} URLDate.|%
+|Author (Year), \emph{Title} (Location: Institution), URL, \lit{accessed} URLDate.|
+
+\bibexample<NHR \S18.8.5>
+|UNESCO, \emph{The United Nations World Water Development Report 4}, vol. 1: \emph{Managing Water under Uncertainty and Risk} (Paris: UNESCO, 2012), \url{http://unesdoc.unesco.org/images/0021/002156/215644e.pdf}, accessed 9 Nov. 2013.|%
+||%
+|@report{unesco2012unw,
+  author = {UNESCO},
+  maintitle = {The United Nations World Water Development Report 4},
+  volume = {1},
+  title = {Managing Water under Uncertainty and Risk},
+  location = {Paris},
+  institution = {UNESCO},
+  date = {2012},
+  url = {http://unesdoc.unesco.org/images/0021/002156/215644e.pdf},
+  urldate = {2013-11-09}
+}|
 
 \todoc|
 \chapter{Proceedings}\label{sec:proceedings}
@@ -3248,7 +3314,21 @@ Express this in the database by setting \code{author} $\neq$ \code{editor}, and 
 
 \bibexample<NHR \S17.3.2>
 ||%
-|Jessop, B. (1997), ‘The Governance of Complexity and Complexity of Governance’, in A. Amin and J. Hausner (eds.), \emph{Beyond Markets and Hierarchy}, (Aldershot: Edward Elgar).|%
+|Magarey, M. E. (1988), \enquote{Examination of the Cervical and Thoracic Spine}, in R. Grant (ed.), \emph{Physical Therapy of the Cervical and Thoracic Spine} (New York: Churchill Livingstone), 81–109.|%
+|@incollection{magarey1988ect,
+  author = {M. E. Magarey},
+  year = {1988},
+  title = {Examination of the Cervical and Thoracic Spine},
+  editor = {R. Grant},
+  booktitle = {Physical Therapy of the Cervical and Thoracic Spine},
+  location = {New York},
+  publisher = {Churchill Livingstone},
+  pages = {81-109}
+}|
+
+\bibexample<NHR \S17.3.2>
+||%
+|Jessop, B. (1997), \enquote{The Governance of Complexity and Complexity of Governance}, in A. Amin and J. Hausner (eds.), \emph{Beyond Markets and Hierarchy}, (Aldershot: Edward Elgar).|%
 |@incollection{jessop1997gcc,
   author = {Bob Jessop},
   date = {1997},
@@ -3438,7 +3518,7 @@ Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enqu
 
 \specs
 |Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.|%
-|Author (Year), \enquote{Title}, \emph{JournalTitle}, Day Month, Pages.|
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, Day Month: Pages.|
 
 \bibexample<OGS \S15.3>
 |M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.|%
@@ -3505,7 +3585,7 @@ I have completed and corrected it as best I can ascertain.
 
 \specs
 |Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.|%
-|Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number, Pages.|
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.|
 
 \bibexample<OGS \S15.2.1>
 |Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.|%
@@ -3545,6 +3625,19 @@ I have completed and corrected it as best I can ascertain.
   pages = {219-236}
 }|
 
+\bibexample<OGS \S15.19.2>
+||%
+|Hollingsworth, T. H. (1957), \enquote{A Demographic Study of the British Ducal Families}, \emph{Population Studies}, 11/1: 4–26.|%
+|@article{hollingsworth1957dsb,
+  author = {T. H. Hollingsworth},
+  year = {1957},
+  title = {A Demographic Study of the British Ducal Families},
+  journaltitle = {Population Studies},
+  volume = {11},
+  number = {1},
+  pages = {4-26}
+}|
+
 \bibexample<NHR \S17.3.2>
 ||%
 |Unwin, T. (1994), ‘Structural Change in Estonian Agriculture: From Command Economy to Privatisation’, \emph{Geography}, 79/3: 246–61.|%
@@ -3559,13 +3652,55 @@ I have completed and corrected it as best I can ascertain.
   pages = {246-261}
 }|
 
+\bibexample<NHR \S18.8.5>
+|A. Druin, \enquote{The Role of Children in the Design of New Technology}, \emph{Behaviour \& Information Technology}, 21/1 (2002), 1–25. doi: 10.1080/01449290110108659|%
+||%
+|@article{druin2002rcd,
+  author = {A. Druin},
+  title = {The Role of Children in the Design of New Technology},
+  journaltitle = {Behaviour \& Information Technology},
+  volume = {21},
+  number = {1},
+  date = {2002},
+  pages = {1-25},
+  doi = {10.1080/01449290110108659}
+}|
+
+\bibexample<NHR \S18.8.5>
+|Ya-Ming Liu, Yea-Huei Kao Yang, and Chee-Ruey Hsieh, \enquote{Regulation and Competition in the Taiwanese Pharmaceutical Market under National Health Insurance}, \emph{Journal of Health Economics}, 31 (2012), 471–83. doi: 10.1016/j.jhealeco.2012.03.003|%
+||%
+|@article{liu.etal2012rct,
+  author = {Ya-Ming Liu and Yea-Huei Kao Yang and Chee-Ruey Hsieh},
+  title = {Regulation and Competition in the Taiwanese Pharmaceutical Market under National Health Insurance},
+  journaltitle = {Journal of Health Economics},
+  volume = {31},
+  year = {2012},
+  pages = {471-483},
+  doi = {10.1016/j.jhealeco.2012.03.003}
+}|
+
+\bibexample<NHR \S18.8.5>
+|Shu Li, Chungkun Shih, Chen Wang, Hong Pang, and Dong Ren, \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11 (2013), e78188. doi: 10.1371/journal.pone.0078188|%
+||%
+|@article{li.etal2013flh,
+  author = {Shu Li, Chungkun Shih, Chen Wang, Hong Pang, and Dong Ren},
+  title = {Forever Love},
+  subtitle = {The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China},
+  journaltitle = {PLoS ONE},
+  volume = {8},
+  number = {11},
+  date = {2013},
+  eid = {e78188},
+  doi = {10.1371/journal.pone.0078188}
+}|
+
 \todoc|
 \section{Periodicals with series}
 |
 
 \specs
 |Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.|%
-|Author (Year), \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number, Pages.|
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number: Pages.|
 
 \specs
 |Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.|%
@@ -3583,7 +3718,20 @@ I have completed and corrected it as best I can ascertain.
   date = {1971},
   pages = {65--80}
 }|
-  
+
+\bibexample(hacked)<OGS \S15.19.2>
+||%
+|Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \emph{CQ} \textsc{ns} 39: 43–76.|%
+|@article{hankinson1989gba,
+  author = {R. J. Hankinson},
+  year = {1989},
+  title = {Galen and the Best of All Possible Worlds},
+  journaltitle = {CQ\nopunct},
+  series = {newseries},
+  volume = {39},
+  pages = {43–76}
+}|
+
 \todoc|
 \section{Work published as an issue}
 
@@ -3637,7 +3785,7 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 
 \specs
 |Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number, Pages.|%
-|Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number; \lit{Supplement to} \emph{MainJournalTitle} Vol/Number, Pages.|
+|Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number; \lit{Supplement to} \emph{MainJournalTitle} Vol/Number: Pages.|
 
 \bibexample<OGS \S15.4.1>
 |X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.|%
@@ -3664,7 +3812,7 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 
 \specs
 |Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.|%
-|Author (Year), \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number, Pages.|
+|Author (Year), \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number: Pages.|
 
 \bibexample<OGS \S15.4.4>
 |J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.|%
@@ -3714,7 +3862,7 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 \section{Notes}
 
 \begin{itemize}
-  \item Oxford style permits volumes and part numbers to be written like 23: 2 instead of 23/2. \aside{To do, as a package option.}
+  \item The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxyear} which uses a colon to demarcate the page numbers. \aside{To do, as a package option.}
   
   \item If the last\slash only word of the JournalTitle is abbreviated (indicated by point or capital letter), it does not need a comma after it. This can be achieved by adding \code{\textbackslash nopunct} to the end of the journal title.
 \end{itemize}
@@ -3794,7 +3942,17 @@ The following form is also shown: in future this might be supported as a package
   location = {Kansas City, MO},
   date = {1999-11-04/1999-11-07}
 }|
-  
+
+\bibexample<OGS \S15.19.2>
+||%
+|Mason, J. B., Habicht, J. P., and Tabatabai, H. (1984), \enquote{Notes on Nutritional Surveillance}, paper delivered to the WHO conference.|%
+|@unpublished{mason.etal1984nns,
+  author = {J. B. Mason, and J. P. Habicht and H. Tabatabai},
+  year = {1984},
+  title = {Notes on Nutritional Surveillance},
+  howpublished = {paper delivered to the WHO conference}
+}|
+
 \todoc|
 \section{Unpublished orations, addresses, lectures, and speeches}
 |
@@ -3803,10 +3961,15 @@ The following form is also shown: in future this might be supported as a package
 |Author, \enquote{Title}, Description.|%
 |Author (Year), \enquote{Title}, Description.|
 
-%\subsection{Notes}
-%\begin{itemize}
-%\item Description (of oration) is capitalized if derived from a place or event (Sermon on the Mount; Gettysburg Address) but not if derived from a time (Easter sermon; speech in the House of Lords, 18 March 1751).
-%\end{itemize}
+\bibexample<OGS \S15.19.2>
+||%
+|Pritchard, E., and Pritchard, J. (1990), \enquote{A Reply to Drèze}, unpub.\ paper.|%
+|@unpublished{pritchard.pritchard1990ard,
+  author = {E. Pritchard and J. Pritchard},
+  year = {1990},
+  title = {A Reply to Drèze},
+  howpublished = {unpub.\ paper}
+}|
 
 \todoc|
 \chapter{Poems}\label{sec:poem}
@@ -4019,7 +4182,8 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
   \item Credit means a string like \enquote{edition and project supervision by Editor}.
 \end{itemize}
 
-\chapter{Electronic data}\label{sec:electronic}
+\chapter{Online resources}\label{sec:electronic}
+\chapterprecis{online}
 |
 
 \specs
@@ -4059,6 +4223,22 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 \specs
 |Author, \enquote{SectionTitle}, \emph{Title} [Medium], (Date) $\langle$\lit{DOI} DOI$\rangle$ Division.|%
 |Author (Date), \enquote{SectionTitle}, \emph{Title} [Medium], $\langle$\lit{DOI} DOI$\rangle$ Division.|
+
+\todoc|
+\section{Online news features}
+|
+
+\bibexample<NHR \S18.8.5>
+|BBC News, \enquote{Colchester General Hospital: Police Probe Cancer Treatment} (5 Nov. 2013), \url{http://www.bbc.co.uk/news/uk-england-essex-24819973}, accessed 5 Nov. 2013.|%
+||%
+|@online{bbc2013cgh,
+  author = {BBC News},
+  title = {Colchester General Hospital},
+  subtitle = {Police Probe Cancer Treatment},
+  date = {2013-11-05},
+  url = {http://www.bbc.co.uk/news/uk-england-essex-24819973},
+  urldate = {2013-11-05}
+}|
 
 \todoc|
 \section{Notes}
