@@ -2803,6 +2803,20 @@ Where the editor is common to both, the following form is used \aside{Use entry 
   date = {1990}
 }|[419-421]
 
+\bibexample<NHR \S18.8.5>
+|William Beckford, \emph{Vathek} (4th edn., London, 1823) [online facsimile], \url{http://beckford.c18.net/wbvathek1823.html}, accessed 5 Nov. 2013.|%
+||%
+|@book{beckford1823v,
+  author = {William Beckford},
+  title = {Vathek},
+  edition = {4},
+  location = {London},
+  date = {1823},
+  note = {online facsimile},
+  url = {http://beckford.c18.net/wbvathek1823.html},
+  urldate = {2013-11-05}
+}|
+
 \todoc|
 Where the editor has changed, the following form is used \aside{Use entry type \code{reference}}:
 
@@ -4176,6 +4190,10 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 |\enquote{EpisodeTitle} (Date), \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel.|
 
 \todoc|
+John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.youtube.com/watch?v=0pDE4VX_9Kk}, accessed 9 Nov. 2013.
+|
+
+\todoc|
 \section{Notes}
 
 \begin{itemize}
@@ -4225,18 +4243,109 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 |Author (Date), \enquote{SectionTitle}, \emph{Title} [Medium], $\langle$\lit{DOI} DOI$\rangle$ Division.|
 
 \todoc|
-\section{Online news features}
+\section{Online articles}
 |
 
 \bibexample<NHR \S18.8.5>
 |BBC News, \enquote{Colchester General Hospital: Police Probe Cancer Treatment} (5 Nov. 2013), \url{http://www.bbc.co.uk/news/uk-england-essex-24819973}, accessed 5 Nov. 2013.|%
 ||%
 |@online{bbc2013cgh,
-  author = {BBC News},
+  author = {{BBC News}},
   title = {Colchester General Hospital},
   subtitle = {Police Probe Cancer Treatment},
   date = {2013-11-05},
   url = {http://www.bbc.co.uk/news/uk-england-essex-24819973},
+  urldate = {2013-11-05}
+}|
+
+\bibexample<NHR \S18.8.5>
+|Richard Hooper, \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov. 2013), \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.|%
+||%
+|@online{bbc2013cgh,
+  author = {Richard Hooper},
+  title = {Lebanon's Forgotten Space Programme},
+  organization = {BBC News Magazine},
+  date = {2013-11-14},
+  url = {http://www.bbc.co.uk/news/magazine-24735423},
+  urldate = {2013-11-14}
+}|
+
+\bibexample<NHR \S18.8.5>
+|Stephen McEwen, \enquote{Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}}, \emph{The Spectator} (20 May 2013), \url{http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/}, accessed 9 Nov. 2013.|%
+||%
+|@article{mcewen2013tte,
+  author = {Stephen McEwen},
+  title = {Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}},
+  journaltitle = {The Spectator},
+  date = {2013-05-20},
+  url = {http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/},
+  urldate = {2013-11-09}
+}|
+
+\bibexample<NHR \S18.8.5>
+|Michael Allaby, \enquote{Feathers and Lava Lamps}, Oxford Reference (2013), \url{http://www.oxfordreference.com/page/featherslavalamps}, accessed 9 Nov. 2013.|%
+||%
+|@online{allaby2013fll,
+  author = {Michael Allaby},
+  title = {Feathers and Lava Lamps},
+  organization = {Oxford Reference},
+  date = {2013},
+  url = {http://www.oxfordreference.com/page/featherslavalamps},
+  urldate = {2013-11-09}
+}|
+
+\bibexample<NHR \S18.8.5>
+|Siu-Lan Tan, \enquote{Why does this Baby Cry when her Mother Sings?} [including video], OUPblog (5 Nov. 2013), \url{http://blog.oup.com/2013/11/why-does-this-baby-cry-when-her-mother-sings-viral-video/}, accessed 9 Nov. 2013.|%
+||%
+|@online{tan2013wdt,
+  author = {Siu-Lan Tan},
+  title = {Why does this Baby Cry when her Mother Sings?},
+  entrysubtype = {including video},
+  organization = {OUPblog},
+  date = {2013-11-05},
+  url = {http://blog.oup.com/2013/11/why-does-this-baby-cry-when-her-mother-sings-viral-video/},
+  urldate = {2013-11-09}
+}|
+
+\todoc|
+\section{Online reference article}
+|
+
+\bibexample<NHR \S18.8.5>
+|\enquote{Gunpowder Plot}, \emph{Encyclopaedia Britannica}, \url{http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot}, accessed 5 Nov. 2013.|%
+||%
+|@inreference{eb2013gp,
+  title = {Gunpowder Plot},
+  booktitle = {Encyclopaedia Britannica},
+  url = {http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot},
+  urldate = {2013-11-05}
+}|
+
+\bibexample<NHR \S18.8.5>
+|\enquote{Oxford University Press}, Wikipedia (last modified 5 Nov. 2013), \url{http://en.wikipedia.org/wiki/Oxford_University_Press}, accessed 5 Nov. 2013.|%
+||%
+|@online{wp2013oup,
+  title = {Oxford University Press},
+  organization = {Wikipedia},
+  urldate = {2013-11-05},
+  options = {datetype={last modified}},
+  url = {http://en.wikipedia.org/wiki/Oxford_University_Press},
+  urldate = {2013-11-05}
+}|
+
+\todoc|
+\section{Online video}
+|
+
+\bibexample<NHR \S18.8.5>
+|BBC News, \enquote{Inside India's Mars Mission HQ} [video] (5 Nov. 2013), \url{http://www.bbc.co.uk/news/world-24826253}, accessed 5 Nov. 2013.|%
+||%
+|@online{bbc2013iim,
+  author = {{BBC News}},
+  title = {Inside India's Mars Mission HQ},
+  entrysubtype = {video},
+  date = {2013-11-05},
+  url = {http://www.bbc.co.uk/news/world-24826253},
   urldate = {2013-11-05}
 }|
 
