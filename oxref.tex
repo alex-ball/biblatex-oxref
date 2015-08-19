@@ -478,7 +478,7 @@
 % Initial convention was to enclose URLs in angle brackets, but not any
 % more.
 %
-\DeclareFieldFormat{url}{$\langle$\url{#1}$\rangle$}
+\DeclareFieldFormat{url}{\url{#1}}
 %
 % We support a standard verb for URL dates, but also allow authors to
 % use a different verb if they want to.
@@ -486,7 +486,6 @@
 \DeclareFieldFormat{urldate}{\bibstring{urlseen}\space#1}
 \DeclareFieldFormat{urldatepublished}{\bibstring{epublished}\space#1}
 \renewbibmacro*{url+urldate}{%
-  \iffieldundef{url}{}{\nopunct}%
   \printfield{url}%
   \iffieldundef{urlyear}
   {\iffieldundef{url}{}{\nopunct}}
