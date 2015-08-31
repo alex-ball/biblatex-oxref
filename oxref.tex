@@ -4907,27 +4907,28 @@ For information on how to use the styles, please refer to the separate documenta
   , numbersep=20pt
   }%
 \useNiceVerb
+\CopyFDconditionFromTo{PScomment}{comment}
 \bgroup\let\tt\ttfamily
 
 \chapter{oxref.bbx}
 
 \renewcommand*{\mdJobName}{oxref}
-\MakeInputJobDoc[bbx]{0}{\ProcessInputWith{PScomment}}
+\MakeInputJobDoc[bbx]{0}{\SectionLevelTwoParseInput}
 
 \chapter{oxnotes.bbx}
 
 \renewcommand*{\mdJobName}{oxnotes}
-\MakeInputJobDoc[bbx]{0}{\ProcessInputWith{PScomment}}
+\MakeInputJobDoc[bbx]{0}{\SectionLevelTwoParseInput}
 
 \chapter{oxyear.bbx}
 
 \renewcommand*{\mdJobName}{oxyear}
-\MakeInputJobDoc[bbx]{0}{\ProcessInputWith{PScomment}}
+\MakeInputJobDoc[bbx]{0}{\SectionLevelTwoParseInput}
 
 \chapter{british-oxref.lbx}
 
 \renewcommand*{\mdJobName}{british-oxref}
-\MakeInputJobDoc[lbx]{0}{\ProcessInputWith{PScomment}}
+\MakeInputJobDoc[lbx]{0}{\SectionLevelTwoParseInput}
 
 \egroup
 \noNiceVerb
