@@ -509,12 +509,12 @@
 % brackets, but NHR recommends leaving URLs bare so as not to interfere
 % with text-mining. The latter is the default.
 %
-\DeclareFieldFormat{url}{\url{#1}}
 \DeclareBibliographyOption{isourls}[true]{%
   \ifstrequal{#1}{true}
     {\DeclareFieldFormat{url}{$\langle$\url{##1}}}
     {\DeclareFieldFormat{url}{\url{#1}}}%
 }
+\ExecuteBibliographyOptions{isourls=false}
 %
 % URL dates are set off with a comma rather than parentheses.
 %
@@ -558,18 +558,34 @@
   \setunit{\addperiod\addspace}\newblock
   \printfield{addendum}}
 %
+% == Periodical-style entries ==
+%
 % Subtypes for articles and similar are in square brackets.
 %
 \DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
 %
-% Journal types are also in square brackets.
+% Journal types are also in square brackets. Note that when OGS was
+% published, online journals were a novelty, but since they are now
+% commonplace there is no purpose to pointing them out any more, so NHR
+% doesn't. This complication will be removed. 
 %
 \newbibmacro*{journaltype}{%
   \iffieldequalstr{entrysubtype}{online journal}%
   {\nopunct\printfield{entrysubtype}}{}%
 }
-
-\renewbibmacro*{journal+issuetitle}{%
+%
+% We patch the `journal+issuetitle' macro so that if a work takes up a
+% whole issue (signified by using `issuetitle' \emph{instead} of
+% `title'), the title and journal title are separated by \enquote{=}
+% instead of the usual punctuation.
+% We also insert the above macro for journal types,
+% and insert a new unit after the journal title regardless of what
+% follows.
+%
+\xpatchbibmacro{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit*{\addspace}%
+}{
   \ifboolexpr{
     test {\iffieldundef{title}}
     and
@@ -580,42 +596,98 @@
     \setunit{\addspace =\addspace}}{}%
   \usebibmacro{journal}%
   \usebibmacro{journaltype}%
+  \newunit
+}{}{}
+\xpatchbibmacro*{journal+issuetitle}{%
+  \newunit\printfield{series}%
+}{%
+  \printfield{series}%
+}{}{}
+%
+% Similarly, we patch the `title+issuetitle' macro to insert
+% the `journaltype' macro and insert
+% a new unit after the journal title regardless of what follows.
+%
+\xpatchbibmacro{title+issuetitle}{%
+  \usebibmacro{periodical}%
   \setunit*{\addspace}%
-  \iffieldundef{series}
-  {\newunit}
-  {\newunit
-    \printfield{series}%
-    \setunit{\addspace}}%
-  \usebibmacro{volume+number+eid}%
-  \setunit{\addspace}%
-  \usebibmacro{issue+date}%
-  \setunit{\addsemicolon\space}%
-  \usebibmacro{issue}%
-  \newunit}
-
-\renewbibmacro*{title+issuetitle}{%
+}{%
   \usebibmacro{periodical}%
   \usebibmacro{journaltype}%
-  \setunit*{\addspace}%
-  \iffieldundef{series}
-  {\newunit}
-  {\newunit
-    \printfield{series}%
-    \setunit{\addspace}}%
-  \usebibmacro{volume+number+eid}%
-  \setunit{\addspace}%
-  \usebibmacro{issue+date}%
-  \setunit{\addcolon\space}%
-  \usebibmacro{issue}%
-  \newunit}
-
-\renewbibmacro*{volume+number+eid}{%
+  \newunit
+}{}{}
+\xpatchbibmacro*{title+issuetitle}{%
+  \newunit\printfield{series}%
+}{%
+  \printfield{series}%
+}{}{}
+%
+% On last inspection, `biblatex' hard-coded the punctuation for volumes
+% and issue numbers into the `title+issuetitle' macro instead of
+% delegating to the appropriate macro. We expect this to change in
+% future but in the meantime correct this ourselves.
+%
+\xpatchbibmacro*{title+issuetitle}{%
   \printfield{volume}%
-  \setunit*{\addslash}%
+  \setunit*{\adddot}%
   \printfield{number}%
   \setunit{\addcomma\space}%
-  \printfield{eid}}
-
+  \printfield{eid}%
+}{%
+  \usebibmacro{volume+number+eid}%
+}{}{}
+%
+% OGS and NHR provide plentiful options for formatting volume and issue
+% numbers. We implement four of them here as options. The default is to
+% use a slash between volume and issue number.
+%
+\DeclareBibliographyOption{issuestyle}[slash]{%
+  \ifcsdef{blx@ox@issuestyle@#1}{%
+    \csuse{blx@ox@issuestyle@#1}%
+  }{%
+    \PackageError{biblatex}
+      {Invalid option 'issuestyle=#1'}
+      {Valid values are 'slash', 'colon', 'comma', 'parens'}%
+  }%
+}
+\csdef{blx@ox@issuestyle@slash}{%
+  \renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addslash}%
+    \printfield{number}%
+    \setunit{\addcomma\space}%
+    \printfield{eid}}
+}
+\csdef{blx@ox@issuestyle@colon}{%
+  \renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addcolon\space}%
+    \printfield{number}%
+    \setunit{\addcomma\space}%
+    \printfield{eid}}
+}
+\csdef{blx@ox@issuestyle@comma}{%
+  \renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addcomma\space}%
+    \printfield{number}%
+    \setunit{\addcomma\space}%
+    \printfield{eid}}
+}
+\csdef{blx@ox@issuestyle@parens}{%
+  \renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addspace}%
+    \printfield[parens]{number}%
+    \setunit{\addcomma\space}%
+    \printfield{eid}}
+}
+\ExecuteBibliographyOptions{issuestyle=slash}
+%
+% If an issue has no volume or issue numbers (first block), the season
+% and date are printed bare. Otherwise (second block) they are printed
+% in parentheses just as in the standard version of the macro.
+%
 \renewbibmacro*{issue+date}{%
   \ifboolexpr{(
     test {\iffieldundef{volume}}
@@ -623,28 +695,61 @@
     test {\iffieldundef{number}}
     ) and
     test {\iffieldundef{eid}}
-  }%
-  {\newunit\printtext{%
-      \iffieldundef{issue}
-      {\usebibmacro{date}}
-      {\printfield{issue}%
+  }{%
+    \newunit\printtext{%
+      \iffieldundef{issue}{%
+        \usebibmacro{date}
+      }{%
+        \printfield{issue}%
         \setunit*{\addspace}%
-        \usebibmacro{date}}}}%
-  {\ifboolexpr{
+        \usebibmacro{date}%
+      }%
+    }%
+  }{%
+    \ifboolexpr{
       test {\iffieldundef{issue}}
       and
       test {\iffieldundef{year}}
     }{}{%
       \printtext[parens]{%
-        \iffieldundef{issue}
-        {\usebibmacro{date}}
-        {\printfield{issue}%
+        \iffieldundef{issue}{%
+          \usebibmacro{date}%
+        }{%
+          \printfield{issue}%
           \setunit*{\addspace}%
-          \usebibmacro{date}}}}}%
+          \usebibmacro{date}%
+        }%
+      }%
+    }%
+  }%
   \newunit}
-
-% Adjustments to books
-
+%
+% We patch the `article' driver to remove the \enquote{in} macro and
+% adjust punctuation after editors and page references.
+%
+\xpatchbibdriver{article}{%
+  \usebibmacro{in:}%
+  \usebibmacro{journal+issuetitle}%
+}{%
+  \usebibmacro{journal+issuetitle}%
+}{}{}
+\xpatchbibdriver{article}{%
+  \usebibmacro{byeditor+others}%
+  \newunit
+}{%
+  \usebibmacro{byeditor+others}%
+  \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+}{}{}
+\xpatchbibdriver{article}{%
+  \usebibmacro{pageref}%
+  \newunit\newblock
+}{%
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+}{}{}
+%
+% == Monograph-style entries ==
+%
 \DeclareFieldFormat[bookinbook]{citetitle}{\mkbibquote{#1\isdot}}
 \DeclareFieldFormat[bookinbook]{title}{\mkbibquote{#1\isdot}}
 
@@ -930,30 +1035,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
 }
 
-%
-% Patch 'article' driver to remove the ‘in’ bibmacro and adjust punctuation
-% after editors and page references.
-%
-\xpatchbibdriver{article}{%
-  \usebibmacro{in:}%
-  \usebibmacro{journal+issuetitle}%
-}{%
-  \usebibmacro{journal+issuetitle}%
-}{}{}
-\xpatchbibdriver{article}{%
-  \usebibmacro{byeditor+others}%
-  \newunit
-}{%
-  \usebibmacro{byeditor+others}%
-  \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
-}{}{}
-\xpatchbibdriver{article}{%
-  \usebibmacro{pageref}%
-  \newunit\newblock
-}{%
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-}{}{}
 %
 % Patch 'book'
 %
