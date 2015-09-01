@@ -831,226 +831,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
 }
 %
-% == Intrinsically online resources ==
-%
-% Adjustments to online
-
-\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
-
-% Adjustments to proceedings
-
-\renewbibmacro*{event+venue+date}{%
-  \printfield{eventtitle}%
-  \ifboolexpr{
-    test {\iffieldundef{venue}}
-    and
-    test {\iffieldundef{eventyear}}
-  }
-  {}
-  {\ifboolexpr{
-      test {\iffieldundef{language}}
-      and
-      test {\iffieldundef{eventtitle}}
-    }{\setunit{\mkbibemph{\addcolon}\addspace}}%
-    {\setunit{\addcolon\addspace}}%
-    \printfield{venue}%
-    \setunit*{\addcomma\space}%
-    \printeventdate}%
-  \newunit}
-
-% Adjustments to reports and theses
-
-\newbibmacro*{type+number}{%
-  \printfield{type}%
-  \newunit
-  \printfield{number}}
-
-\renewbibmacro*{institution+location+date}{%
-  \nopunct\printtext[publication]{%
-    \printlist{location}%
-    \iflistundef{institution}%
-    {\setunit*{\addcomma\space}}%
-    {\setunit*{\addcolon\space}}%
-    \printlist{institution}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
-
-\newbibmacro*{type+number+edition+institution+location+date}{%
-  \nopunct\printtext[publication]{%
-    \usebibmacro{type+number}%
-    \setunit{\addsemicolon\space}%
-    \printfield{edition}%
-    \setunit*{\addcomma\space}%
-    \printlist{location}%
-    \iflistundef{institution}%
-    {\setunit*{\addcomma\space}}%
-    {\setunit*{\addcolon\space}}%
-    \printlist{institution}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
-
-\newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
-  \nopunct\printtext[publication]{%
-    \printfield{type}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{series+number}%
-    \setunit{\addsemicolon\space}%
-    \printfield{edition}%
-    \setunit*{\addcomma\space}%
-    \iflistundef{publisher}%
-    {}%
-    {\printlist{organization}%
-      \setunit*{\addcomma\space}}%
-    \printlist{location}%
-    \iflistundef{publisher}%
-    {\iflistundef{organization}%
-      {\setunit*{\addcomma\space}}%
-      {\setunit*{\addcolon\space}%
-        \printlist{organization}}}%
-    {\setunit*{\addcolon\space}
-      \printlist{publisher}}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
-%
-% == Related entries ==
-%
-% === Reprints ===
-%
-% We take advantage of the Biber-specific mechanism of relating items
-% in order to handle reprints. The presence or otherwise of the
-% `journaltitle' field is used to determine whether this is a reprint
-% from a book (first block) or a periodical (second block).
-%
-\renewbibmacro*{related:reprintfrom}[1]{%
-  \entrydata*{#1}{%
-    \iffieldundef{journaltitle}{%
-      \iffieldundef{maintitle}
-      {\printfield[title:hook]{booktitle}}
-      {\printfield[title:hook]{maintitle}}%
-      \newunit\newblock
-      \usebibmacro{byeditor+others}%
-      \newunit\newblock
-      \iffieldundef{volume}{%
-      }{%
-        \printfield{volume}%
-        \printfield{part}%
-      }%
-      \newunit\newblock
-      \printfield{note}%
-      \newunit\newblock
-      \usebibmacro{series+number+edition+publisher+location+date}%
-      \newunit\newblock
-      \usebibmacro{chapter+pages}
-    }{%
-      \usebibmacro{journal+issuetitle}%
-      \newunit
-      \usebibmacro{byeditor+others}%
-      \iffieldundef{note}{%
-        \newunit
-      }{%
-        \setunit{\addsemicolon\addspace}%
-      }%
-      \usebibmacro{note+pages}%
-    }}}
-
-%
-% === Reviews ===
-%
-% Adjustments to review
-
-\DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[review]{volume}{#1}% volume of a journal
-\DeclareFieldFormat[review]{number}{#1}% number of a journal
-\DeclareFieldFormat[review]{series}{% series of a journal
-  \ifinteger{#1}
-  {\mkbibordseries{#1}~\bibstring{jourser}}
-  {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
-
-% - allow reference to reviewed item to be embedded within the reference to the review
-% - TODO: switch to using biblatex's related item mechanism instead
-\newbibmacro*{reviewof}{}
-\DeclareBibliographyCategory{reviewed}
-\DeclareEntryOption{reviewed}{%
-  \renewbibmacro*{reviewof}{%
-    \bibstring{reviewof}\addspace
-    \fullcite{#1}\printtext{\unspace}% <- hack to ensure punctuation is triggered
-  }%
-  \addtocategory{reviewed}{#1}%
-}
-
-% Somewhat cleaner Biber method
-\newbibmacro*{related:reviewof}[1]{%
-  \entrydata*{#1}{%
-    \iffieldundef{journaltitle}{% Review of book
-      \usebibmacro{author}%
-      \setunit{\labelnamepunct}\newblock
-      \usebibmacro{maintitle+title}%
-      \newunit
-      \printlist{language}%
-      \newunit\newblock
-      \usebibmacro{byauthor}%
-      \newunit\newblock
-      \usebibmacro{byeditor+others}%
-      \newunit\newblock
-      \printfield{volumes}%
-      \newunit\newblock
-      \iffieldundef{maintitle}{%
-        \printfield{volume}%
-        \printfield{part}%
-      }{}%
-      \newunit
-      \printfield{note}%
-      \newunit\newblock
-      \usebibmacro{series+number+edition+publisher+location+date}%
-    }{% Review of periodical
-      \usebibmacro{author/translator+others}%
-      \setunit{\labelnamepunct}\newblock
-      \usebibmacro{title}%
-      \newunit
-      \printlist{language}%
-      \newunit\newblock
-      \usebibmacro{byauthor}%
-      \newunit\newblock
-      \usebibmacro{bytranslator+others}%
-      \newunit\newblock
-      \printfield{version}%
-      \newunit\newblock
-      \usebibmacro{journal+issuetitle}%
-      \newunit
-      \usebibmacro{byeditor+others}%
-      \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
-      \usebibmacro{note+pages}%
-    }%
-  }%
-}
-
-% Adjustments to music
-
-\newbibmacro*{publisher+type+series+number+date}{%
-  \nopunct\printtext[publication]{%
-    \printfield{howpublished}%
-    \setunit*{\addcomma\space}%
-    \printlist{publisher}%
-    \setunit*{\addspace}%
-    \printfield{type}%
-    \setunit*{\addspace}%
-    \printfield{series}%
-    \setunit*{\addcomma\space}%
-    \printfield{number}%
-    \setunit{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
-
-%
 % Patch 'book'
 %
 \DeclareBibliographyDriver{book}{%
@@ -1307,142 +1087,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   {}%
   \usebibmacro{finentry}}
 
-\DeclareBibliographyDriver{online}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/editor+others/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \usebibmacro{maintitle}
-  \setunit{\addspace}\newblock
-  \printfield{entrysubtype}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit\newblock
-  \iffieldundef{year}{}{%
-    \printtext[parens]{\usebibmacro{date}}%
-  }%
-  \newunit\newblock
-  \iftoggle{bbx:eprint}
-  {\usebibmacro{eprint}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{url+urldate}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{proceedings}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{maintitle+title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{event+venue+date}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{inproceedings}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{maintitle+booktitle}%
-  \newunit\newblock
-  \usebibmacro{event+venue+date}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
 \DeclareBibliographyDriver{reference}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1564,6 +1208,362 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{chapter+pages}%
   \newunit
   \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+%
+% == Intrinsically online resources ==
+%
+% Adjustments to online
+
+\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
+
+% Adjustments to proceedings
+
+\renewbibmacro*{event+venue+date}{%
+  \printfield{eventtitle}%
+  \ifboolexpr{
+    test {\iffieldundef{venue}}
+    and
+    test {\iffieldundef{eventyear}}
+  }
+  {}
+  {\ifboolexpr{
+      test {\iffieldundef{language}}
+      and
+      test {\iffieldundef{eventtitle}}
+    }{\setunit{\mkbibemph{\addcolon}\addspace}}%
+    {\setunit{\addcolon\addspace}}%
+    \printfield{venue}%
+    \setunit*{\addcomma\space}%
+    \printeventdate}%
+  \newunit}
+
+% Adjustments to reports and theses
+
+\newbibmacro*{type+number}{%
+  \printfield{type}%
+  \newunit
+  \printfield{number}}
+
+\renewbibmacro*{institution+location+date}{%
+  \nopunct\printtext[publication]{%
+    \printlist{location}%
+    \iflistundef{institution}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{institution}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{date}%
+  }%
+}
+
+\newbibmacro*{type+number+edition+institution+location+date}{%
+  \nopunct\printtext[publication]{%
+    \usebibmacro{type+number}%
+    \setunit{\addsemicolon\space}%
+    \printfield{edition}%
+    \setunit*{\addcomma\space}%
+    \printlist{location}%
+    \iflistundef{institution}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{institution}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{date}%
+  }%
+}
+
+\newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
+  \nopunct\printtext[publication]{%
+    \printfield{type}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{series+number}%
+    \setunit{\addsemicolon\space}%
+    \printfield{edition}%
+    \setunit*{\addcomma\space}%
+    \iflistundef{publisher}%
+    {}%
+    {\printlist{organization}%
+      \setunit*{\addcomma\space}}%
+    \printlist{location}%
+    \iflistundef{publisher}%
+    {\iflistundef{organization}%
+      {\setunit*{\addcomma\space}}%
+      {\setunit*{\addcolon\space}%
+        \printlist{organization}}}%
+    {\setunit*{\addcolon\space}
+      \printlist{publisher}}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{date}%
+  }%
+}
+%
+% == Related entries ==
+%
+% === Reprints ===
+%
+% We take advantage of the Biber-specific mechanism of relating items
+% in order to handle reprints. The presence or otherwise of the
+% `journaltitle' field is used to determine whether this is a reprint
+% from a book (first block) or a periodical (second block).
+%
+\renewbibmacro*{related:reprintfrom}[1]{%
+  \entrydata*{#1}{%
+    \iffieldundef{journaltitle}{%
+      \iffieldundef{maintitle}
+      {\printfield[title:hook]{booktitle}}
+      {\printfield[title:hook]{maintitle}}%
+      \newunit\newblock
+      \usebibmacro{byeditor+others}%
+      \newunit\newblock
+      \iffieldundef{volume}{%
+      }{%
+        \printfield{volume}%
+        \printfield{part}%
+      }%
+      \newunit\newblock
+      \printfield{note}%
+      \newunit\newblock
+      \usebibmacro{series+number+edition+publisher+location+date}%
+      \newunit\newblock
+      \usebibmacro{chapter+pages}
+    }{%
+      \usebibmacro{journal+issuetitle}%
+      \newunit
+      \usebibmacro{byeditor+others}%
+      \iffieldundef{note}{%
+        \newunit
+      }{%
+        \setunit{\addsemicolon\addspace}%
+      }%
+      \usebibmacro{note+pages}%
+    }}}
+
+%
+% === Reviews ===
+%
+% Adjustments to review
+
+\DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[review]{volume}{#1}% volume of a journal
+\DeclareFieldFormat[review]{number}{#1}% number of a journal
+\DeclareFieldFormat[review]{series}{% series of a journal
+  \ifinteger{#1}
+  {\mkbibordseries{#1}~\bibstring{jourser}}
+  {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
+
+% - allow reference to reviewed item to be embedded within the reference to the review
+% - TODO: switch to using biblatex's related item mechanism instead
+\newbibmacro*{reviewof}{}
+\DeclareBibliographyCategory{reviewed}
+\DeclareEntryOption{reviewed}{%
+  \renewbibmacro*{reviewof}{%
+    \bibstring{reviewof}\addspace
+    \fullcite{#1}\printtext{\unspace}% <- hack to ensure punctuation is triggered
+  }%
+  \addtocategory{reviewed}{#1}%
+}
+
+% Somewhat cleaner Biber method
+\newbibmacro*{related:reviewof}[1]{%
+  \entrydata*{#1}{%
+    \iffieldundef{journaltitle}{% Review of book
+      \usebibmacro{author}%
+      \setunit{\labelnamepunct}\newblock
+      \usebibmacro{maintitle+title}%
+      \newunit
+      \printlist{language}%
+      \newunit\newblock
+      \usebibmacro{byauthor}%
+      \newunit\newblock
+      \usebibmacro{byeditor+others}%
+      \newunit\newblock
+      \printfield{volumes}%
+      \newunit\newblock
+      \iffieldundef{maintitle}{%
+        \printfield{volume}%
+        \printfield{part}%
+      }{}%
+      \newunit
+      \printfield{note}%
+      \newunit\newblock
+      \usebibmacro{series+number+edition+publisher+location+date}%
+    }{% Review of periodical
+      \usebibmacro{author/translator+others}%
+      \setunit{\labelnamepunct}\newblock
+      \usebibmacro{title}%
+      \newunit
+      \printlist{language}%
+      \newunit\newblock
+      \usebibmacro{byauthor}%
+      \newunit\newblock
+      \usebibmacro{bytranslator+others}%
+      \newunit\newblock
+      \printfield{version}%
+      \newunit\newblock
+      \usebibmacro{journal+issuetitle}%
+      \newunit
+      \usebibmacro{byeditor+others}%
+      \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+      \usebibmacro{note+pages}%
+    }%
+  }%
+}
+
+% Adjustments to music
+
+\newbibmacro*{publisher+type+series+number+date}{%
+  \nopunct\printtext[publication]{%
+    \printfield{howpublished}%
+    \setunit*{\addcomma\space}%
+    \printlist{publisher}%
+    \setunit*{\addspace}%
+    \printfield{type}%
+    \setunit*{\addspace}%
+    \printfield{series}%
+    \setunit*{\addcomma\space}%
+    \printfield{number}%
+    \setunit{\addcomma\space}%
+    \usebibmacro{date}%
+  }%
+}
+
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \usebibmacro{maintitle}
+  \setunit{\addspace}\newblock
+  \printfield{entrysubtype}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit\newblock
+  \iffieldundef{year}{}{%
+    \printtext[parens]{\usebibmacro{date}}%
+  }%
+  \newunit\newblock
+  \iftoggle{bbx:eprint}
+  {\usebibmacro{eprint}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{url+urldate}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{proceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{event+venue+date}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{maintitle+booktitle}%
+  \newunit\newblock
+  \usebibmacro{event+venue+date}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
   {\printfield{isbn}}
