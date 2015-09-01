@@ -750,21 +750,55 @@
 %
 % == Monograph-style entries ==
 %
+% The titles of books that have been collected into an anthology are
+% treated like regular chapters and set in quotes.
+%
 \DeclareFieldFormat[bookinbook]{citetitle}{\mkbibquote{#1\isdot}}
 \DeclareFieldFormat[bookinbook]{title}{\mkbibquote{#1\isdot}}
-
+%
+% Volume numbers in monograph-style entries are formatted as roman
+% numerals.
+%
 \DeclareFieldFormat[book,bookinbook,inbook,mvbook,%
 collection,incollection,mvcollection,%
 proceedings,inproceedings,mvproceedings,%
 reference,inreference,mvreference]{volume}{\Rn{#1}}
-
+%
+% Where a multi-volume work is more like a series, the volume number and
+% main title are put in a parenthetical block between the volume title
+% and the usual publication block.
+%
+\newbibmacro*{maintitle+volume}{%
+  \ifboolexpr{
+    test {\iffieldundef{maintitle}}
+    or
+    test {\iffieldundef{volume}}
+  }{}%
+  {\printtext[parens]{%
+      \bibstring{volume}\addspace
+      \printfield{volume}\addspace\bibstring{ofseries}\addspace
+      \usebibmacro{maintitle}}}
+}
+%
+% Oxford style signifies formal publication by putting the relevant
+% details in parentheses.
+%
+\DeclareFieldFormat{publication}{\mkbibparens{#1}}
+%
+% Standard 'biblatex' puts a space between series name and number.
+% OGS separates them with a comma.
+%
 \renewbibmacro*{series+number}{%
   \printfield{series}%
   \newunit
-  \printfield{number}}
-
-\newbibmacro*{origdate}{\printorigdate}
-
+  \printfield{number}%
+  \newunit}
+%
+% When citing both the first and a later edition, the first one comes
+% first, and the later one comes after a semicolon. As per standard
+% 'biblatex', the elements of a single edition are separated by commas
+% except that the publisher is preceded by a colon.
+%
 \newbibmacro*{edition+publisher+location+date}{%
   \printlist{origlocation}%
   \iflistundef{origpublisher}%
@@ -773,7 +807,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printlist{origpublisher}%
   \setunit*{\addcomma\space}%
   \printorigdate%
-  %\usebibmacro{origdate}%
   \setunit*{\addsemicolon\space}%
   \printfield{edition}%
   \setunit*{\addcomma\space}%
@@ -785,9 +818,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit*{\addcomma\space}%
   \usebibmacro{date}%
 }
-
-\DeclareFieldFormat{publication}{\mkbibparens{#1}}
-
+%
+% Oxford style is to provide publication details –
+% series name and number, edition, publisher, location, date –
+% in a parenthetical block after the title information.
+%
 \newbibmacro*{series+number+edition+publisher+location+date}{%
   \nopunct\printtext[publication]{%
     \usebibmacro{series+number}%
@@ -795,19 +830,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{edition+publisher+location+date}%
   }%
 }
-
-\newbibmacro*{maintitle+volume}{%
-  \ifboolexpr{
-    test {\iffieldundef{maintitle}}
-    or
-    test {\iffieldundef{volume}}
-  }{}%
-  {\printtext[publication]{%
-      \bibstring{volume}\addspace
-      \printfield{volume}\addspace\bibstring{ofseries}\addspace
-      \usebibmacro{maintitle}}}
-}
-
+%
+% == Intrinsically online resources ==
+%
 % Adjustments to online
 
 \DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
@@ -834,16 +859,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \setunit*{\addcomma\space}%
     \printeventdate}%
   \newunit}
-
-% Adjustments to reference
-
-\newbibmacro*{series+number+publisher+location+date}{%
-  \nopunct\printtext[publication]{%
-    \usebibmacro{series+number}%
-    \setunit{\addsemicolon\space}%
-    \usebibmacro{publisher+location+date}%
-  }%
-}
 
 % Adjustments to reports and theses
 
@@ -1447,7 +1462,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \usebibmacro{maintitle+volume}%
   \newunit
-  \usebibmacro{series+number+publisher+location+date}%
+  \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -1493,7 +1508,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit
   \printfield{note}%
   \newunit\newblock
-  \usebibmacro{series+number+publisher+location+date}%
+  \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -1544,7 +1559,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit
   \printfield{note}%
   \newunit\newblock%
-  \usebibmacro{series+number+publisher+location+date}%
+  \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
