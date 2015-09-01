@@ -1224,18 +1224,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
 %
-% == Intrinsically online resources ==
+% == Proceedings ==
 %
-% Adjustments to online
-
-\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
-
-% Adjustments to proceedings
-
 \renewbibmacro*{event+venue+date}{%
   \printfield{eventtitle}%
   \ifboolexpr{
@@ -1254,9 +1245,106 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \setunit*{\addcomma\space}%
     \printeventdate}%
   \newunit}
+%
+%
+%
+\DeclareBibliographyDriver{proceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{event+venue+date}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
 
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{maintitle+booktitle}%
+  \newunit\newblock
+  \usebibmacro{event+venue+date}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%
+% == Reports and theses ==
+%
 % Adjustments to reports and theses
-
+%
 \newbibmacro*{type+number}{%
   \printfield{type}%
   \newunit
@@ -1314,6 +1402,214 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{date}%
   }%
 }
+
+\DeclareBibliographyDriver{report}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{type+number+edition+institution+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isrn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{manual}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printfield{type}%
+  \newunit
+  \printfield{version}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+%
+% == Intrinsically online resources ==
+%
+% Adjustments to online
+
+\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
+
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \usebibmacro{maintitle}
+  \setunit{\addspace}\newblock
+  \printfield{entrysubtype}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit\newblock
+  \iffieldundef{year}{}{%
+    \printtext[parens]{\usebibmacro{date}}%
+  }%
+  \newunit\newblock
+  \iftoggle{bbx:eprint}
+  {\usebibmacro{eprint}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{url+urldate}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%
+% == Audiovisual resources ==
+%
+% Adjustments to music
+%
+\newbibmacro*{publisher+type+series+number+date}{%
+  \nopunct\printtext[publication]{%
+    \printfield{howpublished}%
+    \setunit*{\addcomma\space}%
+    \printlist{publisher}%
+    \setunit*{\addspace}%
+    \printfield{type}%
+    \setunit*{\addspace}%
+    \printfield{series}%
+    \setunit*{\addcomma\space}%
+    \printfield{number}%
+    \setunit{\addcomma\space}%
+    \usebibmacro{date}%
+  }%
+}
+
+% Previously unsupported types
+
+\DeclareBibliographyDriver{audio}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+    {\printfield{volume}%
+      \printfield{part}}
+    {}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{publisher+type+series+number+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyAlias{music}{audio}
+
 %
 % == Related entries ==
 %
@@ -1427,249 +1723,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
 }
 
-% Adjustments to music
-
-\newbibmacro*{publisher+type+series+number+date}{%
-  \nopunct\printtext[publication]{%
-    \printfield{howpublished}%
-    \setunit*{\addcomma\space}%
-    \printlist{publisher}%
-    \setunit*{\addspace}%
-    \printfield{type}%
-    \setunit*{\addspace}%
-    \printfield{series}%
-    \setunit*{\addcomma\space}%
-    \printfield{number}%
-    \setunit{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
-
-\DeclareBibliographyDriver{online}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/editor+others/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \usebibmacro{maintitle}
-  \setunit{\addspace}\newblock
-  \printfield{entrysubtype}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit\newblock
-  \iffieldundef{year}{}{%
-    \printtext[parens]{\usebibmacro{date}}%
-  }%
-  \newunit\newblock
-  \iftoggle{bbx:eprint}
-  {\usebibmacro{eprint}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{url+urldate}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{proceedings}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{maintitle+title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{event+venue+date}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{inproceedings}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{maintitle+booktitle}%
-  \newunit\newblock
-  \usebibmacro{event+venue+date}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \newunit
-  \usebibmacro{series+number+edition+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{report}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \usebibmacro{type+number+edition+institution+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isrn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{manual}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{maintitle+title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printfield{type}%
-  \newunit
-  \printfield{version}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-% Previously unsupported types
-
 \DeclareBibliographyDriver{review}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1709,52 +1762,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
   \usebibmacro{finentry}}
-
-\DeclareBibliographyDriver{audio}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{maintitle+title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock%
-  \usebibmacro{publisher+type+series+number+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyAlias{music}{audio}
 %
 % There is no more.
 %
