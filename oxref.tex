@@ -511,8 +511,8 @@
 %
 \DeclareBibliographyOption{isourls}[true]{%
   \ifstrequal{#1}{true}
-    {\DeclareFieldFormat{url}{$\langle$\url{##1}}}
-    {\DeclareFieldFormat{url}{\url{#1}}}%
+    {\DeclareFieldFormat{url}{$\langle$\url{##1}$\rangle$}}
+    {\DeclareFieldFormat{url}{\url{##1}}}%
 }
 \ExecuteBibliographyOptions{isourls=false}
 %
@@ -775,9 +775,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     test {\iffieldundef{volume}}
   }{}%
   {\printtext[parens]{%
-      \bibstring{volume}\addspace
-      \printfield{volume}\addspace\bibstring{ofseries}\addspace
-      \usebibmacro{maintitle}}}
+    \bibstring{volume}\addspace
+    \printfield{volume}\printfield{part}\addspace
+    \bibstring{ofseries}\addspace
+    \usebibmacro{maintitle}}}
 }
 %
 % Oxford style signifies formal publication by putting the relevant
@@ -831,7 +832,36 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
 }
 %
-% Patch 'book'
+% The edition information for reference works is recorded earlier in the
+% reference, so we provide a variant that excludes it from the
+% publication block.
+%
+\newbibmacro*{series+number+publisher+location+date}{%
+  \nopunct\printtext[publication]{%
+    \usebibmacro{series+number}%
+    \setunit*{\addsemicolon\addspace}%
+    \usebibmacro{publisher+location+date}%
+  }%
+}
+%
+% The changes to the `book' driver compared to the standard style are as
+% follows:
+% \begin{itemize}
+%   \item
+%   only `author' appears before the title, never `editor'.
+%   \item
+%   `maintitle' is processed with `volume' just before `series', instead
+%   of with `title';
+%   \item
+%   `edition' is processed where the standard style processes `note',
+%   and vice versa;
+%   \item
+%   `volumes' is omitted;
+%   \item
+%   `series' to `date' information is delegated to a separate macro.
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
 %
 \DeclareBibliographyDriver{book}{%
   \usebibmacro{bibindex}%
@@ -857,8 +887,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
@@ -867,11 +897,28 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{pageref}%
   \setunit{\addperiod\addspace}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
   \usebibmacro{finentry}}
-
+%
+% Unlike the standard styles, we have a separate driver for `mvbook'
+% which behaves slightly differently. It is in fact closer to the
+% standard `book' driver. The changes are as follows:
+% \begin{itemize}
+%   \item
+%   only `author' appears before the title, never `editor'.
+%   \item
+%   `edition' is processed where the standard style processes `note';
+%   \item
+%   the standard `edition'-`volume'/`part'-`volumes' is changed to
+%   `volumes'-`volume'/`part'-`note'.
+%   \item
+%   `series' to `date' information is delegated to a separate macro.
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
 \DeclareBibliographyDriver{mvbook}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -915,7 +962,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-  
+%
+% Our `inbook' driver modifies the standard one in just the same way as
+% our `mvbook' driver modifies the standard `book'.
+%
 \DeclareBibliographyDriver{inbook}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -962,7 +1012,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%
+% Our `collection' driver modifies the standard one in just the same way
+% as our `book' driver.
+%
 \DeclareBibliographyDriver{collection}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -999,7 +1052,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%
+% Our `mvcollection' driver modifies the standard `collection' driver
+% in just the same way as our `mvbook' driver modifies the standard
+% `book'.
+%
 \DeclareBibliographyDriver{mvcollection}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1041,7 +1098,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%
+% Our `incollection' driver modifies the standard one in the same way as
+% our `mvbook' driver modifies the standard `book'. In addition, the
+% `bookeditor' macro precedes `maintitle' instead of `byeditor+others'
+% following it.
+%
 \DeclareBibliographyDriver{incollection}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1086,7 +1148,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%
+% Unlike the standard styles, we provide a separate driver for
+% `reference'. It is just like `book' except that `edition' is given
+% between `byauthor' and `byeditor+others'.
+%
 \DeclareBibliographyDriver{reference}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1106,7 +1172,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \usebibmacro{maintitle+volume}%
   \newunit
-  \usebibmacro{series+number+edition+publisher+location+date}%
+  \usebibmacro{series+number+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -1127,7 +1193,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%
+% Similarly, `mvreference' is just like `mvbook' except that `edition'
+% is given between `byauthor' and `byeditor+others'.
+%
 \DeclareBibliographyDriver{mvreference}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1152,7 +1221,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit
   \printfield{note}%
   \newunit\newblock
-  \usebibmacro{series+number+edition+publisher+location+date}%
+  \usebibmacro{series+number+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -1173,11 +1242,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%
+% Our `inreference' driver is just like `inbook' except `bookeditor'
+% replaces `bybookauthor' and `edition' is given just before
+% `byeditor+others'.
+%
 \DeclareBibliographyDriver{inreference}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{author}%
+  \usebibmacro{author/translator+others}%
   \setunit{\labelnamepunct}\newblock
   \usebibmacro{title}%
   \newunit
@@ -1203,7 +1276,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit
   \printfield{note}%
   \newunit\newblock%
-  \usebibmacro{series+number+edition+publisher+location+date}%
+  \usebibmacro{series+number+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -2970,7 +3043,7 @@ Where the editor is common to both, the following form is used \aside{Use entry 
   edition = {4},
   location = {London},
   date = {1823},
-  note = {online facsimile},
+  howpublished = {online facsimile},
   url = {http://beckford.c18.net/wbvathek1823.html},
   urldate = {2013-11-05}
 }|
