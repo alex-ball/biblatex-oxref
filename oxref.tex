@@ -1300,8 +1300,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % == Proceedings ==
 %
+% In our version of the `event+venue+date' macro, the venue and date are
+% set off with a colon instead of parentheses. A bit of jiggery-pokery 
+% is used to make the colon italic if it follows italic text.
+%
 \renewbibmacro*{event+venue+date}{%
   \printfield{eventtitle}%
+  \newunit
+  \printfield{eventtitleaddon}%
   \ifboolexpr{
     test {\iffieldundef{venue}}
     and
@@ -1319,7 +1325,21 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \printeventdate}%
   \newunit}
 %
-%
+% The changes to the `proceedings' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   `editor' comes after the title, not before.
+%   \item
+%   the standard `volume'/`part'-`volumes' is changed to
+%   `volumes'-`volume'/`part'.
+%   \item
+%   `note' and `organization' are moved to before `series'.
+%   \item
+%   `series' to `date' information is delegated to a separate macro.
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
 %
 \DeclareBibliographyDriver{proceedings}{%
   \usebibmacro{bibindex}%
@@ -1364,7 +1384,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%
+% Our `inproceedings' driver modifies the standard one in the same way
+% as our `proceedings' driver modifies the standard one.
+%
 \DeclareBibliographyDriver{inproceedings}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1394,7 +1417,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printlist{organization}%
   \newunit
-  \usebibmacro{series+number+edition+publisher+location+date}%
+  \usebibmacro{series+number+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit\newblock
@@ -2747,7 +2770,7 @@ Biblatex defines \code{collection} as a book made up of multiple self-contained 
 \todoc|
 \section{Reference works}
 
-Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). Unlike standard Biblatex, though, Oxford style considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first.
+Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board whose membership might change between successive editions. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). Unlike standard Biblatex, though, Oxford style considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first.
 |
 
 \specs
