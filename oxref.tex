@@ -1687,7 +1687,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % == Audiovisual resources ==
 %
-% Adjustments to music
+% The publication block for audiovisual resources is quite different
+% from the normal, as the `type', `series' and `number' come
+% between the `publisher' and `date'. We do not use `location'.
+% Specification of the medium goes at the start, which we implement
+% using the `howpublished' field.
 %
 \newbibmacro*{publisher+type+series+number+date}{%
   \nopunct\printtext[publication]{%
@@ -1704,9 +1708,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{date}%
   }%
 }
-
-% Previously unsupported types
-
+%
+% We provide a specialist `audio'/`music' driver. It is currently based
+% closely on `book'; it could do with a more thoughtful implementation.
+%
 \DeclareBibliographyDriver{audio}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
