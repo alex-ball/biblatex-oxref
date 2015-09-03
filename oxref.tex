@@ -1616,12 +1616,32 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % == Intrinsically online resources ==
 %
-% Adjustments to online
-
+% The titles of web pages and similar intrinsically online resources
+% are written in roman text within quotes.
+%
 \DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
 \DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
+%
+% The `entrysubtype' field is wrapped in square brackets.
+%
 \DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
-
+%
+% The changes to the `online' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   We support the use of `maintitle' for, say, the title of the wesbite
+%   in which the web page is located. This comes after `title'.
+%   \item
+%   We support the use of `entrysubtype' to specify the nature of the
+%   online resource (following the practice of 'biblatex-apa' and
+%   others). This comes after `maintitle'.
+%   \item
+%   The date is wrapped in parentheses if present.
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
 \DeclareBibliographyDriver{online}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
