@@ -1757,7 +1757,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{finentry}}
 
 \DeclareBibliographyAlias{music}{audio}
-
 %
 % == Related entries ==
 %
@@ -1799,12 +1798,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       }%
       \usebibmacro{note+pages}%
     }}}
-
 %
 % === Reviews ===
 %
 % Adjustments to review
-
+%
 \DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
 \DeclareFieldFormat[review]{volume}{#1}% volume of a journal
 \DeclareFieldFormat[review]{number}{#1}% number of a journal
@@ -1812,9 +1810,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \ifinteger{#1}
   {\mkbibordseries{#1}~\bibstring{jourser}}
   {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
-
+%
 % - allow reference to reviewed item to be embedded within the reference to the review
-% - TODO: switch to using biblatex's related item mechanism instead
+%
 \newbibmacro*{reviewof}{}
 \DeclareBibliographyCategory{reviewed}
 \DeclareEntryOption{reviewed}{%
@@ -1824,11 +1822,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
   \addtocategory{reviewed}{#1}%
 }
-
-% Somewhat cleaner Biber method
+%
+% We take advantage of the Biber-specific mechanism of relating items
+% in order to handle reviews. The presence or otherwise of the
+% `journaltitle' field is used to determine whether this is a review
+% of a book (first block) or a periodical (second block).
+%
 \newbibmacro*{related:reviewof}[1]{%
   \entrydata*{#1}{%
-    \iffieldundef{journaltitle}{% Review of book
+    \iffieldundef{journaltitle}{%
       \usebibmacro{author}%
       \setunit{\labelnamepunct}\newblock
       \usebibmacro{maintitle+title}%
@@ -1849,7 +1851,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \printfield{note}%
       \newunit\newblock
       \usebibmacro{series+number+edition+publisher+location+date}%
-    }{% Review of periodical
+    }{%
       \usebibmacro{author/translator+others}%
       \setunit{\labelnamepunct}\newblock
       \usebibmacro{title}%
