@@ -1446,7 +1446,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printfield{type}%
   \newunit
   \printfield{number}}
-
+%
+% Our version of the `institution+location+date' macro is just like the
+% standard one except it is wrapped in parentheses, and the preceding
+% punctuation is therefore suppressed. This is used in the standard
+% `thesis' driver, which also works well for us.
+%
 \renewbibmacro*{institution+location+date}{%
   \nopunct\printtext[publication]{%
     \printlist{location}%
@@ -1458,7 +1463,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{date}%
   }%
 }
-
+%
+% We also provide an enhanced version that also includes `type', `number'
+% and `edition', which is used by the `report' driver.
+%
 \newbibmacro*{type+number+edition+institution+location+date}{%
   \nopunct\printtext[publication]{%
     \usebibmacro{type+number}%
@@ -1474,7 +1482,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{date}%
   }%
 }
-
+%
+% As if that wasn't enough, we provide a third version that also
+% includes `series', but uses the more common `publisher' in place of
+% `institution'. We also include some logic that means `organization'
+% is used instead of `publisher' if no `publisher' is provided;
+% otherwise it is printed before `location'. This is used by the
+% `manual' driver.
+%
 \newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
   \nopunct\printtext[publication]{%
     \printfield{type}%
@@ -1499,7 +1514,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{date}%
   }%
 }
-
+%
+% The changes to the `report' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   `type' and `number' are moved into the publication information
+%   block with `institution', `location' and `date'.
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
 \DeclareBibliographyDriver{report}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1536,28 +1561,30 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%
+% The changes to the `manual' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   `type', `series', `number', `edition' and `organization' are moved
+%   into the publication information block with `publisher', `location'
+%   and `date'.
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
 \DeclareBibliographyDriver{manual}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{author}%
+  \usebibmacro{author/editor}%
   \setunit{\labelnamepunct}\newblock
-  \usebibmacro{maintitle+title}%
+  \usebibmacro{title}%
   \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
-  \printfield{note}%
+  \usebibmacro{byeditor}%
   \newunit\newblock
   \printfield{type}%
   \newunit
@@ -1586,7 +1613,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
 %
 % == Intrinsically online resources ==
 %
