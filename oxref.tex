@@ -1437,9 +1437,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   {}%
   \usebibmacro{finentry}}
 %
-% == Reports and theses ==
+% == Grey literature ==
 %
-% Adjustments to reports and theses
+% We delegate the handling of report types and numbers to its own macro,
+% in case it gets more complicated.
 %
 \newbibmacro*{type+number}{%
   \printfield{type}%
