@@ -1801,7 +1801,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % === Reviews ===
 %
-% Adjustments to review
+% We ensure that the field formatting for `review' entries matches that
+% for `article' entries.
 %
 \DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
 \DeclareFieldFormat[review]{volume}{#1}% volume of a journal
@@ -1811,7 +1812,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   {\mkbibordseries{#1}~\bibstring{jourser}}
   {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
 %
-% - allow reference to reviewed item to be embedded within the reference to the review
+% This macro provides a non-Biber method of inserting a formatted
+% reference within a review reference. It is deprecated and will
+% be removed in a future release.
 %
 \newbibmacro*{reviewof}{}
 \DeclareBibliographyCategory{reviewed}
@@ -1867,12 +1870,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \usebibmacro{journal+issuetitle}%
       \newunit
       \usebibmacro{byeditor+others}%
-      \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+      \iffieldundef{note}%
+        {\newunit}%
+        {\setunit{\addsemicolon\addspace}}%
       \usebibmacro{note+pages}%
     }%
   }%
 }
-
+%
+% Since a review is a special kind of journal article, the `review'
+% driver is based on the `article' one, the difference being that the
+% `related' macro comes just before `journal+issuetitle'. Oxford style
+% links the two with \enquote{in}.
+%
 \DeclareBibliographyDriver{review}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -1899,12 +1909,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{journal+issuetitle}%
   \newunit
   \usebibmacro{byeditor+others}%
-  \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+  \iffieldundef{note}%
+    {\newunit}%
+    {\setunit{\addsemicolon\addspace}}%
   \usebibmacro{note+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{issn}}
-  {}%
+    {\printfield{issn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
