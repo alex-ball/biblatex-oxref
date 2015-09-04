@@ -411,12 +411,40 @@
   {\usebibmacro{bbx:dashcheck}
     {\bibnamedash}
     {\printnames{editor}%
-     \addspace
+     \setunit{\addspace}%
      \usebibmacro{bbx:savehash}}%
     \usebibmacro{#1}%
     \clearname{editor}}
   {\global\undef\bbx@lasthash}}
 \DeclareFieldFormat{editortype}{\mkbibparens{#1}}
+%
+% We do the same for `translator' as well.
+%
+\renewbibmacro*{translator}{%
+  \usebibmacro{bbx:translator}{translatorstrg}}
+\renewbibmacro*{translator+others}{%
+  \usebibmacro{bbx:translator}{translator+othersstrg}}
+\newbibmacro*{bbx:translator}[1]{%
+  \ifboolexpr{
+    test \ifusetranslator
+    and
+    not test {\ifnameundef{translator}}
+  }
+  {\usebibmacro{bbx:dashcheck}
+    {\bibnamedash}
+    {\printnames{translator}%
+      \setunit{\addspace}%
+      \usebibmacro{bbx:savehash}}%
+    \usebibmacro{#1}%
+    \clearname{translator}%
+    \setunit{\addspace}}%
+  {\global\undef\bbx@lasthash}}
+\xpatchbibmacro{translatorstrg}%
+  {\bibstring}%
+  {\bibstring[\mkbibparens]}{}{}%
+\xpatchbibmacro{translator+othersstrg}%
+  {\bibstring}%
+  {\bibstring[\mkbibparens]}{}{}%
 %
 % When referencing one work from a collection by the same author,
 % Oxford style traditionally puts \enquote{id.} in the `bookauthor'
@@ -1963,10 +1991,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareNameAlias[online]{editor}{oxrefstartname}
 \DeclareNameAlias[proceedings]{editor}{oxrefstartname}
 \DeclareNameAlias[reference]{editor}{oxrefstartname}
-
-%% \DeclareBibliographyDriver{movie}{%
-%% \DeclareBibliographyDriver{video}{%
-
 %
 % If specifying a page within a range in the course of a citation note,
 % Oxford style is to format that as \enquote{\emph{range} at
@@ -1990,7 +2014,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     {\printtext{\unspace}\setunit{\postnotedelim}\newblock\printfield{postnote}}
     {\printfield{postnote}}%
   }}
-
+%
+% There is no more.
+%
 \endinput
 \end{writeverbatim}
 \closeoutputstream{oxnotes}
@@ -2004,6 +2030,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \addtostream{oxyear}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{oxyear}
 %
+% == Preliminaries ==
+%
 % First we load the common oxref features.
 %
 \RequireBibliographyStyle{oxref}
@@ -2011,12 +2039,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here we set some defaults different to the standard ones. The author
 % can still override them.
 %
-\ExecuteBibliographyOptions{uniquename=init,firstinits}
+\ExecuteBibliographyOptions{uniquename=init,firstinits,labeldate,sorting=nyt,pagetracker}
 \DeclareNameAlias{author}{last-first}
 \DeclareNameAlias{editor}{last-first}
 \DeclareNameAlias{translator}{last-first}
 %
-% The following is mostly verbatim from `authoryear.bbx'.
+% == Date merging option ==
+%
+% We provide the `mergedate' option from the `authoryear' style, though
+% the OGS and NHR consistently use the compact option.
 %
 \DeclareBibliographyOption{mergedate}[true]{%
   \ifcsdef{bbx@opt@mergedate@#1}
@@ -2025,12 +2056,23 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
        {Invalid option 'mergedate=#1'}
        {Valid values are 'maximum', 'compact', 'basic', 'minimum',\MessageBreak
         'true' (=compact), and 'false'.}}}
-
+%
+% The various values affect the definition of the following macro.
+%
 \providebibmacro*{date+extrayear}{}
-
+%
+% Here we provide the various possible definitions.
+%
+% \begin{itemize}
+%   \item `true' is the same as `compact' (see below).
+% \end{itemize}
+%
 \def\bbx@opt@mergedate@true{\bbx@opt@mergedate@compact}
-
-% merge date/issue with date label
+%
+% \begin{itemize}
+%   \item `maximum' merges date/issue with date label.
+% \end{itemize}
+%
 \def\bbx@opt@mergedate@maximum{%
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{\thefield{datelabelsource}year}
@@ -2044,8 +2086,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
             \printfield{extrayear}}}}}%
   \renewbibmacro*{date}{}%
   \renewbibmacro*{issue+date}{}}
-
-% merge date with date label
+%
+% \begin{itemize}
+%   \item `compact' merges date with date label.
+% \end{itemize}
+%
 \def\bbx@opt@mergedate@compact{%
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{\thefield{datelabelsource}year}
@@ -2061,8 +2106,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       {}
       {\printtext[parens]{\printfield{issue}}}%
     \newunit}}
-
-% merge year-only date with date label
+%
+% \begin{itemize}
+%   \item `basic' merges year-only date with date label.
+% \end{itemize}
+%
 \def\bbx@opt@mergedate@basic{%
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{\thefield{datelabelsource}year}
@@ -2086,8 +2134,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
          \setunit*{\addspace}%
          \printdate}}%
     \newunit}}
-
-% merge year-only date with year-only date label
+%
+% \begin{itemize}
+%   \item `minimum' merges year-only date with year-only date label.
+% \end{itemize}
+%
 \def\bbx@opt@mergedate@minimum{%
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{\thefield{datelabelsource}year}
@@ -2117,8 +2168,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
          \setunit*{\addspace}%
          \printdate}}%
     \newunit}}
-
-% don't merge date/issue with date label
+%
+% \begin{itemize}
+%   \item `false' suppresses any merging).
+% \end{itemize}
+%
 \def\bbx@opt@mergedate@false{%
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{\thefield{datelabelsource}year}
@@ -2133,13 +2187,20 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \setunit*{\addspace}%
       \printdate}%
     \newunit}}
-
-% n.b. the default datelabel=year overrides merging of months and days
-\ExecuteBibliographyOptions{labeldate,sorting=nyt,pagetracker,mergedate}
-
+%
+% We set the default to be `true'/`compact'.
+%
+\ExecuteBibliographyOptions{mergedate}
+%
+% == Bibliography formatting ==
+%
+% We let 'biblatex' measure shorthands so we can use
+% |\shorthandwidth| later.
+%
 \DeclareFieldFormat{shorthandwidth}{#1}
 %
-% 'sortname' format for author, editor, translator, removed.
+% The bibliography formatting is just like `authoryear' except we do not
+% eliminate item separation by default.
 %
 \defbibenvironment{bibliography}
   {\list
@@ -2150,7 +2211,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \setlength{\parsep}{\bibparsep}}}
   {\endlist}
   {\item}
-
+%
+% The shorthand formatting is just like `authoryear'.
+%
 \defbibenvironment{shorthand}
   {\list
      {\printfield[shorthandwidth]{shorthand}}
@@ -2163,17 +2226,22 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \renewcommand*{\makelabel}[1]{##1\hss}}}
   {\endlist}
   {\item}
-
+%
+% == Name and date formatting ==
+%
+% We set up hashing just as in `authoryear'.
+%
 \InitializeBibliographyStyle{\global\undef\bbx@lasthash}
-
+%
+% We ensure related entries do not interfere with the hashing.
+%
 \renewbibmacro*{begrelated}{%
   \booltrue{bbx@inset}}
-
 \renewbibmacro*{endrelated}{%
   \usebibmacro*{bbx:savehash}}
 %
 % We patch the `author' macro so that the date label information appears
-% at the end (as in `authoryear'). 
+% at the end (as in `authoryear').
 %
 \xpatchbibmacro{author}{%
   \global\undef\bbx@lasthash
@@ -2185,53 +2253,48 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \xapptobibmacro{author}{%
   \usebibmacro{date+extrayear}%
 }{}{}%
-
-\renewbibmacro*{editor}{%
-  \usebibmacro{bbx:editor}{editorstrg}}
-\renewbibmacro*{editor+others}{%
-  \usebibmacro{bbx:editor}{editor+othersstrg}}
-\newbibmacro*{bbx:editor}[1]{%
-  \ifboolexpr{
-    test \ifuseeditor
-    and
-    not test {\ifnameundef{editor}}
-  }
-    {\usebibmacro{bbx:dashcheck}
-       {\bibnamedash}
-       {\printnames{editor}%
-        \setunit{\addcomma\space}%
-        \usebibmacro{bbx:savehash}}%
-     \usebibmacro{#1}%
-     \clearname{editor}%
-     \setunit{\addspace}}%
-    {\global\undef\bbx@lasthash
-     \usebibmacro{labeltitle}%
-     \setunit*{\addspace}}%
-  \usebibmacro{date+extrayear}}
-
-\renewbibmacro*{translator}{%
-  \usebibmacro{bbx:translator}{translatorstrg}}
-\renewbibmacro*{translator+others}{%
-  \usebibmacro{bbx:translator}{translator+othersstrg}}
-\newbibmacro*{bbx:translator}[1]{%
-  \ifboolexpr{
-    test \ifusetranslator
-    and
-    not test {\ifnameundef{translator}}
-  }
-    {\usebibmacro{bbx:dashcheck}
-       {\bibnamedash}
-       {\printnames{translator}%
-        \setunit{\addcomma\space}%
-        \usebibmacro{bbx:savehash}}%
-     \usebibmacro{translator+othersstrg}%
-     \clearname{translator}%
-     \setunit{\addspace}}%
-    {\global\undef\bbx@lasthash
-     \usebibmacro{labeltitle}%
-     \setunit*{\addspace}}%
-  \usebibmacro{date+extrayear}}
-
+%
+% We apply the same patches to `bbx:editor', but also move the editor
+% string to after the date label.
+%
+\xpatchbibmacro{bbx:editor}{%
+  \global\undef\bbx@lasthash
+}{%
+  \global\undef\bbx@lasthash
+  \usebibmacro{labeltitle}%
+  \setunit*{\addspace}%
+}{}{}%
+\xpatchbibmacro{bbx:editor}{%
+  \usebibmacro{#1}%
+}{}{}{}%
+\xapptobibmacro{bbx:editor}{%
+  \usebibmacro{date+extrayear}%
+  \setunit*{\addspace}%
+  \usebibmacro{#1}%
+}{}{}%
+%
+% We apply the same patches to `bbx:translator' as we do for
+% `bbx:editor'.
+%
+\xpatchbibmacro{bbx:translator}{%
+  \global\undef\bbx@lasthash
+}{%
+\global\undef\bbx@lasthash
+\usebibmacro{labeltitle}%
+\setunit*{\addspace}%
+}{}{}%
+\xpatchbibmacro{bbx:translator}{%
+  \usebibmacro{#1}%
+}{}{}{}%
+\xapptobibmacro{bbx:translator}{%
+  \usebibmacro{date+extrayear}%
+  \setunit*{\addspace}%
+  \usebibmacro{#1}%
+}{}{}%
+%
+% The `labeltitle' macro is exactly the same as the one from
+% `authoryear'.
+%
 \newbibmacro*{labeltitle}{%
   \iffieldundef{label}
     {\iffieldundef{shorttitle}
@@ -2239,7 +2302,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         \clearfield{title}}
        {\printfield[title]{shorttitle}}}
     {\printfield{label}}}
-
+%
+% There is no more.
+%
 \endinput
 \end{writeverbatim}
 \closeoutputstream{oxyear}
@@ -2381,7 +2446,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   reprintfrom      = {{from}{from}},
   urlseen          = {{accessed}{accessed}},
 }
-
+%
+% There is no more.
+%
 \endinput
 \end{writeverbatim}
 \closeoutputstream{src}
