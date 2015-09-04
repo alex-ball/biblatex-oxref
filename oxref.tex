@@ -886,7 +886,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %   \item
 %   `volumes' is omitted;
 %   \item
-%   `series' to `date' information is delegated to a separate macro.
+%   `series' to `date' information is delegated to a separate macro;
 %   \item
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
@@ -935,14 +935,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % standard `book' driver. The changes are as follows:
 % \begin{itemize}
 %   \item
-%   only `author' appears before the title, never `editor'.
+%   only `author' appears before the title, never `editor';
 %   \item
 %   `edition' is processed where the standard style processes `note';
 %   \item
 %   the standard `edition'-`volume'/`part'-`volumes' is changed to
-%   `volumes'-`volume'/`part'-`note'.
+%   `volumes'-`volume'/`part'-`note';
 %   \item
-%   `series' to `date' information is delegated to a separate macro.
+%   `series' to `date' information is delegated to a separate macro;
 %   \item
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
@@ -1328,9 +1328,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % == Proceedings ==
 %
-% In our version of the `event+venue+date' macro, the venue and date are
-% set off with a colon instead of parentheses. A bit of jiggery-pokery 
-% is used to make the colon italic if it follows italic text.
+% In our version of the `event+venue+date' macro, the venue and date
+% are set off with a colon and comma respectively instead of
+% parentheses. A bit of jiggery-pokery is used to make the colon italic
+% if it follows italic text.
 %
 \renewbibmacro*{event+venue+date}{%
   \printfield{eventtitle}%
@@ -1349,7 +1350,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     }{\setunit{\mkbibemph{\addcolon}\addspace}}%
     {\setunit{\addcolon\addspace}}%
     \printfield{venue}%
-    \setunit*{\addcomma\space}%
+    \setunit{\addcomma\space}%
     \printeventdate}%
   \newunit}
 %
@@ -1357,14 +1358,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % are as follows:
 % \begin{itemize}
 %   \item
-%   `editor' comes after the title, not before.
+%   `editor' comes after the title, not before;
 %   \item
 %   the standard `volume'/`part'-`volumes' is changed to
-%   `volumes'-`volume'/`part'.
+%   `volumes'-`volume'/`part';
 %   \item
-%   `note' and `organization' are moved to before `series'.
+%   `note' and `organization' are moved to before `series';
 %   \item
-%   `series' to `date' information is delegated to a separate macro.
+%   `series' to `date' information is delegated to a separate macro;
 %   \item
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
@@ -1547,8 +1548,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % are as follows:
 % \begin{itemize}
 %   \item
+%   support is added for `volume' and `maintitle';
+%   \item
 %   `type' and `number' are moved into the publication information
-%   block with `institution', `location' and `date'.
+%   block with `institution', `location' and `date';
 %   \item
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
@@ -1558,13 +1561,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{begentry}%
   \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
+  \usebibmacro{maintitle+title}%
   \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \printfield{version}%
+  \newunit\newblock
+  \iffieldundef{maintitle}
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit
   \printfield{note}%
   \newunit\newblock
@@ -1596,7 +1604,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %   \item
 %   `type', `series', `number', `edition' and `organization' are moved
 %   into the publication information block with `publisher', `location'
-%   and `date'.
+%   and `date';
 %   \item
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
@@ -1692,7 +1700,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printfield{note}%
   \newunit\newblock
   \printlist{organization}%
-  \newunit\newblock
+  \setunit{\addspace}\newblock
   \iffieldundef{year}{}{%
     \printtext[parens]{\usebibmacro{date}}%
   }%
@@ -1796,7 +1804,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % from a book (first block) or a periodical (second block).
 %
 \renewbibmacro*{related:reprintfrom}[1]{%
-  \entrydata*{#1}{%
+  \entrydata*{#1}{\unspace
     \iffieldundef{journaltitle}{%
       \iffieldundef{maintitle}
       {\printfield[title:hook]{booktitle}}
@@ -1814,7 +1822,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \newunit\newblock
       \usebibmacro{series+number+edition+publisher+location+date}%
       \newunit\newblock
-      \usebibmacro{chapter+pages}
+      \usebibmacro{chapter+pages}%
     }{%
       \usebibmacro{journal+issuetitle}%
       \newunit
@@ -1848,7 +1856,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyCategory{reviewed}
 \DeclareEntryOption{reviewed}{%
   \renewbibmacro*{reviewof}{%
-    \bibstring{reviewof}\addspace
+    \bibstring{reviewof}%
+    \setunit{\addspace}%
     \fullcite{#1}\printtext{\unspace}% <- hack to ensure punctuation is triggered
   }%
   \addtocategory{reviewed}{#1}%
@@ -1860,7 +1869,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % of a book (first block) or a periodical (second block).
 %
 \newbibmacro*{related:reviewof}[1]{%
-  \entrydata*{#1}{%
+  \entrydata*{#1}{\unspace
     \iffieldundef{journaltitle}{%
       \usebibmacro{author}%
       \setunit{\labelnamepunct}\newblock
@@ -4713,9 +4722,9 @@ John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.yout
 \bibexample<NHR \S18.8.5>
 |\enquote{Gunpowder Plot}, \emph{Encyclopaedia Britannica}, \url{http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot}, accessed 5 Nov. 2013.|%
 ||%
-|@inreference{eb2013gp,
+|@online{eb2013gp,
   title = {Gunpowder Plot},
-  booktitle = {Encyclopaedia Britannica},
+  maintitle = {Encyclopaedia Britannica},
   url = {http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot},
   urldate = {2013-11-05}
 }|
@@ -4726,7 +4735,7 @@ John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.yout
 |@online{wp2013oup,
   title = {Oxford University Press},
   organization = {Wikipedia},
-  urldate = {2013-11-05},
+  date = {2013-11-05},
   options = {datetype={last modified}},
   url = {http://en.wikipedia.org/wiki/Oxford_University_Press},
   urldate = {2013-11-05}
