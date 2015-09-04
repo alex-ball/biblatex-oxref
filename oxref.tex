@@ -1869,7 +1869,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % of a book (first block) or a periodical (second block).
 %
 \newbibmacro*{related:reviewof}[1]{%
-  \entrydata*{#1}{\unspace
+  \entrydata*{#1}{%
     \iffieldundef{journaltitle}{%
       \usebibmacro{author}%
       \setunit{\labelnamepunct}\newblock
@@ -1943,6 +1943,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }{}%
   \newunit\newblock
   \usebibmacro{in:}%
+  \unspace
   \usebibmacro{journal+issuetitle}%
   \newunit
   \usebibmacro{byeditor+others}%
