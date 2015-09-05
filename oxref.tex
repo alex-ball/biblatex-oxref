@@ -226,6 +226,13 @@
 %
 % == Name handling ==
 %
+% We declare some new formats so that authors/editors/others who appear
+% mid-reference can be handled differently from those that appear at the
+% head of the reference
+%
+\DeclareNameAlias{bookauthor}{default}
+\DeclareNameAlias{bookeditor}{default}
+%
 % Traditionally, Oxford style (for the humanities) is to write author
 % names in small capitals in the bibliography, surname first; but in
 % citations, they are written in normal case in natural order. We
@@ -456,16 +463,29 @@
   {\printnames{bookauthor}}}
 %
 % Similarly, with mixed collections, if referencing a work by the editor
-% of the collection, the editor name is replaced with \enquote{id.}.
+% of the collection, the editor name is replaced with \enquote{id.}. We
+% insert this logic into a copy of the `editor+others' macro, which will
+% \emph{not} get a year inserted into it by 'oxyear'.
 %
 \newbibmacro*{bookeditor}{%
-  \ifnamesequal{author}{editor}%
-  {\bibstring{idem\thefield{gender}}%
-   \addspace
-   \usebibmacro{editor+othersstrg}%
-   \clearname{editor}}%
-  {\global\undef\bbx@lasthash
-   \usebibmacro{editor+others}}}
+  \global\undef\bbx@lasthash
+  \ifboolexpr{
+    test \ifuseeditor
+    and
+    not test {\ifnameundef{editor}}
+  }{%
+    \ifnamesequal{author}{editor}{%
+      \bibstring{idem\thefield{gender}}%
+      \addspace
+      \usebibmacro{editor+othersstrg}%
+      \clearname{editor}%
+    }{%
+      \printnames[bookeditor]{editor}%
+      \setunit{\addcomma\space}%
+      \usebibmacro{editor+othersstrg}%
+      \clearname{editor}%
+    }%
+  }{}}
 %
 % == Date handling ==
 %
@@ -793,7 +813,7 @@ proceedings,inproceedings,mvproceedings,%
 reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % Where a multi-volume work is more like a series, the volume number and
-% main title are put in a parenthetical block between the volume title
+% main title are put in a bracketted block between the volume title
 % and the usual publication block.
 %
 \newbibmacro*{maintitle+volume}{%
@@ -802,7 +822,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     or
     test {\iffieldundef{volume}}
   }{}%
-  {\printtext[parens]{%
+  {\printtext[brackets]{%
     \bibstring{volume}\addspace
     \printfield{volume}\printfield{part}\addspace
     \bibstring{ofseries}\addspace
@@ -1468,18 +1488,28 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % == Grey literature ==
 %
-% We delegate the handling of report types and numbers to its own macro,
-% in case it gets more complicated.
+% We provide a macro for handling `type+number'. We provide some extra
+% logic to insert `No.' before the number if there is no type.
 %
-\newbibmacro*{type+number}{%
-  \printfield{type}%
+\newbibmacro*{series+type+number}{%
+  \printfield{series}%
   \newunit
+  \ifboolexpr{%
+      test {\iffieldundef{type}}
+      and
+      not test {\iffieldundef{number}}
+  }{%
+    \bibcpstring{number}
+  }{%
+    \printfield{type}%
+  }%
+  \setunit*{\addspace}%
   \printfield{number}}
 %
 % Our version of the `institution+location+date' macro is just like the
 % standard one except it is wrapped in parentheses, and the preceding
-% punctuation is therefore suppressed. This is used in the standard
-% `thesis' driver, which also works well for us.
+% punctuation is therefore suppressed. This is used by the standard
+% `thesis' driver, which also works well for us, and the `report' driver.
 %
 \renewbibmacro*{institution+location+date}{%
   \nopunct\printtext[publication]{%
@@ -1493,27 +1523,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
 }
 %
-% We also provide an enhanced version that also includes `type', `number'
-% and `edition', which is used by the `report' driver.
-%
-\newbibmacro*{type+number+edition+institution+location+date}{%
-  \nopunct\printtext[publication]{%
-    \usebibmacro{type+number}%
-    \setunit{\addsemicolon\space}%
-    \printfield{edition}%
-    \setunit*{\addcomma\space}%
-    \printlist{location}%
-    \iflistundef{institution}%
-    {\setunit*{\addcomma\space}}%
-    {\setunit*{\addcolon\space}}%
-    \printlist{institution}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
-%
-% As if that wasn't enough, we provide a third version that also
-% includes `series', but uses the more common `publisher' in place of
+% We provide a more convoluted version that also includes `series',
+% `title' and `number', and uses the more common `publisher' in place of
 % `institution'. We also include some logic that means `organization'
 % is used instead of `publisher' if no `publisher' is provided;
 % otherwise it is printed before `location'. This is used by the
@@ -1521,9 +1532,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
   \nopunct\printtext[publication]{%
-    \printfield{type}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{series+number}%
+    \usebibmacro{series+type+number}%
     \setunit{\addsemicolon\space}%
     \printfield{edition}%
     \setunit*{\addcomma\space}%
@@ -1548,10 +1557,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % are as follows:
 % \begin{itemize}
 %   \item
-%   support is added for `volume' and `maintitle';
+%   support is added for `volume', `maintitle' and `series';
 %   \item
-%   `type' and `number' are moved into the publication information
-%   block with `institution', `location' and `date';
+%   `type' and `number' are moved to just before the publication
+%   information block';
 %   \item
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
@@ -1576,7 +1585,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit
   \printfield{note}%
   \newunit\newblock
-  \usebibmacro{type+number+edition+institution+location+date}%
+  \usebibmacro{series+type+number}%
+  \setunit{\addspace}%
+  \usebibmacro{institution+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -2050,9 +2061,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % can still override them.
 %
 \ExecuteBibliographyOptions{uniquename=init,firstinits,labeldate,sorting=nyt,pagetracker}
-\DeclareNameAlias{author}{last-first}
-\DeclareNameAlias{editor}{last-first}
-\DeclareNameAlias{translator}{last-first}
 %
 % == Date merging option ==
 %
@@ -2209,6 +2217,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \DeclareFieldFormat{shorthandwidth}{#1}
 %
+% Names at the head of the reference are last-first, but names elsewhere
+% are first-last.
+%
+\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{author}{last-first}
+\DeclareNameAlias{editor}{last-first}
+\DeclareNameAlias{translator}{last-first}
+%
 % The bibliography formatting is just like `authoryear' except we do not
 % eliminate item separation by default.
 %
@@ -2268,19 +2284,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % string to after the date label.
 %
 \xpatchbibmacro{bbx:editor}{%
+  \usebibmacro{#1}%
+}{%
+  \usebibmacro{date+extrayear}%
+  \setunit*{\addspace}%
+  \usebibmacro{#1}%  
+}{}{}%
+\xpatchbibmacro{bbx:editor}{%
   \global\undef\bbx@lasthash
 }{%
   \global\undef\bbx@lasthash
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
-}{}{}%
-\xpatchbibmacro{bbx:editor}{%
-  \usebibmacro{#1}%
-}{}{}{}%
-\xapptobibmacro{bbx:editor}{%
-  \usebibmacro{date+extrayear}%
-  \setunit*{\addspace}%
-  \usebibmacro{#1}%
 }{}{}%
 %
 % We apply the same patches to `bbx:translator' as we do for
@@ -2845,7 +2860,7 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 
 \bibexample<OGS \S15.2.1>
 |Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).|%
-|Pseudo-Boethius (1976), \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden).|%
+|Pseudo-Boethius (1976), \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. O.\ Weijers (Leiden).|%
 |@book{boethius1976dds,
   author = {Pseudo-Boethius},
   title = {De disciplina scolarium},
@@ -2861,7 +2876,7 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 
 \bibexample<OGS \S15.2.1>
 |\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).|%
-|\emph{Distichia Catonis} (1952), ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam).|%
+|\emph{Distichia Catonis} (1952), ed. M.\ Boas and H.\ J.\ Botschuyver (Amsterdam).|%
 |@book{boas.botschuyver1952dc,
   title = {Distichia Catonis},
   editor = {Marcus Boas and Henricus Johannes Botschuyver},
@@ -3073,8 +3088,8 @@ the following form is used \aside{Use \code{book} instead of \code{mvbook}.}:
 |Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.|%
 |Author (Year), \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher), Pages.|
 
-\bibexample<OGS \S15.2.6>
-|David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, (vol.\ i of \emph{America: A Cultural History}) (New York: Oxford University Press, 1989).|%
+\bibexample<NHR \S18.2.7>
+|David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, [vol.\ i of \emph{America: A Cultural History}] (New York: Oxford University Press, 1989).|%
 ||%
 |@book{fischer1989asf,
   author = {David Hackett Fischer},
@@ -3416,7 +3431,8 @@ Used where the publisher has changed, the following form is used \aside{Use \cod
   author = {P. Smith},
   title = {Gender and Famine},
   volumes = {2},
-  location = {London}
+  location = {London},
+  pubstate = {forthcoming}
 }|
 
 \todoc|
