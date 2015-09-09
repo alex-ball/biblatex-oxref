@@ -2984,23 +2984,20 @@ Where the publisher changed between volumes, the following form is used:
 |
 
 \specs
-|Author, \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher, Year), VolNo (Location: Publisher, Year).|%
-|Author (Year–Year), \emph{Title}, n \lit{vols.}, VolNo (Location: Publisher), VolNo (Location: Publisher).|
+|Author, \emph{Title}, VolNo, n \lit{vols.} (Location: Publisher and Location: Publisher, Year–Year).|%
+|Author (Year–Year), \emph{Title}, VolNo, n \lit{vols.} (Location: Publisher and Location: Publisher).|
 
 \bibexample(hacked)<OGS \S15.2.6>
-|Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i--iii (Oxford: Talboys, 1838--9), iv (London: Bohn, 1846).|%
+|Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn, 1838--46).|%
 ||%
 |@mvbook{ritter1838hap,
   author = {Heinrich Ritter},
   title = {The History of Ancient Philosophy},
   translator = {Alexander J. W. Morrison},
   volumes = {4},
-  volume = {1--iii},
-  location = {Oxford},
-  publisher = {Talboys},
-  date = {1838/1839},
-  pages = {iv},
-  pubstate = {London: Bohn, 1846}
+  location = {Oxford and London},
+  publisher = {Talboys and Bohn},
+  date = {1838/1846 #p}
 }|
 
 \todoc[oxnotes]|
