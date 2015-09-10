@@ -957,10 +957,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %   \item
 %   only `author' appears before the title, never `editor';
 %   \item
+%   `volume'/`part' is processed just after `maintitle+title';
+%   \item
 %   `edition' is processed where the standard style processes `note';
 %   \item
-%   the standard `edition'-`volume'/`part'-`volumes' is changed to
-%   `volumes'-`volume'/`part'-`note';
+%   `note' is processed after `volumes';
 %   \item
 %   `series' to `date' information is delegated to a separate macro;
 %   \item
@@ -974,6 +975,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\labelnamepunct}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
@@ -982,11 +988,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-     \printfield{part}}
-    {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
@@ -1029,16 +1030,16 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bybookauthor}%
   \newunit\newblock
   \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
@@ -1112,17 +1113,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\labelnamepunct}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
@@ -1167,14 +1168,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bookeditor}%
   \newunit\newblock
   \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
@@ -1252,6 +1253,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\labelnamepunct}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
@@ -1262,11 +1268,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock
   \usebibmacro{series+number+publisher+location+date}%
@@ -1310,6 +1311,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bookeditor}%
   \newunit\newblock
   \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
   \newunit\newblock
   \printfield{edition}%
   \newunit
@@ -1317,11 +1323,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock%
   \usebibmacro{series+number+publisher+location+date}%
@@ -1380,8 +1381,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %   \item
 %   `editor' comes after the title, not before;
 %   \item
-%   the standard `volume'/`part'-`volumes' is changed to
-%   `volumes'-`volume'/`part';
+%   `volume'/`part' is processed just after `maintitle+title';
 %   \item
 %   `note' and `organization' are moved to before `series';
 %   \item
@@ -1395,6 +1395,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{begentry}%
   \usebibmacro{maintitle+title}%
   \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{event+venue+date}%
@@ -1403,11 +1408,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock
   \printlist{organization}%
@@ -1450,6 +1450,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \usebibmacro{in:}%
   \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
   \newunit\newblock
   \usebibmacro{event+venue+date}%
   \newunit\newblock
@@ -1457,11 +1462,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock
   \printlist{organization}%
@@ -1572,17 +1572,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\labelnamepunct}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \printfield{version}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-     \printfield{part}}
-    {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock
   \usebibmacro{series+type+number}%
@@ -1766,6 +1766,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\labelnamepunct}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
@@ -1774,11 +1779,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
-  \iffieldundef{maintitle}
-    {\printfield{volume}%
-      \printfield{part}}
-    {}%
-  \newunit
   \printfield{note}%
   \newunit\newblock%
   \usebibmacro{publisher+type+series+number+date}%
@@ -1886,6 +1886,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \setunit{\labelnamepunct}\newblock
       \usebibmacro{maintitle+title}%
       \newunit
+      \iffieldundef{maintitle}{%
+        \printfield{volume}%
+        \printfield{part}%
+      }{}%
+      \newunit
       \printlist{language}%
       \newunit\newblock
       \usebibmacro{byauthor}%
@@ -1894,11 +1899,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \newunit\newblock
       \printfield{volumes}%
       \newunit\newblock
-      \iffieldundef{maintitle}{%
-        \printfield{volume}%
-        \printfield{part}%
-      }{}%
-      \newunit
       \printfield{note}%
       \newunit\newblock
       \usebibmacro{series+number+edition+publisher+location+date}%
