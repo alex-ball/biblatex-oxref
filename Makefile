@@ -12,11 +12,11 @@ WORKMF = "/home/ab318/Data/TeX/workmf"
 all:	$(NAME).pdf $(STY1)-doc.pdf $(STY2)-doc.pdf clean
 	exit 0
 $(NAME).pdf $(STY1)-doc.tex $(STY2)-doc.tex: $(NAME).tex
-	latexmk -pdf -silent -pdflatex="lualatex -synctex=1 -interaction=batchmode %O %S" $(NAME).tex >/dev/null
+	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(NAME).tex >/dev/null
 $(STY1)-doc.pdf: $(STY1)-doc.tex
-	latexmk -pdf -silent -pdflatex="lualatex -synctex=1 -interaction=batchmode %O %S" $(STY1)-doc.tex >/dev/null
+	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(STY1)-doc.tex >/dev/null
 $(STY2)-doc.pdf: $(STY2)-doc.tex
-	latexmk -pdf -silent -pdflatex="lualatex -synctex=1 -interaction=batchmode %O %S" $(STY2)-doc.tex >/dev/null
+	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(STY2)-doc.tex >/dev/null
 clean:
 	rm -f {$(NAME),$(STY1)-doc,$(STY2)-doc}.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f {$(STY1),$(STY2),british-$(NAME)}.doc
