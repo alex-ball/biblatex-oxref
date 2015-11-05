@@ -1382,11 +1382,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % are as follows:
 % \begin{itemize}
 %   \item
+%   `organization' is moved before the title;
+%   \item
 %   `editor' comes after the title, not before;
 %   \item
 %   `volume'/`part' is processed just after `maintitle+title';
 %   \item
-%   `note' and `organization' are moved to before `series';
+%   `note' is moved to before `series';
 %   \item
 %   `series' to `date' information is delegated to a separate macro;
 %   \item
@@ -1396,6 +1398,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{proceedings}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
+  \printlist{organization}%
+  \newunit
   \usebibmacro{maintitle+title}%
   \newunit
   \iffieldundef{maintitle}
@@ -1413,8 +1417,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printfield{note}%
   \newunit\newblock
-  \printlist{organization}%
-  \newunit
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
