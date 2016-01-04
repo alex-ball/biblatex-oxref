@@ -22,21 +22,21 @@ clean:
 	rm -f {$(STY1),$(STY2),british-$(NAME)}.doc
 distclean: clean
 	rm -f $(NAME).bbx $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib
-inst: $(NAME).pdf clean
-	sudo mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
-	sudo cp $(NAME).{tex} $(UTREE)/source/latex/$(NAME)
-	sudo cp $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(UTREE)/tex/latex/$(NAME)
-	sudo cp $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib $(UTREE)/doc/latex/$(NAME)
-install: $(NAME).pdf clean
+inst: all
+	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
+	cp $(NAME).tex $(UTREE)/source/latex/$(NAME)
+	cp $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(UTREE)/tex/latex/$(NAME)
+	cp $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib $(UTREE)/doc/latex/$(NAME)
+install: all
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
-	sudo cp $(NAME).{tex} $(LOCAL)/source/latex/$(NAME)
+	sudo cp $(NAME).tex $(LOCAL)/source/latex/$(NAME)
 	sudo cp $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(LOCAL)/tex/latex/$(NAME)
 	sudo cp $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib $(LOCAL)/doc/latex/$(NAME)
-workmf: $(NAME).pdf clean
-	sudo mkdir -p $(WORKMF)/{tex,source,doc}/latex/$(NAME)
-	sudo cp $(NAME).{tex} $(WORKMF)/source/latex/$(NAME)
-	sudo cp $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(WORKMF)/tex/latex/$(NAME)
-	sudo cp $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib $(WORKMF)/doc/latex/$(NAME)
+workmf: all
+	mkdir -p $(WORKMF)/{tex,source,doc}/latex/$(NAME)
+	cp $(NAME).tex $(WORKMF)/source/latex/$(NAME)
+	cp $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(WORKMF)/tex/latex/$(NAME)
+	cp $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib $(WORKMF)/doc/latex/$(NAME)
 zip: $(NAME).pdf $(STY1)-doc.pdf $(STY2)-doc.pdf clean
 	mkdir $(TDIR)
 	cp $(NAME).{tex,pdf} $(STY1)-doc.pdf $(STY2)-doc.pdf README.md Makefile $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(TDIR)
