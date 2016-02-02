@@ -10,7 +10,7 @@ LOCAL = $(shell kpsewhich --var-value TEXMFLOCAL)
 UTREE = $(shell kpsewhich --var-value TEXMFHOME)
 WORKMF = "/home/ab318/Data/TeX/workmf"
 all:	$(NAME).pdf $(STY1)-doc.pdf $(STY2)-doc.pdf clean
-	exit 0
+	@exit 0
 $(NAME).pdf $(STY1)-doc.tex $(STY2)-doc.tex: $(NAME).tex
 	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(NAME).tex >/dev/null
 $(STY1)-doc.pdf: $(STY1)-doc.tex
@@ -25,19 +25,19 @@ distclean: clean
 inst: all
 	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
 	cp $(NAME).tex $(UTREE)/source/latex/$(NAME)
-	cp $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(UTREE)/tex/latex/$(NAME)
+	cp $(NAME).bbx $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(UTREE)/tex/latex/$(NAME)
 	cp $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib $(UTREE)/doc/latex/$(NAME)
 install: all
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
 	sudo cp $(NAME).tex $(LOCAL)/source/latex/$(NAME)
-	sudo cp $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(LOCAL)/tex/latex/$(NAME)
+	sudo cp $(NAME).bbx $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(LOCAL)/tex/latex/$(NAME)
 	sudo cp $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib $(LOCAL)/doc/latex/$(NAME)
 workmf: all
 	mkdir -p $(WORKMF)/{tex,source,doc}/latex/$(NAME)
 	cp $(NAME).tex $(WORKMF)/source/latex/$(NAME)
-	cp $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(WORKMF)/tex/latex/$(NAME)
+	cp $(NAME).bbx $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(WORKMF)/tex/latex/$(NAME)
 	cp $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib $(WORKMF)/doc/latex/$(NAME)
 zip: $(NAME).pdf $(STY1)-doc.pdf $(STY2)-doc.pdf clean
 	mkdir $(TDIR)
-	cp $(NAME).{tex,pdf} $(STY1)-doc.pdf $(STY2)-doc.pdf README.md Makefile $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(TDIR)
+	cp $(NAME).{tex,pdf} $(STY1)-doc.pdf $(STY2)-doc.pdf README.md Makefile $(NAME).bbx $(STY1).bbx $(STY2).bbx british-$(NAME).lbx $(TDIR)
 	cd $(TEMP); zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)
