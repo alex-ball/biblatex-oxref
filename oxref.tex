@@ -2069,8 +2069,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % == Date merging option ==
 %
-% We provide the `mergedate' option from the `authoryear' style, though
-% the OGS and NHR consistently use the compact option.
+% We provide the `mergedate' option from the `authoryear' style. The
+% OGS and NHR consistently use a variant that is between basic and
+% compact, in that the year is always moved but the month and day are
+% never moved; this is implemented as the `year' value.
 %
 \DeclareBibliographyOption{mergedate}[true]{%
   \ifcsdef{bbx@opt@mergedate@#1}
@@ -2078,7 +2080,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     {\PackageError{biblatex}
        {Invalid option 'mergedate=#1'}
        {Valid values are 'maximum', 'compact', 'basic', 'minimum',\MessageBreak
-        'true' (=compact), and 'false'.}}}
+        'year', 'true' (=year), and 'false'.}}}
 %
 % The various values affect the definition of the following macro.
 %
@@ -2087,13 +2089,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here we provide the various possible definitions.
 %
 % \begin{itemize}
-%   \item `true' is the same as `compact' (see below).
+%   \item `true' is the same as `year' (see below).
 % \end{itemize}
 %
-\def\bbx@opt@mergedate@true{\bbx@opt@mergedate@compact}
+\def\bbx@opt@mergedate@true{\bbx@opt@mergedate@year}
 %
 % \begin{itemize}
 %   \item `maximum' merges date/issue with date label.
+%   Note that we clear fields rather than the bibmacros
+%   as the `authoryear' style does.
 % \end{itemize}
 %
 \def\bbx@opt@mergedate@maximum{%
@@ -2106,12 +2110,16 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
          \iffieldsequal{year}{\thefield{datelabelsource}year}
            {\printdateextralabel}%
            {\printfield{labelyear}%
-            \printfield{extrayear}}}}}%
-  \renewbibmacro*{date}{}%
-  \renewbibmacro*{issue+date}{}}
+            \printfield{extrayear}}}%
+       \clearfield{year}\clearfield{endyear}%
+       \clearfield{month}\clearfield{endmonth}%
+       \clearfield{day}\clearfield{endday}%
+       \clearfield{issue}}}}%
 %
 % \begin{itemize}
 %   \item `compact' merges whole date with date label.
+%   Note that we clear fields rather than the bibmacros
+%   as the `authoryear' style does.
 % \end{itemize}
 %
 \def\bbx@opt@mergedate@compact{%
@@ -2122,8 +2130,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
          \iffieldsequal{year}{\thefield{datelabelsource}year}
            {\printdateextralabel}%
            {\printfield{labelyear}%
-            \printfield{extrayear}}}}}%
-  \renewbibmacro*{date}{}%
+            \printfield{extrayear}}}%
+       \clearfield{year}\clearfield{endyear}%
+       \clearfield{month}\clearfield{endmonth}%
+       \clearfield{day}\clearfield{endday}}}%
   \renewbibmacro*{issue+date}{%
     \iffieldundef{issue}
       {}
@@ -2184,7 +2194,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \begin{itemize}
 %   \item `year' merges only the year with date label.
-%   TODO: suppress year in `date', `issue+date' macros.
 % \end{itemize}
 %
 \def\bbx@opt@mergedate@year{%
@@ -2193,11 +2202,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     {}
     {\printtext[parens]{%
         \printfield{\thefield{datelabelsource}year}%
-        \printfield{extrayear}}}}%
-  \renewbibmacro*{date}{%
-    \iffieldundef{month}
-    {}
-    {\printdate}}%
+        \printfield{extrayear}}%
+     %\clearfield{year}\clearfield{endyear}%
+     }}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
       test {\iffieldundef{issue}}
@@ -2323,9 +2330,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit}
 }
 %
-% We set the default to be `true'/`compact'.
+% We set the default to be `true'/`year'.
 %
 \ExecuteBibliographyOptions{mergedate}
+%
+% TODO: adjust mkbibrange macros from biblatex2.sty so they work in the
+% absence of a year, so the clearfields above work as intended.
 %
 % == Bibliography formatting ==
 %
@@ -2444,6 +2454,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         \clearfield{title}}
        {\printfield[title]{shorttitle}}}
     {\printfield{label}}}
+%
+%
+%
+\xpatchbibdriver{online}{%
+  \iffieldundef{year}{}{%
+    \printtext[parens]{\usebibmacro{date}}%
+  }%
+}{%
+  \iffieldundef{month}{}{%
+    \printtext[parens]{\usebibmacro{date}}%
+  }%
+}{}{}
 %
 % There is no more.
 %
@@ -4813,7 +4835,7 @@ John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.yout
 
 \bibexample<NHR \S18.8.5>
 |Richard Hooper, \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov. 2013), \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.|%
-||%
+|Hooper, R. (14 Nov. 2013) \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine, \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013. \emph{[conv.]}|%
 |@online{hooper2013lfs,
   author = {Richard Hooper},
   title = {Lebanon's Forgotten Space Programme},
