@@ -509,20 +509,20 @@
   {\num@two}%
 }
 %
-% We patch the truncated date formats from the standard `lbx' files to
-% use the above function.
+% We patch the truncated date formats from `biblatex2.sty' to use the
+% above function.
 %
 \patchcmd{\mkbibrangetrunc}{%
   \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
 }{%
-  \iffieldundef{#2month}%
+  \iffieldundef{#2endmonth}%
     {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
     {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
 }{}{}
 \patchcmd{\mkbibrangetruncextra}{%
   \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
 }{%
-  \iffieldundef{#2month}%
+  \iffieldundef{#2endmonth}%
     {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
     {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
 }{}{}
@@ -2095,9 +2095,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \def\bbx@opt@mergedate@true{\bbx@opt@mergedate@year}
 %
 % \begin{itemize}
-%   \item `maximum' merges date/issue with date label.
-%   Note that we clear fields rather than the bibmacros
-%   as the `authoryear' style does.
+%   \item `maximum' merges date/issue with date label. Note that we
+%   clear fields rather than the bibmacros as the `authoryear' style does.
 % \end{itemize}
 %
 \def\bbx@opt@mergedate@maximum{%
@@ -2117,9 +2116,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
        \clearfield{issue}}}}%
 %
 % \begin{itemize}
-%   \item `compact' merges whole date with date label.
-%   Note that we clear fields rather than the bibmacros
-%   as the `authoryear' style does.
+%   \item `compact' merges whole date with date label. Note that we
+%   clear fields rather than the bibmacros as the `authoryear' style does.
 % \end{itemize}
 %
 \def\bbx@opt@mergedate@compact{%
@@ -2203,7 +2201,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     {\printtext[parens]{%
         \printfield{\thefield{datelabelsource}year}%
         \printfield{extrayear}}%
-     %\clearfield{year}\clearfield{endyear}%
+     \clearfield{year}\clearfield{endyear}%
      }}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
@@ -2334,8 +2332,141 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \ExecuteBibliographyOptions{mergedate}
 %
-% TODO: adjust mkbibrange macros from biblatex2.sty so they work in the
-% absence of a year, so the clearfields above work as intended.
+% The above clearfield commands would suppress any further date
+% information being printed, but we need to allow months and days to be
+% printed in the absence of a year. This means adapting the range
+% calculation commands defined in `biblatex2.sty' for use by
+% `\printdate'.
+%
+\renewrobustcmd*{\mkbibrangefull}[2]{%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \printtext[#2date]{%
+        \csuse{mkbibdate#1}{}{#2month}{#2day}%
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdatedash}%
+          }{%
+            \bibdatedash
+            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}}}}}%
+  }{%
+    \printtext[#2date]{%
+      \csuse{mkbibdate#1}{#2year}{#2month}{#2day}%
+      \iffieldundef{#2endyear}{%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \mbox{\bibdatedash}%
+        }{%
+          \bibdatedash
+          \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}
+
+\renewrobustcmd*{\mkbibrangetrunc}[2]{%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \printtext[#2date]{%
+        \iffieldsequal{#2month}{#2endmonth}{%
+          \csuse{mkbibdate#1}{}{}{#2day}%
+        }{%
+          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdatedash}%
+          }{%
+            \bibdatedash
+            \iffieldundef{#2endday}{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{}%
+            }{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{%
+                \blx@ox@compyear{\thefield{#2day}}{\thefield{#2endday}}}}}}}}%
+  }{%
+    \printtext[#2date]{%
+      \iffieldsequal{#2year}{#2endyear}{%
+        \iffieldsequal{#2month}{#2endmonth}{%
+          \csuse{mkbibdate#1}{}{}{#2day}%
+        }{%
+          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+      }{%
+        \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
+      \iffieldundef{#2endyear}{%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \mbox{\bibdatedash}%
+        }{%
+          \bibdatedash
+          \iffieldundef{#2endmonth}{%
+            \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
+          }{%
+            \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}}
+
+\renewrobustcmd*{\mkbibrangefullextra}[2]{%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \printtext[#2date]{%
+        \csuse{mkbibdate#1}{}{#2month}{#2day}%
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdatedash}%
+          }{%
+            \bibdatedash
+            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}}}}}%
+  }{%
+    \printtext[#2date]{%
+      \printtext{%
+        \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
+      \iffieldundef{#2endyear}{%
+        \printfield{extrayear}%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \printfield{extrayear}%
+          \printtext{\mbox{\bibdatedash}}%
+        }{%
+          \printtext{%
+            \bibdatedash
+            \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
+            \printfield{extrayear}}}}}}}
+
+\renewrobustcmd*{\mkbibrangetruncextra}[2]{%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \printtext[#2date]{%
+        \iffieldsequal{#2month}{#2endmonth}{%
+          \csuse{mkbibdate#1}{}{}{#2day}%
+        }{%
+          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdatedash}%
+          }{%
+            \bibdatedash
+            \iffieldundef{#2endday}{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{}%
+            }{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{%
+                \blx@ox@compyear{\thefield{#2day}}{\thefield{#2endday}}}}}}}}%
+  }{%
+    \printtext[#2date]{%
+      \printtext{%
+        \iffieldsequal{#2year}{#2endyear}{%
+          \iffieldsequal{#2month}{#2endmonth}{%
+            \csuse{mkbibdate#1}{}{}{#2day}%
+          }{%
+            \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+        }{%
+          \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
+      \iffieldundef{#2endyear}{%
+        \printfield{extrayear}%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \printfield{extrayear}%
+          \printtext{\mbox{\bibdatedash}}%
+        }{%
+          \printtext{%
+            \bibdatedash
+            \iffieldundef{#2endmonth}{%
+              \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
+            }{%
+              \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+            \printfield{extrayear}}}}}}}
 %
 % == Bibliography formatting ==
 %
