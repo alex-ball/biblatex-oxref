@@ -60,7 +60,7 @@
 \colorlet{manual}{purple}
 
 \usepackage{tcolorbox}
-\tcbuselibrary{listingsutf8,breakable,skins,xparse}
+\tcbuselibrary{listings,breakable,skins,xparse}
 \lstloadlanguages{[LaTeX]TeX}
 \lstset
   { columns=fullflexible
@@ -161,7 +161,7 @@
 
 \openoutputfile{oxref.bbx}{src}
 \addtostream{src}{\string\ProvidesFile{oxref.bbx}}
-\addtostream{src}{\space\space\space\space[\Version\space Base settings for biblatex styles inspired by the Oxford Guide to Style]}
+\addtostream{src}{\space\space\space\space[\Version\space Base settings for bibliography styles inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{src}
 %
 % == Preliminaries ==
@@ -1994,7 +1994,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \openoutputfile{oxnotes.bbx}{oxnotes}
 \addtostream{oxnotes}{\string\ProvidesFile{oxnotes.bbx}}
-\addtostream{oxnotes}{\space\space\space\space[\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]}
+\addtostream{oxnotes}{\space\space\space\space[\Version\space Footnote-based bibliography style inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{oxnotes}
 %
 % First we load the common oxref features.
@@ -2056,7 +2056,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \openoutputfile{oxyear.bbx}{oxyear}
 \addtostream{oxyear}{\string\ProvidesFile{oxyear.bbx}}
-\addtostream{oxyear}{\space\space\space\space[\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]}
+\addtostream{oxyear}{\space\space\space\space[\Version\space Author-year bibliography style inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{oxyear}
 %
 % == Preliminaries ==
@@ -2608,6 +2608,40 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \closeoutputstream{oxyear}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% OXNOTES CBX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\openoutputfile{oxnotes.cbx}{oxnotes}
+\addtostream{oxnotes}{\string\ProvidesFile{oxnotes.cbx}}
+\addtostream{oxnotes}{\space\space\space\space[\Version\space Footnote-based citation style inspired by the Oxford Guide to Style]}
+\begin{writeverbatim}{oxnotes}
+
+\RequireCitationStyle{verbose}
+%
+% There is no more.
+%
+\endinput
+\end{writeverbatim}
+\closeoutputstream{oxnotes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% OXYEAR CBX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\openoutputfile{oxyear.cbx}{oxyear}
+\addtostream{oxyear}{\string\ProvidesFile{oxyear.cbx}}
+\addtostream{oxyear}{\space\space\space\space[\Version\space Author-year citation style inspired by the Oxford Guide to Style]}
+\begin{writeverbatim}{oxyear}
+
+\RequireCitationStyle{authoryear}
+%
+% There is no more.
+%
+\endinput
+\end{writeverbatim}
+\closeoutputstream{oxyear}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% BRITISH-OXREF LBX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2759,7 +2793,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \openoutputfile{oxnotes-doc.tex}{oxnotes}
 \openoutputfile{oxyear-doc.tex}{oxyear}
 
-\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}
+\PassOptionsToPackage{style=oxnotes}{biblatex}
 \input{oxref-preamble}
 
 \usepackage{xstring}
@@ -2823,8 +2857,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \todoc|\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}|
 
-\todoc[oxnotes]|\PassOptionsToPackage{bibstyle=oxnotes,citestyle=verbose}{biblatex}|
-\todoc[oxyear]|\PassOptionsToPackage{bibstyle=oxyear,citestyle=authoryear}{biblatex}|
+\todoc[oxnotes]|\PassOptionsToPackage{style=oxnotes}{biblatex}|
+\todoc[oxyear]|\PassOptionsToPackage{style=oxyear}{biblatex}|
 
 \todoc|\input{oxref-preamble}|
 
@@ -2888,6 +2922,22 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \section{Loading the style}
 
+The style is self-contained, so you can load it with \textsf{biblatex}:
+|
+
+\todoc[oxnotes]|
+\begin{tcblisting}{listing only}
+\usepackage[style=oxnotes]{biblatex}
+\end{tcblisting}
+|
+
+\todoc[oxyear]|
+\begin{tcblisting}{listing only}
+\usepackage[style=oxyear]{biblatex}
+\end{tcblisting}
+|
+
+\todoc|
 \section{How to use this document}
 
 Bibliographical items are given throughout this document, and serve three purposes:
@@ -5578,6 +5628,16 @@ For information on how to use the styles, please refer to the separate documenta
 
 \renewcommand*{\mdJobName}{oxyear}
 \MakeInputJobDoc[bbx]{0}{\SectionLevelTwoParseInput}
+
+\chapter{oxnotes.cbx}
+
+\renewcommand*{\mdJobName}{oxnotes}
+\MakeInputJobDoc[cbx]{0}{\SectionLevelTwoParseInput}
+
+\chapter{oxyear.cbx}
+
+\renewcommand*{\mdJobName}{oxyear}
+\MakeInputJobDoc[cbx]{0}{\SectionLevelTwoParseInput}
 
 \chapter{british-oxref.lbx}
 
