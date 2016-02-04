@@ -173,10 +173,13 @@
 % instead of writing out our own in full.
 % \item
 % We will manipulate strings with 'xstring'.
+% \item
+% We will use 'graphicx' for stretching `\bibnamedash'es
 % \end{itemize}
 %
 \RequirePackage{xpatch}
 \RequirePackage{xstring}
+\RequirePackage{graphicx}
 %
 % Here we set some defaults different to the standard ones. The author
 % can still override them.
@@ -221,7 +224,7 @@
 \renewcommand*{\newunitpunct}{\addcomma\space}
 \renewcommand*{\subtitlepunct}{\addcolon\space}
 \renewcommand*{\intitlepunct}{\nopunct\space}
-\renewcommand*{\bibnamedash}{\rule[0.5ex]{2em}{\normalrulethickness}\addthinspace}
+\renewcommand*{\bibnamedash}{\resizebox{2em}{\height}{\textemdash}\addthinspace}
 \renewcommand*{\revsdnamedelim}{\addcomma}
 %
 % == Name handling ==
