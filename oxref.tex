@@ -2589,7 +2589,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
        {\printfield[title]{shorttitle}}}
     {\printfield{label}}}
 %
-%
+% The date of `online' entries is printed in parentheses; as the year
+% is moved after the author, this can lead to empty parentheses unless
+% a month is printed, so we change the test accordingly.
 %
 \xpatchbibdriver{online}{%
   \iffieldundef{year}{}{%
