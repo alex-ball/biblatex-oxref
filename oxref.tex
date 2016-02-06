@@ -82,7 +82,7 @@
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
 
 \newcommand*{\lit}[1]{\textsf{#1}}
-\newcommand*{\code}[1]{`\textsf{#1}'}
+\newcommand*{\code}[1]{`\texttt{#1}'}
 \newcommand*{\aside}[1]{\textcolor{violet}{[\textsc{tip:} #1]}}
 
 % For debugging; userd is either ‘bad’, ‘hacked’, ‘manual’
@@ -2928,7 +2928,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \todoc|
 \chapter{Introduction}
 
-\section{Loading the style}
+\section{Loading the style}\label{sec:loading}
 
 The style is self-contained, so you can load it with \textsf{biblatex}:
 |
@@ -2946,6 +2946,26 @@ The style is self-contained, so you can load it with \textsf{biblatex}:
 |
 
 \todoc|
+
+The style has some options additional to the regular \textsf{biblatex} ones:
+
+\begin{description}
+  \item[issuestyle]
+  Affects how journal volumes and numbers are printed.
+  \begin{description}
+  \item[slash]
+  (default) Separates the two with a solidus, e.g. ‘23/2’.
+  \item[colon]
+  Separates the two with a colon and space, e.g. ‘23: 2’.|
+\todoc[oxyear]| It is intended for use with \textsf{oxnotes} and not recommended for this style.|
+\todoc|
+  \item[comma]
+  Separates the two with a comma and space, e.g. ‘23, 2’.
+  \item[parens]
+  Sets off the issue number in parentheses, e.g. ‘23 (2)’.
+  \end{description}
+\end{description}
+
 \section{How to use this document}
 
 Bibliographical items are given throughout this document, and serve three purposes:
@@ -3076,7 +3096,6 @@ Support is also planned for the following additional types (starred types are no
 Additional tasks:
 
 \begin{itemize}
-  \item Provide options for how journal divisions are rendered.
   \item Provide mechanism for properly rendering pseudepigraphical names.
   \item Provide mechanism for using ‘Anonymous’ as an author name.
   \item Provide option that suppresses the printing of publisher names.
@@ -4643,7 +4662,7 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 \section{Notes}
 
 \begin{itemize}
-  \item The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxyear} which uses a colon to demarcate the page numbers. \aside{To do, as a package option.}
+  \item The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxyear} which uses a colon to demarcate the page numbers. These variations are implemented as the option \textsf{issuestyle}; see \autoref{sec:loading} for details.
   
   \item If the last\slash only word of the JournalTitle is abbreviated (indicated by point or capital letter), it does not need a comma after it. This can be achieved by adding \code{\textbackslash nopunct} to the end of the journal title.
 \end{itemize}
