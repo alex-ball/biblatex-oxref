@@ -2478,12 +2478,39 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \DeclareFieldFormat{shorthandwidth}{#1}
 %
+% We declare a variant of the `last-first' name format that uses the
+% corresponding shortname if available, with the long version in
+% parentheses.
+% TODO: suppress display of the long version if the same as the short
+% version.
+%
+\DeclareNameFormat{oxyear-last-first}{%
+  \ifthenelse{
+    \( \ifcurrentname{author} \and \not \ifnameundef{shortauthor} \)
+    \or
+    \( \ifcurrentname{editor} \and \not \ifnameundef{shorteditor} \)
+  }{%
+    \edef\bbx@ox@currname{\currentname}
+    \printnames[\currentname][\value{listcount}-\value{listcount}]{short\bbx@ox@currname}%
+    \addspace\mkbibparens{%
+      \iffirstinits
+        {\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}%
+        {\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
+    }%
+  }{%
+    \iffirstinits
+      {\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}%
+      {\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
+  }%
+  \usebibmacro{name:andothers}%
+}
+%
 % Names at the head of the reference are last-first, but names elsewhere
 % are first-last.
 %
 \DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{author}{last-first}
-\DeclareNameAlias{editor}{last-first}
+\DeclareNameAlias{author}{oxyear-last-first}
+\DeclareNameAlias{editor}{oxyear-last-first}
 \DeclareNameAlias{translator}{last-first}
 %
 % The bibliography formatting is just like `authoryear' except we do not
@@ -3026,7 +3053,12 @@ Where a source is provided, it refers to a section from one of the reference wor
 \end{description}
 
 Where the source is starred, this indicates the example is not quite how it appears in the book,
-usually because the original is demonstrating an option that is not the \textsf{oxref} default.
+usually because the original is demonstrating an option that is not the \textsf{oxref} default.|
+\todoc[oxyear]|In addition, some reference texts are marked as \emph{[conv.]}:
+these have been coverted from \textsf{oxnotes}-style examples,
+since the guides provide relatively few for author-year references.|
+
+\todoc|
 
 \section{Design philosophy}
 
