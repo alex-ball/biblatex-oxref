@@ -1982,6 +1982,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %
+% == Sort order ==
+%
+% We exclude editor and translator from the sort order for books, 
+% reference works, and proceedings, music, since they come after the
+% title.
+%
+\DeclareSortExclusion{book,reference,mvreference,proceedings,music}{editor,translator}
+%
 % There is no more.
 %
 \endinput
@@ -3143,7 +3151,6 @@ Bugs to fix:
   \item wp2013oup, rubinstein1956rpc: fix implementation of date type.
   \item perry2013ifm: find way of expressing podcast publisher.
   \item globe2013otd: support display of time for tweets.
-  \item incorrect sort key for proceedings (by organization first) and reference (by title, not editor)
 \end{itemize}
 
 \chapter{Books, collections and reference works}\label{sec:book}
@@ -3995,6 +4002,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 ||%
 |@proceedings{iau1922tia,
   organization = {International Astronomical Union},
+  sortname = {{International Astronomical Union}},
   title = {Transactions of the {International} {Astronomical} {Union}, {Rome}},
   eventdate = {1922-05-12/1922-05-20},
   location = {London},
@@ -4067,6 +4075,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 ||%
 |@proceedings{iced2009dik,
   maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
+  sortkey = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
   title = {Design Information and Knowledge},
   volume = {8},
   editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
@@ -4903,7 +4912,7 @@ Oxref provides the additional editor types \code{performer}, \code{director} and
 |@music{pageNDmn,
   title = {The Mirror of Narcissus},
   subtitle = {Songs by Guillaume do Machaut},
-  editor = {Gothic Voices},
+  editor = {{Gothic Voices}},
   editortype = {performer},
   editora = {Christopher Page},
   editoratype = {director},
