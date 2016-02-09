@@ -2005,6 +2005,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \addtostream{oxnotes}{\space\space\space\space[\Version\space Footnote-based bibliography style inspired by the Oxford Guide to Style]}
 \begin{writeverbatim}{oxnotes}
 %
+% == Preliminaries ==
+%
 % First we load the common oxref features.
 %
 \RequireBibliographyStyle{oxref}
@@ -2028,6 +2030,32 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareNameAlias[online]{editor}{oxrefstartname}
 \DeclareNameAlias[proceedings]{editor}{oxrefstartname}
 \DeclareNameAlias[reference]{editor}{oxrefstartname}
+%
+% == Source mappings ==
+%
+% This is used by 'biber' to fix the following sorting issues:
+% \begin{itemize}
+%   \item
+%   `proceedings' entries print the organization at the beginning.
+%   \item
+%   `proceedings' entries print the maintitle before the title.
+% \end{itemize}
+%
+\DeclareStyleSourcemap{%
+  \maps[datatype=bibtex]{%
+    \map{%
+      \pertype{proceedings}
+      \step[fieldsource=organization]%
+      \step[fieldset=sortname, origfieldval]%
+      \step[fieldsource=maintitle]%
+      \step[fieldset=sorttitle, origfieldval]%
+      \step[fieldsource=volume]%
+      \step[fieldset=sorttitle, append, origfieldval]%
+    }%
+  }%
+}
+%
+% == Page ranges in citations ==
 %
 % If specifying a page within a range in the course of a citation note,
 % Oxford style is to format that as \enquote{\emph{range} at
@@ -2643,6 +2671,30 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % 'Oxyear' uses a colon to demarcate page numbers
 %
 \renewcommand*{\bibpagespunct}{\addcolon\space}
+%
+% == Source mappings ==
+%
+% This is used by 'biber' to fix the following sorting issues:
+% \begin{itemize}
+%   \item
+%   `proceedings' entries print the organization at the beginning.
+%   \item
+%   `proceedings' entries print the maintitle before the title.
+% \end{itemize}
+%
+\DeclareStyleSourcemap{%
+  \maps[datatype=bibtex]{%
+    \map{%
+      \pertype{proceedings}
+      \step[fieldsource=organization]%
+      \step[fieldset=sortname, origfieldval]%
+      \step[fieldsource=maintitle]%
+      \step[fieldset=sorttitle, origfieldval]%
+      \step[fieldsource=volume]%
+      \step[fieldset=sorttitle, append, origfieldval]%
+    }%
+  }%
+}
 %
 % There is no more.
 %
@@ -4001,8 +4053,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 |International Astronomical Union, \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall, 1922), 1.52–3.|%
 ||%
 |@proceedings{iau1922tia,
-  organization = {International Astronomical Union},
-  sortname = {{International Astronomical Union}},
+  organization = {{International Astronomical Union}},
   title = {Transactions of the {International} {Astronomical} {Union}, {Rome}},
   eventdate = {1922-05-12/1922-05-20},
   location = {London},
@@ -4075,7 +4126,6 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 ||%
 |@proceedings{iced2009dik,
   maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
-  sortkey = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
   title = {Design Information and Knowledge},
   volume = {8},
   editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
