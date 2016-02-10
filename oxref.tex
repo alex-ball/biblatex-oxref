@@ -854,6 +854,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % 'biblatex', the elements of a single edition are separated by commas
 % except that the publisher is preceded by a colon.
 %
+\newcounter{locpubpairs}
 \newbibmacro*{edition+publisher+location+date}{%
   \printlist{origlocation}%
   \iflistundef{origpublisher}%
@@ -865,11 +866,46 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit*{\addsemicolon\space}%
   \printfield{edition}%
   \setunit*{\addcomma\space}%
-  \printlist{location}%
-  \iflistundef{publisher}%
-  {\setunit*{\addcomma\space}}%
-  {\setunit*{\addcolon\space}}%
-  \printlist{publisher}%
+%
+% If there are the same number of locations and publishers, and there
+% are more than one pair, we print them pairwaise rather than in two
+% separate lists.
+%
+  \ifboolexpr{%
+    test {\ifnumcomp{\value{publisher}}{>}{1}}
+    and
+    test {\ifnumequal{\value{location}}{\value{publisher}}}
+  }{%
+    \setcounter{locpubpairs}{0}%
+    \savebibmacro{list:andothers}%
+    \renewbibmacro*{list:andothers}{}%
+    \whileboolexpr{%
+      test {\ifnumcomp{\value{locpubpairs}}{<}{\value{publisher}}}
+    }{%
+      \stepcounter{locpubpairs}%
+      \ifnumcomp{\value{locpubpairs}}{>}{1}{%
+        \ifnumequal{\value{publisher}}{2}{%
+          \setunit*{\addspace\bibstring{and}\addspace}%
+        }{%
+          \ifnumequal{\value{locpubpairs}}{\value{publisher}}{%
+            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          }{%
+            \setunit*{\addcomma\space}%
+          }%
+        }%
+      }{}%
+      \printlist[][\value{locpubpairs}-\value{locpubpairs}]{location}%
+      \setunit*{\addcolon\space}%
+      \printlist[][\value{locpubpairs}-\value{locpubpairs}]{publisher}%
+    }%
+    \restorebibmacro{list:andothers}%
+  }{%
+    \printlist{location}%
+    \iflistundef{publisher}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{publisher}%
+  }%
   \setunit*{\addcomma\space}%
   \usebibmacro{date}%
 }
@@ -3198,7 +3234,6 @@ Additional tasks:
 Bugs to fix:
 
 \begin{itemize}
-  \item ritter1838hap: match up lists of locations and publishers.
   \item beckford1823v: allow subtypes of more entries to be printed.
   \item wp2013oup, rubinstein1956rpc: fix implementation of date type.
   \item perry2013ifm: find way of expressing podcast publisher.
@@ -3442,7 +3477,7 @@ Where the publisher changed between volumes, the following form is used:
 |Author, \emph{Title}, VolNo, n \lit{vols.} (Location: Publisher and Location: Publisher, Year–Year).|%
 |Author (Year–Year), \emph{Title}, VolNo, n \lit{vols.} (Location: Publisher and Location: Publisher).|
 
-\bibexample(hacked)<OGS \S15.2.6>
+\bibexample<OGS \S15.2.6>
 |Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn, 1838--46).|%
 ||%
 |@mvbook{ritter1838hap,
