@@ -594,6 +594,16 @@
 %
 \DeclareFieldFormat{pages}{\mkcomprange{#1}}
 %
+% == Publishers ==
+%
+% The \emph{Oxford Guide to Style} says it is fine to omit publisher
+% names uniformly from bibliographic information. This is odd, but we
+% can support it with a simple option.
+%
+\DeclareBibliographyOption{nopublisher}[true]{%
+  \DeclareFieldInputHandler{publisher}{\def\NewValue{}}%
+}
+%
 % == URLs ==
 %
 % The OGS recommends the ISO convention of enclosing URLs in angle
@@ -3237,6 +3247,8 @@ The style has some options additional to the regular \textsf{biblatex} ones:
   \item[parens]
   Sets off the issue number in parentheses, e.g. ‘23 (2)’.
   \end{description}
+  \item[nopublisher]
+  Removes publisher name from all entries.
 \end{description}
 
 \textsf{Oxref} makes of Biber-specific techniques to solve some of the challenges
@@ -3251,9 +3263,9 @@ Bibliographical items are given throughout this document, and serve three purpos
 
 \begin{itemize}
   \item
-  To demonstrate which of the variations of style discussed by the
+  To demonstrate which of the variations discussed by the
   \emph{Oxford Guide to Style} and \emph{New Hart's Rules} have been chosen
-  in this document.
+  in this style.
   \item
   To help me, as package author, check that the style is working as intended.
   \item
@@ -3382,7 +3394,6 @@ Additional tasks:
 \begin{itemize}
   \item Provide mechanism for properly rendering pseudepigraphical names.
   \item Provide mechanism for using ‘Anonymous’ as an author name.
-  \item Provide option that suppresses the printing of publisher names.
   \item Provide option to render thesis types within publication block.
   \item Provide citation style that matches the \emph{OGS} suggestions for shorthand expressions in notes.
 \end{itemize}
@@ -5744,7 +5755,8 @@ Future versions may however provide this functionality.
 If the place of publication is absent, replace with n.p.
 
 Publisher names may be uniformly omitted from all citations and bibliography entries.
-There may be a package option to switch off publisher names in future.
+You can achieve this either by removing publisher information from your database file
+or by passing the \texttt{nopublisher} bibliography option.
 
 \section{Dates}
 
