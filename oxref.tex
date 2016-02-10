@@ -2113,7 +2113,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % == Source mappings ==
 %
-% This is used by 'biber' to fix the following sorting issues:
+% This is used by Biber to fix the following sorting issues:
 % \begin{itemize}
 %   \item
 %   `proceedings' entries print the organization at the beginning.
@@ -2860,7 +2860,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % == Source mappings ==
 %
-% This is used by 'biber' to fix the following sorting issues:
+% This is used by Biber to fix the following sorting issues:
 % \begin{itemize}
 %   \item
 %   `proceedings' entries print the organization at the beginning.
@@ -3238,6 +3238,12 @@ The style has some options additional to the regular \textsf{biblatex} ones:
   Sets off the issue number in parentheses, e.g. ‘23 (2)’.
   \end{description}
 \end{description}
+
+\textsf{Oxref} makes of Biber-specific techniques to solve some of the challenges
+presented by Oxford style. If you resort to using Bib\TeX\ instead,
+you will have to correct the sort order of certain entries manually with
+\texttt{sortkey}, and use some messy workarounds to get things like reviews
+working properly.
 
 \section{How to use this document}
 
