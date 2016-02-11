@@ -1617,7 +1617,33 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
 }
 %
-% We provide a more convoluted version that also includes `series',
+% We provide a slightly more complicated version with the type included
+% at the beginning. It is used by the `thesis' driver. We provide two
+% versions: one with the type outside and one with it inside the
+% parentheses.
+%
+\newbibmacro*{type+institution+location+date}{%
+  \printfield{type}%
+  \newunit
+  \usebibmacro{institution+location+date}%
+}
+\DeclareBibliographyOption{altthesis}[true]{%
+  \renewbibmacro*{type+institution+location+date}{%
+    \nopunct\printtext[publication]{%
+      \printfield{type}%
+      \setunit*{\addcomma\space}%
+      \printlist{location}%
+      \iflistundef{institution}%
+      {\setunit*{\addcomma\space}}%
+      {\setunit*{\addcolon\space}}%
+      \printlist{institution}%
+      \setunit*{\addcomma\space}%
+      \usebibmacro{date}%
+    }%
+  }%
+}
+%
+% We provide an even more convoluted version that also includes `series',
 % `title' and `number', and uses the more common `publisher' in place of
 % `institution'. We also include some logic that means `organization'
 % is used instead of `publisher' if no `publisher' is provided;
@@ -1702,6 +1728,16 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
+%
+% We patch the thesis driver to use our slightly more complex version.
+%
+\xpatchbibdriver{thesis}{%
+  \printfield{type}%
+  \newunit
+  \usebibmacro{institution+location+date}%
+}{%
+  \usebibmacro{type+institution+location+date}%
+}{}{}
 %
 % The changes to the `manual' driver compared to the standard style
 % are as follows:
@@ -3233,6 +3269,8 @@ The style is self-contained, so you can load it with \textsf{biblatex}:
 The style has some options additional to the regular \textsf{biblatex} ones:
 
 \begin{description}
+  \item[altthesis]
+  Puts the thesis type inside, rather than outside, the parenthetical publication block.
   \item[issuestyle]
   Affects how journal volumes and numbers are printed.
   \begin{description}
@@ -3394,7 +3432,6 @@ Additional tasks:
 \begin{itemize}
   \item Provide mechanism for properly rendering pseudepigraphical names.
   \item Provide mechanism for using ‘Anonymous’ as an author name.
-  \item Provide option to render thesis types within publication block.
   \item Provide citation style that matches the \emph{OGS} suggestions for shorthand expressions in notes.
 \end{itemize}
 
@@ -4992,7 +5029,7 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 }|
 
 \todoc|
-The following form is also shown: in future this might be supported as a package option.
+The following form is also shown: to use it, pass the \texttt{altthesis} option.
 |
 
 \specs
