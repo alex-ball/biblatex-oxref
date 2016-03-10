@@ -242,43 +242,54 @@
 % implement this with the `scstartname' name format.
 %
 \DeclareNameFormat{scstartname}{%
+  \nameparts{#1}%
   \ifbibliography{%
     \ifnumequal{\value{listcount}}{1}{%
-      \iffirstinits{%
-        \usebibmacro{name:last-first}%
-          {\ifblank{#1}{}{\textsc{#1}}}%
-          {\ifblank{#4}{}{\textsc{#4}}}%
-          {\ifblank{#5}{}{\textsc{#5}}}%
-          {\ifblank{#7}{}{\textsc{#7}}}%
+      \ifgiveninits{%
+        \usebibmacro{name:family-given}%
+          {\ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}}%
+          {\ifblank{\namepartgiveni}{}{\textsc{\namepartgiveni}}}%
+          {\ifblank{\namepartprefix}{}{\textsc{\namepartprefix}}}%
+          {\ifblank{\namepartsuffix}{}{\textsc{\namepartsuffix}}}%
       }{%
-        \usebibmacro{name:last-first}%
-          {\ifblank{#1}{}{\textsc{#1}}}%
-          {\ifblank{#3}{}{\textsc{#3}}}%
-          {\ifblank{#5}{}{\textsc{#5}}}%
-          {\ifblank{#7}{}{\textsc{#7}}}%
+        \usebibmacro{name:family-given}%
+          {\ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}}%
+          {\ifblank{\namepartgiven}{}{\textsc{\namepartgiven}}}%
+          {\ifblank{\namepartprefix}{}{\textsc{\namepartprefix}}}%
+          {\ifblank{\namepartsuffix}{}{\textsc{\namepartsuffix}}}%
       }%
-      \ifblank{#3#5}
+      \ifblank{\namepartgiven\namepartprefix}
         {}
         {\usebibmacro{name:revsdelim}}%
     }{%
-      \iffirstinits{%
-        \usebibmacro{name:last-first}%
-          {\ifblank{#1}{}{\textsc{#1}}}%
-          {\ifblank{#4}{}{\textsc{#4}}}%
-          {\ifblank{#5}{}{\textsc{#5}}}%
-          {\ifblank{#7}{}{\textsc{#7}}}%
+      \ifgiveninits{%
+        \usebibmacro{name:family-given}%
+          {\ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}}%
+          {\ifblank{\namepartgiveni}{}{\textsc{\namepartgiveni}}}%
+          {\ifblank{\namepartprefix}{}{\textsc{\namepartprefix}}}%
+          {\ifblank{\namepartsuffix}{}{\textsc{\namepartsuffix}}}%
       }{%
-        \usebibmacro{name:last-first}%
-          {\ifblank{#1}{}{\textsc{#1}}}%
-          {\ifblank{#3}{}{\textsc{#3}}}%
-          {\ifblank{#5}{}{\textsc{#5}}}%
-          {\ifblank{#7}{}{\textsc{#7}}}%
+        \usebibmacro{name:family-given}%
+          {\ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}}%
+          {\ifblank{\namepartgiven}{}{\textsc{\namepartgiven}}}%
+          {\ifblank{\namepartprefix}{}{\textsc{\namepartprefix}}}%
+          {\ifblank{\namepartsuffix}{}{\textsc{\namepartsuffix}}}%
       }%
     }%
   }{%
-    \iffirstinits
-      {\usebibmacro{name:first-last}{#1}{#4}{#5}{#7}}%
-      {\usebibmacro{name:first-last}{#1}{#3}{#5}{#7}}%
+    \ifgiveninits{%
+      \usebibmacro{name:given-family}%
+        {\namepartfamily}%
+        {\namepartgiveni}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }{%
+      \usebibmacro{name:given-family}%
+        {\namepartfamily}%
+        {\namepartgiven}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }%
   }%
   \usebibmacro{name:andothers}%
 }
@@ -288,23 +299,55 @@
 % `lcstartname'.
 %
 \DeclareNameFormat{lcstartname}{%
+  \nameparts{#1}
   \ifbibliography{%
     \ifnumequal{\value{listcount}}{1}{%
-      \iffirstinits
-        {\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}%
-        {\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
-      \ifblank{#3#5}
+      \ifgiveninits{%
+        \usebibmacro{name:family-given}%
+          {\namepartfamily}%
+          {\namepartgiveni}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+      }{%
+        \usebibmacro{name:family-given}%
+          {\namepartfamily}%
+          {\namepartgiven}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+      }%
+      \ifblank{\namepartgiven\namepartprefix}
         {}
-        {\usebibmacro{name:revsdelim}}%
+        {\usebibmacro{name:revsdelim}%
+      }%
     }{%
-      \iffirstinits
-        {\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}%
-        {\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
+      \ifgiveninits{%
+        \usebibmacro{name:family-given}%
+          {\namepartfamily}%
+          {\namepartgiveni}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+      }{%
+        \usebibmacro{name:family-given}%
+          {\namepartfamily}%
+          {\namepartgiven}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+      }%
     }%
   }{%
-    \iffirstinits
-      {\usebibmacro{name:first-last}{#1}{#4}{#5}{#7}}%
-      {\usebibmacro{name:first-last}{#1}{#3}{#5}{#7}}%
+    \ifgiveninits{%
+      \usebibmacro{name:given-family}%
+        {\namepartfamily}%
+        {\namepartgiveni}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }{%
+      \usebibmacro{name:given-family}%
+        {\namepartfamily}%
+        {\namepartgiven}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }%
   }%
   \usebibmacro{name:andothers}%
 }
@@ -312,7 +355,7 @@
 % When using natural order for names, there is no comma before numeric
 % suffixes, but there is before textual ones (e.g. ‘junior’).
 %
-\xpatchbibmacro{name:first-last}%
+\xpatchbibmacro{name:given-family}%
   {\bibnamedelimd\mkbibnameaffix{#4}}%
   {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnameaffix{#4}}{}{}
 %
@@ -2140,7 +2183,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here we set some defaults different to the standard ones. The author
 % can still override them.
 %
-\ExecuteBibliographyOptions{uniquename=init,firstinits,labeldate,sorting=nyt,pagetracker}
+\ExecuteBibliographyOptions{uniquename=init,giveninits,labeldate,sorting=nyt,pagetracker}
 %
 % == Date merging option ==
 %
@@ -2550,13 +2593,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \DeclareFieldFormat{shorthandwidth}{#1}
 %
-% We declare a variant of the `last-first' name format that uses the
+% We declare a variant of the `family-given' name format that uses the
 % corresponding shortname if available, with the long version in
 % parentheses.
 % TODO: suppress display of the long version if the same as the short
 % version.
 %
-\DeclareNameFormat{oxyear-last-first}{%
+\DeclareNameFormat{oxyear-family-given}{%
+  \nameparts{#1}%
   \ifthenelse{
     \( \ifcurrentname{author} \and \not \ifnameundef{shortauthor} \)
     \or
@@ -2565,25 +2609,45 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \edef\bbx@ox@currname{\currentname}
     \printnames[\currentname][\value{listcount}-\value{listcount}]{short\bbx@ox@currname}%
     \addspace\mkbibparens{%
-      \iffirstinits
-        {\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}%
-        {\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
+      \ifgiveninits{%
+        \usebibmacro{name:family-given}%
+          {\namepartfamily}%
+          {\namepartgiveni}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+      }{%
+        \usebibmacro{name:family-given}%
+          {\namepartfamily}%
+          {\namepartgiven}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+      }%
     }%
   }{%
-    \iffirstinits
-      {\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}%
-      {\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
+    \ifgiveninits{%
+      \usebibmacro{name:family-given}%
+        {\namepartfamily}%
+        {\namepartgiveni}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }{%
+      \usebibmacro{name:family-given}%
+        {\namepartfamily}%
+        {\namepartgiven}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }%
   }%
   \usebibmacro{name:andothers}%
 }
 %
-% Names at the head of the reference are last-first, but names elsewhere
-% are first-last.
+% Names at the head of the reference are family-given, but names elsewhere
+% are given-family.
 %
-\DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{author}{oxyear-last-first}
-\DeclareNameAlias{editor}{oxyear-last-first}
-\DeclareNameAlias{translator}{last-first}
+\DeclareNameAlias{sortname}{family-given}
+\DeclareNameAlias{author}{oxyear-family-given}
+\DeclareNameAlias{editor}{oxyear-family-given}
+\DeclareNameAlias{translator}{family-given}
 %
 % The bibliography formatting is just like `authoryear' except we do not
 % eliminate item separation by default.
