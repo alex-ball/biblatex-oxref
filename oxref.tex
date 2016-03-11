@@ -2593,60 +2593,44 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \DeclareFieldFormat{shorthandwidth}{#1}
 %
-% We declare a variant of the `family-given' name format that uses the
-% corresponding shortname if available, with the long version in
-% parentheses.
-% TODO: suppress display of the long version if the same as the short
-% version.
+% We declare a variant of the `family-given' which exports the hash of the name,
+% so we can compare `shortauthor' with `author' and `shorteditor' with `editor'.
 %
-\DeclareNameFormat{oxyear-family-given}{%
+\DeclareNameFormat{family-given-hash}{%
   \nameparts{#1}%
-  \ifthenelse{
-    \( \ifcurrentname{author} \and \not \ifnameundef{shortauthor} \)
-    \or
-    \( \ifcurrentname{editor} \and \not \ifnameundef{shorteditor} \)
+  \ifgiveninits{%
+    \usebibmacro{name:family-given}%
+      {\namepartfamily}%
+      {\namepartgiveni}%
+      {\namepartprefix}%
+      {\namepartsuffix}%
   }{%
-    \edef\bbx@ox@currname{\currentname}
-    \printnames[\currentname][\value{listcount}-\value{listcount}]{short\bbx@ox@currname}%
-    \addspace\mkbibparens{%
-      \ifgiveninits{%
-        \usebibmacro{name:family-given}%
-          {\namepartfamily}%
-          {\namepartgiveni}%
-          {\namepartprefix}%
-          {\namepartsuffix}%
-      }{%
-        \usebibmacro{name:family-given}%
-          {\namepartfamily}%
-          {\namepartgiven}%
-          {\namepartprefix}%
-          {\namepartsuffix}%
-      }%
-    }%
+    \usebibmacro{name:family-given}%
+      {\namepartfamily}%
+      {\namepartgiven}%
+      {\namepartprefix}%
+      {\namepartsuffix}%
+  }%
+  \ifboolexpr{
+    test {\ifcurrentname{shortauthor}}
+    or
+    test {\ifcurrentname{shorteditor}}
   }{%
-    \ifgiveninits{%
-      \usebibmacro{name:family-given}%
-        {\namepartfamily}%
-        {\namepartgiveni}%
-        {\namepartprefix}%
-        {\namepartsuffix}%
-    }{%
-      \usebibmacro{name:family-given}%
-        {\namepartfamily}%
-        {\namepartgiven}%
-        {\namepartprefix}%
-        {\namepartsuffix}%
-    }%
+    \savefield{hash}{\bbx@ox@firsthash}%
+  }{%
+    \savefield{hash}{\bbx@ox@secondhash}%
   }%
   \usebibmacro{name:andothers}%
 }
+\DeclareNameAlias{shortauthor}{family-given-hash}
+\DeclareNameAlias{shorteditor}{family-given-hash}
 %
 % Names at the head of the reference are family-given, but names elsewhere
 % are given-family.
 %
 \DeclareNameAlias{sortname}{family-given}
-\DeclareNameAlias{author}{oxyear-family-given}
-\DeclareNameAlias{editor}{oxyear-family-given}
+\DeclareNameAlias{author}{family-given}
+\DeclareNameAlias{editor}{family-given}
 \DeclareNameAlias{translator}{family-given}
 %
 % The bibliography formatting is just like `authoryear' except we do not
@@ -2704,6 +2688,64 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{date+extrayear}%
 }{}{}%
 %
+% We patch it further so that, where an author name has a corresponding
+% (different) short author name, the short name is given first and the long
+% name given in parentheses.
+%
+% This technique uses saveboxes to extract the hashes.
+%
+% An unfortunate side effect of this is that where short author names are
+% provided, the author list is no longer truncated, but I hope this represents
+% something of an edge case.
+%
+\newcounter{namepairs}
+\newsavebox{\bbx@ox@shortnamebox}
+\newsavebox{\bbx@ox@namebox}
+\xpatchbibmacro{author}{%
+  {\printnames{author}}\iffieldundef%
+}{{%
+  \ifboolexpr{%
+    ( not test {\ifnameundef{shortauthor}} )
+    and
+    test {\ifnumequal{\value{shortauthor}}{\value{author}}}
+  }{%
+    \setcounter{namepairs}{0}%
+    \savebibmacro{name:andothers}%
+    \renewbibmacro*{name:andothers}{}%
+    \whileboolexpr{%
+      test {\ifnumcomp{\value{namepairs}}{<}{\value{author}}}
+    }{%
+      \stepcounter{namepairs}%
+      \ifnumcomp{\value{namepairs}}{>}{1}{%
+        \ifnumequal{\value{author}}{2}{%
+          \setunit*{\addspace\bibstring{and}\addspace}%
+        }{%
+          \ifnumequal{\value{namepairs}}{\value{author}}{%
+            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          }{%
+            \setunit*{\addcomma\space}%
+          }%
+        }%
+      }{}%
+      \savebox{\bbx@ox@shortnamebox}{%
+        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{shortauthor}%
+      }%
+      \savebox{\bbx@ox@namebox}{%
+        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{author}%
+      }%
+      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
+        \unhbox\bbx@ox@namebox
+      }{%
+        \unhbox\bbx@ox@shortnamebox
+        \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
+      }%
+    }%
+    \restorebibmacro{name:andothers}%
+  }{%
+    \printnames{author}%
+  }}\iffieldundef%
+}{}{}%
+%
 % We apply the same patches to `bbx:editor', but also move the editor
 % string to after the date label.
 %
@@ -2721,9 +2763,53 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
 }{}{}%
+\xpatchbibmacro{bbx:editor}{%
+  \printnames{editor}%
+}{%
+  \ifboolexpr{%
+    ( not test {\ifnameundef{shorteditor}} )
+    and
+    test {\ifnumequal{\value{shorteditor}}{\value{editor}}}
+  }{%
+    \setcounter{namepairs}{0}%
+    \savebibmacro{name:andothers}%
+    \renewbibmacro*{name:andothers}{}%
+    \whileboolexpr{%
+      test {\ifnumcomp{\value{namepairs}}{<}{\value{editor}}}
+    }{%
+      \stepcounter{namepairs}%
+      \ifnumcomp{\value{namepairs}}{>}{1}{%
+        \ifnumequal{\value{editor}}{2}{%
+          \setunit*{\addspace\bibstring{and}\addspace}%
+        }{%
+          \ifnumequal{\value{namepairs}}{\value{editor}}{%
+            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          }{%
+            \setunit*{\addcomma\space}%
+          }%
+        }%
+      }{}%
+      \savebox{\bbx@ox@shortnamebox}{%
+        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{shorteditor}%
+      }%
+      \savebox{\bbx@ox@namebox}{%
+        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{editor}%
+      }%
+      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
+        \unhbox\bbx@ox@namebox
+      }{%
+        \unhbox\bbx@ox@shortnamebox
+        \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
+      }%
+    }%
+    \restorebibmacro{name:andothers}%
+  }{%
+    \printnames{editor}%
+  }%
+}{}{}%
 %
 % We apply the same patches to `bbx:translator' as we do for
-% `bbx:editor'.
+% `bbx:editor', except for the shortening one.
 %
 \xpatchbibmacro{bbx:translator}{%
   \global\undef\bbx@lasthash
