@@ -1773,6 +1773,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %   \item
 %   The date is wrapped in parentheses if present.
 %   \item
+%   We support displaying a publisher after the date.
+%   \item
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
 %
@@ -1802,6 +1804,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \iffieldundef{year}{}{%
     \printtext[parens]{\usebibmacro{date}}%
   }%
+  \newunit\newblock
+  \printlist{publisher}%
   \newunit\newblock
   \iftoggle{bbx:eprint}
   {\usebibmacro{eprint}}
@@ -3385,8 +3389,6 @@ Bugs to fix:
 
 \begin{itemize}
   \item beckford1823v: allow subtypes of more entries to be printed.
-  \item wp2013oup, rubinstein1956rpc: fix implementation of date type.
-  \item perry2013ifm: find way of expressing podcast publisher.
   \item globe2013otd: support display of time for tweets.
 \end{itemize}
 
@@ -4718,7 +4720,7 @@ I have completed and corrected it as best I can ascertain.
 ||%
 |Unwin, T. (1994), ‘Structural Change in Estonian Agriculture: From Command Economy to Privatisation’, \emph{Geography}, 79/3: 246–61.|%
 |@article{unwin1994sce,
-  author = {Unwin, Tim},
+  author = {Tim Unwin},
   year = {1994},
   title = {Structural Change in Estonian Agriculture},
   subtitle = {From Command Economy to Privatisation},
@@ -5493,7 +5495,7 @@ John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.yout
   entrysubtype = {podcast},
   organization = {Reith Lecture},
   date = {2013-11-05},
-  addendum = {BBC Radio 4},
+  publisher = {BBC Radio 4},
   url = {http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3},
   urldate = {2013-11-05}
 }|
