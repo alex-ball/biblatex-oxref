@@ -241,7 +241,6 @@
 % implement this with the `scstartname' name format.
 %
 \DeclareNameFormat{scstartname}{%
-  \nameparts{#1}%
   \ifbibliography{%
     \ifnumequal{\value{listcount}}{1}{%
       \ifgiveninits{%
@@ -298,7 +297,6 @@
 % `lcstartname'.
 %
 \DeclareNameFormat{lcstartname}{%
-  \nameparts{#1}
   \ifbibliography{%
     \ifnumequal{\value{listcount}}{1}{%
       \ifgiveninits{%
@@ -2186,7 +2184,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here we set some defaults different to the standard ones. The author
 % can still override them.
 %
-\ExecuteBibliographyOptions{uniquename=init,giveninits,labeldate,sorting=nyt,pagetracker}
+\ExecuteBibliographyOptions{uniquename=init,giveninits,labeldateparts,sorting=nyt,pagetracker}
 %
 % == Date merging option ==
 %
@@ -2222,12 +2220,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@maximum{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{datelabelsource}year}
+    \iffieldundef{\thefield{labeldatesource}year}
       {}
       {\printtext[parens]{%
          \printfield{issue}%
          \setunit*{\addspace}%
-         \iffieldsequal{year}{\thefield{datelabelsource}year}
+         \iffieldsequal{year}{\thefield{labeldatesource}year}
            {\printdateextralabel}%
            {\printfield{labelyear}%
             \printfield{extrayear}}}%
@@ -2243,10 +2241,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@compact{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{datelabelsource}year}
+    \iffieldundef{\thefield{labeldatesource}year}
       {}
       {\printtext[parens]{%
-         \iffieldsequal{year}{\thefield{datelabelsource}year}
+         \iffieldsequal{year}{\thefield{labeldatesource}year}
            {\printdateextralabel}%
            {\printfield{labelyear}%
             \printfield{extrayear}}}%
@@ -2276,10 +2274,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@basic{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{datelabelsource}year}
+    \iffieldundef{\thefield{labeldatesource}year}
       {}
       {\printtext[parens]{%
-         \printfield{\thefield{datelabelsource}year}%
+         \printfield{\thefield{labeldatesource}year}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{%
     \iffieldundef{month}
@@ -2317,10 +2315,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@year{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{datelabelsource}year}
+    \iffieldundef{\thefield{labeldatesource}year}
     {}
     {\printtext[parens]{%
-        \printfield{\thefield{datelabelsource}year}%
+        \printfield{\thefield{labeldatesource}year}%
         \printfield{extrayear}}%
      \clearfield{year}\clearfield{endyear}%
      }}%
@@ -2356,10 +2354,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@minimum{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{datelabelsource}year}
+    \iffieldundef{\thefield{labeldatesource}year}
       {}
       {\printtext[parens]{%
-         \printfield{\thefield{datelabelsource}year}%
+         \printfield{\thefield{labeldatesource}year}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{%
     \ifboolexpr{
@@ -2403,10 +2401,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@false{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{datelabelsource}year}
+    \iffieldundef{\thefield{labeldatesource}year}
       {}
       {\printtext[parens]{%
-         \printfield{\thefield{datelabelsource}year}%
+         \printfield{\thefield{labeldatesource}year}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{\printdate}%
   \renewbibmacro*{issue+date}{%
@@ -2459,16 +2457,16 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % calculation commands defined in `biblatex2.sty' for use by
 % `\printdate'.
 %
-\renewrobustcmd*{\mkbibrangefull}[2]{%
+\DeclareRobustCommand*{\mkbibrangefull}[2]{%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
       \printtext[#2date]{%
         \csuse{mkbibdate#1}{}{#2month}{#2day}%
         \iffieldundef{#2endmonth}{}{%
           \iffieldequalstr{#2endmonth}{}{%
-            \mbox{\bibdatedash}%
+            \mbox{\bibdaterangesep}%
           }{%
-            \bibdatedash
+            \bibdaterangesep
             \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}}}}}%
   }{%
     \printtext[#2date]{%
@@ -2476,12 +2474,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \iffieldundef{#2endyear}{%
       }{%
         \iffieldequalstr{#2endyear}{}{%
-          \mbox{\bibdatedash}%
+          \mbox{\bibdaterangesep}%
         }{%
-          \bibdatedash
+          \bibdaterangesep
           \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}
 
-\renewrobustcmd*{\mkbibrangetrunc}[2]{%
+\DeclareRobustCommand*{\mkbibrangetrunc}[2]{%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
       \printtext[#2date]{%
@@ -2491,9 +2489,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           \csuse{mkbibdate#1}{}{#2month}{#2day}}%
         \iffieldundef{#2endmonth}{}{%
           \iffieldequalstr{#2endmonth}{}{%
-            \mbox{\bibdatedash}%
+            \mbox{\bibdaterangesep}%
           }{%
-            \bibdatedash
+            \bibdaterangesep
             \iffieldundef{#2endday}{%
               \csuse{mkbibdate#1}{}{#2endmonth}{}%
             }{%
@@ -2511,24 +2509,24 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \iffieldundef{#2endyear}{%
       }{%
         \iffieldequalstr{#2endyear}{}{%
-          \mbox{\bibdatedash}%
+          \mbox{\bibdaterangesep}%
         }{%
-          \bibdatedash
+          \bibdaterangesep
           \iffieldundef{#2endmonth}{%
             \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
           }{%
             \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}}
 
-\renewrobustcmd*{\mkbibrangefullextra}[2]{%
+\DeclareRobustCommand*{\mkbibrangefullextra}[2]{%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
       \printtext[#2date]{%
         \csuse{mkbibdate#1}{}{#2month}{#2day}%
         \iffieldundef{#2endmonth}{}{%
           \iffieldequalstr{#2endmonth}{}{%
-            \mbox{\bibdatedash}%
+            \mbox{\bibdaterangesep}%
           }{%
-            \bibdatedash
+            \bibdaterangesep
             \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}}}}}%
   }{%
     \printtext[#2date]{%
@@ -2539,14 +2537,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       }{%
         \iffieldequalstr{#2endyear}{}{%
           \printfield{extrayear}%
-          \printtext{\mbox{\bibdatedash}}%
+          \printtext{\mbox{\bibdaterangesep}}%
         }{%
           \printtext{%
-            \bibdatedash
+            \bibdaterangesep
             \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
             \printfield{extrayear}}}}}}}
 
-\renewrobustcmd*{\mkbibrangetruncextra}[2]{%
+\DeclareRobustCommand*{\mkbibrangetruncextra}[2]{%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
       \printtext[#2date]{%
@@ -2556,9 +2554,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           \csuse{mkbibdate#1}{}{#2month}{#2day}}%
         \iffieldundef{#2endmonth}{}{%
           \iffieldequalstr{#2endmonth}{}{%
-            \mbox{\bibdatedash}%
+            \mbox{\bibdaterangesep}%
           }{%
-            \bibdatedash
+            \bibdaterangesep
             \iffieldundef{#2endday}{%
               \csuse{mkbibdate#1}{}{#2endmonth}{}%
             }{%
@@ -2579,10 +2577,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       }{%
         \iffieldequalstr{#2endyear}{}{%
           \printfield{extrayear}%
-          \printtext{\mbox{\bibdatedash}}%
+          \printtext{\mbox{\bibdaterangesep}}%
         }{%
           \printtext{%
-            \bibdatedash
+            \bibdaterangesep
             \iffieldundef{#2endmonth}{%
               \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
             }{%
@@ -2600,7 +2598,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % so we can compare `shortauthor' with `author' and `shorteditor' with `editor'.
 %
 \DeclareNameFormat{family-given-hash}{%
-  \nameparts{#1}%
   \ifgiveninits{%
     \usebibmacro{name:family-given}%
       {\namepartfamily}%
@@ -5803,7 +5800,7 @@ A \textsf{biblatex} implementation of this may be added in future.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \todoc|
-\printbibliography[notcategory=reviewed]
+%\printbibliography[notcategory=reviewed]
 \end{document}
 |
 
