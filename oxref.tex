@@ -552,17 +552,17 @@
   {\num@two}%
 }
 %
-% We patch the truncated date formats from `biblatex2.sty' to use the
+% We patch the truncated date formats from `biblatex.sty' to use the
 % above function.
 %
-\patchcmd{\mkbibrangetrunc}{%
+\patchcmd{\mkdaterangetrunc}{%
   \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
 }{%
   \iffieldundef{#2endmonth}%
     {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
     {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
 }{}{}
-\patchcmd{\mkbibrangetruncextra}{%
+\patchcmd{\mkdaterangetruncextra}{%
   \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
 }{%
   \iffieldundef{#2endmonth}%
@@ -2500,10 +2500,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % The above clearfield commands would suppress any further date
 % information being printed, but we need to allow months and days to be
 % printed in the absence of a year. This means adapting the range
-% calculation commands defined in `biblatex2.sty' for use by
+% calculation commands defined in `biblatex.sty' for use by
 % `\printdate'.
 %
-\DeclareRobustCommand*{\mkbibrangefull}[2]{%
+\DeclareRobustCommand*{\mkdaterangefull}[2]{%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
       \printtext[#2date]{%
@@ -2525,7 +2525,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           \bibdaterangesep
           \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}
 
-\DeclareRobustCommand*{\mkbibrangetrunc}[2]{%
+\DeclareRobustCommand*{\mkdaterangetrunc}[2]{%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
       \printtext[#2date]{%
@@ -2563,7 +2563,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           }{%
             \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}}
 
-\DeclareRobustCommand*{\mkbibrangefullextra}[2]{%
+\DeclareRobustCommand*{\mkdaterangefullextra}[2]{%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
       \printtext[#2date]{%
@@ -2590,7 +2590,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
             \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
             \printfield{extrayear}}}}}}}
 
-\DeclareRobustCommand*{\mkbibrangetruncextra}[2]{%
+\DeclareRobustCommand*{\mkdaterangetruncextra}[2]{%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
       \printtext[#2date]{%

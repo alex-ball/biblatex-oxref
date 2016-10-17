@@ -12,13 +12,13 @@ WORKMF = "/home/ab318/Data/TeX/workmf"
 all:	$(NAME).pdf $(STY1)-doc.pdf $(STY2)-doc.pdf clean
 	@exit 0
 $(STY1)-doc.tex $(STY2)-doc.tex $(NAME).bbx $(STY1).bbx $(STY1).cbx $(STY2).bbx $(STY2).cbx british-$(NAME).lbx: $(NAME).tex
-	lualatex -interaction=batchmode $(NAME).tex >/dev/null
+	lualatex -interaction=nonstopmode $(NAME).tex >/dev/null
 $(NAME).pdf: $(NAME).tex $(NAME).bbx $(STY1).bbx $(STY1).cbx british-$(NAME).lbx
-	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(NAME).tex >/dev/null
+	latexmk -lualatex -synctex=1 -interaction=nonstopmode -silent $(NAME).tex >/dev/null
 $(STY1)-doc.pdf: $(STY1)-doc.tex $(NAME).bbx $(STY1).bbx $(STY1).cbx british-$(NAME).lbx
-	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(STY1)-doc.tex >/dev/null
+	latexmk -lualatex -synctex=1 -interaction=nonstopmode -silent $(STY1)-doc.tex >/dev/null
 $(STY2)-doc.pdf: $(STY2)-doc.tex $(NAME).bbx $(STY2).bbx $(STY2).cbx british-$(NAME).lbx
-	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(STY2)-doc.tex >/dev/null
+	latexmk -lualatex -synctex=1 -interaction=nonstopmode -silent $(STY2)-doc.tex >/dev/null
 clean:
 	rm -f {$(NAME),$(STY1)-doc,$(STY2)-doc}.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f {$(STY1),$(STY2),british-$(NAME)}.doc
