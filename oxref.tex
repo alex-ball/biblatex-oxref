@@ -235,12 +235,28 @@
 \DeclareNameAlias{bookauthor}{default}
 \DeclareNameAlias{bookeditor}{default}
 %
+% Traditionally, Oxford style (for the humanities) prints author names in
+% small capitals in the bibliography, but in normal case in citations. This is
+% falling out of fashion, so we introduce this as an option.
+%
+\newtoggle{ox@opt@scnames}
+\DeclareBibliographyOption[boolean]{scnames}[true]{%
+  \settoggle{ox@opt@scnames}{#1}
+}
+%
 % Oxford style (for the humanities) is to write author names surname first in
 % the bibliography, but in natural order in citations. We implement this with
-% the `bib-family-given/cite-given-family' name format.
+% the `bib-family-given/cite-given-family' name format. The case changing option
+% only affects this name format.
 %
 \DeclareNameFormat{bib-family-given/cite-given-family}{%
   \ifbibliography{%
+    \iftoggle{ox@opt@scnames}{%
+      \renewcommand*{\mkbibnamefamily}[1]{\textsc{##1}}%
+      \renewcommand*{\mkbibnamegiven}[1]{\textsc{##1}}%
+      \renewcommand*{\mkbibnameprefix}[1]{\textsc{##1}}%
+      \renewcommand*{\mkbibnamesuffix}[1]{\textsc{##1}}%
+    }{}%
     \ifgiveninits{%
       \usebibmacro{name:family-given}%
         {\namepartfamily}%
@@ -254,6 +270,12 @@
         {\namepartprefix}%
         {\namepartsuffix}%
     }%
+    \iftoggle{ox@opt@scnames}{%
+      \renewcommand*{\mkbibnamefamily}[1]{##1}%
+      \renewcommand*{\mkbibnamegiven}[1]{##1}%
+      \renewcommand*{\mkbibnameprefix}[1]{##1}%
+      \renewcommand*{\mkbibnamesuffix}[1]{##1}%
+    }{}%
   }{%
     \ifgiveninits{%
       \usebibmacro{name:given-family}%
@@ -270,34 +292,6 @@
     }%
   }%
   \usebibmacro{name:andothers}%
-}
-%
-% Traditionally, Oxford style (for the humanities) prints author names in
-% small capitals in the bibliography, but in normal case in citations. This is
-% falling out of fashion, so we introduce this as an option.
-%
-\DeclareBibliographyOption[boolean]{scnames}[true]{%
-  \csuse{bbx@opt@scnames@#1}%
-}
-\def\bbx@opt@scnames@true{%
-  \renewcommand*{\mkbibnamefamily}[1]{%
-    \ifbibliography{\textsc{##1}}{##1}%
-  }%
-  \renewcommand*{\mkbibnamegiven}[1]{%
-    \ifbibliography{\textsc{##1}}{##1}%
-  }%
-  \renewcommand*{\mkbibnameprefix}[1]{%
-    \ifbibliography{\textsc{##1}}{##1}%
-  }%
-  \renewcommand*{\mkbibnamesuffix}[1]{%
-    \ifbibliography{\textsc{##1}}{##1}%
-  }%
-}
-\def\bbx@opt@scnames@false{%
-  \renewcommand*{\mkbibnamefamily}[1]{##1}%
-  \renewcommand*{\mkbibnamegiven}[1]{##1}%
-  \renewcommand*{\mkbibnameprefix}[1]{##1}%
-  \renewcommand*{\mkbibnamesuffix}[1]{##1}%
 }
 %
 % When using natural order for names, there is no comma before numeric
