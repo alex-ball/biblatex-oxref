@@ -235,44 +235,24 @@
 \DeclareNameAlias{bookauthor}{default}
 \DeclareNameAlias{bookeditor}{default}
 %
-% Traditionally, Oxford style (for the humanities) is to write author
-% names in small capitals in the bibliography, surname first; but in
-% citations, they are written in normal case in natural order. We
-% implement this with the `scstartname' name format.
+% Oxford style (for the humanities) is to write author names surname first in
+% the bibliography, but in natural order in citations. We implement this with
+% the `bib-family-given/cite-given-family' name format.
 %
-\DeclareNameFormat{scstartname}{%
+\DeclareNameFormat{bib-family-given/cite-given-family}{%
   \ifbibliography{%
-    \ifnumequal{\value{listcount}}{1}{%
-      \ifgiveninits{%
-        \usebibmacro{name:family-given}%
-          {\ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}}%
-          {\ifblank{\namepartgiveni}{}{\textsc{\namepartgiveni}}}%
-          {\ifblank{\namepartprefix}{}{\textsc{\namepartprefix}}}%
-          {\ifblank{\namepartsuffix}{}{\textsc{\namepartsuffix}}}%
-      }{%
-        \usebibmacro{name:family-given}%
-          {\ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}}%
-          {\ifblank{\namepartgiven}{}{\textsc{\namepartgiven}}}%
-          {\ifblank{\namepartprefix}{}{\textsc{\namepartprefix}}}%
-          {\ifblank{\namepartsuffix}{}{\textsc{\namepartsuffix}}}%
-      }%
-      \ifblank{\namepartgiven\namepartprefix}
-        {}
-        {\usebibmacro{name:revsdelim}}%
+    \ifgiveninits{%
+      \usebibmacro{name:family-given}%
+        {\namepartfamily}%
+        {\namepartgiveni}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
     }{%
-      \ifgiveninits{%
-        \usebibmacro{name:family-given}%
-          {\ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}}%
-          {\ifblank{\namepartgiveni}{}{\textsc{\namepartgiveni}}}%
-          {\ifblank{\namepartprefix}{}{\textsc{\namepartprefix}}}%
-          {\ifblank{\namepartsuffix}{}{\textsc{\namepartsuffix}}}%
-      }{%
-        \usebibmacro{name:family-given}%
-          {\ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}}%
-          {\ifblank{\namepartgiven}{}{\textsc{\namepartgiven}}}%
-          {\ifblank{\namepartprefix}{}{\textsc{\namepartprefix}}}%
-          {\ifblank{\namepartsuffix}{}{\textsc{\namepartsuffix}}}%
-      }%
+      \usebibmacro{name:family-given}%
+        {\namepartfamily}%
+        {\namepartgiven}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
     }%
   }{%
     \ifgiveninits{%
@@ -292,69 +272,40 @@
   \usebibmacro{name:andothers}%
 }
 %
-% The small caps aspect of this seems to be falling out of favour so we
-% provide a variant that uses normal case in the bibliography as well,
-% `lcstartname'.
+% Traditionally, Oxford style (for the humanities) prints author names in
+% small capitals in the bibliography, but in normal case in citations. This is
+% falling out of fashion, so we introduce this as an option.
 %
-\DeclareNameFormat{lcstartname}{%
-  \ifbibliography{%
-    \ifnumequal{\value{listcount}}{1}{%
-      \ifgiveninits{%
-        \usebibmacro{name:family-given}%
-          {\namepartfamily}%
-          {\namepartgiveni}%
-          {\namepartprefix}%
-          {\namepartsuffix}%
-      }{%
-        \usebibmacro{name:family-given}%
-          {\namepartfamily}%
-          {\namepartgiven}%
-          {\namepartprefix}%
-          {\namepartsuffix}%
-      }%
-      \ifblank{\namepartgiven\namepartprefix}
-        {}
-        {\usebibmacro{name:revsdelim}%
-      }%
-    }{%
-      \ifgiveninits{%
-        \usebibmacro{name:family-given}%
-          {\namepartfamily}%
-          {\namepartgiveni}%
-          {\namepartprefix}%
-          {\namepartsuffix}%
-      }{%
-        \usebibmacro{name:family-given}%
-          {\namepartfamily}%
-          {\namepartgiven}%
-          {\namepartprefix}%
-          {\namepartsuffix}%
-      }%
-    }%
-  }{%
-    \ifgiveninits{%
-      \usebibmacro{name:given-family}%
-        {\namepartfamily}%
-        {\namepartgiveni}%
-        {\namepartprefix}%
-        {\namepartsuffix}%
-    }{%
-      \usebibmacro{name:given-family}%
-        {\namepartfamily}%
-        {\namepartgiven}%
-        {\namepartprefix}%
-        {\namepartsuffix}%
-    }%
+\DeclareBibliographyOption[boolean]{scnames}[true]{%
+  \csuse{bbx@opt@scnames@#1}%
+}
+\def\bbx@opt@scnames@true{%
+  \renewcommand*{\mkbibnamefamily}[1]{%
+    \ifbibliography{\textsc{##1}}{##1}%
   }%
-  \usebibmacro{name:andothers}%
+  \renewcommand*{\mkbibnamegiven}[1]{%
+    \ifbibliography{\textsc{##1}}{##1}%
+  }%
+  \renewcommand*{\mkbibnameprefix}[1]{%
+    \ifbibliography{\textsc{##1}}{##1}%
+  }%
+  \renewcommand*{\mkbibnamesuffix}[1]{%
+    \ifbibliography{\textsc{##1}}{##1}%
+  }%
+}
+\def\bbx@opt@scnames@false{%
+  \renewcommand*{\mkbibnamefamily}[1]{##1}%
+  \renewcommand*{\mkbibnamegiven}[1]{##1}%
+  \renewcommand*{\mkbibnameprefix}[1]{##1}%
+  \renewcommand*{\mkbibnamesuffix}[1]{##1}%
 }
 %
 % When using natural order for names, there is no comma before numeric
 % suffixes, but there is before textual ones (e.g. ‘junior’).
 %
 \xpatchbibmacro{name:given-family}%
-  {\bibnamedelimd\mkbibnameaffix{#4}}%
-  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnameaffix{#4}}{}{}
+  {\bibnamedelimd\mkbibnamesuffix{#4}}%
+  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}{}{}
 %
 % For pseudonyms, Oxford style is to put the other name in parentheses
 % after the main one. 'Biblatex' provides the `nameaddon' field for this
@@ -2137,25 +2088,22 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \RequireBibliographyStyle{oxref}
 %
-% To make it easier for authors to switch between name formats, we
-% provide a layer of indirection. The default is to have names at the
-% start of a bibliography entry in small capitals. Authors can switch
-% this off with |\DeclareNameAlias{oxrefstartname}{lcstartname}|.
+% We apply our special name format to names likely to appear at the start of
+% an entry.
 %
-\DeclareNameAlias{oxrefstartname}{scstartname}
-\DeclareNameAlias{author}{oxrefstartname}
-\DeclareNameAlias[book]{editor}{oxrefstartname}
-\DeclareNameAlias[booklet]{editor}{oxrefstartname}
-\DeclareNameAlias[collection]{editor}{oxrefstartname}
-\DeclareNameAlias[manual]{editor}{oxrefstartname}
-\DeclareNameAlias[misc]{editor}{oxrefstartname}
-\DeclareNameAlias[mvbook]{editor}{oxrefstartname}
-\DeclareNameAlias[mvcollection]{editor}{oxrefstartname}
-\DeclareNameAlias[mvproceedings]{editor}{oxrefstartname}
-\DeclareNameAlias[mvreference]{editor}{oxrefstartname}
-\DeclareNameAlias[online]{editor}{oxrefstartname}
-\DeclareNameAlias[proceedings]{editor}{oxrefstartname}
-\DeclareNameAlias[reference]{editor}{oxrefstartname}
+\DeclareNameAlias{author}{bib-family-given/cite-given-family}
+\DeclareNameAlias[book]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[booklet]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[collection]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[manual]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[misc]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[mvbook]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[mvcollection]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[mvproceedings]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[mvreference]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[online]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[proceedings]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[reference]{editor}{bib-family-given/cite-given-family}
 %
 % == Source mappings ==
 %
@@ -2640,8 +2588,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \DeclareFieldFormat{shorthandwidth}{#1}
 %
-% We declare a variant of the `family-given' which exports the hash of the name,
-% so we can compare `shortauthor' with `author' and `shorteditor' with `editor'.
+% We declare a variant of the `family-given' name format which exports the hash
+% of the name, so we can compare `shortauthor' with `author' and `shorteditor'
+% with `editor'.
 %
 \DeclareNameFormat{family-given-hash}{%
   \ifgiveninits{%
@@ -3184,7 +3133,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 \todoc|\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}|
 
-\todoc[oxnotes]|\PassOptionsToPackage{style=oxnotes}{biblatex}|
+\todoc[oxnotes]|\PassOptionsToPackage{style=oxnotes,scnames}{biblatex}|
 \todoc[oxyear]|\PassOptionsToPackage{style=oxyear}{biblatex}|
 
 \todoc|\input{oxref-preamble}|
@@ -5689,9 +5638,7 @@ Forenames are not reduced to initials.
 In notes, authors' names are written in natural order. In the bibliography,
 they are inverted and (optionally) written in small capitals:
 \spec{\textsc{Author, First}, \lit{and} \textsc{Author, Second}, \emph{Title} (Location: Publisher, Year).}
-By default, Oxnotes uses small capitals if available;
-to use normal case instead, issue the following command after loading the style:
-\lstinline!\DeclareNameAlias{oxrefstartname}{lcstartname}!
+To activate small capitals in the bibliography, use the \code{scnames} option after loading the style.
 |
 \todoc[oxyear]|
 Authors' names are written inverted, with forenames reduced to initials.
@@ -5855,7 +5802,7 @@ A \textsf{biblatex} implementation of this may be added in future.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \todoc|
-%\printbibliography[notcategory=reviewed]
+\printbibliography[notcategory=reviewed]
 \end{document}
 |
 
