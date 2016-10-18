@@ -381,7 +381,7 @@
         \printfield{nameaddon}}%
       \iffieldundef{authortype}
       {\setunit{\addspace}}
-      {\setunit{\addcomma\space}}}%
+      {\newunit}}%
     \iffieldundef{authortype}
     {}
     {\usebibmacro{authorstrg}%
@@ -469,7 +469,7 @@
       \clearname{editor}%
     }{%
       \printnames[bookeditor]{editor}%
-      \setunit{\addcomma\space}%
+      \newunit%
       \usebibmacro{editor+othersstrg}%
       \clearname{editor}%
     }%
@@ -593,6 +593,13 @@
   {\mkbibacro{DOI}}%
   {\printtext{doi}}{}{}
 %
+% Unlike URLs, DOIs are preceded by a full stop.
+%
+\xpatchbibmacro{doi+eprint+url}%
+  {\printfield{doi}}%
+  {\setunit{\addperiod\space}\printfield{doi}}{}{}
+
+%
 % == Addenda ==
 %
 % Publication state is given in parentheses. Other addenda are added
@@ -677,7 +684,7 @@
   \printfield{volume}%
   \setunit*{\adddot}%
   \printfield{number}%
-  \setunit{\addcomma\space}%
+  \newunit%
   \printfield{eid}%
 }{%
   \usebibmacro{volume+number+eid}%
@@ -766,7 +773,7 @@
       }%
     }%
   }%
-  \setunit{\addcomma\space}%
+  \newunit%
   \printfield{eid}%
 }
 %
@@ -1405,7 +1412,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     }{\setunit{\mkbibemph{\addcolon}\addspace}}%
     {\setunit{\addcolon\addspace}}%
     \printfield{venue}%
-    \setunit{\addcomma\space}%
+    \newunit%
     \printeventdate}%
   \newunit}
 %
@@ -1827,7 +1834,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \printfield{series}%
     \setunit*{\addcomma\space}%
     \printfield{number}%
-    \setunit{\addcomma\space}%
+    \newunit%
     \usebibmacro{date}%
   }%
 }
@@ -1947,7 +1954,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     {\printnames[related]{author}%
      \iffieldundef{authortype}
        {}
-       {\setunit{\addcomma\space}%
+       {\newunit%
         \usebibmacro{authorstrg}}}
     {}}
 \newbibmacro*{relatedauthor/translator+others}{%
