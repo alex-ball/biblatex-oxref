@@ -535,9 +535,15 @@
 }{}{}
 %
 % Page ranges are compressed, but are not usually marked with
-% \enquote{pp.}.
+% \enquote{pp.}. The exception is if the page numbers are not obviously
+% numbers.
 %
-\DeclareFieldFormat{pages}{\mkcomprange{#1}}
+\DeclareFieldFormat{pages}{%
+  \iffieldundef{bookpagination}%
+    {\mkcomprange{#1}}
+    {\mkcomprange[{\mkpageprefix[bookpagination]}]{#1}}%
+}
+
 %
 % == Publishers ==
 %
@@ -4871,7 +4877,11 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
 \todoc|
 \section{Article in issue that is a supplement to another issue}
 
-\aside{Use \code{note} field to write ‘Supplement to’ and a reference to a \code{periodical}.}
+\aside{If using Biber, \dots. Otherwise, use the \code{note} field to write ‘Supplement to’ and a reference to a \texttt{periodical}.}%
+\addtocategory{reviewed}{zhentao.etal1989ars}
+
+\aside{Use \code{bookpagination} to force the display of ‘pp.’, and \code{\textbackslash DeclareNumChars*\{S\}} to ensure that \code{S61} is recognized as a number.}%
+\DeclareNumChars*{S}
 |
 
 \specs
@@ -4888,7 +4898,8 @@ Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \co
   volume = {14},
   date = {1989},
   note = {Supplement to \fullcite{jha1989}},
-  pages = {\ppno~S61-S72}
+  pages = {S61-S72},
+  bookpagination = {page}
 }
 @periodical{jha1989,
   title = {Journal for the History of Astronomy},
