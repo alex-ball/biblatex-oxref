@@ -239,9 +239,9 @@
 % small capitals in the bibliography, but in normal case in citations. This is
 % falling out of fashion, so we introduce this as an option.
 %
-\newtoggle{ox@opt@scnames}
+\newtoggle{blx@ox@scnames}
 \DeclareBibliographyOption[boolean]{scnames}[true]{%
-  \settoggle{ox@opt@scnames}{#1}
+  \settoggle{blx@ox@scnames}{#1}
 }
 %
 % Oxford style (for the humanities) is to write author names surname first in
@@ -251,7 +251,7 @@
 %
 \DeclareNameFormat{bib-family-given/cite-given-family}{%
   \ifbibliography{%
-    \iftoggle{ox@opt@scnames}{%
+    \iftoggle{blx@ox@scnames}{%
       \renewcommand*{\mkbibnamefamily}[1]{\textsc{##1}}%
       \renewcommand*{\mkbibnamegiven}[1]{\textsc{##1}}%
       \renewcommand*{\mkbibnameprefix}[1]{\textsc{##1}}%
@@ -270,7 +270,7 @@
         {\namepartprefix}%
         {\namepartsuffix}%
     }%
-    \iftoggle{ox@opt@scnames}{%
+    \iftoggle{blx@ox@scnames}{%
       \renewcommand*{\mkbibnamefamily}[1]{##1}%
       \renewcommand*{\mkbibnamegiven}[1]{##1}%
       \renewcommand*{\mkbibnameprefix}[1]{##1}%
@@ -685,7 +685,8 @@
 %
 % OGS and NHR provide plentiful options for formatting volume and issue
 % numbers. We implement four of them here as options. The default is to
-% use a slash between volume and issue number.
+% use a slash between volume and issue number. Note that we prevent the
+% `volume+number+eid' macro from actually printing the eid. 
 %
 \DeclareBibliographyOption{issuestyle}[slash]{%
   \ifcsdef{blx@ox@issuestyle@#1}{%
@@ -701,32 +702,28 @@
     \printfield{volume}%
     \setunit*{\addslash}%
     \printfield{number}%
-    \setunit{\addcomma\space}%
-    \printfield{eid}}
+  }%
 }
 \csdef{blx@ox@issuestyle@colon}{%
   \renewbibmacro*{volume+number+eid}{%
     \printfield{volume}%
     \setunit*{\addcolon\space}%
     \printfield{number}%
-    \setunit{\addcomma\space}%
-    \printfield{eid}}
+  }%
 }
 \csdef{blx@ox@issuestyle@comma}{%
   \renewbibmacro*{volume+number+eid}{%
     \printfield{volume}%
     \setunit*{\addcomma\space}%
     \printfield{number}%
-    \setunit{\addcomma\space}%
-    \printfield{eid}}
+  }%
 }
 \csdef{blx@ox@issuestyle@parens}{%
   \renewbibmacro*{volume+number+eid}{%
     \printfield{volume}%
     \setunit*{\addspace}%
     \printfield[parens]{number}%
-    \setunit{\addcomma\space}%
-    \printfield{eid}}
+  }%
 }
 \ExecuteBibliographyOptions{issuestyle=slash}
 %
@@ -735,12 +732,10 @@
 % in parentheses just as in the standard version of the macro.
 %
 \renewbibmacro*{issue+date}{%
-  \ifboolexpr{(
+  \ifboolexpr{
     test {\iffieldundef{volume}}
     and
     test {\iffieldundef{number}}
-    ) and
-    test {\iffieldundef{eid}}
   }{%
     \newunit\printtext{%
       \iffieldundef{issue}{%
@@ -771,7 +766,9 @@
       }%
     }%
   }%
-  \newunit}
+  \setunit{\addcomma\space}%
+  \printfield{eid}%
+}
 %
 % We patch the `article' driver to remove the \enquote{in} macro and
 % adjust punctuation after editors and page references.
@@ -1971,7 +1968,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareEntryOption{reviewed}{%
   \renewbibmacro*{reviewof}{%
     \bibstring{reviewof}%
-    \setunit{\space}%
+    \setunit{\addspace}%
     \printtext{{\settoggle{blx@bibliography}{false}\fullcite{#1}}}%
   }%
   \addtocategory{reviewed}{#1}%
