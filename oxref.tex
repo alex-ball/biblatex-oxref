@@ -1938,6 +1938,30 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   {\mkbibordseries{#1}~\bibstring{jourser}}
   {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
 %
+% We provide some alternative macros for related authors
+%
+\DeclareNameAlias{related}{given-family}
+\newbibmacro*{relatedauthor}{%
+  \ifboolexpr{
+    test \ifuseauthor
+    and
+    not test {\ifnameundef{author}}
+  }
+    {\printnames[related]{author}%
+     \iffieldundef{authortype}
+       {}
+       {\setunit{\addcomma\space}%
+        \usebibmacro{authorstrg}}}
+    {}}
+\newbibmacro*{relatedauthor/translator+others}{%
+  \ifboolexpr{
+    test \ifuseauthor
+    and
+    not test {\ifnameundef{author}}
+  }
+    {\usebibmacro{relatedauthor}}
+    {\usebibmacro{translator+others}}}
+%
 % This macro provides a non-Biber method of inserting a formatted
 % reference within a review reference. It is deprecated and will
 % be removed in a future release.
@@ -1947,8 +1971,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareEntryOption{reviewed}{%
   \renewbibmacro*{reviewof}{%
     \bibstring{reviewof}%
-    \setunit{\addspace}%
-    \fullcite{#1}\printtext{\unspace}% <- hack to ensure punctuation is triggered
+    \setunit{\space}%
+    \printtext{{\settoggle{blx@bibliography}{false}\fullcite{#1}}}%
   }%
   \addtocategory{reviewed}{#1}%
 }
@@ -1961,7 +1985,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newbibmacro*{related:reviewof}[1]{%
   \entrydata*{#1}{%
     \iffieldundef{journaltitle}{%
-      \usebibmacro{author}%
+      \usebibmacro{relatedauthor}%
       \setunit{\labelnamepunct}\newblock
       \usebibmacro{maintitle+title}%
       \newunit
@@ -1982,7 +2006,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \newunit\newblock
       \usebibmacro{series+number+edition+publisher+location+date}%
     }{%
-      \usebibmacro{author/translator+others}%
+      \usebibmacro{relatedauthor/translator+others}%
       \setunit{\labelnamepunct}\newblock
       \usebibmacro{title}%
       \newunit
@@ -2086,18 +2110,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % an entry.
 %
 \DeclareNameAlias{author}{bib-family-given/cite-given-family}
-\DeclareNameAlias[book]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[booklet]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[collection]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[manual]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[misc]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[mvbook]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[mvcollection]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[mvproceedings]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[mvreference]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[online]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[proceedings]{editor}{bib-family-given/cite-given-family}
-\DeclareNameAlias[reference]{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[related:reviewof]{author}{given-family}
+\DeclareNameAlias[book,booklet,collection,manual,misc,mvbook,mvcollection,%
+  mvproceedings,mvreference,online,proceedings,reference]%
+  {editor}{bib-family-given/cite-given-family}
 %
 % == Source mappings ==
 %
