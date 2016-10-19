@@ -183,7 +183,7 @@
 % Here we set some defaults different to the standard ones. The author
 % can still override them.
 %
-\ExecuteBibliographyOptions{urldate=comp,pagetracker}
+\ExecuteBibliographyOptions{urldate=comp,pagetracker,timezeros=false,time=12h}
 %
 % Language support may be widened in future, but for now we support the
 % following:
@@ -1769,7 +1769,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %   online resource (following the practice of 'biblatex-apa' and
 %   others). This comes after `maintitle'.
 %   \item
-%   The date is wrapped in parentheses if present.
+%   In most cases, the date is wrapped in parentheses if present.
+%   With Twitter posts, the time and date are printed bare.
 %   \item
 %   We support displaying a publisher after the date.
 %   \item
@@ -1798,10 +1799,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printfield{note}%
   \newunit\newblock
   \printlist{organization}%
-  \setunit{\addspace}\newblock
-  \iffieldundef{year}{}{%
-    \printtext[parens]{\usebibmacro{date}}%
-  }%
+  \iffieldequalstr{entrysubtype}{Twitter post}{%
+    \newunit\newblock
+    \usebibmacro{time+date}%
+  }{%
+    \iffieldundef{year}{}{%
+      \setunit{\addspace}\newblock
+      \printtext[parens]{\usebibmacro{date}}%
+    }%
+  }
   \newunit\newblock
   \printlist{publisher}%
   \newunit\newblock
@@ -1820,6 +1826,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
+%
+% We define a new macro for printing both time and date.
+%
+\newbibmacro*{time+date}{%
+  \printtime
+  \newunit
+  \printdate
+}
 %
 % == Audiovisual resources ==
 %
@@ -2980,6 +2994,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
        \iffieldundef{#1}{}{\space}}%
     \stripzeros{\thefield{#1}}}%
   \def\finalandcomma{\addcomma}%
+  \def\bibtimesep{\addperiod}%
 }
 \DeclareBibliographyStrings{%
   inherit          = {british},
@@ -3092,6 +3107,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   reviewof         = {{review of}{review of}},
   reprintfrom      = {{from}{from}},
   urlseen          = {{accessed}{accessed}},
+  am               = {{a\adddot m\adddot}{a\adddot m\adddot}},
+  pm               = {{p\adddot m\adddot}{p\adddot m\adddot}},
 }
 %
 % There is no more.
@@ -3429,7 +3446,6 @@ Bugs to fix:
 
 \begin{itemize}
   \item beckford1823v: allow subtypes of more entries to be printed.
-  \item globe2013otd: support display of time for tweets.
 \end{itemize}
 
 \chapter{Books, collections and reference works}\label{sec:book}
@@ -5580,8 +5596,7 @@ John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.yout
   author = {{Shakespeare's Globe}},
   title = {On this day in 1611 first production of The Tempest was performed by King's Men at Whitehall Palace before James I},
   entrysubtype = {Twitter post},
-  time = {5.48~a.m.},
-  date = {2013-11-01},
+  date = {2013-11-01T05:48:00},
   url = {https://twitter.com/The_Globe/status/396257422928400385},
   urldate = {2013-11-05}
 }|
