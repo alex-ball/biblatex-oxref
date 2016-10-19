@@ -955,6 +955,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %   \item
 %   `series' to `date' information is delegated to a separate macro;
 %   \item
+%   support is added for `howpublished' field;
+%   \item
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
 %
@@ -976,6 +978,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{maintitle+volume}%
   \newunit
   \usebibmacro{series+number+edition+publisher+location+date}%
+  \setunit{\addspace}%
+  \printfield[brackets]{howpublished}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -3440,12 +3444,6 @@ Additional tasks:
   \item Provide mechanism for properly rendering pseudepigraphical names.
   \item Provide mechanism for using ‘Anonymous’ as an author name.
   \item Provide citation style that matches the \emph{OGS} suggestions for shorthand expressions in notes.
-\end{itemize}
-
-Bugs to fix:
-
-\begin{itemize}
-  \item beckford1823v: allow subtypes of more entries to be printed.
 \end{itemize}
 
 \chapter{Books, collections and reference works}\label{sec:book}
