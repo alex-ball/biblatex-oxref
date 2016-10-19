@@ -518,10 +518,10 @@
 % We provide a way of prefacing dates with a type. This is mainly
 % intended for online resources.
 %
-\let\dateType\@empty
-\DeclareEntryOption{datetype}{\def\dateType{#1\addspace}}
+\def\dateType{}
+\DeclareEntryOption{datetype}{\def\dateType{#1}}
 \renewbibmacro*{date}{%
-  \ifx\@empty\dateType\else\printtext{\dateType}\fi
+  \ifdefvoid{\dateType}{}{\printtext{\dateType\addspace}}%
   \printdate}
 %
 % == Other number-like fields ==
@@ -2234,12 +2234,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@maximum{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{labeldatesource}year}
+    \iffieldundef{labelyear}
       {}
       {\printtext[parens]{%
          \printfield{issue}%
          \setunit*{\addspace}%
-         \iffieldsequal{year}{\thefield{labeldatesource}year}
+         \iffieldsequal{year}{labelyear}
            {\printdateextralabel}%
            {\printfield{labelyear}%
             \printfield{extrayear}}}%
@@ -2255,10 +2255,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@compact{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{labeldatesource}year}
+    \iffieldundef{labelyear}
       {}
       {\printtext[parens]{%
-         \iffieldsequal{year}{\thefield{labeldatesource}year}
+         \iffieldsequal{year}{labelyear}
            {\printdateextralabel}%
            {\printfield{labelyear}%
             \printfield{extrayear}}}%
@@ -2288,10 +2288,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@basic{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{labeldatesource}year}
+    \iffieldundef{labelyear}
       {}
       {\printtext[parens]{%
-         \printfield{\thefield{labeldatesource}year}%
+         \printfield{labelyear}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{%
     \iffieldundef{month}
@@ -2329,13 +2329,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@year{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{labeldatesource}year}
+    \iffieldundef{labelyear}
     {}
     {\printtext[parens]{%
-        \printfield{\thefield{labeldatesource}year}%
+        \printfield{labelyear}%
         \printfield{extrayear}}%
-     \clearfield{year}\clearfield{endyear}%
-     }}%
+      \iffieldundef{\thefield{labeldatesource}year}{%
+        \iffieldundef{\thefield{labeldatesource}}{}{%
+          \clearfield{\thefield{labeldatesource}}%
+        }%
+      }{%
+        \clearfield{\thefield{labeldatesource}year}%
+        \clearfield{end\thefield{labeldatesource}year}%
+      }}}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
       test {\iffieldundef{issue}}
@@ -2368,10 +2374,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@minimum{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{labeldatesource}year}
+    \iffieldundef{labelyear}
       {}
       {\printtext[parens]{%
-         \printfield{\thefield{labeldatesource}year}%
+         \printfield{labelyear}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{%
     \ifboolexpr{
@@ -2415,10 +2421,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 \def\bbx@opt@mergedate@false{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{\thefield{labeldatesource}year}
+    \iffieldundef{labelyear}
       {}
       {\printtext[parens]{%
-         \printfield{\thefield{labeldatesource}year}%
+         \printfield{labelyear}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{\printdate}%
   \renewbibmacro*{issue+date}{%
@@ -2600,6 +2606,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
             }{%
               \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
             \printfield{extrayear}}}}}}}
+%
+% The `labelyear' falls back to `pubstate' if provided.
+%
+\DeclareLabeldate{%
+  \field{origdate}
+  \field{date}
+  \field{year}
+  \field{eventdate}
+  \field{pubstate}
+  \field{urldate}
+  \literal{nodate}
+}
+
 %
 % == Bibliography formatting ==
 %
