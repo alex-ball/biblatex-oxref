@@ -1,0 +1,259 @@
+% \iffalse
+%<*internal>
+\iffalse
+%</internal>
+%<*internal|bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb|doc-n|doc-y>
+\def\Version{2015/05/25 v0.1}
+%</internal|bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb|doc-n|doc-y>
+%<*internal>
+\iffalse
+%</internal>
+%<*bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb>
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%</bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb>
+%<*bbx-0>
+\ProvidesFile{oxref.bbx}
+    [\Version\space Base settings for bibliography styles inspired by the Oxford Guide to Style]
+%</bbx-0>
+%<*bbx-n>
+\ProvidesFile{oxnotes.bbx}
+    [\Version\space Footnote-based bibliography style inspired by the Oxford Guide to Style]
+%</bbx-n>
+%<*bbx-y>
+\ProvidesFile{oxyear.bbx}
+    [\Version\space Author-year bibliography style inspired by the Oxford Guide to Style]
+%</bbx-y>
+%<*cbx-n>
+\ProvidesFile{oxnotes.cbx}
+    [\Version\space Footnote-based citation style inspired by the Oxford Guide to Style]
+%</cbx-n>
+%<*cbx-y>
+\ProvidesFile{oxyear.cbx}
+    [\Version\space Author-year citation style inspired by the Oxford Guide to Style]
+%</cbx-y>
+%<*dbx>
+\ProvidesFile{oxref.dbx}
+    [\Version\space Data model for the Oxref family of styles]
+%</dbx>
+%<*lbx-gb>
+\ProvidesFile{british-oxref.lbx}
+    [\Version\space British English conventions required by the biblatex-oxref styles]
+%</lbx-gb>
+%<*doc-n>
+\ProvidesFile{oxnotes-doc.tex}
+    [\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]
+%</doc-n>
+%<*doc-y>
+\ProvidesFile{oxyear-doc.tex}
+    [\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]
+%</doc-y>
+%<*readme>
+# biblatex-oxref: Biblatex styles inspired by the *Oxford Guide to Style*
+%</readme>
+%<*internal>
+\fi
+\def\nameofplainTeX{plain}
+\ifx\fmtname\nameofplainTeX\else
+  \expandafter\begingroup
+\fi
+%</internal>
+%<*install>
+\input docstrip.tex
+\keepsilent
+\askforoverwritefalse
+
+\nopreamble\nopostamble
+
+\usedir{doc/latex/\jobname}
+\generate{
+  \file{README.md}{\from{\jobname.dtx}{readme}}
+  \file{\jobname.bib}{\from{\jobname.dtx}{bib}}
+}
+
+\preamble
+----------------------------------------------------------------
+biblatex-oxref --- Biblatex styles inspired by the Oxford Guide to Style
+Author:  Alex Ball
+E-mail:  a.j.ball@bath.ac.uk
+License: Released under the LaTeX Project Public License v1.3c or later
+See:     http://www.latex-project.org/lppl.txt
+----------------------------------------------------------------
+
+\endpreamble
+\postamble
+
+Copyright (C) 2016 Alex Ball
+\endpostamble
+
+\usedir{tex/latex/\jobname}
+\generate{
+  \file{\jobname.bbx}{\from{\jobname.dtx}{bbx-0}}
+  \file{oxnotes.bbx}{\from{\jobname.dtx}{bbx-n}}
+  \file{oxyear.bbx}{\from{\jobname.dtx}{bbx-y}}
+  \file{oxnotes.cbx}{\from{\jobname.dtx}{cbx-n}}
+  \file{oxyear.cbx}{\from{\jobname.dtx}{cbx-y}}
+  \file{\jobname.dbx}{\from{\jobname.dtx}{dbx}}
+  \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx-gb}}
+  \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc-n}}
+  \file{oxyear-doc.tex}{\from{\jobname.dtx}{doc-y}}
+}
+%</install>
+%<install>\endbatchfile
+%<*internal>
+\usedir{source/latex/\jobname}
+\generate{
+  \file{\jobname.ins}{\from{\jobname.dtx}{install}}
+}
+\ifx\fmtname\nameofplainTeX
+  \expandafter\endbatchfile
+\else
+  \expandafter\endgroup
+\fi
+%</internal>
+%<*driver>
+\ProvidesFile{oxref.dtx}
+    [\Version\space Biblatex styles inspired by the Oxford Guide to Style]
+\PassOptionsToPackage{style=oxnotes}{biblatex}
+%</driver>
+%<doc-n>\PassOptionsToPackage{style=oxnotes,scnames}{biblatex}
+%<doc-y>\PassOptionsToPackage{style=oxyear}{biblatex}
+%<*driver|doc-n|doc-y>
+\setlrmarginsandblock{4cm}{2cm}{*}
+\setulmarginsandblock{2.5cm}{2.5cm}{*}
+\checkandfixthelayout
+% Document divisions
+\chapterstyle{hangnum}
+\hangsecnum
+\setsecheadstyle{\Large\bfseries\raggedright}
+\setsubsecheadstyle{\large\bfseries\scshape\raggedright}
+\setsecnumdepth{subsection}
+% Pagination and headers
+\nouppercaseheads
+\makeoddhead{myheadings}{\textsc{\leftmark}}{}{\thepage}
+%\makeevenhead{myheadings}{\thepage}{}{\textsc{\leftmark}}
+\makepsmarks{myheadings}{%
+  \def\chaptermark##1{\markboth{##1}{##1}}%
+  \def\sectionmark##1{\markright{##1}}%
+}
+\pagestyle{myheadings}
+\aliaspagestyle{title}{empty}
+% Paragraphs and lists
+\setlength{\parindent}{0pt}\nonzeroparskip
+\firmlists
+
+\usepackage[british]{babel}
+\usepackage[mono=false,defaultfeatures={SmallCapsFeatures={Letters=SmallCaps,Renderer=Basic,Ligatures=NoCommon}}]{libertine}
+\usepackage{fontawesome}[2015/07/07]
+\newcommand{\booksym}{\makebox[1em][c]{\faicon{book}}}
+\newcommand{\cogsym}{\makebox[1em][c]{\faicon{cog}}}
+\makeatletter
+\@ifpackageloaded{fontspec}{%
+  \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
+}{%
+  \usepackage[utf8]{inputenc}
+  \usepackage[varl]{zi4}
+}
+\makeatother
+
+\usepackage{xpatch,csquotes,xcolor,xparse,multicol}
+\definecolor{Green}{rgb}{0,.5,0}
+\colorlet{ok}{Green}
+\colorlet{todo}{red}
+\colorlet{hacked}{orange}
+\colorlet{manual}{purple}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,breakable,skins,xparse}
+\lstloadlanguages{[LaTeX]TeX}
+\lstset
+  { columns=fullflexible
+  , basicstyle=\ttfamily
+  , language={[LaTeX]TeX}
+  , texcsstyle=*\color{red!75!black}
+  , moredelim=**[s][\color{violet}]{[}{]}
+  , moredelim=**[s][\color{blue!75!black}]{\{}{\}}
+  , mathescape
+  , escapechar=~
+  }
+
+\usepackage
+[backend=biber%
+,hyperref=false%
+,isbn=false]{biblatex}
+\bibliography{oxref}
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage[noabbrev,capitalize,nameinlink]{cleveref}
+
+\newcommand*{\lit}[1]{\textsf{#1}}
+\newcommand*{\code}[1]{`\texttt{#1}'}
+\newcommand*{\aside}[1]{\textcolor{violet}{[\textsc{tip:} #1]}}
+
+% For debugging; userd is either ‘bad’, ‘hacked’, ‘manual’
+\makeatletter
+\def\CiteStatus{bad}
+\newcommand{\dbgcolor}[2]{%
+  \bgroup
+  \blx@citecmdinit
+  \blx@citeinit
+  \def\blx@precode{}%
+  \def\blx@postcode{}%
+  \def\blx@loopcode{%
+    \iffieldundef{userd}
+    {\xdef\CiteStatus{ok}}
+    {\xdef\CiteStatus{\abx@field@userd}}}%
+  \blx@citeloop{#1}%
+  \textcolor{\CiteStatus}{#2}%
+  \egroup
+}
+\makeatother
+\NewTColorBox{bibexbox}{D(){ok}d<>om}%
+  {bicolor
+  ,colframe = #1
+  ,colback = #1!5!white
+  ,colbacklower = white
+  ,fontlower = \footnotesize
+  ,before upper = {\hangfrom{\booksym\space}}
+  ,IfNoValueTF={#3}%
+    {after upper = {\par\hangfrom{\cogsym\space}\fullcite{#4}.}
+    }%
+    {after upper = {\par\hangfrom{\cogsym\space}\fullcite[#3]{#4}.}
+    ,title = {\texttt{\string\fullcite[#3]\{#4\}}}
+    }
+  ,IfNoValueTF={#2}{}%
+    {overlay = {
+      \node[anchor=south east,text=teal] at (frame.south east) {#2};
+      }
+    }
+  }
+\NewTotalTColorBox{\spec}{m}%
+  {enhanced
+  ,sharp corners = west
+  ,colframe = teal
+  ,colback = teal!5!white
+  ,toprule = 0pt
+  ,bottomrule = 0pt
+  ,rightrule = 0pt
+  }{#1}
+% \testrow compares target format with generated format. Arguments:
+% #1 = target format
+% #2 = page range
+% #3 = bib key
+\NewDocumentCommand\testrow{mom}{\biburlsetup #1\\%
+  \makebox[0pt][r]{\footnotesize\textcolor{teal}{#3}\quad}%
+  \IfNoValueTF{#2}{\dbgcolor{#3}{\fullcite{#3}.}}%
+  {\dbgcolor{#3}{\fullcite[#2]{#3}.}}\par}
+% \egcite gives a citation as an example. Arguments:
+% #1 = page range
+% #2 = bib key
+\NewDocumentCommand\egcite{om}{%
+  \makebox[0pt][r]{\footnotesize\textcolor{teal}{#2}\quad}%
+  \IfNoValueTF{#1}{\dbgcolor{#2}{\fullcite{#2}.}}%
+  {\dbgcolor{#2}{\fullcite[#1]{#2}}.}}
+\newcommand{\egauthor}[1]{%
+  \makebox[0pt][r]{\footnotesize\textcolor{teal}{#1}\quad}%
+  \dbgcolor{#1}{\citeauthor{#1}.}%
+}
+
+\frenchspacing
+%</driver|doc-n|doc-y>
+% \fi
