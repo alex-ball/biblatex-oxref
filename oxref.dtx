@@ -1,7 +1,4 @@
 % \iffalse
-%<*internal>
-\iffalse
-%</internal>
 %<*internal|bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb|doc-n|doc-y>
 \def\Version{2015/05/25 v0.1}
 %</internal|bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb|doc-n|doc-y>
@@ -118,11 +115,12 @@ Copyright (C) 2016 Alex Ball
 %<doc-n>\PassOptionsToPackage{style=oxnotes,scnames}{biblatex}
 %<doc-y>\PassOptionsToPackage{style=oxyear}{biblatex}
 %<*driver|doc-n|doc-y>
+\documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \setlrmarginsandblock{4cm}{2cm}{*}
 \setulmarginsandblock{2.5cm}{2.5cm}{*}
 \checkandfixthelayout
 % Document divisions
-\chapterstyle{hangnum}
+\chapterstyle{ell}
 \hangsecnum
 \setsecheadstyle{\Large\bfseries\raggedright}
 \setsubsecheadstyle{\large\bfseries\scshape\raggedright}
@@ -148,7 +146,7 @@ Copyright (C) 2016 Alex Ball
 \newcommand{\cogsym}{\makebox[1em][c]{\faicon{cog}}}
 \makeatletter
 \@ifpackageloaded{fontspec}{%
-  \setmonofont[Scale=MatchLowercase,StylisticSet=1]{Inconsolatazi4}
+  \setmonofont[Scale=MatchLowercase,StylisticSet=1,AutoFakeSlant]{Inconsolatazi4}
 }{%
   \usepackage[utf8]{inputenc}
   \usepackage[varl]{zi4}
@@ -179,18 +177,19 @@ Copyright (C) 2016 Alex Ball
 \usepackage
 [backend=biber%
 ,hyperref=false%
-,isbn=false]{biblatex}
+%,isbn=false%
+]{biblatex}
 \bibliography{oxref}
-\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage[pdfborder={0 0 0},pdfencoding=auto]{hyperref}
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
 
 \newcommand*{\lit}[1]{\textsf{#1}}
 \newcommand*{\code}[1]{`\texttt{#1}'}
 \newcommand*{\aside}[1]{\textcolor{violet}{[\textsc{tip:} #1]}}
 
-% For debugging; userd is either ‘bad’, ‘hacked’, ‘manual’
+% For debugging; userd is either ‘todo’, ‘hacked’, ‘manual’
 \makeatletter
-\def\CiteStatus{bad}
+\def\CiteStatus{todo}
 \newcommand{\dbgcolor}[2]{%
   \bgroup
   \blx@citecmdinit
@@ -234,14 +233,6 @@ Copyright (C) 2016 Alex Ball
   ,bottomrule = 0pt
   ,rightrule = 0pt
   }{#1}
-% \testrow compares target format with generated format. Arguments:
-% #1 = target format
-% #2 = page range
-% #3 = bib key
-\NewDocumentCommand\testrow{mom}{\biburlsetup #1\\%
-  \makebox[0pt][r]{\footnotesize\textcolor{teal}{#3}\quad}%
-  \IfNoValueTF{#2}{\dbgcolor{#3}{\fullcite{#3}.}}%
-  {\dbgcolor{#3}{\fullcite[#2]{#3}.}}\par}
 % \egcite gives a citation as an example. Arguments:
 % #1 = page range
 % #2 = bib key
@@ -249,11 +240,3429 @@ Copyright (C) 2016 Alex Ball
   \makebox[0pt][r]{\footnotesize\textcolor{teal}{#2}\quad}%
   \IfNoValueTF{#1}{\dbgcolor{#2}{\fullcite{#2}.}}%
   {\dbgcolor{#2}{\fullcite[#1]{#2}}.}}
-\newcommand{\egauthor}[1]{%
-  \makebox[0pt][r]{\footnotesize\textcolor{teal}{#1}\quad}%
-  \dbgcolor{#1}{\citeauthor{#1}.}%
-}
 
 \frenchspacing
 %</driver|doc-n|doc-y>
+%<*driver>
+
+% For typesetting the implementation
+\makeatletter
+\let\theglossary\@undefined
+\let\endtheglossary\@undefined
+\makeatother
+\usepackage{doc}
+\makeatletter
+\renewenvironment{theglossary}{%
+  \bgroup
+    \glossary@prologue
+    \GlossaryParms \let\item\@idxitem \ignorespaces
+}{%
+  \egroup
+}
+\makeatother
+\tcbuselibrary{documentation,breakable,skins,minted}
+\colorlet{Option}{violet}
+\colorlet{Command}{red!75!black}
+\colorlet{Environment}{blue!75!black}
+\colorlet{Value}{olive!75!black}
+\colorlet{Color}{cyan!75!black}
+\tcbset
+  { enhanced
+  , listing engine=minted
+  , minted options=
+    { breaklines
+    , fontsize=\footnotesize
+    , linenos
+    , numbersep=20pt
+    , firstnumber=last
+    }
+  , index format=pgf
+  , color command=Command
+  , color environment=Environment
+  , color key=Option
+  , color value=Value
+  , color color=Color
+  }
+\renewcommand{\theFancyVerbLine}{\footnotesize\itshape\color{gray}\arabic{FancyVerbLine}}
+\let\tcbcs=\cs
+\renewcommand*{\cs}[1]{\textcolor{Command}{\tcbcs{#1}}}
+\def\sqbrackets#1{%
+  \texttt{\textcolor{Option}{[}#1\textcolor{Option}{]}}}
+\def\brackets#1{%
+  \texttt{\textcolor{Environment}{\char`\{}#1\textcolor{Environment}{\char`\}}}}
+\def\marg#1{%
+  \textcolor{Environment}{\ttfamily\char`\{}\meta{#1}\textcolor{Environment}{\ttfamily\char`\}}}
+\newcommand*{\env}[1]{\textcolor{Environment}{\ttfamily #1}}
+\newcommand*{\key}[1]{\textcolor{Option}{\ttfamily #1}}
+\newcommand*{\val}[1]{\textcolor{Value}{\ttfamily #1}}
+\renewenvironment{macro}[1]{%
+  \def\MyName{#1}%
+  \index{\MyName@\tcbIndexPrintComC {\MyName}|(emph}%
+}{%
+  \ifdef{\MyName}{}{%
+    \errmessage{You have closed a macro environment you have not opened on \the\inputlineno.}%
+  }
+  \index{\MyName@\tcbIndexPrintComC {\MyName}|)}%
+}
+\renewenvironment{environment}[1]{%
+  \def\MyName{#1}%
+  \index{\MyName@\tcbIndexPrintEnvCA {\MyName}|(emph}%
+  \index{Environments!\MyName@\tcbIndexPrintEnvC {\MyName}|(emph}%
+}{%
+  \ifdef{\MyName}{}{%
+    \errmessage{You have closed an environment environment you have not opened on \the\inputlineno.}%
+  }
+  \index{Environments!\MyName@\tcbIndexPrintEnvC {\MyName}|)}%
+  \index{\MyName@\tcbIndexPrintEnvCA {\MyName}|)}%
+}
+\newenvironment{optionkey}[1]{%
+  \def\MyName{#1}%
+  \index{\MyName@\tcbIndexPrintKeyCA {\MyName}|(emph}%
+  \index{Keys!\MyName@\tcbIndexPrintKeyC {\MyName}|(emph}%
+}{%
+  \ifdef{\MyName}{}{%
+    \errmessage{You have closed an optionkey environment you have not opened on \the\inputlineno.}%
+  }
+  \index{Keys!\MyName@\tcbIndexPrintKeyC {\MyName}|)}%
+  \index{\MyName@\tcbIndexPrintKeyCA {\MyName}|)}%
+}
+\newenvironment{optionvalue}[1]{%
+  \def\MyName{#1}%
+  \index{\MyName@\tcbIndexPrintValCA {\MyName}|(emph}%
+  \index{Values!\MyName@\tcbIndexPrintValC {\MyName}|(emph}%
+}{%
+  \ifdef{\MyName}{}{%
+    \errmessage{You have closed an optionvalue environment you have not opened on \the\inputlineno.}%
+  }
+  \index{Values!\MyName@\tcbIndexPrintValC {\MyName}|)}%
+  \index{\MyName@\tcbIndexPrintValCA {\MyName}|)}%
+}
+\makeatletter
+\newcommand{\resetmintedformat}{%
+  % Comments
+  \expandafter\def\csname PYGdefault@tok@c\endcsname{\let\PYGdefault@it=\textit\def\PYGdefault@tc####1{\textcolor{gray}{####1}}}
+  % Command sequences
+  \expandafter\def\csname PYGdefault@tok@k\endcsname{\def\PYGdefault@tc####1{\textcolor{Command}{####1}}}
+  % Optional arguments
+  \expandafter\def\csname PYGdefault@tok@na\endcsname{\def\PYGdefault@tc####1{\textcolor{Option}{####1}}}
+  % Braces
+  \expandafter\def\csname PYGdefault@tok@nb\endcsname{\def\PYGdefault@tc####1{\textcolor{Environment}{####1}}}
+}
+\apptocmd{\minted@checkstyle}{\resetmintedformat}{}{}
+\makeatother
+\newcommand{\pkg}[1]{\href{http://www.ctan.org/pkg/#1}{\textsf{#1}}}
+\MakeShortVerb{\|}
+\makeatletter
+\let\PrintMacroName\@gobble
+\let\PrintEnvName\@gobble
+\renewenvironment{tcb@manual@entry}{\begin{list}{}{%
+  \setlength{\topsep}{0pt}
+  \setlength{\partopsep}{0pt}
+  \setlength{\leftmargin}{\kvtcb@doc@left}%
+  \setlength{\itemindent}{0pt}%
+  \setlength{\itemsep}{0pt}%
+  \setlength{\parsep}{0pt}%
+  \setlength{\rightmargin}{\kvtcb@doc@right}%
+  }\item}{\end{list}}
+\makeatother
+
+% This bit inspired by ydoc
+\makeatletter
+\newwrite\ydocwrite
+\def\ydocfname{\jobname.listing}
+\def\ydoc@catcodes{%
+  \let\do\@makeother
+  \dospecials
+  \catcode`\\=\active
+  \catcode`\^^M=\active
+  \catcode`\ =\active
+}
+\def\macrocode{%
+  \begingroup
+  \ydoc@catcodes
+  \macro@code
+}
+\def\endmacrocode{}
+\begingroup
+\endlinechar\m@ne
+\@firstofone{%
+\catcode`\|=0\relax
+\catcode`\(=1\relax
+\catcode`\)=2\relax
+\catcode`\*=14\relax
+\catcode`\{=12\relax
+\catcode`\}=12\relax
+\catcode`\ =12\relax
+\catcode`\%=12\relax
+\catcode`\\=\active
+\catcode`\^^M=\active
+\catcode`\ =\active
+}*
+|gdef|macro@code#1^^M%    \end{macrocode}(*
+|endgroup|expandafter|macro@@code|expandafter(|ydoc@removeline#1|noexpand|lastlinemacro)*
+)*
+|gdef|ydoc@removeline#1^^M(|noexpand|firstlinemacro)*
+|gdef|ydoc@defspecialmacros(*
+|def^^M(|noexpand|newlinemacro)*
+|def (|noexpand|spacemacro)*
+|def\(|noexpand|bslashmacro)*
+)*
+|gdef|ydoc@defrevspecialmacros(*
+|def|newlinemacro(|noexpand^^M)*
+|def|spacemacro(|noexpand )*
+|def|bslashmacro(|noexpand\)*
+)*
+|endgroup
+\def\macro@@code#1{%
+  {\ydoc@defspecialmacros
+  \xdef\themacrocode{#1}}%
+  \PrintMacroCode
+  \end{macrocode}%
+}
+\def\PrintMacroCode{%
+  \begingroup
+  \let\firstlinemacro\empty
+  \let\lastlinemacro\empty
+  \def\newlinemacro{^^J}%
+  \let\bslashmacro\bslash
+  \let\spacemacro\space
+  \immediate\openout\ydocwrite=\ydocfname\relax
+  \immediate\write\ydocwrite{\themacrocode}%
+  \immediate\closeout\ydocwrite
+  \let\input\@input
+  \tcbinputlisting{breakable,listing only,docexample,listing file=\ydocfname}%
+  \endgroup
+}
+\makeatother
+
+\title{OXREF -- Biblatex styles inspired by the \emph{Oxford Guide to Style}}
+%</driver>
+%<doc-n>\title{OXNOTES -- A notes-based style for Biblatex}
+%<doc-y>\title{OXYEAR -- An author–year style for Biblatex}
+%<*driver|doc-n|doc-y>
+\author{Alex Ball}
+\begin{document}
+\thispagestyle{empty}%\noNiceVerb
+\begin{adjustwidth}{.2\textwidth}{0pt}
+  \sffamily\setlength{\parindent}{0pt}%
+  \LARGE\textsc{oxref bundle}
+
+  \vspace{\stretch{1}}
+  \LARGE\thetitle
+
+  \bigskip
+  \Large\theauthor
+
+  \bigskip
+  \Large\ifx\undefined\thedate\today\else\thedate\fi
+\end{adjustwidth}
+
+\vspace{\stretch{3}}
+\noindent
+\hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
+
+%</driver|doc-n|doc-y>
+%<*driver>
+\chapter*{Preface}
+
+This document provides the documented sources for the \textsf{oxref}
+biblography styles:
+\begin{itemize}
+  \item
+  \textsf{oxnotes}: a style similar to the standard \textsf{verbose}, intended for use with footnotes;
+  \item
+  \textsf{oxyear}: a style similar to the standard \textsf{authoryear}, intended for use with parenthetical in-text citations.
+\end{itemize}
+For information on how to use the styles, please refer to the separate documentation files
+\texttt{oxnotes-doc.pdf} and \texttt{oxyear-doc.pdf} respectively.
+
+\tableofcontents*
+
+\iffalse
+%</driver>
+%<*doc-n|doc-y>
+\newpage
+\tableofcontents*
+
+\chapter{Introduction}
+
+\section{Loading the style}\label{sec:loading}
+
+The style is self-contained, so you can load it with \textsf{biblatex}:
+
+%</doc-n|doc-y>
+%<*driver>
+\fi
+\DocInput{\jobname.dtx}
+%</driver>
+%<*driver|doc-n|doc-y>
+\end{document}
+%</driver|doc-n|doc-y>
+%<*bbx-0>
+% \fi
+% \chapter{Bibliography styles}
+%
+% \section{Base style: oxref.bbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% \subsection{Preliminaries}
+%
+% Dependencies:
+% \begin{itemize}
+% \item
+% For ease of maintenance, we will patch some definitions with \pkg{xpatch}
+% instead of writing out our own in full.
+% \item
+% We will manipulate strings with \pkg{xstring}.
+% \item
+% We will use \pkg{graphicx} for stretching \cs{bibnamedash}es
+% \end{itemize}
+%
+%    \begin{macrocode}
+\RequirePackage{xpatch}
+\RequirePackage{xstring}
+\RequirePackage{graphicx}
+%    \end{macrocode}
+%
+% Here we set some defaults different to the standard ones. The author
+% can still override them.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions{urldate=comp,pagetracker,timezeros=false,time=12h}
+%    \end{macrocode}
+%
+% Language support may be widened in future, but for now we support the
+% following:
+%
+%    \begin{macrocode}
+\DeclareLanguageMapping{english}{british-oxref}
+\DeclareLanguageMapping{british}{british-oxref}
+\DeclareLanguageMapping{american}{british-oxref}
+%    \end{macrocode}
+%
+% We provide some additional bibliography strings.
+%
+%    \begin{macrocode}
+\NewBibliographyString{at}
+\NewBibliographyString{under}
+\NewBibliographyString{facsimile}
+\NewBibliographyString{revised}
+\NewBibliographyString{byperformer}
+\NewBibliographyString{bydirector}
+\NewBibliographyString{byreader}
+%    \end{macrocode}
+%
+% We provide some magic values for triggering formatting changes.
+%
+% \begin{itemize}
+% \item \cs{isInferred} relates to author names;
+% \item \cs{whenPublished} relates to URL dates.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\isInferred{inferred}
+\def\whenPublished{published}
+%    \end{macrocode}
+%
+% We base our styles on the standard on the principle of least surprise
+% (and to aid with maintenance in the face of new \pkg{biblatex} versions).
+%
+%    \begin{macrocode}
+\RequireBibliographyStyle{standard}
+%    \end{macrocode}
+%
+% Here are the default punctuation conventions:
+%
+%    \begin{macrocode}
+\renewcommand*{\labelnamepunct}{\addcomma\space}
+\renewcommand*{\newunitpunct}{\addcomma\space}
+\renewcommand*{\subtitlepunct}{\addcolon\space}
+\renewcommand*{\intitlepunct}{\nopunct\space}
+\renewcommand*{\bibnamedash}{\resizebox{2em}{\height}{\textemdash}\addthinspace}
+\renewcommand*{\revsdnamedelim}{\addcomma}
+%    \end{macrocode}
+%
+% \subsection{Name handling}
+%
+% We declare some new formats so that authors/editors/others who appear
+% mid-reference can be handled differently from those that appear at the
+% head of the reference
+%
+%    \begin{macrocode}
+\DeclareNameAlias{bookauthor}{default}
+\DeclareNameAlias{bookeditor}{default}
+%    \end{macrocode}
+%
+% Traditionally, Oxford style (for the humanities) prints author names in
+% small capitals in the bibliography, but in normal case in citations. This is
+% falling out of fashion, so we introduce this as an option.
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@scnames}
+\DeclareBibliographyOption[boolean]{scnames}[true]{%
+  \settoggle{blx@ox@scnames}{#1}
+}
+%    \end{macrocode}
+%
+% Oxford style (for the humanities) is to write author names surname first in
+% the bibliography, but in natural order in citations. We implement this with
+% the `bib-family-given/cite-given-family' name format. The case changing option
+% only affects this name format.
+%
+%    \begin{macrocode}
+\DeclareNameFormat{bib-family-given/cite-given-family}{%
+  \ifbibliography{%
+    \iftoggle{blx@ox@scnames}{%
+      \renewcommand*{\mkbibnamefamily}[1]{\textsc{##1}}%
+      \renewcommand*{\mkbibnamegiven}[1]{\textsc{##1}}%
+      \renewcommand*{\mkbibnameprefix}[1]{\textsc{##1}}%
+      \renewcommand*{\mkbibnamesuffix}[1]{\textsc{##1}}%
+    }{}%
+    \ifgiveninits{%
+      \usebibmacro{name:family-given}%
+        {\namepartfamily}%
+        {\namepartgiveni}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }{%
+      \usebibmacro{name:family-given}%
+        {\namepartfamily}%
+        {\namepartgiven}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }%
+    \iftoggle{blx@ox@scnames}{%
+      \renewcommand*{\mkbibnamefamily}[1]{##1}%
+      \renewcommand*{\mkbibnamegiven}[1]{##1}%
+      \renewcommand*{\mkbibnameprefix}[1]{##1}%
+      \renewcommand*{\mkbibnamesuffix}[1]{##1}%
+    }{}%
+  }{%
+    \ifgiveninits{%
+      \usebibmacro{name:given-family}%
+        {\namepartfamily}%
+        {\namepartgiveni}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }{%
+      \usebibmacro{name:given-family}%
+        {\namepartfamily}%
+        {\namepartgiven}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
+    }%
+  }%
+  \usebibmacro{name:andothers}%
+}
+%    \end{macrocode}
+%
+% When using natural order for names, there is no comma before numeric
+% suffixes, but there is before textual ones (e.g. ‘junior’).
+%
+%    \begin{macrocode}
+\xpatchbibmacro{name:given-family}%
+  {\bibnamedelimd\mkbibnamesuffix{#4}}%
+  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}{}{}
+%    \end{macrocode}
+%
+% For pseudonyms, Oxford style is to put the other name in parentheses
+% after the main one. \pkg{Biblatex} provides the `nameaddon' field for this
+% use case.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{nameaddon}{\mkbibparens{#1}}
+%    \end{macrocode}
+%
+% Traditional Oxford style is to use dashes instead of repeating author
+% names, though NHR recommends abandoning the practice as it interferes
+% with text mining. As per the standard `authortitle' and `authoryear'
+% styles, we implement dashes by default but allow authors to switch
+% this behaviour off with `dashed=false'.
+%
+%    \begin{macrocode}
+\newbibmacro*{bbx:savehash}{%
+  \savefield{fullhash}{\bbx@lasthash}}
+\DeclareBibliographyOption{dashed}[true]{%
+  \ifstrequal{#1}{true}{%
+    \ExecuteBibliographyOptions{pagetracker}%
+    \renewbibmacro*{bbx:savehash}{\savefield{fullhash}{\bbx@lasthash}}%
+  }{%
+    \renewbibmacro*{bbx:savehash}{}%
+  }%
+}
+\InitializeBibliographyStyle{%
+  \global\undef\bbx@lasthash}
+\newbibmacro*{bbx:dashcheck}[2]{%
+  \ifboolexpr{
+    test {\iffieldequals{fullhash}{\bbx@lasthash}}
+    and
+    not test \iffirstonpage
+    and
+    (
+      not bool {bbx@inset}
+      or
+      test {\iffieldequalstr{entrysetcount}{1}}
+    )
+  }{#1}{#2}%
+}
+%    \end{macrocode}
+%
+% The following is used in the `authortitle' and `authoryear' styles to
+% switch off the dash check macro for reference sets.
+%
+%    \begin{macrocode}
+\newbool{bbx@inset}
+\DeclareBibliographyDriver{set}{%
+  \booltrue{bbx@inset}%
+  \entryset{}{}%
+  \newunit\newblock
+  \usebibmacro{setpageref}%
+  \finentry}
+%    \end{macrocode}
+%
+% The `author' macro is enhanced from the standard version by
+% \begin{itemize}
+%   \item
+%   including a dash check, to see if the name(s) should be replaced
+%   with a dash (as in `authortitle' and `authoryear');
+%   \item
+%   checking if the author name(s) should be formatted as if inferred;
+%   \item
+%   inserting the `nameaddon' field if provided;
+%   \item
+%   inserting the author type if provided (as in `authoryear').
+% \end{itemize}
+%
+%    \begin{macrocode}
+\renewbibmacro*{author}{%
+  \ifboolexpr{
+    test \ifuseauthor
+    and
+    not test {\ifnameundef{author}}
+  }
+  {\usebibmacro{bbx:dashcheck}
+    {\bibnamedash}
+    {\usebibmacro{bbx:savehash}%
+      \iffieldequals{authortype}{\isInferred}
+      {\mkbibbrackets{\printnames{author}}\clearfield{authortype}}%
+      {\printnames{author}}%
+      \iffieldundef{nameaddon}
+      {}
+      {\setunit{\addspace}%
+        \printfield{nameaddon}}%
+      \iffieldundef{authortype}
+      {\setunit{\addspace}}
+      {\newunit}}%
+    \iffieldundef{authortype}
+    {}
+    {\usebibmacro{authorstrg}%
+      \setunit{\addspace}}}%
+  {\global\undef\bbx@lasthash}}
+%    \end{macrocode}
+%
+% Following `authortitle' and `authoryear', we redefine the `editor' and
+% `editor+others' macros to use a common `bbx:editor' macro. The macro
+% we use is the same as the usual one except the editor type is set off
+% using parentheses instead of a comma.
+%
+%    \begin{macrocode}
+\renewbibmacro*{editor}{%
+  \usebibmacro{bbx:editor}{editorstrg}}
+\renewbibmacro*{editor+others}{%
+  \usebibmacro{bbx:editor}{editor+othersstrg}}
+\newbibmacro*{bbx:editor}[1]{%
+  \ifboolexpr{
+    test \ifuseeditor
+    and
+    not test {\ifnameundef{editor}}
+  }
+  {\usebibmacro{bbx:dashcheck}
+    {\bibnamedash}
+    {\printnames{editor}%
+     \setunit{\addspace}%
+     \usebibmacro{bbx:savehash}}%
+    \usebibmacro{#1}%
+    \clearname{editor}}
+  {\global\undef\bbx@lasthash}}
+\DeclareFieldFormat{editortype}{\mkbibparens{#1}}
+%    \end{macrocode}
+%
+% We do the same for `translator' as well.
+%
+%    \begin{macrocode}
+\renewbibmacro*{translator}{%
+  \usebibmacro{bbx:translator}{translatorstrg}}
+\renewbibmacro*{translator+others}{%
+  \usebibmacro{bbx:translator}{translator+othersstrg}}
+\newbibmacro*{bbx:translator}[1]{%
+  \ifboolexpr{
+    test \ifusetranslator
+    and
+    not test {\ifnameundef{translator}}
+  }
+  {\usebibmacro{bbx:dashcheck}
+    {\bibnamedash}
+    {\printnames{translator}%
+      \setunit{\addspace}%
+      \usebibmacro{bbx:savehash}}%
+    \usebibmacro{#1}%
+    \clearname{translator}%
+    \setunit{\addspace}}%
+  {\global\undef\bbx@lasthash}}
+\xpatchbibmacro{translatorstrg}%
+  {\bibstring}%
+  {\bibstring[\mkbibparens]}{}{}%
+\xpatchbibmacro{translator+othersstrg}%
+  {\bibstring}%
+  {\bibstring[\mkbibparens]}{}{}%
+%    \end{macrocode}
+%
+% When referencing one work from a collection by the same author,
+% Oxford style traditionally puts \enquote{id.} in the `bookauthor'
+% position (instead of omitting it as in standard \pkg{biblatex}).
+%
+%    \begin{macrocode}
+\renewbibmacro*{bybookauthor}{%
+  \ifnamesequal{author}{bookauthor}%
+  {\bibstring{idem\thefield{gender}}}%
+  {\printnames{bookauthor}}}
+%    \end{macrocode}
+%
+% Similarly, with mixed collections, if referencing a work by the editor
+% of the collection, the editor name is replaced with \enquote{id.}. We
+% insert this logic into a copy of the `editor+others' macro, which will
+% \emph{not} get a year inserted into it by Oxyear.
+%
+%    \begin{macrocode}
+\newbibmacro*{bookeditor}{%
+  \global\undef\bbx@lasthash
+  \ifboolexpr{
+    test \ifuseeditor
+    and
+    not test {\ifnameundef{editor}}
+  }{%
+    \ifnamesequal{author}{editor}{%
+      \bibstring{idem\thefield{gender}}%
+      \addspace
+      \usebibmacro{editor+othersstrg}%
+      \clearname{editor}%
+    }{%
+      \printnames[bookeditor]{editor}%
+      \newunit%
+      \usebibmacro{editor+othersstrg}%
+      \clearname{editor}%
+    }%
+  }{}}
+%    \end{macrocode}
+%
+% \subsection{Date handling}
+%
+% Year ranges are truncated (e.g.~2012–3). Therefore, we provide a
+% command that compares two years, and outputs a full or truncated
+% version of the second year, depending on how similar it is to the
+% first. It is extracted and adapted from code by Marco Daniel.%
+% \footnote{\url{http://tex.stackexchange.com/questions/23483/}}
+%
+%    \begin{macrocode}
+\newcommand{\blx@ox@compyear}[2]{%
+  \def\num@one{#1}%
+  \def\num@two{#2}%
+  \StrLen{\num@one}[\num@one@len]%
+  \StrLen{\num@two}[\num@two@len]%
+  \IfEq{\num@one@len}{\num@two@len}%
+  {\StrCompare{\num@one}{\num@two}[\Result]%
+    \ifnum\num@two@len>3%
+    \IfStrEq{\Result}{2}{\def\Result{1}}{}%
+    \fi
+    \StrGobbleLeft{0\num@two}{\Result}}%
+  {\num@two}%
+}
+%    \end{macrocode}
+%
+% We patch the truncated date formats from `biblatex.sty' to use the
+% above function.
+%
+%    \begin{macrocode}
+\patchcmd{\mkdaterangetrunc}{%
+  \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
+}{%
+  \iffieldundef{#2endmonth}%
+    {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+    {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+}{}{}
+\patchcmd{\mkdaterangetruncextra}{%
+  \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
+}{%
+  \iffieldundef{#2endmonth}%
+    {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
+    {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+}{}{}
+%    \end{macrocode}
+%
+% We provide a way of prefacing dates with a type. This is mainly
+% intended for online resources.
+%
+%    \begin{macrocode}
+\def\dateType{}
+\DeclareEntryOption{datetype}{\def\dateType{#1}}
+\renewbibmacro*{date}{%
+  \ifdefvoid{\dateType}{}{\printtext{\dateType\addspace}}%
+  \printdate}
+%    \end{macrocode}
+%
+% \subsection{Other number-like fields}
+%
+% We let `edition' take a language key as well as a number
+%
+%    \begin{macrocode}
+\xpatchfieldformat{edition}{%
+  #1\isdot
+}{%
+  \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
+}{}{}
+%    \end{macrocode}
+%
+% Page ranges are compressed, but are not usually marked with
+% \enquote{pp.}. The exception is if the page numbers are not obviously
+% numbers.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{pages}{%
+  \iffieldundef{bookpagination}%
+    {\mkcomprange{#1}}
+    {\mkcomprange[{\mkpageprefix[bookpagination]}]{#1}}%
+}
+
+%    \end{macrocode}
+%
+% \subsection{Publishers}
+%
+% The \emph{Oxford Guide to Style} says it is fine to omit publisher
+% names uniformly from bibliographic information. This is odd, but we
+% can support it with a simple option.
+%
+%    \begin{macrocode}
+\DeclareBibliographyOption{nopublisher}[true]{%
+  \DeclareFieldInputHandler{publisher}{\def\NewValue{}}%
+}
+%    \end{macrocode}
+%
+% \subsection{URLs}
+%
+% The OGS recommends the ISO convention of enclosing URLs in angle
+% brackets, but NHR recommends leaving URLs bare so as not to interfere
+% with text-mining. The latter is the default.
+%
+%    \begin{macrocode}
+\DeclareBibliographyOption{isourls}[true]{%
+  \ifstrequal{#1}{true}
+    {\DeclareFieldFormat{url}{$\langle$\url{##1}$\rangle$}}
+    {\DeclareFieldFormat{url}{\url{##1}}}%
+}
+\ExecuteBibliographyOptions{isourls=false}
+%    \end{macrocode}
+%
+% URL dates are set off with a comma rather than parentheses.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{urldate}{\bibstring{urlseen}\space#1}
+\xpatchbibmacro{url+urldate}%
+  {\setunit*{\addspace}}%
+  {\setunit*{\addcomma\addspace}}{}{}
+%    \end{macrocode}
+%
+% The `urldatetype' implementation below was intended to support a use
+% case from the OGS, but it is not something promoted by NHR, and that
+% sort of use case is probably better met with a note of some kind.
+% It will be removed.
+%
+%    \begin{macrocode}
+\DeclareEntryOption{urldatetype}{%
+  \DeclareFieldFormat{urldate}{\printtext{#1}\space##1}%
+  \renewbibmacro*{url+urldate}{%
+    \iffieldundef{url}{}{%
+      \newunit
+      \printurldate%
+      \setunit*{\addspace}%
+      \printfield{url}%
+      \nopunct
+    }%
+  }%
+}
+%    \end{macrocode}
+%
+% The DOI is introduced by \enquote{doi} in lowercase.
+%
+%    \begin{macrocode}
+\xpatchfieldformat{doi}%
+  {\mkbibacro{DOI}}%
+  {\printtext{doi}}{}{}
+%    \end{macrocode}
+%
+% Unlike URLs, DOIs are preceded by a full stop.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{doi+eprint+url}%
+  {\printfield{doi}}%
+  {\setunit{\addperiod\space}\printfield{doi}}{}{}
+
+%    \end{macrocode}
+%
+% \subsection{Addenda}
+%
+% Publication state is given in parentheses. Other addenda are added
+% plain.
+%
+%    \begin{macrocode}
+\renewbibmacro*{addendum+pubstate}{%
+  \iffieldundef{pubstate}{}{\nopunct}%
+  \printfield[parens]{pubstate}%
+  \setunit{\addperiod\addspace}\newblock
+  \printfield{addendum}}
+%    \end{macrocode}
+%
+% \subsection{Periodical-style entries}
+%
+% Subtypes for articles and similar are in square brackets.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
+%    \end{macrocode}
+%
+% Journal types are also in square brackets. Note that when OGS was
+% published, online journals were a novelty, but since they are now
+% commonplace there is no purpose to pointing them out any more, so NHR
+% doesn't. This complication will be removed.
+%
+%    \begin{macrocode}
+\newbibmacro*{journaltype}{%
+  \iffieldequalstr{entrysubtype}{online journal}%
+  {\nopunct\printfield{entrysubtype}}{}%
+}
+%    \end{macrocode}
+%
+% We patch the `journal+issuetitle' macro so that if a work takes up a
+% whole issue (signified by using `issuetitle' \emph{instead} of
+% `title'), the title and journal title are separated by \enquote{=}
+% instead of the usual punctuation.
+% We also insert the above macro for journal types,
+% and insert a new unit after the journal title regardless of what
+% follows.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit*{\addspace}%
+}{
+  \ifboolexpr{
+    test {\iffieldundef{title}}
+    and
+    not test {\iffieldundef{issuetitle}}
+  }{%
+    \usebibmacro{issue}%
+    \clearfield{issuetitle}%
+    \setunit{\addspace =\addspace}}{}%
+  \usebibmacro{journal}%
+  \usebibmacro{journaltype}%
+  \newunit
+}{}{}
+\xpatchbibmacro*{journal+issuetitle}{%
+  \newunit\printfield{series}%
+}{%
+  \printfield{series}%
+}{}{}
+%    \end{macrocode}
+%
+% Similarly, we patch the `title+issuetitle' macro to insert
+% the `journaltype' macro and insert
+% a new unit after the journal title regardless of what follows.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{title+issuetitle}{%
+  \usebibmacro{periodical}%
+  \setunit*{\addspace}%
+}{%
+  \usebibmacro{periodical}%
+  \usebibmacro{journaltype}%
+  \newunit
+}{}{}
+\xpatchbibmacro*{title+issuetitle}{%
+  \newunit\printfield{series}%
+}{%
+  \printfield{series}%
+}{}{}
+%    \end{macrocode}
+%
+% On last inspection, \pkg{biblatex} hard-coded the punctuation for volumes
+% and issue numbers into the \texttt{title+issuetitle} macro instead of
+% delegating to the appropriate macro. We expect this to change in
+% future but in the meantime correct this ourselves.
+%
+%    \begin{macrocode}
+\xpatchbibmacro*{title+issuetitle}{%
+  \printfield{volume}%
+  \setunit*{\adddot}%
+  \printfield{number}%
+  \newunit%
+  \printfield{eid}%
+}{%
+  \usebibmacro{volume+number+eid}%
+}{}{}
+%    \end{macrocode}
+%
+% OGS and NHR provide plentiful options for formatting volume and issue
+% numbers. We implement four of them here as options. The default is to
+% use a slash between volume and issue number. Note that we prevent the
+% `volume+number+eid' macro from actually printing the eid.
+%
+%    \begin{macrocode}
+\DeclareBibliographyOption{issuestyle}[slash]{%
+  \ifcsdef{blx@ox@issuestyle@#1}{%
+    \csuse{blx@ox@issuestyle@#1}%
+  }{%
+    \PackageError{biblatex}
+      {Invalid option 'issuestyle=#1'}
+      {Valid values are 'slash', 'colon', 'comma', 'parens'}%
+  }%
+}
+\csdef{blx@ox@issuestyle@slash}{%
+  \renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addslash}%
+    \printfield{number}%
+  }%
+}
+\csdef{blx@ox@issuestyle@colon}{%
+  \renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addcolon\space}%
+    \printfield{number}%
+  }%
+}
+\csdef{blx@ox@issuestyle@comma}{%
+  \renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addcomma\space}%
+    \printfield{number}%
+  }%
+}
+\csdef{blx@ox@issuestyle@parens}{%
+  \renewbibmacro*{volume+number+eid}{%
+    \printfield{volume}%
+    \setunit*{\addspace}%
+    \printfield[parens]{number}%
+  }%
+}
+\ExecuteBibliographyOptions{issuestyle=slash}
+%    \end{macrocode}
+%
+% If an issue has no volume or issue numbers (first block), the season
+% and date are printed bare. Otherwise (second block) they are printed
+% in parentheses just as in the standard version of the macro.
+%
+%    \begin{macrocode}
+\renewbibmacro*{issue+date}{%
+  \ifboolexpr{
+    test {\iffieldundef{volume}}
+    and
+    test {\iffieldundef{number}}
+  }{%
+    \newunit\printtext{%
+      \iffieldundef{issue}{%
+        \usebibmacro{date}
+      }{%
+        \printfield{issue}%
+        \setunit*{\addspace}%
+        \usebibmacro{date}%
+      }%
+    }%
+  }{%
+    \ifboolexpr{
+      test {\iffieldundef{issue}}
+      and (
+        test {\iffieldundef{year}}
+        and
+        test {\iffieldundef{month}}
+      )
+    }{}{%
+      \printtext[parens]{%
+        \iffieldundef{issue}{%
+          \usebibmacro{date}%
+        }{%
+          \printfield{issue}%
+          \setunit*{\addspace}%
+          \usebibmacro{date}%
+        }%
+      }%
+    }%
+  }%
+  \newunit%
+  \printfield{eid}%
+}
+%    \end{macrocode}
+%
+% We patch the `article' driver to remove the \enquote{in} macro and
+% adjust punctuation after editors and page references.
+%
+%    \begin{macrocode}
+\xpatchbibdriver{article}{%
+  \usebibmacro{in:}%
+  \usebibmacro{journal+issuetitle}%
+}{%
+  \usebibmacro{journal+issuetitle}%
+}{}{}
+\xpatchbibdriver{article}{%
+  \usebibmacro{byeditor+others}%
+  \newunit
+}{%
+  \usebibmacro{byeditor+others}%
+  \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
+}{}{}
+\xpatchbibdriver{article}{%
+  \usebibmacro{pageref}%
+  \newunit\newblock
+}{%
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+}{}{}
+%    \end{macrocode}
+%
+% \subsection{Monograph-style entries}
+%
+% The titles of books that have been collected into an anthology are
+% treated like regular chapters and set in quotes.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[bookinbook]{citetitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[bookinbook]{title}{\mkbibquote{#1\isdot}}
+%    \end{macrocode}
+%
+% Volume numbers in monograph-style entries are formatted as roman
+% numerals.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[book,bookinbook,inbook,mvbook,%
+collection,incollection,mvcollection,%
+proceedings,inproceedings,mvproceedings,%
+reference,inreference,mvreference]{volume}{\Rn{#1}}
+%    \end{macrocode}
+%
+% Where a multi-volume work is more like a series, the volume number and
+% main title are put in a bracketted block between the volume title
+% and the usual publication block.
+%
+%    \begin{macrocode}
+\newbibmacro*{maintitle+volume}{%
+  \ifboolexpr{
+    test {\iffieldundef{maintitle}}
+    or
+    test {\iffieldundef{volume}}
+  }{}%
+  {\printtext[brackets]{%
+    \bibstring{volume}\addspace
+    \printfield{volume}\printfield{part}\addspace
+    \bibstring{ofseries}\addspace
+    \usebibmacro{maintitle}}}
+}
+%    \end{macrocode}
+%
+% Oxford style signifies formal publication by putting the relevant
+% details in parentheses.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{publication}{\mkbibparens{#1}}
+%    \end{macrocode}
+%
+% Standard \pkg{biblatex} puts a space between series name and number.
+% OGS separates them with a comma.
+%
+%    \begin{macrocode}
+\renewbibmacro*{series+number}{%
+  \printfield{series}%
+  \newunit
+  \printfield{number}%
+  \newunit}
+%    \end{macrocode}
+%
+% When citing both the first and a later edition, the first one comes
+% first, and the later one comes after a semicolon. As per standard
+% \pkg{biblatex}, the elements of a single edition are separated by commas
+% except that the publisher is preceded by a colon.
+%
+%    \begin{macrocode}
+\newcounter{locpubpairs}
+\newbibmacro*{edition+publisher+location+date}{%
+  \printlist{origlocation}%
+  \iflistundef{origpublisher}%
+  {\setunit*{\addcomma\space}}%
+  {\setunit*{\addcolon\space}}%
+  \printlist{origpublisher}%
+  \setunit*{\addcomma\space}%
+  \printorigdate%
+  \setunit*{\addsemicolon\space}%
+  \printfield{edition}%
+  \setunit*{\addcomma\space}%
+%    \end{macrocode}
+%
+% If there are the same number of locations and publishers, and there
+% are more than one pair, we print them pairwaise rather than in two
+% separate lists.
+%
+%    \begin{macrocode}
+  \ifboolexpr{%
+    test {\ifnumcomp{\value{publisher}}{>}{1}}
+    and
+    test {\ifnumequal{\value{location}}{\value{publisher}}}
+  }{%
+    \setcounter{locpubpairs}{0}%
+    \savebibmacro{list:andothers}%
+    \renewbibmacro*{list:andothers}{}%
+    \whileboolexpr{%
+      test {\ifnumcomp{\value{locpubpairs}}{<}{\value{publisher}}}
+    }{%
+      \stepcounter{locpubpairs}%
+      \ifnumcomp{\value{locpubpairs}}{>}{1}{%
+        \ifnumequal{\value{publisher}}{2}{%
+          \setunit*{\addspace\bibstring{and}\addspace}%
+        }{%
+          \ifnumequal{\value{locpubpairs}}{\value{publisher}}{%
+            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          }{%
+            \setunit*{\addcomma\space}%
+          }%
+        }%
+      }{}%
+      \printlist[][\value{locpubpairs}-\value{locpubpairs}]{location}%
+      \setunit*{\addcolon\space}%
+      \printlist[][\value{locpubpairs}-\value{locpubpairs}]{publisher}%
+    }%
+    \restorebibmacro{list:andothers}%
+  }{%
+    \printlist{location}%
+    \iflistundef{publisher}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{publisher}%
+  }%
+  \setunit*{\addcomma\space}%
+  \usebibmacro{date}%
+}
+%    \end{macrocode}
+%
+% Oxford style is to provide publication details –
+% series name and number, edition, publisher, location, date –
+% in a parenthetical block after the title information.
+%
+%    \begin{macrocode}
+\newbibmacro*{series+number+edition+publisher+location+date}{%
+  \nopunct\printtext[publication]{%
+    \usebibmacro{series+number}%
+    \setunit*{\addsemicolon\addspace}%
+    \usebibmacro{edition+publisher+location+date}%
+  }%
+}
+%    \end{macrocode}
+%
+% The edition information for reference works is recorded earlier in the
+% reference, so we provide a variant that excludes it from the
+% publication block.
+%
+%    \begin{macrocode}
+\newbibmacro*{series+number+publisher+location+date}{%
+  \nopunct\printtext[publication]{%
+    \usebibmacro{series+number}%
+    \setunit*{\addsemicolon\addspace}%
+    \usebibmacro{publisher+location+date}%
+  }%
+}
+%    \end{macrocode}
+%
+% The changes to the `book' driver compared to the standard style are as
+% follows:
+% \begin{itemize}
+%   \item
+%   only `author' appears before the title, never `editor'.
+%   \item
+%   `maintitle' is processed with `volume' just before `series', instead
+%   of with `title';
+%   \item
+%   `edition' is processed where the standard style processes `note',
+%   and vice versa;
+%   \item
+%   `volumes' is omitted;
+%   \item
+%   `series' to `date' information is delegated to a separate macro;
+%   \item
+%   support is added for `howpublished' field;
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{maintitle+volume}%
+  \newunit
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \setunit{\addspace}%
+  \printfield[brackets]{howpublished}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Unlike the standard styles, we have a separate driver for `mvbook'
+% which behaves slightly differently. It is in fact closer to the
+% standard `book' driver. The changes are as follows:
+% \begin{itemize}
+%   \item
+%   only `author' appears before the title, never `editor';
+%   \item
+%   `volume'/`part' is processed just after `maintitle+title';
+%   \item
+%   `edition' is processed where the standard style processes `note';
+%   \item
+%   `note' is processed after `volumes';
+%   \item
+%   `series' to `date' information is delegated to a separate macro;
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{mvbook}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Our `inbook' driver modifies the standard one in just the same way as
+% our `mvbook' driver modifies the standard `book'.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{inbook}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{bybookauthor}%
+  \newunit\newblock
+  \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Our `collection' driver modifies the standard one in just the same way
+% as our `book' driver.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{collection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{editor+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{maintitle+volume}%
+  \newunit
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Our `mvcollection' driver modifies the standard `collection' driver
+% in just the same way as our `mvbook' driver modifies the standard
+% `book'.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{mvcollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{editor+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Our `incollection' driver modifies the standard one in the same way as
+% our `mvbook' driver modifies the standard `book'. In addition, the
+% `bookeditor' macro precedes `maintitle' instead of `byeditor+others'
+% following it.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{bookeditor}%
+  \newunit\newblock
+  \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Unlike the standard styles, we provide a separate driver for
+% `reference'. It is just like `book' except that `edition' is given
+% between `byauthor' and `byeditor+others'.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{reference}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{edition}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{maintitle+volume}%
+  \newunit
+  \usebibmacro{series+number+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Similarly, `mvreference' is just like `mvbook' except that `edition'
+% is given between `byauthor' and `byeditor+others'.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{mvreference}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{edition}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{series+number+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Our `inreference' driver is just like `inbook' except `bookeditor'
+% replaces `bybookauthor' and `edition' is given just before
+% `byeditor+others'.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{inreference}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{bookeditor}%
+  \newunit\newblock
+  \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit\newblock
+  \printfield{edition}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{series+number+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% \subsection{Proceedings}
+%
+% In our version of the `event+venue+date' macro, the venue and date
+% are set off with a colon and comma respectively instead of
+% parentheses. A bit of jiggery-pokery is used to make the colon italic
+% if it follows italic text.
+%
+%    \begin{macrocode}
+\renewbibmacro*{event+venue+date}{%
+  \printfield{eventtitle}%
+  \newunit
+  \printfield{eventtitleaddon}%
+  \ifboolexpr{
+    test {\iffieldundef{venue}}
+    and
+    test {\iffieldundef{eventyear}}
+  }
+  {}
+  {\ifboolexpr{
+      test {\iffieldundef{language}}
+      and
+      test {\iffieldundef{eventtitle}}
+    }{\setunit{\mkbibemph{\addcolon}\addspace}}%
+    {\setunit{\addcolon\addspace}}%
+    \printfield{venue}%
+    \newunit%
+    \printeventdate}%
+  \newunit}
+%    \end{macrocode}
+%
+% The changes to the `proceedings' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   `organization' is moved before the title;
+%   \item
+%   `editor' comes after the title, not before;
+%   \item
+%   `volume'/`part' is processed just after `maintitle+title';
+%   \item
+%   `note' is moved to before `series';
+%   \item
+%   `series' to `date' information is delegated to a separate macro;
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{proceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printlist{organization}%
+  \newunit
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{event+venue+date}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Our `inproceedings' driver modifies the standard one in the same way
+% as our `proceedings' driver modifies the standard one.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{event+venue+date}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit
+  \usebibmacro{series+number+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% \subsection{Grey literature}
+%
+% We provide a macro for handling `type+number'. We provide some extra
+% logic to insert `No.' before the number if there is no type.
+%
+%    \begin{macrocode}
+\newbibmacro*{series+type+number}{%
+  \printfield{series}%
+  \newunit
+  \ifboolexpr{%
+      test {\iffieldundef{type}}
+      and
+      not test {\iffieldundef{number}}
+  }{%
+    \bibcpstring{number}
+  }{%
+    \printfield{type}%
+  }%
+  \setunit*{\addspace}%
+  \printfield{number}}
+%    \end{macrocode}
+%
+% Our version of the `institution+location+date' macro is just like the
+% standard one except it is wrapped in parentheses, and the preceding
+% punctuation is therefore suppressed. This is used by the standard
+% `thesis' driver, which also works well for us, and the `report' driver.
+%
+%    \begin{macrocode}
+\renewbibmacro*{institution+location+date}{%
+  \nopunct\printtext[publication]{%
+    \printlist{location}%
+    \iflistundef{institution}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
+    \printlist{institution}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{date}%
+  }%
+}
+%    \end{macrocode}
+%
+% We provide a slightly more complicated version with the type included
+% at the beginning. It is used by the `thesis' driver. We provide two
+% versions: one with the type outside and one with it inside the
+% parentheses.
+%
+%    \begin{macrocode}
+\newbibmacro*{type+institution+location+date}{%
+  \printfield{type}%
+  \newunit
+  \usebibmacro{institution+location+date}%
+}
+\DeclareBibliographyOption{altthesis}[true]{%
+  \renewbibmacro*{type+institution+location+date}{%
+    \nopunct\printtext[publication]{%
+      \printfield{type}%
+      \setunit*{\addcomma\space}%
+      \printlist{location}%
+      \iflistundef{institution}%
+      {\setunit*{\addcomma\space}}%
+      {\setunit*{\addcolon\space}}%
+      \printlist{institution}%
+      \setunit*{\addcomma\space}%
+      \usebibmacro{date}%
+    }%
+  }%
+}
+%    \end{macrocode}
+%
+% We provide an even more convoluted version that also includes `series',
+% `title' and `number', and uses the more common `publisher' in place of
+% `institution'. We also include some logic that means `organization'
+% is used instead of `publisher' if no `publisher' is provided;
+% otherwise it is printed before `location'. This is used by the
+% `manual' driver.
+%
+%    \begin{macrocode}
+\newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
+  \nopunct\printtext[publication]{%
+    \usebibmacro{series+type+number}%
+    \setunit{\addsemicolon\space}%
+    \printfield{edition}%
+    \setunit*{\addcomma\space}%
+    \iflistundef{publisher}%
+    {}%
+    {\printlist{organization}%
+      \setunit*{\addcomma\space}}%
+    \printlist{location}%
+    \iflistundef{publisher}%
+    {\iflistundef{organization}%
+      {\setunit*{\addcomma\space}}%
+      {\setunit*{\addcolon\space}%
+        \printlist{organization}}}%
+    {\setunit*{\addcolon\space}
+      \printlist{publisher}}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{date}%
+  }%
+}
+%    \end{macrocode}
+%
+% The changes to the `report' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   support is added for `volume', `maintitle' and `series';
+%   \item
+%   `type' and `number' are moved to just before the publication
+%   information block';
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{report}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{series+type+number}%
+  \setunit{\addspace}%
+  \usebibmacro{institution+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isrn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% We patch the thesis driver to use our slightly more complex version.
+%
+%    \begin{macrocode}
+\xpatchbibdriver{thesis}{%
+  \printfield{type}%
+  \newunit
+  \usebibmacro{institution+location+date}%
+}{%
+  \usebibmacro{type+institution+location+date}%
+}{}{}
+%    \end{macrocode}
+%
+% The changes to the `manual' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   `type', `series', `number', `edition' and `organization' are moved
+%   into the publication information block with `publisher', `location'
+%   and `date';
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{manual}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor}%
+  \newunit\newblock
+  \printfield{type}%
+  \newunit
+  \printfield{version}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% \subsection{Intrinsically online resources}
+%
+% The titles of web pages and similar intrinsically online resources
+% are written in roman text within quotes.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
+%    \end{macrocode}
+%
+% The `entrysubtype' field is wrapped in square brackets.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
+%    \end{macrocode}
+%
+% The changes to the `online' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   We support the use of `maintitle' for, say, the title of the wesbite
+%   in which the web page is located. This comes after `title'.
+%   \item
+%   We support the use of `entrysubtype' to specify the nature of the
+%   online resource (following the practice of 'biblatex-apa' and
+%   others). This comes after `maintitle'.
+%   \item
+%   In most cases, the date is wrapped in parentheses if present.
+%   With Twitter posts, the time and date are printed bare.
+%   \item
+%   We support displaying a publisher after the date.
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \usebibmacro{maintitle}
+  \setunit{\addspace}\newblock
+  \printfield{entrysubtype}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \iffieldequalstr{entrysubtype}{Twitter post}{%
+    \newunit\newblock
+    \usebibmacro{time+date}%
+  }{%
+    \iffieldundef{year}{}{%
+      \setunit{\addspace}\newblock
+      \printtext[parens]{\usebibmacro{date}}%
+    }%
+  }
+  \newunit\newblock
+  \printlist{publisher}%
+  \newunit\newblock
+  \iftoggle{bbx:eprint}
+  {\usebibmacro{eprint}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{url+urldate}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% We define a new macro for printing both time and date.
+%
+%    \begin{macrocode}
+\newbibmacro*{time+date}{%
+  \printtime
+  \newunit
+  \printdate
+}
+%    \end{macrocode}
+%
+% \subsection{Audiovisual resources}
+%
+% The publication block for audiovisual resources is quite different
+% from the normal, as the `type', `series' and `number' come
+% between the `publisher' and `date'. We do not use `location'.
+% Specification of the medium goes at the start, which we implement
+% using the `howpublished' field.
+%
+%    \begin{macrocode}
+\newbibmacro*{publisher+type+series+number+date}{%
+  \nopunct\printtext[publication]{%
+    \printfield{howpublished}%
+    \setunit*{\addcomma\space}%
+    \printlist{publisher}%
+    \setunit*{\addspace}%
+    \printfield{type}%
+    \setunit*{\addspace}%
+    \printfield{series}%
+    \setunit*{\addcomma\space}%
+    \printfield{number}%
+    \newunit%
+    \usebibmacro{date}%
+  }%
+}
+%    \end{macrocode}
+%
+% We provide a specialist `audio'/`music' driver. It is currently based
+% closely on `book'; it could do with a more thoughtful implementation.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{audio}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{publisher+type+series+number+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyAlias{music}{audio}
+%    \end{macrocode}
+%
+% \subsection{Related entries}
+%
+% \subsubsection{Reprints}
+%
+% We take advantage of the Biber-specific mechanism of relating items
+% in order to handle reprints. The presence or otherwise of the
+% `journaltitle' field is used to determine whether this is a reprint
+% from a book (first block) or a periodical (second block).
+%
+%    \begin{macrocode}
+\renewbibmacro*{related:reprintfrom}[1]{%
+  \entrydata*{#1}{\unspace
+    \iffieldundef{journaltitle}{%
+      \iffieldundef{maintitle}
+      {\printfield[title:hook]{booktitle}}
+      {\printfield[title:hook]{maintitle}}%
+      \newunit\newblock
+      \usebibmacro{byeditor+others}%
+      \newunit\newblock
+      \iffieldundef{volume}{%
+      }{%
+        \printfield{volume}%
+        \printfield{part}%
+      }%
+      \newunit\newblock
+      \printfield{note}%
+      \newunit\newblock
+      \usebibmacro{series+number+edition+publisher+location+date}%
+      \newunit\newblock
+      \usebibmacro{chapter+pages}%
+    }{%
+      \usebibmacro{journal+issuetitle}%
+      \newunit
+      \usebibmacro{byeditor+others}%
+      \iffieldundef{note}{%
+        \newunit
+      }{%
+        \setunit{\addsemicolon\addspace}%
+      }%
+      \usebibmacro{note+pages}%
+    }}}
+%    \end{macrocode}
+%
+% \subsubsection{Reviews}
+%
+% We ensure that the field formatting for `review' entries matches that
+% for `article' entries.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[review]{volume}{#1}% volume of a journal
+\DeclareFieldFormat[review]{number}{#1}% number of a journal
+\DeclareFieldFormat[review]{series}{% series of a journal
+  \ifinteger{#1}
+  {\mkbibordseries{#1}~\bibstring{jourser}}
+  {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
+%    \end{macrocode}
+%
+% We provide some alternative macros for related authors
+%
+%    \begin{macrocode}
+\DeclareNameAlias{related}{given-family}
+\newbibmacro*{relatedauthor}{%
+  \ifboolexpr{
+    test \ifuseauthor
+    and
+    not test {\ifnameundef{author}}
+  }
+    {\printnames[related]{author}%
+     \iffieldundef{authortype}
+       {}
+       {\newunit%
+        \usebibmacro{authorstrg}}}
+    {}}
+\newbibmacro*{relatedauthor/translator+others}{%
+  \ifboolexpr{
+    test \ifuseauthor
+    and
+    not test {\ifnameundef{author}}
+  }
+    {\usebibmacro{relatedauthor}}
+    {\usebibmacro{translator+others}}}
+%    \end{macrocode}
+%
+% This macro provides a non-Biber method of inserting a formatted
+% reference within a review reference. It is deprecated and will
+% be removed in a future release.
+%
+%    \begin{macrocode}
+\newbibmacro*{reviewof}{}
+\DeclareBibliographyCategory{reviewed}
+\DeclareEntryOption{reviewed}{%
+  \renewbibmacro*{reviewof}{%
+    \bibstring{reviewof}%
+    \setunit{\addspace}%
+    \printtext{{\settoggle{blx@bibliography}{false}\fullcite{#1}}}%
+  }%
+  \addtocategory{reviewed}{#1}%
+}
+%    \end{macrocode}
+%
+% We take advantage of the Biber-specific mechanism of relating items
+% in order to handle reviews. The presence or otherwise of the
+% `journaltitle' field is used to determine whether this is a review
+% of a book (first block) or a periodical (second block).
+%
+%    \begin{macrocode}
+\newbibmacro*{related:reviewof}[1]{%
+  \entrydata*{#1}{%
+    \iffieldundef{journaltitle}{%
+      \usebibmacro{relatedauthor}%
+      \setunit{\labelnamepunct}\newblock
+      \usebibmacro{maintitle+title}%
+      \newunit
+      \iffieldundef{maintitle}{%
+        \printfield{volume}%
+        \printfield{part}%
+      }{}%
+      \newunit
+      \printlist{language}%
+      \newunit\newblock
+      \usebibmacro{byauthor}%
+      \newunit\newblock
+      \usebibmacro{byeditor+others}%
+      \newunit\newblock
+      \printfield{volumes}%
+      \newunit\newblock
+      \printfield{note}%
+      \newunit\newblock
+      \usebibmacro{series+number+edition+publisher+location+date}%
+    }{%
+      \usebibmacro{relatedauthor/translator+others}%
+      \setunit{\labelnamepunct}\newblock
+      \usebibmacro{title}%
+      \newunit
+      \printlist{language}%
+      \newunit\newblock
+      \usebibmacro{byauthor}%
+      \newunit\newblock
+      \usebibmacro{bytranslator+others}%
+      \newunit\newblock
+      \printfield{version}%
+      \newunit\newblock
+      \usebibmacro{journal+issuetitle}%
+      \newunit
+      \usebibmacro{byeditor+others}%
+      \iffieldundef{note}%
+        {\newunit}%
+        {\setunit{\addsemicolon\addspace}}%
+      \usebibmacro{note+pages}%
+    }%
+  }%
+}
+%    \end{macrocode}
+%
+% Since a review is a special kind of journal article, the `review'
+% driver is based on the `article' one, the difference being that the
+% `related' macro comes just before `journal+issuetitle'. Oxford style
+% links the two with \enquote{in}.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{review}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{bytranslator+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit\newblock
+  \usebibmacro{reviewof}%
+  \newunit\newblock
+  \iftoggle{bbx:related}{%
+    \usebibmacro{related:init}%
+    \usebibmacro{related}%
+  }{}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \unspace
+  \usebibmacro{journal+issuetitle}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \iffieldundef{note}%
+    {\newunit}%
+    {\setunit{\addsemicolon\addspace}}%
+  \usebibmacro{note+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% \subsection{Sort order}
+%
+% We exclude editor and translator from the sort order for books,
+% reference works, and proceedings, music, since they come after the
+% title.
+%
+%    \begin{macrocode}
+\DeclareSortExclusion{book,reference,mvreference,proceedings,music}{editor,translator}
+%    \end{macrocode}
+%
+% \iffalse
+%</bbx-0>
+%<*bbx-n>
+% \fi
+%
+% \section{Notes style: oxnotes.bbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% \subsection{Preliminaries}
+%
+% First we load the common oxref features.
+%
+%    \begin{macrocode}
+\RequireBibliographyStyle{oxref}
+%    \end{macrocode}
+%
+% We apply our special name format to names likely to appear at the start of
+% an entry.
+%
+%    \begin{macrocode}
+\DeclareNameAlias{author}{bib-family-given/cite-given-family}
+\DeclareNameAlias[related:reviewof]{author}{given-family}
+\DeclareNameAlias[book,booklet,collection,manual,misc,mvbook,mvcollection,%
+  mvproceedings,mvreference,online,proceedings,reference]%
+  {editor}{bib-family-given/cite-given-family}
+%    \end{macrocode}
+%
+% \subsection{Source mappings}
+%
+% This is used by Biber to fix the following sorting issues:
+% \begin{itemize}
+%   \item
+%   `proceedings' entries print the organization at the beginning.
+%   \item
+%   `proceedings' entries print the maintitle before the title.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareStyleSourcemap{%
+  \maps[datatype=bibtex]{%
+    \map{%
+      \pertype{proceedings}
+      \step[fieldsource=organization]%
+      \step[fieldset=sortname, origfieldval]%
+      \step[fieldsource=maintitle]%
+      \step[fieldset=sorttitle, origfieldval]%
+      \step[fieldsource=volume]%
+      \step[fieldset=sorttitle, append, origfieldval]%
+    }%
+  }%
+}
+%    \end{macrocode}
+%
+% \subsection{Page ranges in citations}
+%
+% If specifying a page within a range in the course of a citation note,
+% Oxford style is to format that as \enquote{\emph{range} at
+% \emph{page}}.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{postnote}{%
+  \iffieldundef{pages}%
+    {}%
+    {\addspace\bibstring{at}\addspace}%
+  \mkcomprange{#1}}
+%    \end{macrocode}
+%
+% The idea here is that if a postnote is provided but the entry does not
+% include a page range, we print the normal delimiter and the postnote;
+% If there is a page range, we replace the intervening punctuation with
+% \enquote{at}.
+%
+%    \begin{macrocode}
+\renewbibmacro*{postnote}{%
+  \iffieldundef{postnote}
+  {}
+  {\iffieldundef{pages}
+    {\printtext{\unspace}\setunit{\postnotedelim}\newblock\printfield{postnote}}
+    {\printfield{postnote}}%
+  }}
+%    \end{macrocode}
+%
+% \iffalse
+%</bbx-n>
+%<*bbx-y>
+% \fi
+%
+% \section{Author–year style: oxyear.bbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% \subsection{Preliminaries}
+%
+% First we load the common oxref features.
+%
+%    \begin{macrocode}
+\RequireBibliographyStyle{oxref}
+%    \end{macrocode}
+%
+% Here we set some defaults different to the standard ones. The author
+% can still override them.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions{uniquename=init,giveninits,labeldateparts,sorting=nyt,pagetracker}
+%    \end{macrocode}
+%
+% \subsection{Date merging option}
+%
+% We provide the `mergedate' option from the `authoryear' style. The
+% OGS and NHR consistently use a variant that is between basic and
+% compact, in that the year is always moved but the month and day are
+% never moved; this is implemented as the `year' value.
+%
+%    \begin{macrocode}
+\DeclareBibliographyOption{mergedate}[true]{%
+  \ifcsdef{bbx@opt@mergedate@#1}
+    {\csuse{bbx@opt@mergedate@#1}}
+    {\PackageError{biblatex}
+       {Invalid option 'mergedate=#1'}
+       {Valid values are 'maximum', 'compact', 'basic', 'minimum',\MessageBreak
+        'year', 'true' (=year), and 'false'.}}}
+%    \end{macrocode}
+%
+% The various values affect the definition of the following macro.
+%
+%    \begin{macrocode}
+\providebibmacro*{date+extrayear}{}
+%    \end{macrocode}
+%
+% Here we provide the various possible definitions.
+%
+% \begin{itemize}
+%   \item `true' is the same as `year' (see below).
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@true{\bbx@opt@mergedate@year}
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item `maximum' merges date/issue with date label. Note that we
+%   clear fields rather than the bibmacros as the `authoryear' style does.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@maximum{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}
+      {}
+      {\printtext[parens]{%
+         \printfield{issue}%
+         \setunit*{\addspace}%
+         \iffieldsequal{year}{labelyear}
+           {\printdateextralabel}%
+           {\printfield{labelyear}%
+            \printfield{extrayear}}}%
+       \clearfield{year}\clearfield{endyear}%
+       \clearfield{month}\clearfield{endmonth}%
+       \clearfield{day}\clearfield{endday}%
+       \clearfield{issue}}}}%
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item `compact' merges whole date with date label. Note that we
+%   clear fields rather than the bibmacros as the `authoryear' style does.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@compact{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}
+      {}
+      {\printtext[parens]{%
+         \iffieldsequal{year}{labelyear}
+           {\printdateextralabel}%
+           {\printfield{labelyear}%
+            \printfield{extrayear}}}%
+       \clearfield{year}\clearfield{endyear}%
+       \clearfield{month}\clearfield{endmonth}%
+       \clearfield{day}\clearfield{endday}}}%
+  \renewbibmacro*{issue+date}{%
+    \iffieldundef{issue}
+      {}
+      {\ifboolexpr{(
+          test {\iffieldundef{volume}}
+          and
+          test {\iffieldundef{number}}
+          ) and
+          test {\iffieldundef{eid}}
+        }{%
+          \newunit
+          \printfield{issue}%
+        }{%
+          \printtext[parens]{\printfield{issue}}%
+        }}%
+    \newunit}}
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item `basic' merges year-only date with date label.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@basic{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}
+      {}
+      {\printtext[parens]{%
+         \printfield{labelyear}%
+         \printfield{extrayear}}}}%
+  \renewbibmacro*{date}{%
+    \iffieldundef{month}
+      {}
+      {\printdate}}%
+  \renewbibmacro*{issue+date}{%
+    \ifboolexpr{
+      test {\iffieldundef{issue}}
+      and
+      test {\iffieldundef{month}}
+    }
+    {}
+    {\ifboolexpr{(
+        test {\iffieldundef{volume}}
+        and
+        test {\iffieldundef{number}}
+        ) and
+        test {\iffieldundef{eid}}
+      }{%
+        \newunit
+        \printfield{issue}%
+        \setunit*{\addspace}%
+        \printdate
+      }{%
+        \printtext[parens]{%
+          \printfield{issue}%
+          \setunit*{\addspace}%
+          \printdate}%
+      }}%
+    \newunit}}
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item `year' merges only the year with date label.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@year{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}
+    {}
+    {\printtext[parens]{%
+        \printfield{labelyear}%
+        \printfield{extrayear}}%
+      \iffieldundef{\thefield{labeldatesource}year}{%
+        \iffieldundef{\thefield{labeldatesource}}{}{%
+          \clearfield{\thefield{labeldatesource}}%
+        }%
+      }{%
+        \clearfield{\thefield{labeldatesource}year}%
+        \clearfield{end\thefield{labeldatesource}year}%
+      }}}%
+  \renewbibmacro*{issue+date}{%
+    \ifboolexpr{
+      test {\iffieldundef{issue}}
+      and
+      test {\iffieldundef{month}}
+    }
+    {}
+    {\ifboolexpr{(
+        test {\iffieldundef{volume}}
+        and
+        test {\iffieldundef{number}}
+        ) and
+        test {\iffieldundef{eid}}
+      }{%
+        \newunit
+        \printfield{issue}%
+        \setunit*{\addspace}%
+        \printdate
+      }{%
+        \printtext[parens]{%
+          \printfield{issue}%
+          \setunit*{\addspace}%
+          \printdate}%
+      }}%
+    \newunit}}
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item `minimum' merges year-only date with year-only date label.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@minimum{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}
+      {}
+      {\printtext[parens]{%
+         \printfield{labelyear}%
+         \printfield{extrayear}}}}%
+  \renewbibmacro*{date}{%
+    \ifboolexpr{
+      test {\iffieldundef{month}}
+      and
+      test {\iffieldundef{extrayear}}
+    }
+      {}
+      {\printdate}}%
+  \renewbibmacro*{issue+date}{%
+    \ifboolexpr{
+      test {\iffieldundef{issue}}
+      and
+      test {\iffieldundef{month}}
+      and
+      test {\iffieldundef{extrayear}}
+    }
+    {}
+    {\ifboolexpr{(
+        test {\iffieldundef{volume}}
+        and
+        test {\iffieldundef{number}}
+        ) and
+        test {\iffieldundef{eid}}
+      }{%
+        \newunit
+        \printfield{issue}%
+        \setunit*{\addspace}%
+        \printdate
+      }{%
+        \printtext[parens]{%
+          \printfield{issue}%
+          \setunit*{\addspace}%
+          \printdate}%
+      }}%
+    \newunit}}
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item `false' suppresses any merging).
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@false{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}
+      {}
+      {\printtext[parens]{%
+         \printfield{labelyear}%
+         \printfield{extrayear}}}}%
+  \renewbibmacro*{date}{\printdate}%
+  \renewbibmacro*{issue+date}{%
+    \ifboolexpr{(
+      test {\iffieldundef{volume}}
+      and
+      test {\iffieldundef{number}}
+      ) and
+      test {\iffieldundef{eid}}
+    }{%
+      \newunit\printtext{%
+        \iffieldundef{issue}{%
+          \usebibmacro{date}
+        }{%
+          \printfield{issue}%
+          \setunit*{\addspace}%
+          \usebibmacro{date}%
+        }%
+      }%
+    }{%
+      \ifboolexpr{
+        test {\iffieldundef{issue}}
+        and (
+        test {\iffieldundef{year}}
+        and
+        test {\iffieldundef{month}}
+        )
+      }{}{%
+        \printtext[parens]{%
+          \iffieldundef{issue}{%
+            \usebibmacro{date}%
+          }{%
+            \printfield{issue}%
+            \setunit*{\addspace}%
+            \usebibmacro{date}%
+          }%
+        }%
+      }%
+    }%
+  \newunit}
+}
+%    \end{macrocode}
+%
+% We set the default to be `true'/`year'.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions{mergedate}
+%    \end{macrocode}
+%
+% The above clearfield commands would suppress any further date
+% information being printed, but we need to allow months and days to be
+% printed in the absence of a year. This means adapting the range
+% calculation commands defined in `biblatex.sty' for use by
+% \cs{printdate}.
+%
+%    \begin{macrocode}
+\DeclareRobustCommand*{\mkdaterangefull}[2]{%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \printtext[#2date]{%
+        \csuse{mkbibdate#1}{}{#2month}{#2day}%
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdaterangesep}%
+          }{%
+            \bibdaterangesep
+            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}}}}}%
+  }{%
+    \printtext[#2date]{%
+      \csuse{mkbibdate#1}{#2year}{#2month}{#2day}%
+      \iffieldundef{#2endyear}{%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \mbox{\bibdaterangesep}%
+        }{%
+          \bibdaterangesep
+          \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}
+
+\DeclareRobustCommand*{\mkdaterangetrunc}[2]{%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \printtext[#2date]{%
+        \iffieldsequal{#2month}{#2endmonth}{%
+          \csuse{mkbibdate#1}{}{}{#2day}%
+        }{%
+          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdaterangesep}%
+          }{%
+            \bibdaterangesep
+            \iffieldundef{#2endday}{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{}%
+            }{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{%
+                \blx@ox@compyear{\thefield{#2day}}{\thefield{#2endday}}}}}}}}%
+  }{%
+    \printtext[#2date]{%
+      \iffieldsequal{#2year}{#2endyear}{%
+        \iffieldsequal{#2month}{#2endmonth}{%
+          \csuse{mkbibdate#1}{}{}{#2day}%
+        }{%
+          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+      }{%
+        \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
+      \iffieldundef{#2endyear}{%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \mbox{\bibdaterangesep}%
+        }{%
+          \bibdaterangesep
+          \iffieldundef{#2endmonth}{%
+            \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
+          }{%
+            \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}}
+
+\DeclareRobustCommand*{\mkdaterangefullextra}[2]{%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \printtext[#2date]{%
+        \csuse{mkbibdate#1}{}{#2month}{#2day}%
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdaterangesep}%
+          }{%
+            \bibdaterangesep
+            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}}}}}%
+  }{%
+    \printtext[#2date]{%
+      \printtext{%
+        \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
+      \iffieldundef{#2endyear}{%
+        \printfield{extrayear}%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \printfield{extrayear}%
+          \printtext{\mbox{\bibdaterangesep}}%
+        }{%
+          \printtext{%
+            \bibdaterangesep
+            \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
+            \printfield{extrayear}}}}}}}
+
+\DeclareRobustCommand*{\mkdaterangetruncextra}[2]{%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \printtext[#2date]{%
+        \iffieldsequal{#2month}{#2endmonth}{%
+          \csuse{mkbibdate#1}{}{}{#2day}%
+        }{%
+          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdaterangesep}%
+          }{%
+            \bibdaterangesep
+            \iffieldundef{#2endday}{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{}%
+            }{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{%
+                \blx@ox@compyear{\thefield{#2day}}{\thefield{#2endday}}}}}}}}%
+  }{%
+    \printtext[#2date]{%
+      \printtext{%
+        \iffieldsequal{#2year}{#2endyear}{%
+          \iffieldsequal{#2month}{#2endmonth}{%
+            \csuse{mkbibdate#1}{}{}{#2day}%
+          }{%
+            \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+        }{%
+          \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
+      \iffieldundef{#2endyear}{%
+        \printfield{extrayear}%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \printfield{extrayear}%
+          \printtext{\mbox{\bibdaterangesep}}%
+        }{%
+          \printtext{%
+            \bibdaterangesep
+            \iffieldundef{#2endmonth}{%
+              \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
+            }{%
+              \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+            \printfield{extrayear}}}}}}}
+%    \end{macrocode}
+%
+% The `labelyear' falls back to `pubstate' if provided.
+%
+%    \begin{macrocode}
+\DeclareLabeldate{%
+  \field{origdate}
+  \field{date}
+  \field{year}
+  \field{eventdate}
+  \field{pubstate}
+  \field{urldate}
+  \literal{nodate}
+}
+
+%    \end{macrocode}
+%
+% \subsection{Bibliography formatting}
+%
+% We let \pkg{biblatex} measure shorthands so we can use
+% \cs{shorthandwidth} later.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{shorthandwidth}{#1}
+%    \end{macrocode}
+%
+% We declare a variant of the `family-given' name format which exports the hash
+% of the name, so we can compare `shortauthor' with `author' and `shorteditor'
+% with `editor'.
+%
+%    \begin{macrocode}
+\DeclareNameFormat{family-given-hash}{%
+  \ifgiveninits{%
+    \usebibmacro{name:family-given}%
+      {\namepartfamily}%
+      {\namepartgiveni}%
+      {\namepartprefix}%
+      {\namepartsuffix}%
+  }{%
+    \usebibmacro{name:family-given}%
+      {\namepartfamily}%
+      {\namepartgiven}%
+      {\namepartprefix}%
+      {\namepartsuffix}%
+  }%
+  \ifboolexpr{
+    test {\ifcurrentname{shortauthor}}
+    or
+    test {\ifcurrentname{shorteditor}}
+  }{%
+    \savefield{hash}{\bbx@ox@firsthash}%
+  }{%
+    \savefield{hash}{\bbx@ox@secondhash}%
+  }%
+  \usebibmacro{name:andothers}%
+}
+\DeclareNameAlias{shortauthor}{family-given-hash}
+\DeclareNameAlias{shorteditor}{family-given-hash}
+%    \end{macrocode}
+%
+% Names at the head of the reference are family-given, but names elsewhere
+% are given-family.
+%
+%    \begin{macrocode}
+\DeclareNameAlias{sortname}{family-given}
+\DeclareNameAlias{author}{family-given}
+\DeclareNameAlias{editor}{family-given}
+\DeclareNameAlias{translator}{family-given}
+%    \end{macrocode}
+%
+% The bibliography formatting is just like `authoryear' except we do not
+% eliminate item separation by default.
+%
+%    \begin{macrocode}
+\defbibenvironment{bibliography}
+  {\list
+     {}
+     {\setlength{\leftmargin}{\bibhang}%
+      \setlength{\itemindent}{-\leftmargin}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}}
+  {\endlist}
+  {\item}
+%    \end{macrocode}
+%
+% The shorthand formatting is just like `authoryear'.
+%
+%    \begin{macrocode}
+\defbibenvironment{shorthand}
+  {\list
+     {\printfield[shorthandwidth]{shorthand}}
+     {\setlength{\labelwidth}{\shorthandwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}}
+  {\endlist}
+  {\item}
+%    \end{macrocode}
+%
+% \subsection{Name and date formatting}
+%
+% We set up hashing just as in `authoryear'.
+%
+%    \begin{macrocode}
+\InitializeBibliographyStyle{\global\undef\bbx@lasthash}
+%    \end{macrocode}
+%
+% We ensure related entries do not interfere with the hashing.
+%
+%    \begin{macrocode}
+\renewbibmacro*{begrelated}{%
+  \booltrue{bbx@inset}}
+\renewbibmacro*{endrelated}{%
+  \usebibmacro*{bbx:savehash}}
+%    \end{macrocode}
+%
+% We patch the `author' macro so that the date label information appears
+% at the end (as in `authoryear').
+%
+%    \begin{macrocode}
+\xpatchbibmacro{author}{%
+  \global\undef\bbx@lasthash
+}{%
+  \global\undef\bbx@lasthash
+  \usebibmacro{labeltitle}%
+  \setunit*{\addspace}%
+}{}{}%
+\xapptobibmacro{author}{%
+  \usebibmacro{date+extrayear}%
+}{}{}%
+%    \end{macrocode}
+%
+% We patch it further so that, where an author name has a corresponding
+% (different) short author name, the short name is given first and the long
+% name given in parentheses.
+%
+% This technique uses saveboxes to extract the hashes.
+%
+% An unfortunate side effect of this is that where short author names are
+% provided, the author list is no longer truncated, but I hope this represents
+% something of an edge case.
+%
+%    \begin{macrocode}
+\newcounter{namepairs}
+\newsavebox{\bbx@ox@shortnamebox}
+\newsavebox{\bbx@ox@namebox}
+\xpatchbibmacro{author}{%
+  {\printnames{author}}\iffieldundef%
+}{{%
+  \ifboolexpr{%
+    ( not test {\ifnameundef{shortauthor}} )
+    and
+    test {\ifnumequal{\value{shortauthor}}{\value{author}}}
+  }{%
+    \setcounter{namepairs}{0}%
+    \savebibmacro{name:andothers}%
+    \renewbibmacro*{name:andothers}{}%
+    \whileboolexpr{%
+      test {\ifnumcomp{\value{namepairs}}{<}{\value{author}}}
+    }{%
+      \stepcounter{namepairs}%
+      \ifnumcomp{\value{namepairs}}{>}{1}{%
+        \ifnumequal{\value{author}}{2}{%
+          \setunit*{\addspace\bibstring{and}\addspace}%
+        }{%
+          \ifnumequal{\value{namepairs}}{\value{author}}{%
+            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          }{%
+            \setunit*{\addcomma\space}%
+          }%
+        }%
+      }{}%
+      \savebox{\bbx@ox@shortnamebox}{%
+        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{shortauthor}%
+      }%
+      \savebox{\bbx@ox@namebox}{%
+        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{author}%
+      }%
+      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
+        \unhbox\bbx@ox@namebox
+      }{%
+        \unhbox\bbx@ox@shortnamebox
+        \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
+      }%
+    }%
+    \restorebibmacro{name:andothers}%
+  }{%
+    \printnames{author}%
+  }}\iffieldundef%
+}{}{}%
+%    \end{macrocode}
+%
+% We apply the same patches to `bbx:editor', but also move the editor
+% string to after the date label.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{bbx:editor}{%
+  \usebibmacro{#1}%
+}{%
+  \usebibmacro{date+extrayear}%
+  \setunit*{\addspace}%
+  \usebibmacro{#1}%
+}{}{}%
+\xpatchbibmacro{bbx:editor}{%
+  \global\undef\bbx@lasthash
+}{%
+  \global\undef\bbx@lasthash
+  \usebibmacro{labeltitle}%
+  \setunit*{\addspace}%
+}{}{}%
+\xpatchbibmacro{bbx:editor}{%
+  \printnames{editor}%
+}{%
+  \ifboolexpr{%
+    ( not test {\ifnameundef{shorteditor}} )
+    and
+    test {\ifnumequal{\value{shorteditor}}{\value{editor}}}
+  }{%
+    \setcounter{namepairs}{0}%
+    \savebibmacro{name:andothers}%
+    \renewbibmacro*{name:andothers}{}%
+    \whileboolexpr{%
+      test {\ifnumcomp{\value{namepairs}}{<}{\value{editor}}}
+    }{%
+      \stepcounter{namepairs}%
+      \ifnumcomp{\value{namepairs}}{>}{1}{%
+        \ifnumequal{\value{editor}}{2}{%
+          \setunit*{\addspace\bibstring{and}\addspace}%
+        }{%
+          \ifnumequal{\value{namepairs}}{\value{editor}}{%
+            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          }{%
+            \setunit*{\addcomma\space}%
+          }%
+        }%
+      }{}%
+      \savebox{\bbx@ox@shortnamebox}{%
+        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{shorteditor}%
+      }%
+      \savebox{\bbx@ox@namebox}{%
+        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{editor}%
+      }%
+      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
+        \unhbox\bbx@ox@namebox
+      }{%
+        \unhbox\bbx@ox@shortnamebox
+        \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
+      }%
+    }%
+    \restorebibmacro{name:andothers}%
+  }{%
+    \printnames{editor}%
+  }%
+}{}{}%
+%    \end{macrocode}
+%
+% We apply the same patches to `bbx:translator' as we do for
+% `bbx:editor', except for the shortening one.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{bbx:translator}{%
+  \global\undef\bbx@lasthash
+}{%
+\global\undef\bbx@lasthash
+\usebibmacro{labeltitle}%
+\setunit*{\addspace}%
+}{}{}%
+\xpatchbibmacro{bbx:translator}{%
+  \usebibmacro{#1}%
+}{}{}{}%
+\xapptobibmacro{bbx:translator}{%
+  \usebibmacro{date+extrayear}%
+  \setunit*{\addspace}%
+  \usebibmacro{#1}%
+}{}{}%
+%    \end{macrocode}
+%
+% The `labeltitle' macro is exactly the same as the one from
+% `authoryear'.
+%
+%    \begin{macrocode}
+\newbibmacro*{labeltitle}{%
+  \iffieldundef{label}
+    {\iffieldundef{shorttitle}
+       {\printfield{title}%
+        \clearfield{title}}
+       {\printfield[title]{shorttitle}}}
+    {\printfield{label}}}
+%    \end{macrocode}
+%
+% The date of `online' entries is printed in parentheses; as the year
+% is moved after the author, this can lead to empty parentheses unless
+% a month is printed, so we change the test accordingly.
+%
+%    \begin{macrocode}
+\xpatchbibdriver{online}{%
+  \iffieldundef{year}{}{%
+    \printtext[parens]{\usebibmacro{date}}%
+  }%
+}{%
+  \iffieldundef{month}{}{%
+    \printtext[parens]{\usebibmacro{date}}%
+  }%
+}{}{}
+%    \end{macrocode}
+%
+% \subsection{Journal division formatting}
+%
+% Oxyear uses a colon to demarcate page numbers
+%
+%    \begin{macrocode}
+\renewcommand*{\bibpagespunct}{\addcolon\space}
+%    \end{macrocode}
+%
+% \subsection{Source mappings}
+%
+% This is used by Biber to fix the following sorting issues:
+% \begin{itemize}
+%   \item
+%   `proceedings' entries print the organization at the beginning.
+%   \item
+%   `proceedings' entries print the maintitle before the title.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareStyleSourcemap{%
+  \maps[datatype=bibtex]{%
+    \map{%
+      \pertype{proceedings}
+      \step[fieldsource=organization]%
+      \step[fieldset=sortname, origfieldval]%
+      \step[fieldsource=maintitle]%
+      \step[fieldset=sorttitle, origfieldval]%
+      \step[fieldsource=volume]%
+      \step[fieldset=sorttitle, append, origfieldval]%
+    }%
+  }%
+}
+%    \end{macrocode}
+%
+% \chapter{Citation styles}
+%
+% \iffalse
+%</bbx-y>
+%<*cbx-n>
+% \fi
+%
+% \section{Notes style: oxnotes.cbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+%    \begin{macrocode}
+\RequireCitationStyle{verbose}
+%    \end{macrocode}
+%
+% \iffalse
+%</cbx-n>
+%<*cbx-y>
+% \fi
+%
+% \section{Author–year style: oxyear.cbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+%    \begin{macrocode}
+\RequireCitationStyle{authoryear}
+%    \end{macrocode}
+%
+% \iffalse
+%</cbx-y>
+%<*lbx-gb>
+% \fi
+%
+% \chapter{Localization modules}
+%
+% \section{British English: british-oxref.lbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+%    \begin{macrocode}
+\InheritBibliographyExtras{british}
+\DeclareBibliographyExtras{%
+  \protected\def\mkbibdatelong#1#2#3{%
+    \iffieldundef{#3}
+      {}
+      {\stripzeros{\thefield{#3}}%
+       \iffieldundef{#2}{}{\nobreakspace}}%
+    \iffieldundef{#2}
+      {}
+      {\mkbibmonth{\thefield{#2}}%
+       \iffieldundef{#1}{}{\space}}%
+    \stripzeros{\thefield{#1}}}%
+  \def\finalandcomma{\addcomma}%
+  \def\bibtimesep{\addperiod}%
+}
+\DeclareBibliographyStrings{%
+  inherit          = {british},
+  % Peculiar to Oxref
+  at               = {{at}{at}},
+  under            = {{s.v.}{s.v.}},
+  facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
+  revised          = {{revised edition}{rev\adddotspace edn\adddot}},
+  reviewof         = {{review of}{review of}},
+  byperformer      = {{}{}},
+  bydirector       = {{directed by}{dir\adddot}},
+  byreader         = {{read by}{read by}},
+  % Standard (NB. Oxford style is more sparing with `by')
+  introduction     = {{introduction}{introduction}},
+  withintroduction = {{with an introduction by}{with an introduction by}},
+  byeditor         = {{edited by}{ed\adddot}},
+  bycompiler       = {{compiled by}{comp\adddot}},
+  byredactor       = {{redacted by}{red\adddot}},
+  byfounder        = {{founded by}{found\adddot}},
+  bycontinuator    = {{continued by}{cont\adddot}},
+  bycollaborator   = {{in collaboration with}{in collab\adddotspace with}}, % FIXME: unsure
+  bytranslator     = {{translated \lbx@lfromlang\ by}{trans\adddot\ \lbx@sfromlang}},
+  bycommentator    = {{commented by}{comm\adddot}},
+  byannotator      = {{annotated by}{annot\adddot}},
+  withcommentator  = {{with a commentary by}{with a commentary by}},
+  withannotator    = {{with annotations by}{with annotations by}},
+  withintroduction = {{with an introduction by}{with an introduction by}},
+  withforeword     = {{with a foreword by}{with a foreword by}},
+  withafterword    = {{with an afterword by}{with an afterword by}},
+  byeditortr       = {{edited and translated \lbx@lfromlang\ by}%
+                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
+  byeditorco       = {{edited and commented by}%
+                      {ed\adddotspace and comm\adddot}},
+  byeditoran       = {{edited and annotated by}%
+                      {ed\adddotspace and annot\adddot}},
+  byeditorin       = {{edited, with an introduction, by}%
+                      {ed.\adddotspace with introduction}},
+  byeditorfo       = {{edited, with a foreword, by}%
+                      {ed.\adddotspace with foreword}},
+  byeditoraf       = {{edited, with an afterword, by}%
+                      {ed.\adddotspace with afterword}},
+  byeditortrco     = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
+  byeditortran     = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
+  byeditortrin     = {{edited and translated \lbx@lfromlang, with an introduction, by}%
+                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with introduction}},
+  byeditortrfo     = {{edited and translated \lbx@lfromlang, with a foreword, by}%
+                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with foreword}},
+  byeditortraf     = {{edited and translated \lbx@lfromlang, with an afterword, by}%
+                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with afterword}},
+  byeditorcoin     = {{edited and commented, with an introduction, by}%
+                      {ed\adddotspace and comm\adddotspace with introduction}},
+  byeditorcofo     = {{edited and commented, with a foreword, by}%
+                      {ed\adddotspace and comm\adddotspace with foreword}},
+  byeditorcoaf     = {{edited and commented, with an afterword, by}%
+                      {ed\adddotspace and comm\adddotspace with afterword}},
+  byeditoranin     = {{edited and annotated, with an introduction, by}%
+                      {ed\adddotspace and annot\adddotspace with introduction}},
+  byeditoranfo     = {{edited and annotated, with a foreword, by}%
+                      {ed\adddotspace and annot\adddotspace with foreword}},
+  byeditoranaf     = {{edited and annotated, with an afterword, by}%
+                      {ed\adddotspace and annot\adddotspace with afterword}},
+  byeditortrcoin   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with an introduction, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with introduction}},
+  byeditortrcofo   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with a foreword, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with foreword}},
+  byeditortrcoaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with an afterword, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with afterword}},
+  byeditortranin   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an introduction, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with introduction}},
+  byeditortranfo   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with a foreword, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with foreword}},
+  byeditortranaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an afterword, by}%
+                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with afterword}},
+  bytranslatorco   = {{translated \lbx@lfromlang\ and commented by}%
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddot\ by}},
+  bytranslatoran   = {{translated \lbx@lfromlang\ and annotated by}%
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddot\ by}},
+  bytranslatorin   = {{translated \lbx@lfromlang, with an introduction, by}%
+                      {trans\adddot\ \lbx@sfromlang\ with introduction}},
+  bytranslatorfo   = {{translated \lbx@lfromlang, with a foreword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ with foreword}},
+  bytranslatoraf   = {{translated \lbx@lfromlang, with an afterword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ with afterword}},
+  bytranslatorcoin = {{translated \lbx@lfromlang\ and commented, with an introduction, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with introduction}},
+  bytranslatorcofo = {{translated \lbx@lfromlang\ and commented, with a foreword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with foreword}},
+  bytranslatorcoaf = {{translated \lbx@lfromlang\ and commented, with an afterword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with afterword}},
+  bytranslatoranin = {{translated \lbx@lfromlang\ and annotated, with an introduction, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with introduction}},
+  bytranslatoranfo = {{translated \lbx@lfromlang\ and annotated, with a foreword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with foreword}},
+  bytranslatoranaf = {{translated \lbx@lfromlang\ and annotated, with an afterword, by}%
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with afterword}},
+  idem             = {{idem}{id\adddot}},
+  idemsm           = {{idem}{id\adddot}},
+  idemsf           = {{eadem}{ead\adddot}},
+  idemsn           = {{idem}{id\adddot}},
+  idempm           = {{eidem}{eid\adddot}},
+  idempf           = {{eaedem}{eaed\adddot}},
+  idempn           = {{eadem}{ead\adddot}},
+  idempp           = {{eidem}{eid\adddot}},
+  newseries        = {{new series}{\mkbibacro{NS}}},
+  oldseries        = {{old series}{\mkbibacro{OS}}},
+  edition          = {{edition}{edn\adddot}},
+  reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
+  reviewof         = {{review of}{review of}},
+  reprintfrom      = {{from}{from}},
+  urlseen          = {{accessed}{accessed}},
+  am               = {{a\adddot m\adddot}{a\adddot m\adddot}},
+  pm               = {{p\adddot m\adddot}{p\adddot m\adddot}},
+}
+%    \end{macrocode}
+% \iffalse
+%</lbx-gb>
 % \fi
