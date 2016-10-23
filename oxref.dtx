@@ -147,7 +147,6 @@ Copyright (C) 2016 Alex Ball
 % Pagination and headers
 \nouppercaseheads
 \makeoddhead{myheadings}{\textsc{\leftmark}}{}{\thepage}
-%\makeevenhead{myheadings}{\thepage}{}{\textsc{\leftmark}}
 \makepsmarks{myheadings}{%
   \def\chaptermark##1{\markboth{##1}{##1}}%
   \def\sectionmark##1{\markright{##1}}%
@@ -643,33 +642,53 @@ but by no means all of them will be supported.
 
 \section{To do}
 
-The \textsf{oxref} family of \textsf{biblatex} styles does not yet support the following standard entry types
-(or at least, they have not yet been styled appropriately):
+The following entry types are currently untested;
+that is, there are no examples of them in this documentation.
 
-\begin{multicols}{2}
+\begin{multicols}{3}
   \begin{itemize}\firmlist
+    \item article
+    \item book
+    \item mvbook
+    \item inbook
+    \item bookinbook
+    \item suppbook
     \item booklet
-    \item manual (code written but untested)
+    \item collection
+    \item mvcollection
+    \item incollection
+    \item suppcollection
+    \item manual
     \item misc
+    \item online
     \item patent
     \item periodical
     \item suppperiodical
-  \end{itemize}
-\end{multicols}
-
-Support is also planned for the following additional types (starred types are not defined by \textsf{biblatex}):
-
-\begin{multicols}{2}
-  \begin{itemize}\firmlist
-    \item dataset*
+    \item proceedings
+    \item mvproceedings
+    \item inproceedings
+    \item reference
+    \item mvreference
+    \item inreference
+    \item report
+    \item thesis
+    \item unpublished
+    \item artwork
+    \item audio
+    \item commentary
     \item image
+    \item jurisdiction
+    \item legislation
+    \item legal
     \item letter
-    \item manuscript*
-    \item play*
-    \item poem*
+    \item movie
+    \item music
+    \item performance
+    \item review
     \item software
     \item standard
     \item video
+    \item dataset
   \end{itemize}
 \end{multicols}
 
@@ -680,6 +699,46 @@ Additional tasks:
   \item Provide mechanism for using ‘Anonymous’ as an author name.
   \item Provide citation style that matches the \emph{OGS} suggestions for shorthand expressions in notes.
 \end{itemize}
+
+
+\chapter{Articles and periodicals}\label{sec:article}
+\chapterprecis{article, periodical, suppperiodical, review}
+
+
+\chapter{Books}\label{sec:book}
+\chapterprecis{book, mvbook, collection, mvcollection, reference, mvreference}
+
+
+\chapter{Works within books}\label{sec:inbook}
+\chapterprecis{inbook, bookinbook, suppbook, incollection, suppcollection, inreference}
+
+
+\chapter{Works presented at meetings}\label{sec:proceedings}
+\chapterprecis{proceedings, mvproceedings, inproceedings, unpublished}
+
+
+\chapter{Grey literature}\label{sec:report}
+\chapterprecis{booklet, manual, patent, report, thesis, standard}
+
+
+\chapter{Audiovisual materials}\label{sec:audiovideo}
+\chapterprecis{audio, image, movie, music, video}
+
+
+\chapter{Digital media}\label{sec:electronic}
+\chapterprecis{online, software, dataset}
+
+
+\chapter{Legal references}\label{sec:legal}
+\chapterprecis{jurisdiction, legislation, legal}
+
+
+\chapter{Specialist materials}\label{sec:special}
+\chapterprecis{misc, unpublished, letter}
+
+
+\chapter{General formatting tests}\label{sec:tests}
+
 
 %</doc-n|doc-y>
 %<*driver>
