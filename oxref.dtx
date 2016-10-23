@@ -53,9 +53,7 @@
   title = {The {Oxford} Guide to Style},
   date = {2002},
   publisher = {Oxford University Press},
-  location = {Oxford, UK}
-}
-
+  location = {Oxford, UK}}
 @reference{waddingham2014nhr,
   editor = {Anne Waddingham},
   title = {New {Hart's} Rules},
@@ -63,8 +61,7 @@
   date = {2014},
   edition = {2},
   publisher = {Oxford University Press},
-  location = {Oxford, UK}
-}
+  location = {Oxford, UK}}
 %</bib>
 %<*internal>
 \fi
@@ -179,18 +176,58 @@ Copyright (C) 2016 Alex Ball
 \colorlet{manual}{purple}
 
 \usepackage{tcolorbox}
-\tcbuselibrary{listings,breakable,skins,xparse}
-\lstloadlanguages{[LaTeX]TeX}
-\lstset
-  { columns=fullflexible
-  , basicstyle=\ttfamily
-  , language={[LaTeX]TeX}
-  , texcsstyle=*\color{red!75!black}
-  , moredelim=**[s][\color{violet}]{[}{]}
-  , moredelim=**[s][\color{blue!75!black}]{\{}{\}}
-  , mathescape
-  , escapechar=~
+\tcbuselibrary{skins,xparse,documentation,breakable,minted}
+\colorlet{Option}{violet}
+\colorlet{Command}{red!75!black}
+\colorlet{Environment}{blue!75!black}
+\colorlet{Value}{olive!75!black}
+\colorlet{Color}{cyan!75!black}
+\tcbset
+  { enhanced
+  , listing engine=minted
+  , minted options=
+    { breaklines
+    , fontsize=\footnotesize
+    , linenos
+    , numbersep=20pt
+    , firstnumber=last
+    }
+  , index format=pgf
+  , color command=Command
+  , color environment=Environment
+  , color key=Option
+  , color value=Value
+  , color color=Color
   }
+\renewcommand{\theFancyVerbLine}{\footnotesize\itshape\color{gray}\arabic{FancyVerbLine}}
+\let\tcbcs=\cs
+\renewcommand*{\cs}[1]{\textcolor{Command}{\tcbcs{#1}}}
+\def\sqbrackets#1{%
+  \texttt{\textcolor{Option}{[}#1\textcolor{Option}{]}}}
+\def\brackets#1{%
+  \texttt{\textcolor{Environment}{\char`\{}#1\textcolor{Environment}{\char`\}}}}
+\def\marg#1{%
+  \textcolor{Environment}{\ttfamily\char`\{}\meta{#1}\textcolor{Environment}{\ttfamily\char`\}}}
+\newcommand*{\env}[1]{\textcolor{Environment}{\ttfamily #1}}
+\newcommand*{\key}[1]{\textcolor{Option}{\ttfamily #1}}
+\newcommand*{\val}[1]{\textcolor{Value}{\ttfamily #1}}
+\makeatletter
+\newcommand{\resetmintedformat}{%
+  % Comments
+  \expandafter\def\csname PYGdefault@tok@c\endcsname{\let\PYGdefault@it=\textit\def\PYGdefault@tc####1{\textcolor{gray}{####1}}}
+  % Command sequences
+  \expandafter\def\csname PYGdefault@tok@k\endcsname{\def\PYGdefault@tc####1{\textcolor{Command}{####1}}}
+  % Optional arguments
+  \expandafter\def\csname PYGdefault@tok@na\endcsname{\def\PYGdefault@tc####1{\textcolor{Option}{####1}}}
+  % Braces
+  \expandafter\def\csname PYGdefault@tok@nb\endcsname{\def\PYGdefault@tc####1{\textcolor{Environment}{####1}}}
+}
+\apptocmd{\minted@checkstyle}{\resetmintedformat}{}{}
+\makeatother
+
+\RecustomVerbatimEnvironment
+  {Verbatim}{Verbatim}
+  {commentchar=\%}
 
 \usepackage
 [backend=biber%
@@ -198,7 +235,7 @@ Copyright (C) 2016 Alex Ball
 %,isbn=false%
 ]{biblatex}
 \bibliography{oxref}
-\usepackage[pdfborder={0 0 0},pdfencoding=auto]{hyperref}
+\hypersetup{pdfborder={0 0 0},pdfencoding=auto}
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
 
 \newcommand*{\pkg}[1]{\href{http://www.ctan.org/pkg/#1}{\textsf{#1}}}
@@ -278,42 +315,6 @@ Copyright (C) 2016 Alex Ball
 }{%
   \egroup
 }
-\makeatother
-\tcbuselibrary{documentation,breakable,skins,minted}
-\colorlet{Option}{violet}
-\colorlet{Command}{red!75!black}
-\colorlet{Environment}{blue!75!black}
-\colorlet{Value}{olive!75!black}
-\colorlet{Color}{cyan!75!black}
-\tcbset
-  { enhanced
-  , listing engine=minted
-  , minted options=
-    { breaklines
-    , fontsize=\footnotesize
-    , linenos
-    , numbersep=20pt
-    , firstnumber=last
-    }
-  , index format=pgf
-  , color command=Command
-  , color environment=Environment
-  , color key=Option
-  , color value=Value
-  , color color=Color
-  }
-\renewcommand{\theFancyVerbLine}{\footnotesize\itshape\color{gray}\arabic{FancyVerbLine}}
-\let\tcbcs=\cs
-\renewcommand*{\cs}[1]{\textcolor{Command}{\tcbcs{#1}}}
-\def\sqbrackets#1{%
-  \texttt{\textcolor{Option}{[}#1\textcolor{Option}{]}}}
-\def\brackets#1{%
-  \texttt{\textcolor{Environment}{\char`\{}#1\textcolor{Environment}{\char`\}}}}
-\def\marg#1{%
-  \textcolor{Environment}{\ttfamily\char`\{}\meta{#1}\textcolor{Environment}{\ttfamily\char`\}}}
-\newcommand*{\env}[1]{\textcolor{Environment}{\ttfamily #1}}
-\newcommand*{\key}[1]{\textcolor{Option}{\ttfamily #1}}
-\newcommand*{\val}[1]{\textcolor{Value}{\ttfamily #1}}
 \renewenvironment{macro}[1]{%
   \def\MyName{#1}%
   \index{\MyName@\tcbIndexPrintComC {\MyName}|(emph}%
@@ -356,21 +357,6 @@ Copyright (C) 2016 Alex Ball
   \index{Values!\MyName@\tcbIndexPrintValC {\MyName}|)}%
   \index{\MyName@\tcbIndexPrintValCA {\MyName}|)}%
 }
-\makeatletter
-\newcommand{\resetmintedformat}{%
-  % Comments
-  \expandafter\def\csname PYGdefault@tok@c\endcsname{\let\PYGdefault@it=\textit\def\PYGdefault@tc####1{\textcolor{gray}{####1}}}
-  % Command sequences
-  \expandafter\def\csname PYGdefault@tok@k\endcsname{\def\PYGdefault@tc####1{\textcolor{Command}{####1}}}
-  % Optional arguments
-  \expandafter\def\csname PYGdefault@tok@na\endcsname{\def\PYGdefault@tc####1{\textcolor{Option}{####1}}}
-  % Braces
-  \expandafter\def\csname PYGdefault@tok@nb\endcsname{\def\PYGdefault@tc####1{\textcolor{Environment}{####1}}}
-}
-\apptocmd{\minted@checkstyle}{\resetmintedformat}{}{}
-\makeatother
-\MakeShortVerb{\|}
-\makeatletter
 \let\PrintMacroName\@gobble
 \let\PrintEnvName\@gobble
 \renewenvironment{tcb@manual@entry}{\begin{list}{}{%
@@ -383,6 +369,7 @@ Copyright (C) 2016 Alex Ball
   \setlength{\rightmargin}{\kvtcb@doc@right}%
   }\item}{\end{list}}
 \makeatother
+\MakeShortVerb{\|}
 
 % This bit inspired by ydoc
 \makeatletter

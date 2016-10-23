@@ -13,11 +13,11 @@ all:	$(NAME).pdf $(STY1)-doc.pdf $(STY2)-doc.pdf clean
 $(STY1)-doc.tex $(STY2)-doc.tex $(NAME).bbx $(STY1).bbx $(STY1).cbx $(STY2).bbx $(STY2).cbx british-$(NAME).lbx: $(NAME).dtx
 	luatex -interaction=nonstopmode $(NAME).dtx >/dev/null
 $(NAME).pdf: $(NAME).dtx $(NAME).bbx $(STY1).bbx $(STY1).cbx british-$(NAME).lbx
-	latexmk -lualatex -synctex=1 -interaction=nonstopmode -silent $(NAME).dtx >/dev/null
+	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $(NAME).dtx >/dev/null
 $(STY1)-doc.pdf: $(STY1)-doc.tex $(NAME).bbx $(STY1).bbx $(STY1).cbx british-$(NAME).lbx
-	latexmk -lualatex -synctex=1 -interaction=nonstopmode -silent $(STY1)-doc.tex >/dev/null
+	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $(STY1)-doc.tex >/dev/null
 $(STY2)-doc.pdf: $(STY2)-doc.tex $(NAME).bbx $(STY2).bbx $(STY2).cbx british-$(NAME).lbx
-	latexmk -lualatex -synctex=1 -interaction=nonstopmode -silent $(STY2)-doc.tex >/dev/null
+	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $(STY2)-doc.tex >/dev/null
 clean:
 	rm -f {$(NAME),$(STY1)-doc,$(STY2)-doc}.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f {$(STY1),$(STY2),british-$(NAME)}.doc
