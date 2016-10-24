@@ -1,49 +1,49 @@
 % \iffalse
-%<*internal|bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb|doc-n|doc-y>
+%<*internal|bbx|cbx|dbx|lbx|doc>
 \def\Version{2015/05/25 v0.1}
-%</internal|bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb|doc-n|doc-y>
+%</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
 %</internal>
-%<*bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb>
+%<*bbx|cbx|dbx|lbx>
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%</bbx-0|bbx-n|bbx-y|cbx-n|cbx-y|dbx|lbx-gb>
-%<*bbx-0>
+%</bbx|cbx|dbx|lbx>
+%<*bbx&o>
 \ProvidesFile{oxref.bbx}
     [\Version\space Base settings for bibliography styles inspired by the Oxford Guide to Style]
-%</bbx-0>
-%<*bbx-n>
+%</bbx&o>
+%<*bbx&n>
 \ProvidesFile{oxnotes.bbx}
     [\Version\space Footnote-based bibliography style inspired by the Oxford Guide to Style]
-%</bbx-n>
-%<*bbx-y>
+%</bbx&n>
+%<*bbx&y>
 \ProvidesFile{oxyear.bbx}
     [\Version\space Author-year bibliography style inspired by the Oxford Guide to Style]
-%</bbx-y>
-%<*cbx-n>
+%</bbx&y>
+%<*cbx&n>
 \ProvidesFile{oxnotes.cbx}
     [\Version\space Footnote-based citation style inspired by the Oxford Guide to Style]
-%</cbx-n>
-%<*cbx-y>
+%</cbx&n>
+%<*cbx&y>
 \ProvidesFile{oxyear.cbx}
     [\Version\space Author-year citation style inspired by the Oxford Guide to Style]
-%</cbx-y>
+%</cbx&y>
 %<*dbx>
 \ProvidesFile{oxref.dbx}
     [\Version\space Data model for the Oxref family of styles]
 %</dbx>
-%<*lbx-gb>
+%<*lbx&gb>
 \ProvidesFile{british-oxref.lbx}
     [\Version\space British English conventions required by the biblatex-oxref styles]
-%</lbx-gb>
-%<*doc-n>
+%</lbx&gb>
+%<*doc&n>
 \ProvidesFile{oxnotes-doc.tex}
     [\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]
-%</doc-n>
-%<*doc-y>
+%</doc&n>
+%<*doc&y>
 \ProvidesFile{oxyear-doc.tex}
     [\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]
-%</doc-y>
+%</doc&y>
 %<*readme>
 # biblatex-oxref: Biblatex styles inspired by the *Oxford Guide to Style*
 %</readme>
@@ -100,15 +100,15 @@ Copyright (C) 2016 Alex Ball
 
 \usedir{tex/latex/\jobname}
 \generate{
-  \file{\jobname.bbx}{\from{\jobname.dtx}{bbx-0}}
-  \file{oxnotes.bbx}{\from{\jobname.dtx}{bbx-n}}
-  \file{oxyear.bbx}{\from{\jobname.dtx}{bbx-y}}
-  \file{oxnotes.cbx}{\from{\jobname.dtx}{cbx-n}}
-  \file{oxyear.cbx}{\from{\jobname.dtx}{cbx-y}}
+  \file{\jobname.bbx}{\from{\jobname.dtx}{bbx,o}}
+  \file{oxnotes.bbx}{\from{\jobname.dtx}{bbx,n}}
+  \file{oxyear.bbx}{\from{\jobname.dtx}{bbx,y}}
+  \file{oxnotes.cbx}{\from{\jobname.dtx}{cbx,n}}
+  \file{oxyear.cbx}{\from{\jobname.dtx}{cbx,y}}
   \file{\jobname.dbx}{\from{\jobname.dtx}{dbx}}
-  \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx-gb}}
-  \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc-n}}
-  \file{oxyear-doc.tex}{\from{\jobname.dtx}{doc-y}}
+  \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx,gb}}
+  \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc,n}}
+  \file{oxyear-doc.tex}{\from{\jobname.dtx}{doc,y}}
 }
 %</install>
 %<install>\endbatchfile
@@ -128,9 +128,9 @@ Copyright (C) 2016 Alex Ball
     [\Version\space Biblatex styles inspired by the Oxford Guide to Style]
 \PassOptionsToPackage{style=oxnotes}{biblatex}
 %</driver>
-%<doc-n>\PassOptionsToPackage{style=oxnotes,scnames}{biblatex}
-%<doc-y>\PassOptionsToPackage{style=oxyear}{biblatex}
-%<*driver|doc-n|doc-y>
+%<doc&n>\PassOptionsToPackage{style=oxnotes,scnames}{biblatex}
+%<doc&y>\PassOptionsToPackage{style=oxyear}{biblatex}
+%<*driver|doc>
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \setlrmarginsandblock{4cm}{2cm}{*}
 \setulmarginsandblock{2.5cm}{2.5cm}{*}
@@ -298,7 +298,7 @@ Copyright (C) 2016 Alex Ball
   {\dbgcolor{#2}{\fullcite[#1]{#2}}.}}
 
 \frenchspacing
-%</driver|doc-n|doc-y>
+%</driver|doc>
 %<*driver>
 
 % For typesetting the implementation
@@ -442,9 +442,9 @@ Copyright (C) 2016 Alex Ball
 
 \title{OXREF -- Biblatex styles inspired by the \emph{Oxford Guide to Style}}
 %</driver>
-%<doc-n>\title{OXNOTES -- A notes-based style for Biblatex}
-%<doc-y>\title{OXYEAR -- An author–year style for Biblatex}
-%<*driver|doc-n|doc-y>
+%<doc&n>\title{OXNOTES -- A notes-based style for Biblatex}
+%<doc&y>\title{OXYEAR -- An author–year style for Biblatex}
+%<*driver|doc>
 \author{Alex Ball}
 \begin{document}
 \thispagestyle{empty}
@@ -466,7 +466,7 @@ Copyright (C) 2016 Alex Ball
 \noindent
 \hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
 
-%</driver|doc-n|doc-y>
+%</driver|doc>
 %<*driver>
 \chapter*{Preface}
 
@@ -485,7 +485,8 @@ For information on how to use the styles, please refer to the separate documenta
 
 \iffalse % syntax highlighting \fix
 %</driver>
-%<*doc-n|doc-y>
+%<*doc|bib>
+%<*n|y>
 \newpage
 \tableofcontents*
 
@@ -495,8 +496,8 @@ For information on how to use the styles, please refer to the separate documenta
 
 The style is self-contained, so you can load it with \pkg{biblatex}:
 \begin{tcblisting}{listing only}
-%<doc-n>\usepackage[style=oxnotes]{biblatex}
-%<doc-y>\usepackage[style=oxyear]{biblatex}
+%<n>\usepackage[style=oxnotes]{biblatex}
+%<y>\usepackage[style=oxyear]{biblatex}
 \end{tcblisting}
 
 The style has some options additional to the regular \pkg{biblatex} ones:
@@ -511,7 +512,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   (default) Separates the two with a solidus, e.g. ‘23/2’.
   \item[colon]
   Separates the two with a colon and space, e.g. ‘23: 2’.
-%<doc-y>  It is intended for use with \textsf{oxnotes} and not recommended for this style.
+%<y>  It is intended for use with \textsf{oxnotes} and not recommended for this style.
   \item[comma]
   Separates the two with a comma and space, e.g. ‘23, 2’.
   \item[parens]
@@ -519,8 +520,8 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   \end{description}
   \item[nopublisher]
   Removes publisher name from all entries.
-%<doc-n>  \item[scnames]
-%<doc-n>  Prints initial author or editor names in bibliography entries in small capitals.
+%<n>  \item[scnames]
+%<n>  Prints initial author or editor names in bibliography entries in small capitals.
 \end{description}
 
 \textsf{Oxref} makes of Biber-specific techniques to solve some of the challenges
@@ -590,9 +591,11 @@ Where a source is provided, it refers to a section from one of the reference wor
 
 Where the source is starred (*), this indicates the example is not quite how it appears in the book,
 usually because the original is demonstrating an option that is not the \textsf{oxref} default.
-%<doc-y>Where the source is marked with a dagger (\textdagger), this indicates that the example
-%<doc-y>has been coverted from an \textsf{oxnotes}-style one,
-%<doc-y>since the guides provide relatively few for author-year references.
+%<*y>
+Where the source is marked with a dagger (\textdagger),
+this indicates that the example has been coverted from an \textsf{oxnotes}-style one,
+since the guides provide relatively few for author-year references.
+%</y>
 
 \section{Design philosophy}
 
@@ -693,18 +696,18 @@ Additional tasks:
 
 \section{Articles in periodicals with volumes/numbers}
 
-%<doc-n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.}
-%<doc-y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.}
+%<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.}
+%<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.}
 
-%</doc-n|doc-y>
-%<*doc-n>
+%</n|y>
+%<*n>
 \begin{bibexbox}<OGS \S15.4.1>
 {goldblatt1973dmm}
 Robert Goldblatt, \enquote{Diodorean Modality in Minkowski Space-Time}, \emph{Studia Logica}, 39/3 (1973), 219--36.
 \tcblower
 \begin{Verbatim}
-%</doc-n>
-%<*doc-n|bib>
+%</n>
+%<*n|bib>
 @article{goldblatt1973dmm,
   author = {Robert Goldblatt},
   title = {Diodorean Modality in Minkowski Space-Time},
@@ -713,20 +716,20 @@ Robert Goldblatt, \enquote{Diodorean Modality in Minkowski Space-Time}, \emph{St
   number = {3},
   date = {1973},
   pages = {219-236}}
-%</doc-n|bib>
-%<*doc-n>
+%</n|bib>
+%<*n>
 \end{Verbatim}
 \end{bibexbox}
 
-%</doc-n>
-%<*doc-y>
+%</n>
+%<*y>
 \begin{bibexbox}<OGS \S15.19.2>
 {hollingsworth1957dsb}
 Hollingsworth, T. H. (1957), \enquote{A Demographic Study of the British Ducal Families}, \emph{Population Studies}, 11/1: 4–26.
 \tcblower
 \begin{Verbatim}
-%</doc-y>
-%<*doc-y|bib>
+%</y>
+%<*y|bib>
 @article{hollingsworth1957dsb,
   author = {T. H. Hollingsworth},
   year = {1957},
@@ -735,21 +738,21 @@ Hollingsworth, T. H. (1957), \enquote{A Demographic Study of the British Ducal F
   volume = {11},
   number = {1},
   pages = {4-26}}
-%</doc-y|bib>
-%<*doc-y>
+%</y|bib>
+%<*y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</doc-y>
-%<doc-n|doc-y>An example with a subtitle:
-%<*doc-n>
+%</y>
+%<n|y>An example with a subtitle:
+%<*n>
 \begin{bibexbox}<OGS \S15.4.1>
 {inalcik1992csm}
 Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typification of the Ottoman Polity}, \emph{Princeton Papers in Near Eastern Studies}, 1 (1992), 49--72.
 \tcblower
 \begin{Verbatim}
-%</doc-n>
-%<*doc-n|bib>
+%</n>
+%<*n|bib>
 @article{inalcik1992csm,
   author = {Halil Inalcik},
   title = {Comments on \enquote{Sultanism}},
@@ -758,20 +761,20 @@ Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typificatio
   volume = {1},
   date = {1992},
   pages = {49-72}}
-%</doc-n|bib>
-%<*doc-n>
+%</n|bib>
+%<*n>
 \end{Verbatim}
 \end{bibexbox}
 
-%</doc-n>
-%<*doc-y>
+%</n>
+%<*y>
 \begin{bibexbox}<NHR \S17.3.2>
 {unwin1994sce}
 Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Command Economy to Privatisation}, \emph{Geography}, 79/3: 246–61.
 \tcblower
 \begin{Verbatim}
-%</doc-y>
-%<*doc-y|bib>
+%</y>
+%<*y|bib>
 @article{unwin1994sce,
   author = {Tim Unwin},
   year = {1994},
@@ -781,24 +784,23 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
   volume = {79},
   number = {3},
   pages = {246-261}}
-%</doc-y|bib>
-%<*doc-y>
+%</y|bib>
+%<*y>
 \end{Verbatim}
 \end{bibexbox}
-%</doc-y>
-%<*doc-n|doc-y>
+%</y>
+%<*n|y>
 
 An example with no number, many authors, and a name with a ‘von’ part:
 \begin{bibexbox}
-%<doc-n><OGS \S15.2.1>
-%<doc-y><OGS \S15.2.1\textdagger>
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
 {vaucouleurs1975nmn}
-%<doc-n>Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.
-%<doc-y>Vaucouleurs, G. de, et al. (1975), \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26: 85--98.
+%<n>Gerald de Vaucouleurs et al., \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26 (1975), 85--98.
+%<y>Vaucouleurs, G. de, et al. (1975), \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26: 85--98.
 \tcblower
 \begin{Verbatim}
-%</doc-n|doc-y>
-%<*doc-n|doc-y|bib>
+%</n|y>
 @article{vaucouleurs1975nmn,
   author = {Gerald de Vaucouleurs and J. Blunck and M. Davies and A. Dollfus and I. Koval and
     G. Kuiper and H. Masursky and S. Miyamoto and V Moroz and Carl Sagan},
@@ -807,22 +809,20 @@ An example with no number, many authors, and a name with a ‘von’ part:
   volume = {26},
   date = {1975},
   pages = {85-98}}
-%</doc-n|doc-y|bib>
-%<*doc-n|doc-y>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 An example with a DOI:
 \begin{bibexbox}
-%<doc-n><NHR \S18.8.5>
-%<doc-y><NHR \S18.8.5\textdagger>
+%<n><NHR \S18.8.5>
+%<y><NHR \S18.8.5\textdagger>
 {druin2002rcd}
-%<doc-n>A. Druin, \enquote{The Role of Children in the Design of New Technology}, \emph{Behaviour \& Information Technology}, 21/1 (2002), 1–25. doi: \path{10.1080/01449290110108659}
-%<doc-y>Druin, A. (2002), \enquote{The Role of Children in the Design of New Technology}, \emph{Behaviour \& Information Technology}, 21/1: 1–25. doi: \path{10.1080/01449290110108659}
+%<n>A. Druin, \enquote{The Role of Children in the Design of New Technology}, \emph{Behaviour \& Information Technology}, 21/1 (2002), 1–25. doi: \path{10.1080/01449290110108659}
+%<y>Druin, A. (2002), \enquote{The Role of Children in the Design of New Technology}, \emph{Behaviour \& Information Technology}, 21/1: 1–25. doi: \path{10.1080/01449290110108659}
 \tcblower
 \begin{Verbatim}
-%</doc-n|doc-y>
-%<*doc-n|doc-y|bib>
+%</n|y>
 @article{druin2002rcd,
   author = {A. Druin},
   title = {The Role of Children in the Design of New Technology},
@@ -832,22 +832,20 @@ An example with a DOI:
   date = {2002},
   pages = {1-25},
   doi = {10.1080/01449290110108659}}
-%</doc-n|doc-y|bib>
-%<*doc-n|doc-y>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 An example with an electronic identifier instead of a page range:
 \begin{bibexbox}
-%<doc-n><NHR \S18.8.5*>
-%<doc-y><NHR \S18.8.5*\textdagger>
+%<n><NHR \S18.8.5*>
+%<y><NHR \S18.8.5*\textdagger>
 {li.etal2013flh}
-%<doc-n>Shu Li et al., \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11 (2013), e78188. doi: \path{10.1371/journal.pone.0078188}
-%<doc-y>Li, S. et al. (2013), \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11, e78188. doi: \path{10.1371/journal.pone.0078188}
+%<n>Shu Li et al., \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11 (2013), e78188. doi: \path{10.1371/journal.pone.0078188}
+%<y>Li, S. et al. (2013), \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11, e78188. doi: \path{10.1371/journal.pone.0078188}
 \tcblower
 \begin{Verbatim}
-%</doc-n|doc-y>
-%<*doc-n|doc-y|bib>
+%</n|y>
 @article{li.etal2013flh,
   author = {Shu Li and Chungkun Shih and Chen Wang and Hong Pang and Dong Ren},
   title = {Forever Love},
@@ -858,29 +856,28 @@ An example with an electronic identifier instead of a page range:
   date = {2013},
   eid = {e78188},
   doi = {10.1371/journal.pone.0078188}}
-%</doc-n|doc-y|bib>
-%<*doc-n|doc-y>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 
 \section{Articles in periodicals with series}
 
-%<doc-n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.}
-%<doc-y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number: Pages.}
+%<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.}
+%<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number: Pages.}
 
-%<doc-n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.}
-%<doc-y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number, Pages.}
+%<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.}
+%<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number, Pages.}
 
-%</doc-n|doc-y>
-%<*doc-n>
+%</n|y>
+%<*n>
 \begin{bibexbox}<OGS \S15.4.3>
 {barnes1971has}
 J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quarterly}, \textsc{ns} 21 (1971), 65--80.
 \tcblower
 \begin{Verbatim}
-%</doc-n>
-%<*doc-n|bib>
+%</n>
+%<*n|bib>
 @article{barnes1971has,
   author = {J. Barnes},
   title = {Homonymy in Aristotle and Speusippus},
@@ -889,13 +886,13 @@ J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quart
   volume = {21},
   date = {1971},
   pages = {65--80}}
-%</doc-n|bib>
-%<*doc-n>
+%</n|bib>
+%<*n>
 \end{Verbatim}
 \end{bibexbox}
 
-%</doc-n>
-%<*doc-y>
+%</n>
+%<*y>
 
 This example manually suppresses the punctuation after the journal title (since it is an initialism):
 \begin{bibexbox}(hacked)<OGS \S15.19.2>
@@ -903,8 +900,8 @@ This example manually suppresses the punctuation after the journal title (since 
 Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \emph{CQ} \textsc{ns} 39: 43–76.
 \tcblower
 \begin{Verbatim}
-%</doc-y>
-%<*doc-y|bib>
+%</y>
+%<*y|bib>
 @article{hankinson1989gba,
   author = {R. J. Hankinson},
   year = {1989},
@@ -913,35 +910,35 @@ Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \e
   series = {newseries},
   volume = {39},
   pages = {43–76}}
-%</doc-y|bib>
-%<*doc-y>
+%</y|bib>
+%<*y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</doc-y>
-%<*doc-n|doc-y>
+%</y>
+%<*n|y>
 \section{Articles in issues identified by date alone}
 
-%<doc-n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.}
-%<doc-y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Day Month: Pages.}
+%<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.}
+%<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Day Month: Pages.}
 
-%</doc-n|doc-y>
-%<*doc-n>
+%</n|y>
+%<*n>
 An example without author:
 \begin{bibexbox}<OGS \S15.4.1>
 {bw1984wen}
 \enquote{Who's Excellent Now?}, \emph{Business Week}, 5 Nov. 1984, 76--86.
 \tcblower
 \begin{Verbatim}
-%</doc-n>
-%<*doc-n|bib>
+%</n>
+%<*n|bib>
 @article{bw1984wen,
   title = {Who's Excellent Now?},
   journaltitle = {Business Week},
   date = {1984-11-05},
   pages = {76-86}}
-%</doc-n|bib>
-%<*doc-n>
+%</n|bib>
+%<*n>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -951,35 +948,35 @@ An example without pages:
 Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.
 \tcblower
 \begin{Verbatim}
-%</doc-n>
-%<*doc-n|bib>
+%</n>
+%<*n|bib>
 @article{lee1995ehf,
   author = {Alan Lee},
   title = {England Haunted by Familiar Failings},
   journaltitle = {The Times},
   date = {1995-06-23}}
-%</doc-n|bib>
-%<*doc-n>
+%</n|bib>
+%<*n>
 \end{Verbatim}
 \end{bibexbox}
 
-%</doc-n>
-%<*doc-y>
+%</n>
+%<*y>
 \begin{bibexbox}<OGS \S15.19.2*>
 {marx1842kaa}
 Marx, K. (1842), \enquote{Der Kommunismus und die Augsburger \enquote{Allgemeine Zeitung}}, \emph{Rheinische Zeitung}, 16 Oct.: 1–2.
 \tcblower
 \begin{Verbatim}
-%</doc-y>
-%<*doc-y|bib>
+%</y>
+%<*y|bib>
 @article{marx1842kaa,
   author = {Karl Marx},
   title = {Der Kommunismus und die Augsburger \enquote{Allgemeine Zeitung}},
   journaltitle = {Rheinische Zeitung},
   date = {1842-10-16},
   pages = {1-2}}
-%</doc-y|bib>
-%<*doc-y>
+%</y|bib>
+%<*y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -992,8 +989,8 @@ An example without pages:
 WHO (World Health Organization) (1983), \enquote{Nutrition: Sex Bias of Nutritional Status of Children 0–4 Years}, \emph{Weekly Epidemiologial Record}, 20 May.
 \tcblower
 \begin{Verbatim}
-%</doc-y>
-%<*doc-y|bib>
+%</y>
+%<*y|bib>
 @article{who1983nsb,
   shortauthor = {WHO},
   author = {{World Health Organization}},
@@ -1001,35 +998,34 @@ WHO (World Health Organization) (1983), \enquote{Nutrition: Sex Bias of Nutritio
   title = {Nutrition},
   subtitle = {Sex Bias of Nutritional Status of Children 0–4 Years},
   journaltitle = {Weekly Epidemiologial Record}}
-%</doc-y|bib>
-%<*doc-y>
+%</y|bib>
+%<*y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</doc-y>
-%<*doc-n|doc-y>
+%</y>
+%<*n|y>
 
 An example of a periodical that publishes one issue per year:
 \begin{bibexbox}
-%<doc-n><OGS \S15.3>
-%<doc-y><OGS \S15.3\textdagger>
+%<n><OGS \S15.3>
+%<y><OGS \S15.3\textdagger>
 {boyce1957pgi}
-%<doc-n>M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.
-%<doc-y>Boyce, M. (1957), \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}: 10--45.
+%<n>M. Boyce, \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}, 1957, 10--45.
+%<y>Boyce, M. (1957), \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}: 10--45.
 \tcblower
 \begin{Verbatim}
-%</doc-n|doc-y>
-%<*doc-n|doc-y|bib>
+%</n|y>
 @article{boyce1957pgi,
   author = {M. Boyce},
   title = {The Parthian \emph{Gsn} and Iranian Minstrel Tradition},
   journaltitle = {Journal of the Royal Asiatic Society},
   date = {1957},
   pages = {10-45}}
-%</doc-n|doc-y|bib>
-%<*doc-n|doc-y>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
 
 \chapter{Books}\label{sec:book}
 \chapterprecis{book, mvbook, collection, mvcollection, reference, mvreference}
@@ -1066,18 +1062,22 @@ An example of a periodical that publishes one issue per year:
 \chapter{General formatting tests}\label{sec:tests}
 
 
-%</doc-n|doc-y>
+%</n|y>
+%</doc|bib>
 %<*driver>
 \fi
 \DocInput{\jobname.dtx}
 %</driver>
-%<*driver|doc-n|doc-y>
+%<*driver|doc>
 \end{document}
-%</driver|doc-n|doc-y>
-%<*bbx-0>
+%</driver|doc>
+%<*bbx>
 % \fi
 % \chapter{Bibliography styles}
 %
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%<*o>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \section{Base style: oxref.bbx}
 %
 % \setcounter{FancyVerbLine}{19}
@@ -3192,10 +3192,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareSortExclusion{book,reference,mvreference,proceedings,music}{editor,translator}
 %    \end{macrocode}
 %
-% \iffalse
-%</bbx-0>
-%<*bbx-n>
-% \fi
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</o>
+%<*n>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Notes style: oxnotes.bbx}
 %
@@ -3275,10 +3275,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }}
 %    \end{macrocode}
 %
-% \iffalse
-%</bbx-n>
-%<*bbx-y>
-% \fi
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</n>
+%<*y>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Author–year style: oxyear.bbx}
 %
@@ -4069,12 +4069,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 }
 %    \end{macrocode}
 %
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</y>
+%</bbx>
+%<*cbx>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % \chapter{Citation styles}
 %
-% \iffalse
-%</bbx-y>
-%<*cbx-n>
-% \fi
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%<*n>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Notes style: oxnotes.cbx}
 %
@@ -4084,10 +4089,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \RequireCitationStyle{verbose}
 %    \end{macrocode}
 %
-% \iffalse
-%</cbx-n>
-%<*cbx-y>
-% \fi
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</n>
+%<*y>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Author–year style: oxyear.cbx}
 %
@@ -4097,12 +4102,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \RequireCitationStyle{authoryear}
 %    \end{macrocode}
 %
-% \iffalse
-%</cbx-y>
-%<*lbx-gb>
-% \fi
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</y>
+%</cbx>
+%<*lbx>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \chapter{Localization modules}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%<*gb>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{British English: british-oxref.lbx}
 %
@@ -4239,6 +4249,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   pm               = {{p\adddot m\adddot}{p\adddot m\adddot}},
 }
 %    \end{macrocode}
-% \iffalse
-%</lbx-gb>
-% \fi
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</gb>
+%</lbx>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
