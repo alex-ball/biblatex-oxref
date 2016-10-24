@@ -137,6 +137,11 @@ Copyright (C) 2016 Alex Ball
 \checkandfixthelayout
 % Document divisions
 \chapterstyle{ell}
+\renewcommand{\prechapterprecis}{%
+  \vspace*{\prechapterprecisshift}%
+  \begin{flushright}\precisfont
+}
+\renewcommand{\postchapterprecis}{\end{flushright}}
 \hangsecnum
 \setsecheadstyle{\Large\bfseries\raggedright}
 \setsubsecheadstyle{\large\bfseries\scshape\raggedright}
@@ -503,27 +508,34 @@ The style is self-contained, so you can load it with \pkg{biblatex}:
 
 The style has some options additional to the regular \pkg{biblatex} ones:
 
-\begin{description}
-  \item[altthesis]
+\begin{docKey}{altthesis}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Puts the thesis type inside, rather than outside, the parenthetical publication block.
-  \item[issuestyle]
+\end{docKey}
+
+\begin{docKey}{issuestyle}{=\val{slash}|\val{colon}|\val{comma}|\val{parens}}{default \val{slash}, initially \val{slash}}
   Affects how journal volumes and numbers are printed.
-  \begin{description}
-  \item[slash]
-  (default) Separates the two with a solidus, e.g. ‘23/2’.
-  \item[colon]
-  Separates the two with a colon and space, e.g. ‘23: 2’.
-%<y>  It is intended for use with \textsf{oxnotes} and not recommended for this style.
-  \item[comma]
-  Separates the two with a comma and space, e.g. ‘23, 2’.
-  \item[parens]
-  Sets off the issue number in parentheses, e.g. ‘23 (2)’.
-  \end{description}
-  \item[nopublisher]
+  \begin{itemize}
+  \item\docValue{slash}
+    separates the two with a solidus, e.g. ‘23/2’.
+  \item\docValue{colon}
+    separates the two with a colon and space, e.g. ‘23: 2’.
+%<y>    It is intended for use with \textsf{oxnotes} and not recommended for this style.
+  \item\docValue{comma}
+    separates the two with a comma and space, e.g. ‘23, 2’.
+  \item\docValue{parens}
+    sets off the issue number in parentheses, e.g. ‘23 (2)’.
+  \end{itemize}
+\end{docKey}
+
+\begin{docKey}{nopublisher}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Removes publisher name from all entries.
-%<n>  \item[scnames]
-%<n>  Prints initial author or editor names in bibliography entries in small capitals.
-\end{description}
+\end{docKey}
+
+%<*n>
+\begin{docKey}{scnames}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Prints initial author or editor names in bibliography entries in small capitals.
+\end{docKey}
+%</n>
 
 \textsf{Oxref} makes of Biber-specific techniques to solve some of the challenges
 presented by Oxford style. If you resort to using Bib\TeX\ instead,
@@ -3057,7 +3069,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 
 \section{Audio recordings}
 
-Oxref provides the additional editor types \code{performer}, \code{director} and \code{reader}.
+\textsf{Oxref} provides the additional editor types \code{performer}, \code{director} and \code{reader}.
 
 %<n>\spec{Composer, \emph{Title}, Artist (Series, Number, Year).}
 %<y>\spec{Composer (Year), \emph{Title}, Artist (Series, Number).}
@@ -4220,7 +4232,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 % Similarly, with mixed collections, if referencing a work by the editor
 % of the collection, the editor name is replaced with \enquote{id.}. We
 % insert this logic into a copy of the `editor+others' macro, which will
-% \emph{not} get a year inserted into it by Oxyear.
+% \emph{not} get a year inserted into it by \textsf{oxyear}.
 %
 %    \begin{macrocode}
 \newbibmacro*{bookeditor}{%
@@ -6015,7 +6027,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \subsection{Preliminaries}
 %
-% First we load the common oxref features.
+% First we load the common \textsf{oxref} features.
 %
 %    \begin{macrocode}
 \RequireBibliographyStyle{oxref}
@@ -6098,7 +6110,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \subsection{Preliminaries}
 %
-% First we load the common oxref features.
+% First we load the common \textsf{oxref} features.
 %
 %    \begin{macrocode}
 \RequireBibliographyStyle{oxref}
@@ -6849,7 +6861,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \subsection{Journal division formatting}
 %
-% Oxyear uses a colon to demarcate page numbers
+% \textsf{Oxyear} uses a colon to demarcate page numbers
 %
 %    \begin{macrocode}
 \renewcommand*{\bibpagespunct}{\addcolon\space}

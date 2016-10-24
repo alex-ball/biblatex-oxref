@@ -21,7 +21,7 @@ $(STY2)-doc.pdf: $(STY2)-doc.tex $(NAME).bbx $(STY2).bbx $(STY2).cbx british-$(N
 clean:
 	rm -f {$(NAME),$(STY1)-doc,$(STY2)-doc}.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f {$(STY1),$(STY2),british-$(NAME)}.doc
-	rm -rf _minted-$(NAME)
+	rm -rf _minted-*
 distclean: clean
 	rm -f $(NAME).bbx $(STY1).bbx $(STY1).cbx $(STY2).bbx $(STY2).cbx british-$(NAME).lbx $(NAME).pdf $(NAME)-preamble.tex $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf} $(NAME).bib
 inst: all
