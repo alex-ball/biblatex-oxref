@@ -193,9 +193,11 @@ Copyright (C) 2016 Alex Ball
   , minted options=
     { breaklines
     , fontsize=\footnotesize
+%<*!doc>
     , linenos
     , numbersep=20pt
     , firstnumber=last
+%</!doc>
     }
   , index format=pgf
   , color command=Command
@@ -761,7 +763,7 @@ Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typificatio
 
 %</n>
 %<*y>
-\begin{bibexbox}<NHR \S17.3.2>
+\begin{bibexbox}<NHR \S17.3.2*>
 {unwin1994sce}
 Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Command Economy to Privatisation}, \emph{Geography}, 79/3: 246–61.
 \tcblower
@@ -1045,8 +1047,7 @@ C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales 
   number = {2},
   location = {Lyon},
   date = {1976},
-  pages = {99--109}
-}
+  pages = {99--109}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1074,8 +1075,7 @@ F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--
   issuetitle = {Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)},
   journaltitle = {Rivista Iasalliana},
   volume = {40},
-  date = {1973}
-}
+  date = {1973}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1116,8 +1116,7 @@ X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on
 }
 @periodical{jha1989,
   title = {Journal for the History of Astronomy},
-  volume = {20}
-}
+  volume = {20}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1160,8 +1159,7 @@ J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \e
   author = {Philippe Basiron},
   title = {My Early Life},
   location = {Bourges},
-  year = {1994}
-}
+  year = {1994}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1188,8 +1186,7 @@ H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph
   author = {Maria Luisa Delvigo},
   title = {Testo virgiliano e tradizione indiretta},
   location = {Pisa},
-  date = {1987}
-}
+  date = {1987}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1263,8 +1260,7 @@ George Eliot, \emph{Middlemarch} (New York: W. W. Norton, 1977).
   title = {Middlemarch},
   location = {New York},
   publisher = {W. W. Norton},
-  date = {1977}
-}
+  date = {1977}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1282,8 +1278,7 @@ Antonia Tissoni Benvenuti, \emph{L'\emph{Orfeo} del Poliziano} (Padua: Editrice 
   title = {L'\emph{Orfeo} del Poliziano},
   location = {Padua},
   publisher = {Editrice Antenore},
-  date = {1986}
-}
+  date = {1986}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1301,8 +1296,7 @@ Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake},
   title = {A Sentimental Journal through \enquote{Finnegan's Wake}, with a Map of the {Liffey}},
   location = {Dublin},
   publisher = {HCE Press},
-  date = {1977}
-}
+  date = {1977}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1323,8 +1317,7 @@ Lyons, J. (1981a), \emph{Language and Linguistics: An Introduction} (Cambridge: 
   title = {Language and Linguistics},
   subtitle = {An Introduction},
   location = {Cambridge},
-  publisher = {Cambridge University Press}
-}
+  publisher = {Cambridge University Press}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -1342,8 +1335,7 @@ Lyons, J. (1981b), \emph{Language, Meaning and Context} (London: Fontana Paperba
   date = {1981},
   title = {Language, Meaning and Context},
   location = {London},
-  publisher = {Fontana Paperbacks}
-}
+  publisher = {Fontana Paperbacks}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -1371,8 +1363,7 @@ Lyons, J. (1981b), \emph{Language, Meaning and Context} (London: Fontana Paperba
   authortype = {inferred},
   title = {Philosophical Essays},
   location = {Edinburgh},
-  date = {1768}
-}
+  date = {1768}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1391,8 +1382,7 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
   author = {Smith, T.},
   title = {Famine and Gender},
   year = {1988},
-  location = {New Haven, Conn.}
-}
+  location = {New Haven, Conn.}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -1406,7 +1396,9 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
 %<n>\spec{Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher).}
 
-\begin{bibexbox}<OGS \S15.2.1>
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
 {boethius1976dds}
 %<n>Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).
 %<y>Pseudo-Boethius (1976), \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. O.\ Weijers (Leiden).
@@ -1419,8 +1411,7 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
   subtitle = {Édition critique, introduction et notes},
   editor = {Olga Weijers},
   location = {Leiden},
-  date = {1976}
-}
+  date = {1976}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -1428,7 +1419,9 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
 %<n>\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 %<y>\spec{\emph{Title} (Year), \lit{ed.} Editor(s) (Location: Publisher).}
 
-\begin{bibexbox}<OGS \S15.2.1>
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
 {boas.botschuyver1952dc}
 %<n>\emph{Distichia Catonis}, ed. Marcus Boas and Henricus Johannes Botschuyver (Amsterdam, 1952).
 %<y>\emph{Distichia Catonis} (1952), ed. M.\ Boas and H.\ J.\ Botschuyver (Amsterdam).
@@ -1439,8 +1432,7 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
   title = {Distichia Catonis},
   editor = {Marcus Boas and Henricus Johannes Botschuyver},
   location = {Amsterdam},
-  date = {1952}
-}
+  date = {1952}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -1465,8 +1457,7 @@ Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).
   editor = {Rosemary Stewart and Jean-Louis Barsoux and Alfred Kieser and Hans-Dieter Ganter and Peter Walgenbach},
   title = {Managing in {Britain}},
   location = {London},
-  date = {1994}
-}
+  date = {1994}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1486,8 +1477,7 @@ Barnes, J., and Griffin, M. T. (1989) (eds.), \emph{Philosophia Togata: Essays o
   date = {1989},
   title = {Philosophia Togata},
   subtitle = {Essays on Philosophy and Roman Society},
-  location = {Oxford}
-}
+  location = {Oxford}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -1509,8 +1499,7 @@ Hankinson, R. J. (1988) (ed.), \emph{Method, Medicine, and Metaphysics} (Edmonto
   editor = {R. J. Hankinson},
   year = {1988},
   title = {Method, Medicine, and Metaphysics},
-  location = {Edmonton, Alta.}
-}
+  location = {Edmonton, Alta.}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -1543,8 +1532,7 @@ Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are ty
   series = {Philosophia Antiqua},
   number = {54},
   location = {Leiden},
-  date = {1991}
-}
+  date = {1991}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1579,8 +1567,7 @@ Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscri
     title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
     volumes = {8},
     location = {Brussels},
-    date = {1867/1888}
-}
+    date = {1867/1888}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1610,8 +1597,7 @@ Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W
   volumes = {4},
   location = {Oxford and London},
   publisher = {Talboys and Bohn},
-  date = {1838/1846}
-}
+  date = {1838/1846}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1644,8 +1630,7 @@ Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscri
   title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
   volume = {2},
   location = {Brussels},
-  date = {1867/1888}
-}
+  date = {1867/1888}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1668,8 +1653,7 @@ Annas, J. (1983) (ed.), \emph{Oxford Studies in Ancient Philosophy}, i (Oxford).
   date = {1983},
   title = {Oxford Studies in Ancient Philosophy},
   volume = {1},
-  location = {Oxford}
-}
+  location = {Oxford}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -1702,8 +1686,7 @@ Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handboo
   title = {Structures and Assertions},
   location = {Leiden},
   publisher = {E. J. Brill},
-  date = {1994}
-}
+  date = {1994}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1723,8 +1706,7 @@ A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Liter
   title = {The Nineteenth Century},
   location = {Cambridge},
   publisher = {CUP},
-  date = {1932}
-}
+  date = {1932}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1758,8 +1740,7 @@ David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America},
   mainsubtitle = {A Cultural History},
   location = {New York},
   publisher = {Oxford University Press},
-  date = {1989}
-}
+  date = {1989}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1792,8 +1773,7 @@ Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduc
   introduction = {Justin Kaplan},
   location = {Harmondsworth},
   publisher = {Penguin},
-  date = {1971}
-}
+  date = {1971}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1822,8 +1802,7 @@ Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, tra
   subtitle = {Antiquity and the Middle Ages},
   translator = {Dáibhi Ó Cróinín and David Ganz},
   location = {Cambridge},
-  date = {1990}
-}
+  date = {1990}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1846,8 +1825,7 @@ Marx, K. (1867), \emph{Capital: A Critique of Political Economy}, i, trans. B. F
   volume = {1},
   translator = {B. Fowkes},
   location = {New York},
-  year = {1977}
-}
+  year = {1977}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -1874,8 +1852,7 @@ Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosentha
   translator = {David H. Rosenthal},
   foreword = {David H. Rosenthal},
   location = {London},
-  date = {1984}
-}
+  date = {1984}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1916,8 +1893,7 @@ J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 4
   author = {J. H. Baker},
   title = {An Introduction to {English} Legal History},
   edition = {3},
-  date = {1990}
-}
+  date = {1990}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1943,8 +1919,7 @@ William Beckford, \emph{Vathek} (4th edn., London, 1823) [online facsimile], \ur
   date = {1823},
   howpublished = {online facsimile},
   url = {http://beckford.c18.net/wbvathek1823.html},
-  urldate = {2013-11-05}
-}
+  urldate = {2013-11-05}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1971,8 +1946,7 @@ Where the editor has changed, the following form is used \aside{Use entry type \
   edition = {5},
   editor = {Elizabeth Knowles},
   publisher = {Oxford},
-  date = {1999}
-}
+  date = {1999}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2003,8 +1977,7 @@ J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).
   origdate = {1934},
   edition = {2},
   location = {Oxford},
-  date = {1954}
-}
+  date = {1954}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2025,8 +1998,7 @@ J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).
   edition = {revised},
   origlocation = {London},
   origdate = {1678},
-  date = {1686}
-}
+  date = {1686}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2057,8 +2029,7 @@ Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of F
   location = {Harmondsworth},
   publisher = {Penguin Books},
   date = {1988},
-  pubstate = {first pub\adddotspace 1976}
-}
+  pubstate = {first pub\adddotspace 1976}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2092,8 +2063,7 @@ C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1
   edition = {reprint},
   location = {Paris},
   publisher = {J. Vrin, CNRS},
-  date = {1964/1976}
-}
+  date = {1964/1976}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2124,8 +2094,7 @@ E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malo
   edition = {facsimile},
   location = {Oxford},
   publisher = {Malone Society Reprints},
-  date = {1963}
-}
+  date = {1963}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2156,8 +2125,7 @@ L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hi
   origdate = {1988},
   location = {Chapel Hill},
   publisher = {University of North Carolina Press},
-  date = {1989}
-}
+  date = {1989}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2190,8 +2158,7 @@ Johannes de Garlandia, \emph{De mensurabili musica}, ed. Erich Reimer, 2 vols. (
   series = {Beihefte zum Archiv für Musikwissenschaft},
   number = {10--11},
   publisher = {Wiesbaden},
-  date = {1972}
-}
+  date = {1972}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2211,8 +2178,7 @@ Barnes, J. (1982), \emph{Aristotle} (Past Masters; Oxford).
   date = {1982},
   title = {Aristotle},
   series = {Past Masters},
-  location = {Oxford}
-}
+  location = {Oxford}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2243,8 +2209,7 @@ Smith, P. (forthcoming), \emph{Gender and Famine}, 2 vols. (London).
   title = {Gender and Famine},
   volumes = {2},
   location = {London},
-  pubstate = {forthcoming}
-}
+  pubstate = {forthcoming}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2285,8 +2250,7 @@ Paul Oskar Kristeller, \enquote{The Aristotelian Tradition}, in id., \emph{Renai
   editor = {Michael Mooney},
   location = {New York},
   publisher = {Columbia University Press},
-  date = {1979}
-}
+  date = {1979}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2328,8 +2292,7 @@ John Shearman, \enquote{The Vatican Stanze: Functions and Decoration}, in George
   location = {Oxford},
   publisher = {Clarendon Press},
   date = {1993},
-  pages = {185-240}
-}
+  pages = {185-240}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2352,8 +2315,7 @@ Magarey, M. E. (1988), \enquote{Examination of the Cervical and Thoracic Spine},
   booktitle = {Physical Therapy of the Cervical and Thoracic Spine},
   location = {New York},
   publisher = {Churchill Livingstone},
-  pages = {81-109}
-}
+  pages = {81-109}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2373,8 +2335,7 @@ Jessop, B. (1997), \enquote{The Governance of Complexity and Complexity of Gover
   editor = {Ash Amin and Jerzy Hausner},
   booktitle = {Beyond Markets and Hierarchy},
   location = {Aldershot},
-  publisher = {Edward Elgar}
-}
+  publisher = {Edward Elgar}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2409,8 +2370,7 @@ W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emp
   booksubtitle = {Essays Presented to Ernest Campbell Mossner},
   location = {Edinburgh},
   publisher = {Edinburgh University Press},
-  date = {1974}
-}
+  date = {1974}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2456,8 +2416,7 @@ G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science a
   journaltitle = {Oxford Studies in Ancient Philosophy},
   volume = {1},
   date = {1983},
-  pages = {1-25}
-}
+  pages = {1-25}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2493,8 +2452,7 @@ G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings
   location = {Oxford},
   publisher = {Blackwell},
   date = {1952},
-  pubstate = {originally pub\adddotspace 1892}
-}
+  pubstate = {originally pub\adddotspace 1892}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2527,8 +2485,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
   title = {Proceedings of the {XIV} {International} {Congress} of {Papyrologists}},
   subtitle = {{Oxford}, 24--31 {July} 1974},
   location = {London},
-  date = {1975}
-}
+  date = {1975}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2547,8 +2504,7 @@ International Astronomical Union, \emph{Transactions of the International Astron
   eventdate = {1922-05-12/1922-05-20},
   location = {London},
   publisher = {Imperial College Bookstall},
-  date = {1922}
-}
+  date = {1922}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2578,8 +2534,7 @@ International Astronomical Union, \emph{Transactions of the International Astron
   number = {5714},
   location = {Berlin},
   publisher = {Springer},
-  date = {2009}
-}
+  date = {2009}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -2609,8 +2564,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
   location = {Glasgow},
   publisher = {Design Society},
   date = {2009},
-  isbn = {978-1-904670-12-4}
-}
+  isbn = {978-1-904670-12-4}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -2636,8 +2590,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
   location = {Glasgow},
   publisher = {Design Society},
   date = {2009},
-  isbn = {978-1-904670-12-4}
-}
+  isbn = {978-1-904670-12-4}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -2671,8 +2624,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
   date = {2009},
   pages = {487-488},
   isbn = {978-3-642-04345-1},
-  issn = {0302-9743}
-}
+  issn = {0302-9743}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -2700,8 +2652,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
   date = {2009},
   pages = {123-134},
   isbn = {978-1-904670-12-4},
-  url = {http://opus.bath.ac.uk/14285}
-}
+  url = {http://opus.bath.ac.uk/14285}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -2728,8 +2679,7 @@ E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University Colleg
   note = {Inaugural Lecture, University College London, 14 Feb. 1957},
   location = {London},
   publisher = {H. K. Lewis},
-  date = {1957}
-}
+  date = {1957}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2757,8 +2707,7 @@ Leofranc Holford-Strevens, \enquote{Humanism and the Language of Music Theory Tr
   title = {Humanism and the Language of Music Theory Treatises},
   howpublished = {paper given at the 65th Annual Meeting of the American Musicological Society},
   location = {Kansas City, MO},
-  date = {1999-11-04/1999-11-07}
-}
+  date = {1999-11-04/1999-11-07}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2777,8 +2726,7 @@ Mason, J. B., Habicht, J. P., and Tabatabai, H. (1984), \enquote{Notes on Nutrit
   author = {J. B. Mason, and J. P. Habicht and H. Tabatabai},
   year = {1984},
   title = {Notes on Nutritional Surveillance},
-  howpublished = {paper delivered to the WHO conference}
-}
+  howpublished = {paper delivered to the WHO conference}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2805,8 +2753,7 @@ Pritchard, E., and Pritchard, J. (1990), \enquote{A Reply to Drèze}, unpub.\ pa
   author = {E. Pritchard and J. Pritchard},
   year = {1990},
   title = {A Reply to Drèze},
-  howpublished = {unpub.\ paper}
-}
+  howpublished = {unpub.\ paper}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2840,8 +2787,7 @@ Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Ga
   title = {A Human Drought Relief Programme for Botswana},
   location = {Gabarone},
   institution = {Ministry of Local Government and Lands},
-  date = {1980}
-}
+  date = {1980}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2871,8 +2817,7 @@ Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Men
   title = {An Unsuitable Place for Treatment},
   subtitle = {Diverting Mentally Disordered Offenders from Custody},
   location = {London},
-  date = {1988}
-}
+  date = {1988}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2893,8 +2838,7 @@ WHO (World Health Organization) (1986), \emph{Nutrition and Development in East 
   title = {Nutrition and Development in {East Africa}},
   date = {1986},
   location = {Geneva},
-  institution = {WHO}
-}
+  institution = {WHO}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2915,8 +2859,7 @@ CNNR/GMH (Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria
   subtitle = {Una Tragedia que no Cesa},
   origtitle = {{Trujilla:} {A} Tragedy Without End},
   location = {Bogotá, Columbia},
-  institution = {CNRR}
-}
+  institution = {CNRR}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2946,8 +2889,7 @@ Office of Population Censuses and Surveys (1979a), \emph{Area Mortality Tables: 
   subtitle = {The Registrar-General's Decennial Supplement for England and Wales 1969–1973},
   series = {Series DS},
   number = {3},
-  location = {London}
-}
+  location = {London}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2966,8 +2908,7 @@ Office of Population Censuses and Surveys (1979b), \emph{Projections of the New 
   title = {Projections of the {New Commonwealth} and {Pakistani} Population},
   type = {OPCS Monitor},
   number = {PP2 79/1},
-  location = {London}
-}
+  location = {London}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2986,8 +2927,7 @@ Rosenblatt, J., et al. (1988), \emph{The Common Agricultural Policy of the Europ
   date = {1988-11},
   institution = {International Monetary Fund},
   type = {occasional paper},
-  number = {62}
-}
+  number = {62}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -3019,8 +2959,7 @@ UNESCO, \emph{The United Nations World Water Development Report 4}, vol. 1: \emp
   institution = {UNESCO},
   date = {2012},
   url = {http://unesdoc.unesco.org/images/0021/002156/215644e.pdf},
-  urldate = {2013-11-09}
-}
+  urldate = {2013-11-09}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3048,8 +2987,7 @@ Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chi
   title = {The Lupus Problem},
   type = {Ph.D. diss.},
   institution = {University of Chicago},
-  date = {1970}
-}
+  date = {1970}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3091,8 +3029,7 @@ Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher
   editortype = {performer},
   series = {Valois},
   number = {MB 797},
-  date = {1970}
-}
+  date = {1970}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3119,8 +3056,7 @@ Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).
   publisher = {ECM Records},
   type = {compact disc},
   number = {ECM 1368},
-  date = {1989}
-}
+  date = {1989}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3142,8 +3078,7 @@ Paul Hillier, \emph{Proensa} (ECM Records compact disc ECM 1368, 1989).
   editoratype = {director},
   publisher = {Hyperion},
   type = {compact disc},
-  number = {CDA 66087}
-}
+  number = {CDA 66087}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3170,8 +3105,7 @@ Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP
   publisher = {EMI},
   series = {Blues Series},
   number = {CDP-7-96843-2},
-  pubstate = {two-volume compact disc set}
-}
+  pubstate = {two-volume compact disc set}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3270,8 +3204,7 @@ Grayson Perry, \enquote{I Found Myself in the Art World} [podcast], Reith Lectur
   date = {2013-11-05},
   publisher = {BBC Radio 4},
   url = {http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3},
-  urldate = {2013-11-05}
-}
+  urldate = {2013-11-05}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3311,8 +3244,7 @@ Barbara Quint, \enquote{One Hour to Midnight: \emph{Tasini} Oral Arguments at th
   number = {5},
   date = {2001-05},
   url = {http://www.infotoday.com/newsbreaks/nb010330-1.htm},
-  urldate = {2001-07-01}
-}
+  urldate = {2001-07-01}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3334,8 +3266,7 @@ William Strunk, Jr., \emph{The Elements of Style} (1st edn., Geneva, NY: W. P. H
   date = {1918},
   url = {http://www.bartleby.com/141},
   urldate = {1999-07},
-  options = {urldatetype=published{\space}online}
-}
+  options = {urldatetype=published{\space}online}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3364,8 +3295,7 @@ BBC News, \enquote{Colchester General Hospital: Police Probe Cancer Treatment} (
   subtitle = {Police Probe Cancer Treatment},
   date = {2013-11-05},
   url = {http://www.bbc.co.uk/news/uk-england-essex-24819973},
-  urldate = {2013-11-05}
-}
+  urldate = {2013-11-05}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3374,7 +3304,9 @@ BBC News, \enquote{Colchester General Hospital: Police Probe Cancer Treatment} (
 %</n>
 %<*n|y>
 
-\begin{bibexbox}<NHR \S18.8.5>
+\begin{bibexbox}
+%<n><NHR \S18.8.5>
+%<y><NHR \S18.8.5\textdagger>
 {hooper2013lfs}
 %<n>Richard Hooper, \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov. 2013), \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.
 %<y>Hooper, R. (14 Nov. 2013) \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine, \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013. \emph{[conv.]}
@@ -3387,8 +3319,7 @@ BBC News, \enquote{Colchester General Hospital: Police Probe Cancer Treatment} (
   organization = {BBC News Magazine},
   date = {2013-11-14},
   url = {http://www.bbc.co.uk/news/magazine-24735423},
-  urldate = {2013-11-14}
-}
+  urldate = {2013-11-14}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -3408,8 +3339,7 @@ Stephen McEwen, \enquote{Tan Twan Eng Interview: \enquote{I Have No Alternative 
   journaltitle = {The Spectator},
   date = {2013-05-20},
   url = {http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/},
-  urldate = {2013-11-09}
-}
+  urldate = {2013-11-09}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3428,8 +3358,7 @@ Michael Allaby, \enquote{Feathers and Lava Lamps}, Oxford Reference (2013), \url
   organization = {Oxford Reference},
   date = {2013},
   url = {http://www.oxfordreference.com/page/featherslavalamps},
-  urldate = {2013-11-09}
-}
+  urldate = {2013-11-09}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3449,8 +3378,7 @@ Siu-Lan Tan, \enquote{Why does this Baby Cry when her Mother Sings?} [including 
   organization = {OUPblog},
   date = {2013-11-05},
   url = {http://blog.oup.com/2013/11/why-does-this-baby-cry-when-her-mother-sings-viral-video/},
-  urldate = {2013-11-09}
-}
+  urldate = {2013-11-09}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3474,8 +3402,7 @@ Siu-Lan Tan, \enquote{Why does this Baby Cry when her Mother Sings?} [including 
   title = {Gunpowder Plot},
   maintitle = {Encyclopaedia Britannica},
   url = {http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot},
-  urldate = {2013-11-05}
-}
+  urldate = {2013-11-05}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3494,8 +3421,7 @@ Siu-Lan Tan, \enquote{Why does this Baby Cry when her Mother Sings?} [including 
   date = {2013-11-05},
   options = {datetype=last{\space}modified},
   url = {http://en.wikipedia.org/wiki/Oxford_University_Press},
-  urldate = {2013-11-05}
-}
+  urldate = {2013-11-05}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3521,8 +3447,7 @@ BBC News, \enquote{Inside India's Mars Mission HQ} [video] (5 Nov. 2013), \url{h
   entrysubtype = {video},
   date = {2013-11-05},
   url = {http://www.bbc.co.uk/news/world-24826253},
-  urldate = {2013-11-05}
-}
+  urldate = {2013-11-05}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3542,8 +3467,7 @@ Christie Nicholson, \enquote{A Quirk of Speech May Become a New Vocal Style} [vi
   journaltitle = {Scientific American},
   date = {2011-12-17},
   url = {http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17},
-  urldate = {2013-11-04}
-}
+  urldate = {2013-11-04}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3564,8 +3488,7 @@ Malala Yousafzai, \enquote{Making a Wish for Action on Global Education: Malala 
   organization = {UN Web TV},
   date = {2013-07-12},
   url = {http://webtv.un.org/search/malala-yousafzai-un-youth-assembly/2542094251001?term=malala},
-  urldate = {2015-02-15}
-}
+  urldate = {2015-02-15}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3587,8 +3510,7 @@ Arthur Rubinstein, \enquote{Rachmaninoff Piano Concerto No. 2, Op. 18, I Moderat
   options = {datetype={recorded}},
   note = {uploaded 8 Nov. 2011},
   url = {http://www.youtube.com/watch?v=0Vv0Sy9FJrc&list=PLDB11C4F39E09047F},
-  urldate = {2013-11-09}
-}
+  urldate = {2013-11-09}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3614,8 +3536,7 @@ M. Clarke, \enquote{Exports of Coal to the IFS} [poster], Manchester Art Gallery
   entrysubtype = {poster},
   organization = {Manchester Art Gallery},
   url = {http://www.machestergalleries.org/the-collections/search-the-collection/display.php?EMUSESSID=70bd7f1a388d79a82f52ea9aae713ef2&irn=4128},
-  urldate = {2013-11-05}
-}
+  urldate = {2013-11-05}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3633,8 +3554,7 @@ M. Clarke, \enquote{Exports of Coal to the IFS} [poster], Manchester Art Gallery
   note = {stained glass window, Church of St Erfyl, Llanerfyl, Powys},
   organization = {Imaging the Bible in Wales Database},
   url = {http://imagingthebible.llgc.org.uk/object/1884},
-  urldate = {2013-11-10}
-}
+  urldate = {2013-11-10}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3660,8 +3580,7 @@ Barack Obama, \enquote{Tomorrow is Veterans Day} [Facebook post] (10 Nov. 2013),
   entrysubtype = {Facebook post},
   date = {2013-11-10},
   url = {https://www.facebook.com/barackobama/photos/a.53081056748.66806.6815841748/10151936988101749/},
-  urldate = {2013-11-13}
-}
+  urldate = {2013-11-13}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3680,8 +3599,7 @@ John Harvey, \enquote{\enquote{These are a Few of My Favourite Things}, No.~28} 
   entrysubtype = {Facebook post},
   date = {2013-11-13},
   url = {https://www.facebook.com/photo.php?fbid=229786530530896&set=a.108896335953250.15125.100004986510149&type=1&theatre},
-  urldate = {2013-11-13}
-}
+  urldate = {2013-11-13}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3700,8 +3618,7 @@ Shakespeare's Globe, \enquote{On this day in 1611 first production of The Tempes
   entrysubtype = {Twitter post},
   date = {2013-11-01T05:48:00},
   url = {https://twitter.com/The_Globe/status/396257422928400385},
-  urldate = {2013-11-05}
-}
+  urldate = {2013-11-05}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3726,8 +3643,7 @@ Simoga, \emph{Device 6}, (version 1.1) [mobile application for iPhone and iPad],
   title = {Device 6},
   version = {1.1},
   entrysubtype = {mobile application for iPhone and iPad},
-  urldate = {2013-11-09}
-}
+  urldate = {2013-11-09}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3748,8 +3664,7 @@ T. S. Eliot, \emph{The Waste Land} (version 1.1.1) [mobile application for iPad]
   location = {London},
   publisher = {Touch Press},
   date = {2013},
-  urldate = {2013-11-09}
-}
+  urldate = {2013-11-09}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3776,8 +3691,7 @@ United Nations, \emph{World Population Prospects: The 2010 Revision} [CD-ROM] (N
   entrysubtype = {CD-ROM},
   location = {New York},
   publisher = {United Nations Department of Economic and Social Affairs, Population Division},
-  date = {2011}
-}
+  date = {2011}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -3808,8 +3722,7 @@ R. M. Ritter, \enquote{About the Oxford Guide to Style}, \emph{Oxford Editorial}
   entrysubtype = {website},
   date = {2001-10-10},
   options = {datetype=updated},
-  url = {http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}
-}
+  url = {http://www.ritter.org.uk/Oxford_Editorial/AboutOGS.html}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
