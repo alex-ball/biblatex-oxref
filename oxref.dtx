@@ -261,8 +261,10 @@ Copyright (C) 2016 Alex Ball
 
 \newcommand*{\pkg}[1]{\href{http://www.ctan.org/pkg/#1}{\textsf{#1}}}
 \newcommand*{\lit}[1]{\textsf{#1}}
-\newcommand*{\code}[1]{`\texttt{#1}'}
+\newcommand*{\code}[1]{\texttt{#1}}
 \newcommand*{\aside}[1]{\textcolor{violet}{[\textsc{tip:} #1]}}
+\newcommand{\tip}[1]{\hangfrom{\faLightbulbO\enskip}#1\par}
+\newcommand{\hack}[1]{\hangfrom{\faWrench\enskip}#1\par}
 
 % For debugging; userd is either ‘todo’, ‘hacked’, ‘manual’
 \makeatletter
@@ -825,6 +827,8 @@ Additional tasks:
 
 \section{Articles in periodicals with volumes/numbers}
 
+The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxyear} which uses a colon to demarcate the page numbers. These variations are implemented as the option \textsf{issuestyle}; see \autoref{sec:loading} for details.
+
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.}
 
@@ -873,8 +877,8 @@ Hollingsworth, T. H. (1957), \enquote{A Demographic Study of the British Ducal F
 \end{bibexbox}
 
 %</y>
-%<n|y>An example with a subtitle:
 %<*n>
+% Internal quotes, subtitle, no number
 \begin{bibexbox}<OGS \S15.4.1>
 {inalcik1992csm}
 Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typification of the Ottoman Polity}, \emph{Princeton Papers in Near Eastern Studies}, 1 (1992), 49--72.
@@ -897,6 +901,7 @@ Halil Inalcik, \enquote{Comments on \enquote{Sultanism}: Max Weber's Typificatio
 
 %</n>
 %<*y>
+% Subtitle
 \begin{bibexbox}<NHR \S17.3.2*>
 {unwin1994sce}
 Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Command Economy to Privatisation}, \emph{Geography}, 79/3: 246–61.
@@ -920,7 +925,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 %</y>
 %<*n|y>
 
-An example with no number, many authors, and a name with a ‘von’ part:
+% Many authors, 'von' part, no number
 \begin{bibexbox}
 %<n><OGS \S15.2.1>
 %<y><OGS \S15.2.1\textdagger>
@@ -942,7 +947,7 @@ An example with no number, many authors, and a name with a ‘von’ part:
 \end{Verbatim}
 \end{bibexbox}
 
-An example with a DOI:
+% DOI
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
 %<y><NHR \S18.8.5\textdagger>
@@ -965,7 +970,7 @@ An example with a DOI:
 \end{Verbatim}
 \end{bibexbox}
 
-An example with an electronic identifier instead of a page range:
+% Electronic identifier instead of a page range
 \begin{bibexbox}
 %<n><NHR \S18.8.5*>
 %<y><NHR \S18.8.5*\textdagger>
@@ -989,11 +994,58 @@ An example with an electronic identifier instead of a page range:
 \end{Verbatim}
 \end{bibexbox}
 
+%</n|y>
+%<*n>
+\begin{bibexbox}(hacked)<OGS \S15.4.1>
+{lindars1965eir}
+B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.
+\tcblower
+\begin{Verbatim}
+%</n>
+%<*n|bib>
+@article{lindars1965eir,
+  author = {B. Lindars},
+  title = {Ezechiel and Individual Responsibility},
+  journaltitle = {VT\nopunct},
+  volume = {15},
+  date = {1965},
+  pages = {452-467},
+}
+%</n|bib>
+%<*n>
+\end{Verbatim}
+\end{bibexbox}
+
+\hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. This can be achieved by adding \cs{nopunct} to the end of the journal title.}
+%</n>
+%<*n|y>
+
 
 \section{Articles in periodicals with series}
 
-%<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number (Year), Pages.}
-%<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}. Vol/Number: Pages.}
+%<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}., Vol/Number (Year), Pages.}
+%<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, nth \lit{ser}., Vol/Number: Pages.}
+
+\begin{bibexbox}
+%<n><NHR \S18.3.3>
+%<y><NHR \S18.3.3\textdagger>
+{moody1953mdb}
+%<n>T. W. Moody, \enquote{Michael Davitt and the British Labour Movement, 1882–1906}, \emph{Transactions of the Royal Historical Society}, 5th ser., 3 (1953), 53--76.
+%<y>Moody, T. W. (1953), \enquote{Michael Davitt and the British Labour Movement, 1882–1906}, \emph{Transactions of the Royal Historical Society}, 5th ser., 3: 53--76.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@article{moody1953mdb,
+  author = {T. W. Moody},
+  title = {Michael Davitt and the British Labour Movement, 1882–1906},
+  journaltitle = {Transactions of the Royal Historical Society},
+  series = {5},
+  volume = {3},
+  date = {1953},
+  pages = {53-76}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number, Pages.}
@@ -1022,8 +1074,6 @@ J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quart
 
 %</n>
 %<*y>
-
-This example manually suppresses the punctuation after the journal title (since it is an initialism):
 \begin{bibexbox}(hacked)<OGS \S15.19.2>
 {hankinson1989gba}
 Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \emph{CQ} \textsc{ns} 39: 43–76.
@@ -1044,8 +1094,11 @@ Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \e
 \end{Verbatim}
 \end{bibexbox}
 
+\hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. This can be achieved by adding \cs{nopunct} to the end of the journal title.}
 %</y>
 %<*n|y>
+
+
 \section{Articles in issues identified by date alone}
 
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.}
@@ -1053,7 +1106,7 @@ Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \e
 
 %</n|y>
 %<*n>
-An example without author:
+% No author
 \begin{bibexbox}<OGS \S15.4.1>
 {bw1984wen}
 \enquote{Who's Excellent Now?}, \emph{Business Week}, 5 Nov. 1984, 76--86.
@@ -1071,7 +1124,7 @@ An example without author:
 \end{Verbatim}
 \end{bibexbox}
 
-An example without pages:
+% No pages
 \begin{bibexbox}<OGS \S15.4.1>
 {lee1995ehf}
 Alan Lee, \enquote{England Haunted by Familiar Failings}, \emph{The Times}, 23 June 1995.
@@ -1112,7 +1165,7 @@ Marx, K. (1842), \enquote{Der Kommunismus und die Augsburger \enquote{Allgemeine
 NB. The above example as it appears in the \emph{Oxford Guide to Style} is both incomplete and wildly inaccurate.
 I have completed and corrected it as best I can ascertain.
 
-An example without pages:
+% No pages
 \begin{bibexbox}<OGS \S15.19.2>
 {who1983nsb}
 WHO (World Health Organization) (1983), \enquote{Nutrition: Sex Bias of Nutritional Status of Children 0–4 Years}, \emph{Weekly Epidemiologial Record}, 20 May.
@@ -1135,7 +1188,7 @@ WHO (World Health Organization) (1983), \enquote{Nutrition: Sex Bias of Nutritio
 %</y>
 %<*n|y>
 
-An example of a periodical that publishes one issue per year:
+% Year as volume number
 \begin{bibexbox}
 %<n><OGS \S15.3>
 %<y><OGS \S15.3\textdagger>
@@ -1157,20 +1210,23 @@ An example of a periodical that publishes one issue per year:
 
 \section{Work published as an issue}
 
-Taking the monograph edition as primary \aside{For this, abuse the appropriate monograph entry type: \code{book} or \code{collection}.}
+These examples illustrate where a book is also published as a whole
+issue of a periodical, and show how you may reference both at once.
+You can either add the periodical details to a book entry
+or add the book details to a periodical entry.
 
 %<n>\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher, Year), pages.}
 %<y>\spec{Author (Year), \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher), pages.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}(hacked)<OGS \S15.4.1>
+\begin{bibexbox}(hacked)
+%<n><OGS \S15.4.1>
+%<y><OGS \S15.4.1\textdagger>
 {bec1976isc}
-C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.
+%<n>C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon, 1976), 99--109.
+%<y>Bec, C. (1976) (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon), 99--109.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @collection{bec1976isc,
   editor = {C. Bec},
   title = {Italie 1500--1550},
@@ -1182,41 +1238,38 @@ C. Bec (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales 
   location = {Lyon},
   date = {1976},
   pages = {99--109}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
-
-Taking the serial edition as primary \aside{Use \code{issuetitle} instead of \code{title}.}
+\hack{Here the journal title (and an equals sign) has been added to the
+  \code{titleaddon} field of a \code{collection} entry,
+   and the volume/issue numbers to the \code{note} field.}
 
 %<n>\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Year).}
 %<y>\spec{Author (Year), \emph{Title} = \emph{JournalTitle}, Vol/Number.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.4.1>
+\begin{bibexbox}
+%<n><OGS \S15.4.1>
+%<y><OGS \S15.4.1\textdagger>
 {trisoglio1973gnq}
-F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).
+%<n>F. Trisoglio, \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40 (1973).
+%<y>Trisoglio, F. (1973), \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @article{trisoglio1973gnq,
   author = {F. Trisoglio},
   issuetitle = {Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)},
   journaltitle = {Rivista Iasalliana},
   volume = {40},
   date = {1973}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
+\tip{Use \code{issuetitle} instead of \code{title} to get the right formatting.}
+
 
 \section{Article in issue that is a supplement to another issue}
 
@@ -1321,44 +1374,6 @@ H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph
   title = {Testo virgiliano e tradizione indiretta},
   location = {Pisa},
   date = {1987}}
-%</n|bib>
-%<*n>
-\end{Verbatim}
-\end{bibexbox}
-
-%</n>
-%<*n|y>
-
-%\item[Alternative styles]~
-%\par Author, \enquote{Title}, \emph{JournalTitle}, Vol: Number (Year), Pages.
-%\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.
-%\par Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol (Number): Pages.
-
-\section{Notes}
-
-\begin{itemize}
-  \item The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxyear} which uses a colon to demarcate the page numbers. These variations are implemented as the option \textsf{issuestyle}; see \autoref{sec:loading} for details.
-
-  \item If the last\slash only word of the JournalTitle is abbreviated (indicated by point or capital letter), it does not need a comma after it. This can be achieved by adding \code{\textbackslash nopunct} to the end of the journal title.
-\end{itemize}
-
-%</n|y>
-%<*n>
-\begin{bibexbox}(hacked)<OGS \S15.4.1>
-{lindars1965eir}
-B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.
-\tcblower
-\begin{Verbatim}
-%</n>
-%<*n|bib>
-@article{lindars1965eir,
-  author = {B. Lindars},
-  title = {Ezechiel and Individual Responsibility},
-  journaltitle = {VT\nopunct},
-  volume = {15},
-  date = {1965},
-  pages = {452-467},
-}
 %</n|bib>
 %<*n>
 \end{Verbatim}
