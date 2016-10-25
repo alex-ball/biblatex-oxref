@@ -30,6 +30,7 @@ clean:
 	rm -f {$(NAME),$(STY1)-doc,$(STY2)-doc}.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f {$(STY1),$(STY2),british-$(NAME)}.doc
 	rm -rf _minted-*
+	rm -rf _markdown_*
 distclean: clean
 	rm -f $(NAME).{bbx,bib,dbx,ins,pdf} {$(STY1),$(STY2)}.{b,c}bx british-$(NAME).lbx $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf}
 
