@@ -1322,20 +1322,18 @@ or add the book details to a periodical entry.
 
 \section{Review}
 
-\aside{If using Biber, use \code{related} to give the key of the reviewed item, and in \code{relatedtype} give the keyword \code{reviewof}. Otherwise, set the option \code{reviewed} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired.}
-
 %<n>\spec{Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number: Pages.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.4.4>
+\begin{bibexbox}
+%<n><OGS \S15.4.4>
+%<y><OGS \S15.4.4\textdagger>
 {dean1995rpb}
-J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.
+%<n>J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.
+%<y>Dean, J. (1995), review of Basiron, P. (1994), \emph{My Early Life} (Bourges), in \emph{Res facta}, 17, 56--9.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @review{dean1995rpb,
   author = {J. Dean},
   related = {basiron1994mel},
@@ -1350,22 +1348,26 @@ J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \e
   title = {My Early Life},
   location = {Bourges},
   year = {1994}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\begin{bibexbox}<OGS \S15.4.4>
+\tip{To achieve the same effect with Bib\TeX, set the option \code{reviewof} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired.
+The following example shows this in action.}
+
+\begin{bibexbox}
+%<n><OGS \S15.4.4>
+%<y><OGS \S15.4.4\textdagger>
 {jocelyn1989pav}
-H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.
+%<n>H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.
+%<y>Jocelyn, H. D. (1989), \enquote{Probus and Virgil}, review of Delvigo, M. L. (1987), \emph{Testo virgiliano e tradizione indiretta} (Pisa), in \emph{CR}, \textsc{ns} 39, 27--8.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @review{jocelyn1989pav,
   author = {H. D. Jocelyn},
   title = {Probus and Virgil},
-  options = {reviewed=delvigo1987tvt},
+  options = {reviewof=delvigo1987tvt},
   journaltitle = {CR},
   series = {newseries},
   volume = {39},
@@ -1377,13 +1379,9 @@ H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph
   title = {Testo virgiliano e tradizione indiretta},
   location = {Pisa},
   date = {1987}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
 
 
 \chapter{Books}\label{sec:book}
@@ -6000,7 +5998,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \newbibmacro*{reviewof}{}
 \DeclareBibliographyCategory{reviewed}
-\DeclareEntryOption{reviewed}{%
+\DeclareEntryOption{reviewof}{%
   \renewbibmacro*{reviewof}{%
     \bibstring{reviewof}%
     \setunit{\addspace}%
@@ -6936,6 +6934,27 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit*{\addspace}%
   \usebibmacro{#1}%
 }{}{}%
+%    \end{macrocode}
+%
+% We apply similar changes to the `relatedauthor' macro (for reviewed works).
+%
+%    \begin{macrocode}
+\DeclareNameAlias{related}{family-given}
+\renewbibmacro*{relatedauthor}{%
+  \ifboolexpr{
+    test \ifuseauthor
+    and
+    not test {\ifnameundef{author}}
+  }
+    {\printnames[related]{author}%
+     \iffieldundef{authortype}
+       {\setunit{\printdelim{nameyeardelim}}}
+       {\newunit%
+        \usebibmacro{authorstrg}%
+        \setunit{\printdelim{nameyeardelim}}}}
+    {\usebibmacro{labeltitle}%
+     \setunit*{\printdelim{nonameyeardelim}}}%
+    \usebibmacro{date+extrayear}}
 %    \end{macrocode}
 %
 % The `labeltitle' macro is exactly the same as the one from
