@@ -1273,44 +1273,47 @@ or add the book details to a periodical entry.
 
 \section{Article in issue that is a supplement to another issue}
 
-\aside{If using Biber, \dots. Otherwise, use the \code{note} field to write ‘Supplement to’ and a reference to a \texttt{periodical}.}%
-\addtocategory{reviewed}{zhentao.etal1989ars}
 
-\aside{Use \code{bookpagination} to force the display of ‘pp.’, and \code{\textbackslash DeclareNumChars*\{S\}} to ensure that \code{S61} is recognized as a number.}%
 \DeclareNumChars*{S}
 
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number, Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number; \lit{Supplement to} \emph{MainJournalTitle} Vol/Number: Pages.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.4.1>
+\begin{bibexbox}
+%<n><OGS \S15.4.1>
+%<y><OGS \S15.4.1\textdagger>
 {zhentao.etal1989ars}
-X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.
+%<n>X. Zhentao, K. K. C. Yau, and F. R. Stephenson, \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14 (1989); Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.
+%<y>Zhentao, X., Yau, K. K. C., and Stephenson, F. R. (1989) \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14; Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @article{zhentao.etal1989ars,
   author = {X. Zhentao and K. K. C. Yau and F. R. Stephenson},
   title = {Astronomical Records on the Shang Dynasty Oracle Bones},
   journaltitle = {Archaeoastronomy},
   volume = {14},
   date = {1989},
-  note = {Supplement to \fullcite{jha1989}},
+  related = {jha1989},
+  relatedtype = {suppto},
   pages = {S61-S72},
   bookpagination = {page}
 }
 @periodical{jha1989,
   title = {Journal for the History of Astronomy},
   volume = {20}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
+\tip{Use \code{bookpagination} to force the display of ‘pp.’, and
+  \cs{DeclareNumChars*}\brackets{S} to ensure that \code{S61} is
+  recognized as a number.}%
+\tip{To achieve the same effect with Bib\TeX, use the \code{note} field to write
+  ‘Supplement to’ and a \cs{fullcite} reference to a \texttt{periodical}.
+  You will probably want to assign a category to the periodical entry
+  and exclude it from the bibliography.}%
+
 
 \section{Accepted journal article, pre-publication}
 
@@ -4006,13 +4009,15 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 % We provide some additional bibliography strings.
 %
 %    \begin{macrocode}
-\NewBibliographyString{at}
-\NewBibliographyString{under}
-\NewBibliographyString{facsimile}
-\NewBibliographyString{revised}
-\NewBibliographyString{byperformer}
-\NewBibliographyString{bydirector}
-\NewBibliographyString{byreader}
+\NewBibliographyString{%
+  at,
+  under,
+  facsimile,
+  revised,
+  suppto,
+  byperformer,
+  bydirector,
+  byreader}
 %    \end{macrocode}
 %
 % We provide some magic values for triggering formatting changes.
@@ -4664,8 +4669,9 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 }
 %    \end{macrocode}
 %
-% We patch the `article' driver to remove the \enquote{in} macro and
-% adjust punctuation after editors and page references.
+% We patch the `article' driver to remove the \enquote{in} macro, move the
+% related macro forward a bit, and adjust punctuation after editors and page
+% references.
 %
 %    \begin{macrocode}
 \xpatchbibdriver{article}{%
@@ -4682,12 +4688,52 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
 }{}{}
 \xpatchbibdriver{article}{%
+  \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
   \newunit\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
 }{%
+  \setunit{\addsemicolon\space\bibsentence}%
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
   \setunit{\addperiod\addspace}\newblock
 }{}{}
+%    \end{macrocode}
+%
+% We suppress the printing of the page numbers if the article is in a
+% supplement.
+%
+%    \begin{macrocode}
+\newbibmacro*{note+pages}{%
+  \printfield{note}%
+  \setunit{\bibpagespunct}%
+  \iffieldequalstr{relatedtype}{suppto}{}{%
+    \printfield{pages}%
+  }%
+  \newunit}
+%    \end{macrocode}
+%
+% We provide a macro to support the printing of parent periodicals.
+%
+%    \begin{macrocode}
+\newbibmacro*{related:suppto}[1]{%
+  \entrydata*{#1}{%
+    \usedriver{}{%
+      \thefield{entrytype}%
+    }%
+  }%
+  \iffieldundef{bookpagination}%
+    {\setunit{\bibpagespunct}}%
+    {\newunit}%
+  \printfield{pages}%
+}
 %    \end{macrocode}
 %
 % \subsection{Monograph-style entries}
@@ -7022,16 +7068,24 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 }
 \DeclareBibliographyStrings{%
   inherit          = {british},
-  % Peculiar to Oxref
+%    \end{macrocode}
+%
+% These are new strings defined by \textsf{oxref}.
+%
+%    \begin{macrocode}
   at               = {{at}{at}},
   under            = {{s.v.}{s.v.}},
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
-  reviewof         = {{review of}{review of}},
+  suppto           = {{supplement to}{supplement to}},
   byperformer      = {{}{}},
   bydirector       = {{directed by}{dir\adddot}},
   byreader         = {{read by}{read by}},
-  % Standard (NB. Oxford style is more sparing with `by')
+%    \end{macrocode}
+%
+% These are standard strings, some of which are redefined by \textsf{oxref}.
+%
+%    \begin{macrocode}
   introduction     = {{introduction}{introduction}},
   withintroduction = {{with an introduction by}{with an introduction by}},
   byeditor         = {{edited by}{ed\adddot}},
@@ -7039,7 +7093,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   byredactor       = {{redacted by}{red\adddot}},
   byfounder        = {{founded by}{found\adddot}},
   bycontinuator    = {{continued by}{cont\adddot}},
-  bycollaborator   = {{in collaboration with}{in collab\adddotspace with}}, % FIXME: unsure
+  bycollaborator   = {{in collaboration with}{in collab\adddotspace with}},
   bytranslator     = {{translated \lbx@lfromlang\ by}{trans\adddot\ \lbx@sfromlang}},
   bycommentator    = {{commented by}{comm\adddot}},
   byannotator      = {{annotated by}{annot\adddot}},
