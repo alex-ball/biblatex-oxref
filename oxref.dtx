@@ -1668,31 +1668,29 @@ Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are ty
 %<n>\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 %<y>\spec{\emph{Title} (Year), \lit{ed.} Editor(s) (Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.1>
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
 {fortenbaugh.etal1991tes}
-\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).
+%<n>\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence}, ed. William W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden, 1991).
+%<y>\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence} (1991), ed. W. W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @mvreference{fortenbaugh.etal1991tes,
   title = {{Theophrastus} of {Eresus}},
   subtitle = {Sources for his Life, Writings, Thought, and Influence},
-  editor = {William W. Fortenbaugh and Pamela M Huby and Robert W. Sharples and Dimitri Gutas and others},
+  editor = {William W. Fortenbaugh and Pamela M Huby and Robert W. Sharples and Dimitri Gutas
+    and others},
   volumes = {2},
   series = {Philosophia Antiqua},
   number = {54},
   location = {Leiden},
   date = {1991}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
 
 \section{Multi-volume works}
 
@@ -1705,44 +1703,41 @@ Where all volumes were published consistently, the following form is used:
 %<n>\spec{Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.}
 %<y>\spec{Author (Year), \emph{Title}, n \lit{vols.} (Location: Publisher), VolNo. Pages.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.6>[\nopp ii.~\mkcomprange{367--368}]
+\begin{bibexbox}
+%<n><OGS \S15.2.6>
+%<y><OGS \S15.2.6\textdagger>
+[\nopp ii.~\mkcomprange{367--368}]
 {straeten1867lmp}%
 [title = {\texttt{\string\autocite[\string\nopp\ ii.~\string\mkcomprange\{367--368\}]\{straeten1867lmp\}}}]
-Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.
+%<n>Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.
+%<y>Vander Straeten, E. (1867--88) \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels), ii. 367--8.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @mvbook{straeten1867lmp,
     author = {Edmond {Vander Straeten}},
     title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
     volumes = {8},
     location = {Brussels},
     date = {1867/1888}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
 
 Where the publisher changed between volumes, the following form is used:
 
 %<n>\spec{Author, \emph{Title}, VolNo, n \lit{vols.} (Location: Publisher and Location: Publisher, Year–Year).}
 %<y>\spec{Author (Year–Year), \emph{Title}, VolNo, n \lit{vols.} (Location: Publisher and Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.6*>
+\begin{bibexbox}
+%<n><OGS \S15.2.6*>
+%<y><OGS \S15.2.6*\textdagger>
 {ritter1838hap}
-Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn, 1838--46).
+%<n>Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn, 1838--46).
+%<y>Ritter, H. (1838--46) \emph{The History of Ancient Philosophy}, trans. A. J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @mvbook{ritter1838hap,
   author = {Heinrich Ritter},
   title = {The History of Ancient Philosophy},
@@ -1751,20 +1746,16 @@ Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W
   location = {Oxford and London},
   publisher = {Talboys and Bohn},
   date = {1838/1846}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 NB. In the \emph{Oxford Style Manual}, the translator in the above reference is in parentheses,
 but as this pattern does not occur in any other it may be an error or stylistic variation.
-%</n>
-%<*n|y>
 
 \subsection{One volume from several}
 
-Where the volumes are merely numbered, the following form is used
-\aside{Use \code{title} but not \code{maintitle}}:
+Where the volumes are merely numbered, the following form is used:
 
 %<n>\spec{Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \emph{Title}, VolNo (Location: Publisher), Pages.}
@@ -1788,11 +1779,7 @@ Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscri
 %<*n>
 \end{Verbatim}
 \end{bibexbox}
-
 %</n>
-%<*n|y>[367-368]
-
-%</n|y>
 %<*y>
 \begin{bibexbox}<OGS \S15.19.2>
 {annas1983osa}
@@ -1811,26 +1798,26 @@ Annas, J. (1983) (ed.), \emph{Oxford Studies in Ancient Philosophy}, i (Oxford).
 %<*y>
 \end{Verbatim}
 \end{bibexbox}
-
 %</y>
 %<*n|y>
+\tip{To get this format, do not use \code{maintitle}: put the title of the whole work in \code{title}.}
 
 Where the volumes each have their own (sub)title,
 and they were all published at once (more or less),
-the following form is used \aside{Use both \code{title} and \code{maintitle}}:
+the following form is used:
 
 %<n>\spec{Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher), Pages.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.2>
+\begin{bibexbox}
+%<n><OGS \S15.2.2>
+%<y><OGS \S15.2.2\textdagger>
 {brady.etal1994hehsa}
-Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).
+%<n>Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill, 1994).
+%<y>Brady, Jr., T. A., Oberman, H. A., and Tracy, J. D. (1994) (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @mvcollection{brady.etal1994hehsa,
   editor = {Brady, Jr., Thomas A. and Heiko A. Oberman and James D. Tracy},
   maintitle = {Handbook of European History, 1400–1600},
@@ -1840,18 +1827,20 @@ Thomas A. Brady, Jr., Heiko A. Oberman, and James D. Tracy (eds.), \emph{Handboo
   location = {Leiden},
   publisher = {E. J. Brill},
   date = {1994}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\begin{bibexbox}<OGS \S15.2.6>
+\begin{bibexbox}
+%<n><OGS \S15.2.6>
+%<y><OGS \S15.2.6\textdagger>
+[42-56]
 {ward.waller1932che}
-A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.
+%<n>A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.
+%<y>Ward, A. W., and Waller, A. E. (1932) (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP), 42--56.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @mvcollection{ward.waller1932che,
   editor = {A. W. Ward and A. E. Waller},
   maintitle = {The Cambridge History of English Literature},
@@ -1860,30 +1849,27 @@ A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Liter
   location = {Cambridge},
   publisher = {CUP},
   date = {1932}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>[42-56]
+\tip{To get this format, use \code{title} for the volume title and \code{maintitle} for the whole work.}
 
 Where the volumes each have their own (sub)title,
 and there are many volumes spanning years and possibly publishers,
-the following form is used \aside{Use \code{book} instead of \code{mvbook}.}:
+the following form is used:
 
 %<n>\spec{Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher), Pages.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<NHR \S18.2.7>
+\begin{bibexbox}
+%<n><NHR \S18.2.7>
+%<y><NHR \S18.2.7\textdagger>
 {fischer1989asf}
-David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, [vol.\ i of \emph{America: A Cultural History}] (New York: Oxford University Press, 1989).
+%<n>David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, [vol.\ i of \emph{America: A Cultural History}] (New York: Oxford University Press, 1989).
+%<y>Fischer, D. H. (1989) \emph{Albion’s Seed: Four British Folkways in America}, [vol.\ i of \emph{America: A Cultural History}] (New York: Oxford University Press).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @book{fischer1989asf,
   author = {David Hackett Fischer},
   title = {Albion’s Seed},
@@ -1894,13 +1880,10 @@ David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America},
   location = {New York},
   publisher = {Oxford University Press},
   date = {1989}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
+\tip{To get this format, use \code{book} instead of \code{mvbook}.}
 
 \section{Common variations}
 
