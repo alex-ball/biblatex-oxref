@@ -1218,7 +1218,7 @@ or add the book details to a periodical entry.
 %<n>\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher, Year), pages.}
 %<y>\spec{Author (Year), \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher), pages.}
 
-\begin{bibexbox}(hacked)
+\begin{bibexbox}
 %<n><OGS \S15.4.1>
 %<y><OGS \S15.4.1\textdagger>
 {bec1976isc}
@@ -1230,21 +1230,23 @@ or add the book details to a periodical entry.
 @collection{bec1976isc,
   editor = {C. Bec},
   title = {Italie 1500--1550},
-  subtitle = {Une situation de crise?\nopunct},
-  titleaddon = {= \emph{Annales de l'Université Jean Moulin}},
-  note = {1975/2},
+  subtitle = {Une situation de crise?},
+  related = {aujm1975.2},
+  relatedtype = {equals},
   series = {Langues étrangères},
   number = {2},
   location = {Lyon},
   date = {1976},
   pages = {99--109}}
+@periodical{aujm1975.2,
+  title = {Annales de l'Université Jean Moulin},
+  volume = {1975},
+  number = {2}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\hack{Here the journal title (and an equals sign) has been added to the
-  \code{titleaddon} field of a \code{collection} entry,
-   and the volume/issue numbers to the \code{note} field.}
+\tip{Use \code{equals} as the \code{relatedtype}.}
 
 %<n>\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Year).}
 %<y>\spec{Author (Year), \emph{Title} = \emph{JournalTitle}, Vol/Number.}
@@ -4014,6 +4016,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   facsimile,
   revised,
   suppto,
+  equals,
   byperformer,
   bydirector,
   byreader}
@@ -4322,6 +4325,37 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   }{}}
 %    \end{macrocode}
 %
+% \subsection{Titles}
+%
+% Title handling is mostly as it is in the standard styles, except
+% that the `titleaddon' is printed in square brackets; it is not
+% preceeded by punctuation.
+%
+%    \begin{macrocode}
+\newbibmacro*{title}{%
+  \ifboolexpr{
+    test {\iffieldundef{title}}
+    and
+    test {\iffieldundef{subtitle}}
+  }
+  {}
+  {\printtext[title]{%
+      \printfield[titlecase]{title}%
+      \setunit{\subtitlepunct}%
+      \printfield[titlecase]{subtitle}}%
+    \setunit{\addspace}}%
+  \printfield{titleaddon}%
+  \iffieldequalstr{relatedtype}{equals}{%
+    \iftoggle{bbx:related}{%
+      \usebibmacro{related:init}%
+      \usebibmacro{related}%
+      \clearfield{related}%
+    }{}%
+  }{}%
+}
+\DeclareFieldFormat{titleaddon}{\mkbibbrackets{#1}}
+%    \end{macrocode}
+%
 % \subsection{Date handling}
 %
 % Year ranges are truncated (e.g.~2012–3). Therefore, we provide a
@@ -4533,7 +4567,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   \usebibmacro{journaltype}%
   \newunit
 }{}{}
-\xpatchbibmacro*{journal+issuetitle}{%
+\xpatchbibmacro{journal+issuetitle}{%
   \newunit\printfield{series}%
 }{%
   \printfield{series}%
@@ -4553,7 +4587,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   \usebibmacro{journaltype}%
   \newunit
 }{}{}
-\xpatchbibmacro*{title+issuetitle}{%
+\xpatchbibmacro{title+issuetitle}{%
   \newunit\printfield{series}%
 }{%
   \printfield{series}%
@@ -4566,11 +4600,11 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 % future but in the meantime correct this ourselves.
 %
 %    \begin{macrocode}
-\xpatchbibmacro*{title+issuetitle}{%
+\xpatchbibmacro{title+issuetitle}{%
   \printfield{volume}%
   \setunit*{\adddot}%
   \printfield{number}%
-  \newunit%
+  \setunit{\addcomma\space}%
   \printfield{eid}%
 }{%
   \usebibmacro{volume+number+eid}%
@@ -7103,6 +7137,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
   suppto           = {{supplement to}{supplement to}},
+  equals           = {{=}{=}},
   byperformer      = {{}{}},
   bydirector       = {{directed by}{dir\adddot}},
   byreader         = {{read by}{read by}},
