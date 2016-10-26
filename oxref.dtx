@@ -6000,32 +6000,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
 %    \end{macrocode}
 %
-% We provide some alternative macros for related authors
-%
-%    \begin{macrocode}
-\DeclareNameAlias{related}{given-family}
-\newbibmacro*{relatedauthor}{%
-  \ifboolexpr{
-    test \ifuseauthor
-    and
-    not test {\ifnameundef{author}}
-  }
-    {\printnames[related]{author}%
-     \iffieldundef{authortype}
-       {}
-       {\newunit%
-        \usebibmacro{authorstrg}}}
-    {}}
-\newbibmacro*{relatedauthor/translator+others}{%
-  \ifboolexpr{
-    test \ifuseauthor
-    and
-    not test {\ifnameundef{author}}
-  }
-    {\usebibmacro{relatedauthor}}
-    {\usebibmacro{translator+others}}}
-%    \end{macrocode}
-%
 % This macro provides a non-Biber method of inserting a formatted
 % reference within a review reference. It is deprecated and will
 % be removed in a future release.
@@ -6044,55 +6018,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \end{macrocode}
 %
 % We take advantage of the Biber-specific mechanism of relating items
-% in order to handle reviews. The presence or otherwise of the
-% `journaltitle' field is used to determine whether this is a review
-% of a book (first block) or a periodical (second block).
+% in order to handle reviews. Compared to the default code, this is
+% simpler in that we don't check for repeated authors\slash editors (it
+% would be a rather biased review!), we directly set the author format,
+% and we don't convert \textsf{oxyear} format back to \textsf{oxnotes}.
 %
 %    \begin{macrocode}
 \newbibmacro*{related:reviewof}[1]{%
   \entrydata*{#1}{%
-    \iffieldundef{journaltitle}{%
-      \usebibmacro{relatedauthor}%
-      \setunit{\labelnamepunct}\newblock
-      \usebibmacro{maintitle+title}%
-      \newunit
-      \iffieldundef{maintitle}{%
-        \printfield{volume}%
-        \printfield{part}%
-      }{}%
-      \newunit
-      \printlist{language}%
-      \newunit\newblock
-      \usebibmacro{byauthor}%
-      \newunit\newblock
-      \usebibmacro{byeditor+others}%
-      \newunit\newblock
-      \printfield{volumes}%
-      \newunit\newblock
-      \printfield{note}%
-      \newunit\newblock
-      \usebibmacro{series+number+edition+publisher+location+date}%
-    }{%
-      \usebibmacro{relatedauthor/translator+others}%
-      \setunit{\labelnamepunct}\newblock
-      \usebibmacro{title}%
-      \newunit
-      \printlist{language}%
-      \newunit\newblock
-      \usebibmacro{byauthor}%
-      \newunit\newblock
-      \usebibmacro{bytranslator+others}%
-      \newunit\newblock
-      \printfield{version}%
-      \newunit\newblock
-      \usebibmacro{journal+issuetitle}%
-      \newunit
-      \usebibmacro{byeditor+others}%
-      \iffieldundef{note}%
-        {\newunit}%
-        {\setunit{\addsemicolon\addspace}}%
-      \usebibmacro{note+pages}%
-    }%
+    \usedriver{%
+      \renewbibmacro*{related:init}{}%
+      \DeclareNameAlias{author}{given-family}%
+      \renewbibmacro*{pageref}{}%
+    }{\thefield{entrytype}}%
   }%
 }
 %    \end{macrocode}
@@ -6975,26 +6913,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit*{\addspace}%
   \usebibmacro{#1}%
 }{}{}%
-%    \end{macrocode}
-%
-% We apply similar changes to the `relatedauthor' macro (for reviewed works).
-%
-%    \begin{macrocode}
-\renewbibmacro*{relatedauthor}{%
-  \ifboolexpr{
-    test \ifuseauthor
-    and
-    not test {\ifnameundef{author}}
-  }
-    {\printnames[related]{author}%
-     \iffieldundef{authortype}
-       {\setunit{\printdelim{nameyeardelim}}}
-       {\newunit%
-        \usebibmacro{authorstrg}%
-        \setunit{\printdelim{nameyeardelim}}}}
-    {\usebibmacro{labeltitle}%
-     \setunit*{\printdelim{nonameyeardelim}}}%
-    \usebibmacro{date+extrayear}}
 %    \end{macrocode}
 %
 % The `labeltitle' macro is exactly the same as the one from
