@@ -1332,7 +1332,7 @@ or add the book details to a periodical entry.
 %<y><OGS \S15.4.4\textdagger>
 {dean1995rpb}
 %<n>J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.
-%<y>Dean, J. (1995), review of P. Basiron (1994), \emph{My Early Life} (Bourges), in \emph{Res facta}, 17, 56--9.
+%<y>Dean, J. (1995), review of P. Basiron (1994), \emph{My Early Life} (Bourges), in \emph{Res facta}, 17: 56--9.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1363,7 +1363,7 @@ or add the book details to a periodical entry.
 %<y><OGS \S15.4.4\textdagger>
 {jocelyn1989pav}
 %<n>H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.
-%<y>Jocelyn, H. D. (1989), \enquote{Probus and Virgil}, review of M. L. Delvigo (1987), \emph{Testo virgiliano e tradizione indiretta} (Pisa), in \emph{CR}, \textsc{ns} 39, 27--8.
+%<y>Jocelyn, H. D. (1989), \enquote{Probus and Virgil}, review of M. L. Delvigo (1987), \emph{Testo virgiliano e tradizione indiretta} (Pisa), in \emph{CR}, \textsc{ns} 39: 27--8.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -7028,10 +7028,22 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \subsection{Journal division formatting}
 %
-% \textsf{Oxyear} uses a colon to demarcate page numbers
+% \textsf{Oxyear} uses a colon to demarcate page numbers in journal articles.
 %
 %    \begin{macrocode}
-\renewcommand*{\bibpagespunct}{\addcolon\space}
+\renewcommand*{\bibpagespunct}{%
+  \ifboolexpr{
+    test {\iffieldequalstr{entrytype}{article}}
+    or
+    test {\iffieldequalstr{entrytype}{suppperiodical}}
+    or
+    test {\iffieldequalstr{entrytype}{review}}
+  }{%
+    \addcolon\space
+  }{%
+    \addcomma\space
+  }%
+}
 %    \end{macrocode}
 %
 % \subsection{Source mappings}
