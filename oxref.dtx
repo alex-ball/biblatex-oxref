@@ -7033,11 +7033,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \renewcommand*{\bibpagespunct}{%
   \ifboolexpr{
-    test {\iffieldequalstr{entrytype}{article}}
+    test {\ifentrytype{article}}
     or
-    test {\iffieldequalstr{entrytype}{suppperiodical}}
+    test {\ifentrytype{suppperiodical}}
     or
-    test {\iffieldequalstr{entrytype}{review}}
+    test {\ifentrytype{review}}
   }{%
     \addcolon\space
   }{%
