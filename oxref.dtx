@@ -146,7 +146,7 @@ Copyright (C) 2016 Alex Ball
 %<doc&y>\PassOptionsToPackage{style=oxyear}{biblatex}
 %<*driver|doc>
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
-\setlrmarginsandblock{4cm}{2cm}{*}
+\setlrmarginsandblock{3cm}{3cm}{*}
 \setulmarginsandblock{2.5cm}{2.5cm}{*}
 \checkandfixthelayout
 % Document divisions
@@ -1208,7 +1208,7 @@ WHO (World Health Organization) (1983), \enquote{Nutrition: Sex Bias of Nutritio
 \end{Verbatim}
 \end{bibexbox}
 
-\section{Work published as an issue}
+\section{Works published as an issue}
 
 These examples illustrate where a book is also published as a whole
 issue of a periodical, and show how you may reference both at once.
@@ -1271,7 +1271,7 @@ or add the book details to a periodical entry.
 \tip{Use \code{issuetitle} instead of \code{title} to get the right formatting.}
 
 
-\section{Article in issue that is a supplement to another issue}
+\section{Articles in an issue that is a supplement to another issue}
 
 
 \DeclareNumChars*{S}
@@ -1315,12 +1315,12 @@ or add the book details to a periodical entry.
   and exclude it from the bibliography.}%
 
 
-\section{Accepted journal article, pre-publication}
+\section{Accepted journal articles, pre-publication}
 
 %<n>\spec{Author, \enquote{Title} (\lit{to be published in} \emph{JournalTitle}, Year).}
 %<y>\spec{Author (Year), \enquote{Title} (\lit{to be published in} \emph{JournalTitle}).}
 
-\section{Review}
+\section{Reviews}
 
 %<n>\spec{Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number: Pages.}
@@ -1330,7 +1330,7 @@ or add the book details to a periodical entry.
 %<y><OGS \S15.4.4\textdagger>
 {dean1995rpb}
 %<n>J. Dean, review of Philippe Basiron, \emph{My Early Life} (Bourges, 1994), in \emph{Res facta}, 17 (1995), 56--9.
-%<y>Dean, J. (1995), review of Basiron, P. (1994), \emph{My Early Life} (Bourges), in \emph{Res facta}, 17, 56--9.
+%<y>Dean, J. (1995), review of P. Basiron (1994), \emph{My Early Life} (Bourges), in \emph{Res facta}, 17, 56--9.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1352,15 +1352,16 @@ or add the book details to a periodical entry.
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{To achieve the same effect with Bib\TeX, set the option \code{reviewof} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired.
-The following example shows this in action.}
+\tip{To achieve the same effect with Bib\TeX, set the option \code{reviewof} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired. The following example shows this in action%
+%<y>; note that the result is not quite satisfactory%
+.}
 
 \begin{bibexbox}
 %<n><OGS \S15.4.4>
 %<y><OGS \S15.4.4\textdagger>
 {jocelyn1989pav}
 %<n>H. D. Jocelyn, \enquote{Probus and Virgil}, review of Maria Luisa Delvigo, \emph{Testo virgiliano e tradizione indiretta} (Pisa, 1987), in \emph{CR}, \textsc{ns} 39 (1989), 27--8.
-%<y>Jocelyn, H. D. (1989), \enquote{Probus and Virgil}, review of Delvigo, M. L. (1987), \emph{Testo virgiliano e tradizione indiretta} (Pisa), in \emph{CR}, \textsc{ns} 39, 27--8.
+%<y>Jocelyn, H. D. (1989), \enquote{Probus and Virgil}, review of M. L. Delvigo (1987), \emph{Testo virgiliano e tradizione indiretta} (Pisa), in \emph{CR}, \textsc{ns} 39, 27--8.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4662,7 +4663,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
       }%
     }%
   }%
-  \newunit%
+  \newunit
   \printfield{eid}%
 }
 %    \end{macrocode}
@@ -6252,7 +6253,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \providebibmacro*{date+extrayear}{}
 %    \end{macrocode}
 %
-% Here we provide the various possible definitions.
+% Here we provide the various possible definitions. Note that, unlike in
+% `authoryear', we need to ensure the `issue+date' macro prints the `eid'
+% field as well.
 %
 % \begin{itemize}
 %   \item `true' is the same as `year' (see below).
@@ -6318,7 +6321,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         }{%
           \printtext[parens]{\printfield{issue}}%
         }}%
-    \newunit}}
+    \newunit
+    \printfield{eid}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -6361,7 +6365,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           \setunit*{\addspace}%
           \printdate}%
       }}%
-    \newunit}}
+    \newunit
+    \printfield{eid}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -6408,7 +6413,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           \setunit*{\addspace}%
           \printdate}%
       }}%
-    \newunit}}
+    \newunit
+    \printfield{eid}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -6457,7 +6463,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           \setunit*{\addspace}%
           \printdate}%
       }}%
-    \newunit}}
+    \newunit
+    \printfield{eid}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -6510,8 +6517,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         }%
       }%
     }%
-  \newunit}
-}
+  \newunit
+  \printfield{eid}}}
 %    \end{macrocode}
 %
 % We set the default to be `true'/`year'.
@@ -6939,7 +6946,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % We apply similar changes to the `relatedauthor' macro (for reviewed works).
 %
 %    \begin{macrocode}
-\DeclareNameAlias{related}{family-given}
 \renewbibmacro*{relatedauthor}{%
   \ifboolexpr{
     test \ifuseauthor
