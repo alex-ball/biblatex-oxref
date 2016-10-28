@@ -1218,6 +1218,8 @@ or add the book details to a periodical entry.
 %<n>\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher, Year), pages.}
 %<y>\spec{Author (Year), \emph{Title} = \emph{JournalTitle}, Vol/Number (Location: Publisher), pages.}
 
+\tip{Use \code{equals} as the \code{relatedtype}.}
+
 \begin{bibexbox}
 %<n><OGS \S15.4.1>
 %<y><OGS \S15.4.1\textdagger>
@@ -1246,10 +1248,10 @@ or add the book details to a periodical entry.
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Use \code{equals} as the \code{relatedtype}.}
-
 %<n>\spec{Author, \emph{Title} = \emph{JournalTitle}, Vol/Number (Year).}
 %<y>\spec{Author (Year), \emph{Title} = \emph{JournalTitle}, Vol/Number.}
+
+\tip{Use \code{issuetitle} instead of \code{title} to get the right formatting.}
 
 \begin{bibexbox}
 %<n><OGS \S15.4.1>
@@ -1270,8 +1272,6 @@ or add the book details to a periodical entry.
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Use \code{issuetitle} instead of \code{title} to get the right formatting.}
-
 
 \section{Articles in an issue that is a supplement to another issue}
 
@@ -1280,6 +1280,9 @@ or add the book details to a periodical entry.
 
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number, Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number; \lit{Supplement to} \emph{MainJournalTitle} Vol/Number: Pages.}
+
+\tip{To get this format, use a separate entry for the parent issue, reference it in the ‘related’ field, and use the key ‘suppto’ as the ‘relatedtype’.}
+\tip{To achieve the same effect with Bib\TeX, use the \code{note} field to write ‘Supplement to’ and a \cs{fullcite} reference to a \texttt{periodical}. You will probably want to assign a category to the periodical entry and exclude it from the bibliography.}%
 
 \begin{bibexbox}
 %<n><OGS \S15.4.1>
@@ -1308,14 +1311,7 @@ or add the book details to a periodical entry.
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Use \code{bookpagination} to force the display of ‘pp.’, and
-  \cs{DeclareNumChars*}\brackets{S} to ensure that \code{S61} is
-  recognized as a number.}%
-\tip{To achieve the same effect with Bib\TeX, use the \code{note} field to write
-  ‘Supplement to’ and a \cs{fullcite} reference to a \texttt{periodical}.
-  You will probably want to assign a category to the periodical entry
-  and exclude it from the bibliography.}%
-
+\tip{Use \code{bookpagination} to force the display of ‘pp.’ (since the number format is odd), and \cs{DeclareNumChars*}\brackets{S} to ensure that \code{S61} is recognized as a number.}%
 
 \section{Accepted journal articles, pre-publication}
 
@@ -1326,6 +1322,8 @@ or add the book details to a periodical entry.
 
 %<n>\spec{Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number: Pages.}
+
+\tip{To get this format, use a separate entry for the reviewed item, reference it in the ‘related’ field, and use the key ‘reviewof’ as the ‘relatedtype’.}
 
 \begin{bibexbox}
 %<n><OGS \S15.4.4>
@@ -1710,7 +1708,7 @@ Where all volumes were published consistently, the following form is used:
 {straeten1867lmp}%
 [title = {\texttt{\string\autocite[\string\nopp\ ii.~\string\mkcomprange\{367--368\}]\{straeten1867lmp\}}}]
 %<n>Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.
-%<y>Vander Straeten, E. (1867--88) \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels), ii. 367--8.
+%<y>Vander Straeten, E. (1867--88), \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels), ii. 367--8.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1734,7 +1732,7 @@ Where the publisher changed between volumes, the following form is used:
 %<y><OGS \S15.2.6*\textdagger>
 {ritter1838hap}
 %<n>Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn, 1838--46).
-%<y>Ritter, H. (1838--46) \emph{The History of Ancient Philosophy}, trans. A. J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn).
+%<y>Ritter, H. (1838--46), \emph{The History of Ancient Philosophy}, trans. A. J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1759,6 +1757,8 @@ Where the volumes are merely numbered, the following form is used:
 
 %<n>\spec{Author, \emph{Title}, VolNo (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \emph{Title}, VolNo (Location: Publisher), Pages.}
+
+\tip{To get this format, do not use \code{maintitle}: put the title of the whole work in \code{title}.}
 
 %</n|y>
 %<*n>
@@ -1800,7 +1800,6 @@ Annas, J. (1983) (ed.), \emph{Oxford Studies in Ancient Philosophy}, i (Oxford).
 \end{bibexbox}
 %</y>
 %<*n|y>
-\tip{To get this format, do not use \code{maintitle}: put the title of the whole work in \code{title}.}
 
 Where the volumes each have their own (sub)title,
 and they were all published at once (more or less),
@@ -1808,6 +1807,8 @@ the following form is used:
 
 %<n>\spec{Author, \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \emph{Title}, VolNo: \emph{VolTitle} (Location: Publisher), Pages.}
+
+\tip{To get this format, use \code{title} for the volume title and \code{maintitle} for the whole work.}
 
 \begin{bibexbox}
 %<n><OGS \S15.2.2>
@@ -1852,7 +1853,6 @@ the following form is used:
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-\tip{To get this format, use \code{title} for the volume title and \code{maintitle} for the whole work.}
 
 Where the volumes each have their own (sub)title,
 and there are many volumes spanning years and possibly publishers,
@@ -1861,12 +1861,14 @@ the following form is used:
 %<n>\spec{Author, \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \emph{VolTitle}, (\lit{vol.} VolNo \lit{of} Title) (Location: Publisher), Pages.}
 
+\tip{To get this format, use \code{book} instead of \code{mvbook}.}
+
 \begin{bibexbox}
 %<n><NHR \S18.2.7>
 %<y><NHR \S18.2.7\textdagger>
 {fischer1989asf}
 %<n>David Hackett Fischer, \emph{Albion’s Seed: Four British Folkways in America}, [vol.\ i of \emph{America: A Cultural History}] (New York: Oxford University Press, 1989).
-%<y>Fischer, D. H. (1989) \emph{Albion’s Seed: Four British Folkways in America}, [vol.\ i of \emph{America: A Cultural History}] (New York: Oxford University Press).
+%<y>Fischer, D. H. (1989), \emph{Albion’s Seed: Four British Folkways in America}, [vol.\ i of \emph{America: A Cultural History}] (New York: Oxford University Press).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1883,7 +1885,6 @@ the following form is used:
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-\tip{To get this format, use \code{book} instead of \code{mvbook}.}
 
 \section{Common variations}
 
@@ -1894,15 +1895,15 @@ Where works have significant introductions, forewords, afterwords, illustrations
 %<n>\spec{Author, \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title}, \lit{with an} Addition \lit{by} Contributor (Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.1>
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
 {twain1971cyk}
-Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).
+%<n>Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by Justin Kaplan (Harmondsworth: Penguin, 1971).
+%<y>Twain, M. (1971), \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by J. Kaplan (Harmondsworth: Penguin).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @book{twain1971cyk,
   author = {Mark Twain},
   title = {A {Connecticut} Yankee at {King} {Arthur's} Court},
@@ -1910,28 +1911,24 @@ Mark Twain, \emph{A Connecticut Yankee at King Arthur's Court}, with an introduc
   location = {Harmondsworth},
   publisher = {Penguin},
   date = {1971}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
 
 Translators are credited as follows:
 
 %<n>\spec{Author, \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title}, \lit{trans.} Translator(s) (Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.15>
+\begin{bibexbox}
+%<n><NHR \S18.2.14>
+%<y><NHR \S18.2.14\textdagger>
 {bischoff1990lpa}
-Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).
+%<n>Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).
+%<y>Bischoff, B. (1990), \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @book{bischoff1990lpa,
   author = {Bernhard Bischoff},
   title = {Latin Palaeography},
@@ -1939,49 +1936,22 @@ Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, tra
   translator = {Dáibhi Ó Cróinín and David Ganz},
   location = {Cambridge},
   date = {1990}}
-%</n|bib>
-%<*n>
-\end{Verbatim}
-\end{bibexbox}
-
-%</n>
-%<*y>
-\begin{bibexbox}<OGS \S15.19.2>
-{marx1867ccp}
-Marx, K. (1867), \emph{Capital: A Critique of Political Economy}, i, trans. B. Fowkes (New York, 1977).
-\tcblower
-\begin{Verbatim}
-%</y>
-%<*y|bib>
-@mvbook{marx1867ccp,
-  author = {K. Marx},
-  origdate = {1867},
-  title = {Capital},
-  subtitle = {A Critique of Political Economy},
-  volume = {1},
-  translator = {B. Fowkes},
-  location = {New York},
-  year = {1977}}
-%</y|bib>
-%<*y>
-\end{Verbatim}
-\end{bibexbox}
-
-%</y>
 %<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 %<n>\spec{Author, \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title}, \lit{trans.\ with} Addition Translator(s) (Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.15>
+\begin{bibexbox}
+%<n><NHR \S18.2.14>
+%<y><NHR \S18.2.14\textdagger>
 {martorell1984tlb}
-Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).
+%<n>Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosenthal (London, 1984).
+%<y>Martorell, J. (1984), \emph{Tirant lo Blanc}, trans. with foreword D. H. Rosenthal (London).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @book{martorell1984tlb,
   author = {Joanat Martorell},
   title = {Tirant lo Blanc},
@@ -1989,13 +1959,9 @@ Joanat Martorell, \emph{Tirant lo Blanc}, trans. with foreword David H. Rosentha
   foreword = {David H. Rosenthal},
   location = {London},
   date = {1984}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
 
 \subsection{Revision}
 
@@ -2011,14 +1977,16 @@ Where a work has been extensively revised, the following form is used:
 
 \subsection{Later edition}
 
-Where the editor is common to both, the following form is used \aside{Use entry type \code{book}}:
+Where the author\slash editor is common to both, the following form is used:
 
 %<n>\spec{Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title} (nth \lit{edn.}, Location: Publisher).}
 
+\tip{This is the format used by the entry type \code{book}}
+
 %</n|y>
 %<*n>
-\begin{bibexbox}<OGS \S15.2.3>
+\begin{bibexbox}<OGS \S15.2.3>[419-421]
 {baker1990iel}
 J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.
 \tcblower
@@ -2036,17 +2004,55 @@ J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 4
 \end{bibexbox}
 
 %</n>
-%<*n|y>[419-421]
-
-%</n|y>
-%<*n>
-\begin{bibexbox}<NHR \S18.8.5>
-{beckford1823v}
-William Beckford, \emph{Vathek} (4th edn., London, 1823) [online facsimile], \url{http://beckford.c18.net/wbvathek1823.html}, accessed 5 Nov. 2013.
+%<*y>
+\begin{bibexbox}<NHR \S17.3.2*>
+{maitland2001mvr}
+Maitland, G. (2001), \emph{Maitland's Vertebral Manipulation} (6th edn., Oxford: Butterworth--Heinemann).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</y>
+%<*y|bib>
+@book{maitland2001mvr,
+  author = {G. Maitland},
+  title = {Maitland's Vertebral Manipulation},
+  edition = {6},
+  publisher = {Butterworth--Heinemann},
+  location = {Oxford},
+  date = {2001}}
+%</y|bib>
+%<*y>
+\end{Verbatim}
+\end{bibexbox}
+
+%</y>
+%<*n|y>
+\begin{bibexbox}
+%<n><OGS \S15.2.3>
+%<y><OGS \S15.2.3\textdagger>
+[419-421]{baker1990iel}
+%<n>J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.
+%<y>Baker, J. H. (1990), \emph{An Introduction to English Legal History} (3rd edn.), 419--21.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{baker1990iel,
+  author = {J. H. Baker},
+  title = {An Introduction to {English} Legal History},
+  edition = {3},
+  date = {1990}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+%<n><NHR \S18.8.5>
+%<y><NHR \S18.8.5\textdagger>
+{beckford1823v}
+%<n>William Beckford, \emph{Vathek} (4th edn., London, 1823) [online facsimile], \url{http://beckford.c18.net/wbvathek1823.html}, accessed 5 Nov. 2013.
+%<y>Beckford, W. (1823), \emph{Vathek} (4th edn., London) [online facsimile], \url{http://beckford.c18.net/wbvathek1823.html}, accessed 5 Nov. 2013.
+\tcblower
+\begin{Verbatim}
+%</n|y>
 @book{beckford1823v,
   author = {William Beckford},
   title = {Vathek},
@@ -2056,47 +2062,44 @@ William Beckford, \emph{Vathek} (4th edn., London, 1823) [online facsimile], \ur
   howpublished = {online facsimile},
   url = {http://beckford.c18.net/wbvathek1823.html},
   urldate = {2013-11-05}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
+Where the editor has changed, the following form is used:
 
-Where the editor has changed, the following form is used \aside{Use entry type \code{reference}}:
+%<n>\spec{\emph{Title}, nth \lit{edn.}, \lit{ed.} Editor (Location: Publisher, Year).}
+%<y>\spec{\emph{Title} (Year), nth \lit{edn.}, \lit{ed.} Editor (Location: Publisher).}
 
-\spec{\emph{Title}, nth \lit{edn.}, \lit{ed.} Editor (Location: Publisher, Year).}
+\tip{This format is used by entry type \code{reference}}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.3>
+\begin{bibexbox}
+%<n><OGS \S15.2.3>
+%<y><OGS \S15.2.3\textdagger>
 {knowles1999odq}
-\emph{The Oxford Dictionary of Quotations}, 5th edn., ed. Elizabeth Knowles (Oxford, 1999).
+%<n>\emph{The Oxford Dictionary of Quotations}, 5th edn., ed. Elizabeth Knowles (Oxford, 1999).
+%<y>\emph{The Oxford Dictionary of Quotations} (1999), 5th edn., ed. E. Knowles (Oxford).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @reference{knowles1999odq,
   title = {The {Oxford} Dictionary of Quotations},
   edition = {5},
   editor = {Elizabeth Knowles},
   publisher = {Oxford},
   date = {1999}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
-
 \subsection{First and later edition}
 
-Where the publisher is common to both, the following form is used \aside{Use the \code{orig} fields}:
+Where the publisher is common to both, the following form is used:
 
 %<n>\spec{Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title} (Year; nth \lit{edn.}, Location: Publisher).}
+
+\tip{Use the \code{orig} fields for the earlier edition.}
 
 %</n|y>
 %<*n>
@@ -2140,24 +2143,48 @@ J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).
 \end{Verbatim}
 \end{bibexbox}
 
-NB. In the \emph{Oxford Style Manual}, there is no comma after ‘rev. edn.’ in the above reference; this may be an error.
+NB. In the \emph{Oxford Guide to Style}, there is no comma after ‘rev. edn.’ in the above reference; this may be an error.
 %</n>
+%<*y>
+\begin{bibexbox}<OGS \S15.19.2>
+{marx1867ccp}
+Marx, K. (1867), \emph{Capital: A Critique of Political Economy}, i, trans. B. Fowkes (New York, 1977).
+\tcblower
+\begin{Verbatim}
+%</y>
+%<*y|bib>
+@mvbook{marx1867ccp,
+  author = {K. Marx},
+  origdate = {1867},
+  title = {Capital},
+  subtitle = {A Critique of Political Economy},
+  volume = {1},
+  translator = {B. Fowkes},
+  location = {New York},
+  year = {1977}}
+%</y|bib>
+%<*y>
+\end{Verbatim}
+\end{bibexbox}
+
+%</y>
 %<*n|y>
 
-Used where the publisher has changed, the following form is used \aside{Use \code{pubstate} for the original publication date}:
+Where the publisher has changed, the following form is used:
 
 %<n>\spec{Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).}
 %<y>\spec{Author (Year), \emph{Title} (nth \lit{edn.}, Location: Publisher) (\lit{first pub.} Year).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.3>
+\tip{To get this formatting, use \code{pubstate} for the original publication date}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.3>
+%<y><OGS \S15.2.3\textdagger>
 {bettelheim1976uem}
-Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).
-\tcblower
+%<n>Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).
+%<y>Bettelheim, B. (1988), \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books) (first pub. 1976).\tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @book{bettelheim1976uem,
   author = {Bruno Bettelheim},
   title = {The Uses of Enchantment},
@@ -2166,30 +2193,26 @@ Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of F
   publisher = {Penguin Books},
   date = {1988},
   pubstate = {first pub\adddotspace 1976}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
-
 \subsection{Reprint}
-
-\aside{Use localization key \code{reprint} as the edition.}
 
 %<n>\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).}
 %<y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; \lit{repr.} Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.4>
+\tip{Use localization key \code{reprint} as the edition.}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.4>
+%<y><OGS \S15.2.4\textdagger>
 {adam.tannery1897odd}
-C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).
+%<n>C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1913; repr. Paris: J. Vrin, CNRS, 1964--76).
+%<y>Adam, C. and Tannery, D. (1897--1913) (eds.), \emph{Œuvres de Descartes} (Paris: Cerf; repr. Paris: J. Vrin, CNRS, 1964--76).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @collection{adam.tannery1897odd,
   editor = {C. Adam and D. Tannery},
   title = {Œuvres de Descartes},
@@ -2200,28 +2223,24 @@ C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897--1
   location = {Paris},
   publisher = {J. Vrin, CNRS},
   date = {1964/1976}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
-
-\aside{Use localization key \code{facsimile} as the edition.}
 
 %<n>\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).}
 %<y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; \lit{facs. edn.}, Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.4>
+\tip{Use localization key \code{facsimile} as the edition.}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.4>
+%<y><OGS \S15.2.4\textdagger>
 {allen1594kkk}
-E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).
+%<n>E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malone Society Reprints, 1963).
+%<y>Allen, E. (1594), \emph{A Knack to Know a Knave} (London; facs. edn., Oxford: Malone Society Reprints, 1963).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @book{allen1594kkk,
   author = {E. Allen},
   title = {A Knack to Know a Knave},
@@ -2231,28 +2250,24 @@ E. Allen, \emph{A Knack to Know a Knave} (London, 1594; facs. edn., Oxford: Malo
   location = {Oxford},
   publisher = {Malone Society Reprints},
   date = {1963}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
 
 \subsection{Multiple publishers}
 
 %<n>\spec{Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).}
 %<y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}(hacked)<OGS \S15.2.5>
+\begin{bibexbox}(hacked)
+%<n><OGS \S15.2.5>
+%<y><OGS \S15.2.5\textdagger>
 {holfordstrevens1988ag}
-L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).
+%<n>L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).
+%<y>Holford-Strevens, L. A. (1988/1989), \emph{Aulus Gellius} (London: Duckworth; Chapel Hill: University of North Carolina Press).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @book{holfordstrevens1988ag,
   author = {L. A. Holford-Strevens},
   title = {Aulus Gellius},
@@ -2262,13 +2277,9 @@ L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hi
   location = {Chapel Hill},
   publisher = {University of North Carolina Press},
   date = {1989}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
 
 \subsection{Work from a series}
 
