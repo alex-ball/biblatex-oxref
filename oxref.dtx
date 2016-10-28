@@ -6496,124 +6496,169 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % information being printed, but we need to allow months and days to be
 % printed in the absence of a year. This means adapting the range
 % calculation commands defined in `biblatex.sty' for use by
-% \cs{printdate}.
+% \cs{printdate} and friends.
 %
 %    \begin{macrocode}
 \DeclareRobustCommand*{\mkdaterangefull}[2]{%
+  \blx@metadateinfo{#2}%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
+      \datecircaprint
       \printtext[#2date]{%
+      \iffieldundef{#2season}{%
         \csuse{mkbibdate#1}{}{#2month}{#2day}%
-        \iffieldundef{#2endmonth}{}{%
-          \iffieldequalstr{#2endmonth}{}{%
-            \mbox{\bibdaterangesep}%
-          }{%
-            \bibdaterangesep
-            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}}}}}%
-  }{%
-    \printtext[#2date]{%
-      \csuse{mkbibdate#1}{#2year}{#2month}{#2day}%
-      \iffieldundef{#2endyear}{%
+        \blx@printtime{#2}{}%
       }{%
+        \csuse{mkbibseasondate#1}{}{#2season}}%
+      \dateuncertainprint
+      \iffieldundef{#2endmonth}{}{%
+        \iffieldequalstr{#2endmonth}{}{%
+          \mbox{\bibdaterangesep}%
+        }{%
+          \bibdaterangesep
+          \enddatecircaprint
+          \iffieldundef{#2season}{%
+            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}%
+            \blx@printtime{#2}{end}%
+          }{%
+            \csuse{mkbibseasondate#1}{}{#2endseason}}%
+          \enddateuncertainprint}}}}%
+  }{%
+    \datecircaprint
+    \printtext[#2date]{%
+      \iffieldundef{#2season}{%
+        \csuse{mkbibdate#1}{#2year}{#2month}{#2day}%
+        \blx@printtime{#2}{}%
+      }{%
+        \csuse{mkbibseasondate#1}{#2year}{#2season}}%
+      \dateuncertainprint
+      \dateeraprint{#2year}%
+      \iffieldundef{#2endyear}{}{%
         \iffieldequalstr{#2endyear}{}{%
           \mbox{\bibdaterangesep}%
         }{%
           \bibdaterangesep
-          \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}
-
-\DeclareRobustCommand*{\mkdaterangetrunc}[2]{%
-  \iffieldundef{#2year}{%
-    \iffieldundef{#2month}{}{%
-      \printtext[#2date]{%
-        \iffieldsequal{#2month}{#2endmonth}{%
-          \csuse{mkbibdate#1}{}{}{#2day}%
-        }{%
-          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
-        \iffieldundef{#2endmonth}{}{%
-          \iffieldequalstr{#2endmonth}{}{%
-            \mbox{\bibdaterangesep}%
-          }{%
-            \bibdaterangesep
-            \iffieldundef{#2endday}{%
-              \csuse{mkbibdate#1}{}{#2endmonth}{}%
-            }{%
-              \csuse{mkbibdate#1}{}{#2endmonth}{%
-                \blx@ox@compyear{\thefield{#2day}}{\thefield{#2endday}}}}}}}}%
-  }{%
-    \printtext[#2date]{%
-      \iffieldsequal{#2year}{#2endyear}{%
-        \iffieldsequal{#2month}{#2endmonth}{%
-          \csuse{mkbibdate#1}{}{}{#2day}%
-        }{%
-          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
-      }{%
-        \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
-      \iffieldundef{#2endyear}{%
-      }{%
-        \iffieldequalstr{#2endyear}{}{%
-          \mbox{\bibdaterangesep}%
-        }{%
-          \bibdaterangesep
-          \iffieldundef{#2endmonth}{%
-            \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
-          }{%
-            \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}}}}}}
-
-\DeclareRobustCommand*{\mkdaterangefullextra}[2]{%
-  \iffieldundef{#2year}{%
-    \iffieldundef{#2month}{}{%
-      \printtext[#2date]{%
-        \csuse{mkbibdate#1}{}{#2month}{#2day}%
-        \iffieldundef{#2endmonth}{}{%
-          \iffieldequalstr{#2endmonth}{}{%
-            \mbox{\bibdaterangesep}%
-          }{%
-            \bibdaterangesep
-            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}}}}}%
-  }{%
-    \printtext[#2date]{%
-      \printtext{%
-        \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}%
-      \iffieldundef{#2endyear}{%
-        \printfield{extrayear}%
-      }{%
-        \iffieldequalstr{#2endyear}{}{%
-          \printfield{extrayear}%
-          \printtext{\mbox{\bibdaterangesep}}%
-        }{%
-          \printtext{%
-            \bibdaterangesep
+          \enddatecircaprint
+          \iffieldundef{#2season}{%
             \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
-            \printfield{extrayear}}}}}}}
+            \blx@printtime{#2}{end}%
+          }{%
+            \csuse{mkbibseasondate#1}{#2endyear}{#2endseason}}%
+          \enddateuncertainprint
+          \dateeraprint{#2endyear}}}}}}
 
-\DeclareRobustCommand*{\mkdaterangetruncextra}[2]{%
+%    \end{macrocode}
+%
+% There is a potential problem for the code below, in that if the year
+% and endyear are missing, it cannot tell if they are the same, so if
+% the months are the same but the years are different, the range will
+% be erroneously compressed.
+%
+%    \begin{macrocode}
+\DeclareRobustCommand*{\mkdaterangetrunc}[2]{%
+  \blx@metadateinfo{#2}%
   \iffieldundef{#2year}{%
     \iffieldundef{#2month}{}{%
+      \datecircaprint
       \printtext[#2date]{%
-        \iffieldsequal{#2month}{#2endmonth}{%
-          \csuse{mkbibdate#1}{}{}{#2day}%
+        \iffieldundef{#2season}{%
+          \iffieldsequal{#2month}{#2endmonth}{%
+            \csuse{mkbibdate#1}{}{}{#2day}%
+          }{%
+            \csuse{mkbibdate#1}{}{#2month}{#2day}}%
         }{%
-          \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+          \csuse{mkbibseasondate#1}{}{#2season}}%
+        \dateuncertainprint
         \iffieldundef{#2endmonth}{}{%
           \iffieldequalstr{#2endmonth}{}{%
             \mbox{\bibdaterangesep}%
           }{%
             \bibdaterangesep
-            \iffieldundef{#2endday}{%
-              \csuse{mkbibdate#1}{}{#2endmonth}{}%
+            \enddatecircaprint
+            \iffieldundef{#2season}{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}%
             }{%
-              \csuse{mkbibdate#1}{}{#2endmonth}{%
-                \blx@ox@compyear{\thefield{#2day}}{\thefield{#2endday}}}}}}}}%
+              \csuse{mkbibseasondate#1}{}{#2endseason}}%
+            \enddateuncertainprint}}}}%
   }{%
+    \datecircaprint
     \printtext[#2date]{%
-      \printtext{%
+      \iffieldundef{#2season}{%
         \iffieldsequal{#2year}{#2endyear}{%
           \iffieldsequal{#2month}{#2endmonth}{%
             \csuse{mkbibdate#1}{}{}{#2day}%
           }{%
             \csuse{mkbibdate#1}{}{#2month}{#2day}}%
         }{%
-          \csuse{mkbibdate#1}{#2year}{#2month}{#2day}}}%
+          \csuse{mkbibdate#1}{#2year}{#2month}{#2day}%
+          \iffieldsequal{#2dateera}{#2enddateera}{}{%
+            \dateeraprint{#2year}}}%
+      }{%
+        \iffieldsequal{#2year}{#2endyear}{%
+          \csuse{mkbibseasondate#1}{}{#2season}%
+        }{%
+          \csuse{mkbibseasondate#1}{#2year}{#2season}%
+          \iffieldsequal{#2dateera}{#2enddateera}{}{%
+            \dateeraprint{#2year}}}}%
+      \dateuncertainprint
+      \iffieldundef{#2endyear}{}{%
+        \iffieldequalstr{#2endyear}{}{%
+          \mbox{\bibdaterangesep}%
+        }{%
+          \bibdaterangesep
+          \enddatecircaprint
+          \iffieldundef{#2season}{%
+            \iffieldundef{#2endmonth}{%
+              \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
+            }{%
+              \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+          }{%
+            \csuse{mkbibseasondate#1}{#2endyear}{#2endseason}}%
+          \enddateuncertainprint
+          \dateeraprint{#2endyear}}}}}}
+
+%    \end{macrocode}
+%
+% The `extra' commands, which print disambiguating labels, should only
+% print those labels if the year is present, so the first conditional
+% block is the same as for the non-`extra' commands above.
+%
+%    \begin{macrocode}
+\DeclareRobustCommand*{\mkdaterangefullextra}[2]{%
+  \blx@metadateinfo{#2}%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \datecircaprint
+      \printtext[#2date]{%
+      \iffieldundef{#2season}{%
+        \csuse{mkbibdate#1}{}{#2month}{#2day}%
+        \blx@printtime{#2}{}%
+      }{%
+        \csuse{mkbibseasondate#1}{}{#2season}}%
+      \dateuncertainprint
+      \iffieldundef{#2endmonth}{}{%
+        \iffieldequalstr{#2endmonth}{}{%
+          \mbox{\bibdaterangesep}%
+        }{%
+          \bibdaterangesep
+          \enddatecircaprint
+          \iffieldundef{#2season}{%
+            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}%
+            \blx@printtime{#2}{end}%
+          }{%
+            \csuse{mkbibseasondate#1}{}{#2endseason}}%
+          \enddateuncertainprint}}}}%
+  }{%
+    \datecircaprint
+    \printtext[#2date]{%
+      \printtext{%
+        \iffieldundef{#2season}{%
+          \csuse{mkbibdate#1}{#2year}{#2month}{#2day}%
+          \blx@printtime{#2}{}%
+        }{%
+          \csuse{mkbibseasondate#1}{#2year}{#2season}}%
+      \dateuncertainprint
+      \dateeraprint{#2year}%
       \iffieldundef{#2endyear}{%
         \printfield{extrayear}%
       }{%
@@ -6623,11 +6668,83 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         }{%
           \printtext{%
             \bibdaterangesep
-            \iffieldundef{#2endmonth}{%
-              \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
+            \enddatecircaprint
+            \iffieldundef{#2season}{%
+              \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
+              \blx@printtime{#2}{end}%
             }{%
-              \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
-            \printfield{extrayear}}}}}}}
+              \csuse{mkbibseasondate#1}{#2endyear}{#2endseason}}}%
+          \printfield{extrayear}%
+          \enddateuncertainprint
+          \dateeraprint{#2endyear}}}}}}}
+
+\DeclareRobustCommand*{\mkdaterangetruncextra}[2]{%
+  \blx@metadateinfo{#2}%
+  \iffieldundef{#2year}{%
+    \iffieldundef{#2month}{}{%
+      \datecircaprint
+      \printtext[#2date]{%
+        \iffieldundef{#2season}{%
+          \iffieldsequal{#2month}{#2endmonth}{%
+            \csuse{mkbibdate#1}{}{}{#2day}%
+          }{%
+            \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+        }{%
+          \csuse{mkbibseasondate#1}{}{#2season}}%
+        \dateuncertainprint
+        \iffieldundef{#2endmonth}{}{%
+          \iffieldequalstr{#2endmonth}{}{%
+            \mbox{\bibdaterangesep}%
+          }{%
+            \bibdaterangesep
+            \enddatecircaprint
+            \iffieldundef{#2season}{%
+              \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}%
+            }{%
+              \csuse{mkbibseasondate#1}{}{#2endseason}}%
+            \enddateuncertainprint}}}}%
+  }{%
+    \datecircaprint
+    \printtext[#2date]{%
+      \iffieldundef{#2season}{%
+        \iffieldsequal{#2year}{#2endyear}{%
+          \iffieldsequal{#2month}{#2endmonth}{%
+            \csuse{mkbibdate#1}{}{}{#2day}%
+          }{%
+            \csuse{mkbibdate#1}{}{#2month}{#2day}}%
+        }{%
+          \csuse{mkbibdate#1}{#2year}{#2month}{#2day}%
+          \iffieldsequal{#2dateera}{#2enddateera}{}{%
+            \dateeraprint{#2year}}}%
+      }{%
+        \iffieldsequal{#2year}{#2endyear}{%
+          \csuse{mkbibseasondate#1}{}{#2season}%
+        }{%
+          \csuse{mkbibseasondate#1}{#2year}{#2season}
+          \iffieldsequal{#2dateera}{#2enddateera}{}{%
+            \dateeraprint{#2year}}}}%
+      \dateuncertainprint
+      \iffieldundef{#2endyear}{%
+        \printfield{extrayear}%
+      }{%
+        \iffieldequalstr{#2endyear}{}{%
+          \printfield{extrayear}%
+          \printtext{\mbox{\bibdaterangesep}}%
+        }{%
+          \printtext{%
+            \bibdaterangesep
+            \enddatecircaprint
+            \iffieldundef{#2season}{%
+              \iffieldundef{#2endmonth}{%
+                \blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}%
+              }{%
+                \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
+            }{%
+              \csuse{mkbibseasondate#1}{#2endyear}{#2endseason}}}%
+          \printfield{extrayear}%
+          \enddateuncertainprint
+          \dateeraprint{#2endyear}}}}}}
+
 %    \end{macrocode}
 %
 % The `labelyear' falls back to `pubstate' if provided.
