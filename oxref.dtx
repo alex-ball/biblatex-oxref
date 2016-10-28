@@ -290,7 +290,7 @@ Copyright (C) 2016 Alex Ball
   ,colback = #1!5!white
   ,colbacklower = white
   ,fontlower = \footnotesize
-  ,before upper = {\hangfrom{\booksym\space}}
+  ,before upper = {\hangfrom{\booksym\space}\biburlsetup}
   ,IfNoValueTF={#3}%
     {after upper = {\par\hangfrom{\cogsym\space}\fullcite{#4}.}
     }%
@@ -2182,7 +2182,8 @@ Where the publisher has changed, the following form is used:
 %<y><OGS \S15.2.3\textdagger>
 {bettelheim1976uem}
 %<n>Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).
-%<y>Bettelheim, B. (1988), \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books) (first pub. 1976).\tcblower
+%<y>Bettelheim, B. (1988), \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books) (first pub. 1976).
+\tcblower
 \begin{Verbatim}
 %</n|y>
 @book{bettelheim1976uem,
