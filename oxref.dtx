@@ -2607,32 +2607,33 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 %<n>\spec{\emph{Title}, \lit{ed.} Editor (Location: Publisher, Year).}
 %<y>\spec{\emph{Title} (Year), \lit{ed.} Editor (Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.12>
+\begin{bibexbox}
+%<n><OGS \S15.2.12>
+%<y><OGS \S15.2.12\textdagger>
 {icp1975pic}
-\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).
+%<n>\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).
+%<y>\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (1975), (London).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @proceedings{icp1975pic,
   title = {Proceedings of the {XIV} {International} {Congress} of {Papyrologists}},
   subtitle = {{Oxford}, 24--31 {July} 1974},
   location = {London},
   date = {1975}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\begin{bibexbox}<OGS \S15.2.13>
-{iau1922tia}
-International Astronomical Union, \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall, 1922), 1.52–3.
+\begin{bibexbox}
+%<n><OGS \S15.2.13>
+%<y><OGS \S15.2.13\textdagger>
+[1.52-3]{iau1922tia}
+%<n>International Astronomical Union, \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall, 1922), 1.52–3.
+%<y>International Astronomical Union (1922), \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall), 1.52–3.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @proceedings{iau1922tia,
   organization = {{International Astronomical Union}},
   title = {Transactions of the {International} {Astronomical} {Union}, {Rome}},
@@ -2640,13 +2641,9 @@ International Astronomical Union, \emph{Transactions of the International Astron
   location = {London},
   publisher = {Imperial College Bookstall},
   date = {1922}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>[1.52-3]
 
 \textsc{Extension} – Sometimes the title of the proceedings does not relate to the conference; in which case the following form might be used:
 
@@ -2730,10 +2727,9 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 \end{Verbatim}
 \end{bibexbox}
 
-The \code{inproceedings} entry type is intended for a conference paper published as part of a proceedings volume. For papers that have not been collected into a proceedings volume, or presentation slide sets, use the \code{unpublished} entry type instead.
-
 \section{Published conference paper}
-\aside{Extension}
+
+The \code{inproceedings} entry type is intended for a conference paper published as part of a proceedings volume. For papers that have not been collected into a proceedings volume, or presentation slide sets, use the \code{unpublished} entry type instead (see below).
 
 %<n>\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
@@ -2794,20 +2790,18 @@ The \code{inproceedings} entry type is intended for a conference paper published
 
 \section{Published orations, addresses, lectures, and speeches}
 
-Type (of oration), below, is something like \enquote{Inaugural Lecture} or \enquote{Romanes Lecture}.
-
 %<n>\spec{Author, \emph{Title}, Type, Venue, Date (Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title}, Type, Venue, Date (Location: Publisher).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.6>
+\begin{bibexbox}
+%<n><OGS \S15.6>
+%<y><OGS \S15.6\textdagger>
 {gombrich1957as}
-E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).
+%<n>E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis, 1957).
+%<y>Gombrich, E. H. (1957), \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @book{gombrich1957as,
   author = {E. H. Gombrich},
   title = {Art and Scholarship},
@@ -2815,13 +2809,10 @@ E. H. Gombrich, \emph{Art and Scholarship}, Inaugural Lecture, University Colleg
   location = {London},
   publisher = {H. K. Lewis},
   date = {1957}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
 
 \section{Unpublished conference paper}
 
