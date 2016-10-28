@@ -6200,7 +6200,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % We provide the `mergedate' option from the `authoryear' style. The
 % OGS and NHR consistently use a variant that is between basic and
 % compact, in that the year is always moved but the month and day are
-% never moved; this is implemented as the `year' value.
+% never moved; this is implemented as the `year' value. Note that we
+% have the additional complication that `origdate' is also moved.
 %
 %    \begin{macrocode}
 \DeclareBibliographyOption{mergedate}[true]{%
@@ -6336,15 +6337,25 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \begin{itemize}
 %   \item `year' merges only the year with date label.
+%   In `date+extrayear' we have to take a bit of trouble
+%   to clear the right date.
 % \end{itemize}
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@year{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{labelyear}
-    {}
-    {\printtext[parens]{%
+    \iffieldundef{labelyear}{}{%
+      \printtext[parens]{%
         \printfield{labelyear}%
+        \iffieldundef{labelendyear}{}{%
+          \iffieldsequal{labelyear}{labelendyear}{}{%
+            \iffieldequalstr{labelendyear}{}{%
+              \mbox{\bibdaterangesep}%
+            }{%
+              \bibdaterangesep
+              \blx@ox@compyear
+                {\thefield{labelyear}}%
+                {\thefield{labelendyear}}}}}%
         \printfield{extrayear}}%
       \iffieldundef{\thefield{labeldatesource}year}{%
         \iffieldundef{\thefield{labeldatesource}}{}{%
@@ -6353,7 +6364,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       }{%
         \clearfield{\thefield{labeldatesource}year}%
         \clearfield{end\thefield{labeldatesource}year}%
-      }}}%
+      }%
+    }%
+  }%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
       test {\iffieldundef{issue}}
