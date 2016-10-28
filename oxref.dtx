@@ -2373,22 +2373,22 @@ Smith, P. (forthcoming), \emph{Gender and Famine}, 2 vols. (London).
 
 The \code{inbook} entry type is intended for books that consist of several self-contained works by the same author, for citing one of these works.
 
-\subsection{One from a collection of single author's works}
-
-Express this in the database by setting \code{author} $=$ \code{bookauthor} $\neq$ \code{editor}.
+\subsection{Works in collections of single author's works}
 
 %<n>\spec{Author, \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher), Pages.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.11>
+\tip{Express this in the database by setting \code{author} $=$ \code{bookauthor} $\neq$ \code{editor}. You will also need to specify the \code{gender} of the author, as the second instance of the name is replaced by \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.}}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.11>
+%<y><OGS \S15.2.11\textdagger>
 {kristeller1979thm}
-Paul Oskar Kristeller, \enquote{The Aristotelian Tradition}, in id., \emph{Renaissance Thought and Its Sources}, ed. Michael Mooney (New York: Columbia University Press, 1979).
+%<n>Paul Oskar Kristeller, \enquote{The Aristotelian Tradition}, in id., \emph{Renaissance Thought and Its Sources}, ed. Michael Mooney (New York: Columbia University Press, 1979).
+%<y>Kristeller, P. O. (1979), \enquote{The Aristotelian Tradition}, in id., \emph{Renaissance Thought and Its Sources}, ed. M. Mooney (New York: Columbia University Press).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @inbook{kristeller1979thm,
   author = {Paul Oskar Kristeller},
   gender = {sm},
@@ -2399,13 +2399,9 @@ Paul Oskar Kristeller, \enquote{The Aristotelian Tradition}, in id., \emph{Renai
   location = {New York},
   publisher = {Columbia University Press},
   date = {1979}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
 
 %<n>\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher), Pages.}
@@ -2414,12 +2410,12 @@ Paul Oskar Kristeller, \enquote{The Aristotelian Tradition}, in id., \emph{Renai
 
 The \code{incollection} entry type is intended for citing one of a collection of self-contained works by different authors.
 
-\subsection{Work in mixed collection}
-
-Express this in the database by setting \code{author} $\neq$ \code{editor}, and omitting the \code{bookauthor}.
+\subsection{Work in a mixed collection}
 
 %<n>\spec{Author, \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher), Pages.}
+
+\tip{Express this in the database by setting \code{author} $\neq$ \code{editor}, and omitting the \code{bookauthor}.}
 
 %</n|y>
 %<*n>
@@ -2494,20 +2490,20 @@ Jessop, B. (1997), \enquote{The Governance of Complexity and Complexity of Gover
 
 \subsection{Work by the editor in mixed collection}
 
-In Oxford style, the editor's name is replaced with \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.} Express this in the database by setting \code{author} $=$ \code{editor}, omitting the \code{bookauthor}, and setting the correct gender.
-
 %<n>\spec{Author, \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher), Pages.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.3>
+\tip{Express this in the database by setting \code{author} $=$ \code{editor} and omitting the \code{bookauthor}. You will also need to specify the \code{gender} of the editor, as the second instance of the name is replaced by \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.}}
+
+\begin{bibexbox}
+%<n><OGS \S15.3>
+%<y><OGS \S15.3\textdagger>
 {todd1974dhp}
-W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).
+%<n>W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press, 1974).
+%<y>Todd, W. B. (1974), \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @incollection{todd1974dhp,
   author = {W. B. Todd},
   gender = {sm},
@@ -2519,13 +2515,10 @@ W. B. Todd, \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emp
   location = {Edinburgh},
   publisher = {Edinburgh University Press},
   date = {1974}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
 
 \section{Anthologies of independently published works}
 
@@ -2533,19 +2526,20 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 
 \subsection{Both versions equally accessible}
 
-If using Biber, put the key of the original work in \code{related}, and in \code{relatedtype} use the keyword \code{reprintfrom}. Otherwise, use \code{addendum} to give \enquote{From} and the reference to the original, but omit \code{author} and \code{title} from the entry for the original work.
-
 \spec{Later Reference. From Earlier Reference.}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.3>
+\tip{Put the key of the original work in \code{related}, and in \code{relatedtype} use the keyword \code{reprintfrom}.}
+\tip{If using Bib\TeX, use \code{addendum} to give \enquote{From} and the reference to the original, but omit \code{author} and \code{title} from the entry for the original work.}
+
+\begin{bibexbox}
+%<n><OGS \S15.3>
+%<y><OGS \S15.3\textdagger>
 {owen1986pi}
-G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.
+%<n>G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.
+%<y>Owen, G. E. L. (1986) \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @bookinbook{owen1986pi,
   author = {G. E. L. Owen},
   gender = {sm},
@@ -2565,30 +2559,27 @@ G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science a
   volume = {1},
   date = {1983},
   pages = {1-25}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
 
 \subsection{Later version more accessible}
-
-Use \code{pubstate} to give the date of original publication.
 
 %<n>\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).}
 %<y>\spec{Author (Year), \emph{Title} (Location: Publisher) (\lit{originally pub.} Year).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.3>
+\tip{Use \code{pubstate} to give the date of original publication.}
+
+\begin{bibexbox}
+%<n><OGS \S15.3>
+%<y><OGS \S15.3\textdagger>
 {frege1892osr}
-G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).
+%<n>G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).
+%<y>Frege, G. (1952), \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell) (originally pub. 1892).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @bookinbook{frege1892osr,
   author = {G. Frege},
   gender = {sm},
@@ -2601,13 +2592,9 @@ G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings
   publisher = {Blackwell},
   date = {1952},
   pubstate = {originally pub\adddotspace 1892}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%</n>
-%<*n|y>
 
 
 \chapter{Works presented at meetings}\label{sec:proceedings}
