@@ -4424,8 +4424,18 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 %    \begin{macrocode}
 \DeclareFieldFormat{pages}{%
   \iffieldundef{bookpagination}%
-    {\mkcomprange{#1}}
+    {\mkcomprange{#1}}%
     {\mkcomprange[{\mkpageprefix[bookpagination]}]{#1}}%
+}
+%    \end{macrocode}
+%
+% The same is true in citations.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{postnote}{%
+  \iffieldundef{pagination}%
+  {\mkcomprange{#1}}%
+  {\mkcomprange[{\mkpageprefix[pagination]}]{#1}}%
 }
 
 %    \end{macrocode}
@@ -6147,29 +6157,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % If specifying a page within a range in the course of a citation note,
 % Oxford style is to format that as \enquote{\emph{range} at
-% \emph{page}}.
-%
-%    \begin{macrocode}
-\DeclareFieldFormat{postnote}{%
-  \iffieldundef{pages}%
-    {}%
-    {\addspace\bibstring{at}\addspace}%
-  \mkcomprange{#1}}
-%    \end{macrocode}
-%
-% The idea here is that if a postnote is provided but the entry does not
-% include a page range, we print the normal delimiter and the postnote;
-% If there is a page range, we replace the intervening punctuation with
-% \enquote{at}.
+% \emph{page}}; if no page range is specified, the page is printed as
+% normal.
 %
 %    \begin{macrocode}
 \renewbibmacro*{postnote}{%
-  \iffieldundef{postnote}
-  {}
-  {\iffieldundef{pages}
-    {\printtext{\unspace}\setunit{\postnotedelim}\newblock\printfield{postnote}}
-    {\printfield{postnote}}%
-  }}
+  \iffieldundef{postnote}{}{%
+    \iffieldundef{pages}{%
+      \setunit{\postnotedelim}%
+      \printfield{postnote}%
+    }{%
+      \printtext{\addspace\bibstring{at}\space}%
+      \printfield{postnote}}}}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
