@@ -6909,17 +6909,33 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 }{}{}%
 %    \end{macrocode}
 %
-% The `labeltitle' macro is exactly the same as the one from
-% `authoryear'.
+% The `labeltitle' macro differs from the one from `authoryear' in that
+% it also includes the subtitle.
 %
 %    \begin{macrocode}
 \newbibmacro*{labeltitle}{%
-  \iffieldundef{label}
-    {\iffieldundef{shorttitle}
-       {\printfield{title}%
-        \clearfield{title}}
-       {\printfield[title]{shorttitle}}}
-    {\printfield{label}}}
+  \iffieldundef{label}{%
+    \iffieldundef{shorttitle}{%
+      \ifboolexpr{
+        test {\iffieldundef{title}}
+        and
+        test {\iffieldundef{subtitle}}
+      }{}{%
+        \printtext[title]{%
+          \printfield[titlecase]{title}%
+          \setunit{\subtitlepunct}%
+          \printfield[titlecase]{subtitle}}%
+        \clearfield{title}%
+        \clearfield{subtitle}%
+        \setunit{\addspace}%
+      }%
+    }{%
+      \printtext[title]{\printfield[titlecase]{shorttitle}}%
+    }%
+  }{%
+    \printfield{label}%
+  }%
+}
 %    \end{macrocode}
 %
 % The date of `online' entries is printed in parentheses; as the year
