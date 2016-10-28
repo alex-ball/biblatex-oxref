@@ -2892,42 +2892,33 @@ Pritchard, E., and Pritchard, J. (1990), \enquote{A Reply to Drèze}, unpub.\ pa
 \chapter{Grey literature}\label{sec:report}
 \chapterprecis{booklet, manual, patent, report, thesis, standard}
 
-Oxford style does not have any special rules for referencing reports. Its provision for books, however, is sufficient for most purposes.
-
-\section{Reports with a personal author}
+\section{One-off reports}
 
 %<n>\spec{Author, \emph{Title} (Location: Institution, Year).}
 %<y>\spec{Author (Year), \emph{Title} (Location: Institution).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.2.13>
+\begin{bibexbox}
+%<n><OGS \S15.2.13>
+%<y><OGS \S15.2.13\textdagger>
 {botswana1980hdr}
-Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).
+%<n>Government of Botswana, \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands, 1980).
+%<y>Government of Botswana (1980), \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @report{botswana1980hdr,
   author = {{Government of Botswana}},
   title = {A Human Drought Relief Programme for Botswana},
   location = {Gabarone},
   institution = {Ministry of Local Government and Lands},
   date = {1980}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
-
-\section{Reports with a corporate author}
-
-If the report does not specify an author, the institution moves to the author position:
-
-%<n>\spec{Author, \emph{Title} (Location, Year).}
-%<y>\spec{Author (Year), \emph{Title} (Location).}
+\tip{If the report does not specify an author, give the publishing institution in the \texttt{author} field.
+  Some examples in the \emph{Oxford Guide to Style} repeat the institution in the publisher slot
+  (i.e.\@ the \texttt{institution} field) and some do not.}
 
 %</n|y>
 %<*n>
@@ -2944,6 +2935,28 @@ Penal Affairs Consortium, \emph{An Unsuitable Place for Treatment: Diverting Men
   subtitle = {Diverting Mentally Disordered Offenders from Custody},
   location = {London},
   date = {1988}}
+%</n|bib>
+%<*n>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}<NHR \S18.8.5>
+{unesco2012unw}
+UNESCO, \emph{The United Nations World Water Development Report 4}, vol. 1: \emph{Managing Water under Uncertainty and Risk} (Paris: UNESCO, 2012), \url{http://unesdoc.unesco.org/images/0021/002156/215644e.pdf}, accessed 9 Nov. 2013.
+\tcblower
+\begin{Verbatim}
+%</n>
+%<*n|bib>
+@report{unesco2012unw,
+  author = {UNESCO},
+  maintitle = {The United Nations World Water Development Report 4},
+  volume = {1},
+  title = {Managing Water under Uncertainty and Risk},
+  location = {Paris},
+  institution = {UNESCO},
+  date = {2012},
+  url = {http://unesdoc.unesco.org/images/0021/002156/215644e.pdf},
+  urldate = {2013-11-09}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -2996,8 +3009,8 @@ CNNR/GMH (Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria
 
 \section{Reports with a type or series}
 
-%<n>\spec{Author, \emph{Title} (Type, Number; Location: Institution, Year).}
-%<y>\spec{Author (Year), \emph{Title} (Type, Number; Location: Institution).}
+%<n>\spec{Author, \emph{Title}, Series, Number (Location: Institution, Year).}
+%<y>\spec{Author (Year), \emph{Title}, Series, Number (Location: Institution).}
 
 %</n|y>
 %<*y>
@@ -3020,6 +3033,9 @@ Office of Population Censuses and Surveys (1979a), \emph{Area Mortality Tables: 
 %<*y>
 \end{Verbatim}
 \end{bibexbox}
+
+%<n>\spec{Author, \emph{Title}, Type Number (Location: Institution, Year).}
+%<y>\spec{Author (Year), \emph{Title}, Type Number (Location: Institution).}
 
 \begin{bibexbox}<OGS \S15.19.2>
 {opcs1979pnc}
@@ -3062,65 +3078,31 @@ Rosenblatt, J., et al. (1988), \emph{The Common Agricultural Policy of the Europ
 %</y>
 %<*n|y>%
 
-\section{Report available online}
-
-%<n>\spec{Author, \emph{Title} (Location: Institution, Year), URL, \lit{accessed} URLDate.}
-%<y>\spec{Author (Year), \emph{Title} (Location: Institution), URL, \lit{accessed} URLDate.}
-
-%</n|y>
-%<*n>
-\begin{bibexbox}<NHR \S18.8.5>
-{unesco2012unw}
-UNESCO, \emph{The United Nations World Water Development Report 4}, vol. 1: \emph{Managing Water under Uncertainty and Risk} (Paris: UNESCO, 2012), \url{http://unesdoc.unesco.org/images/0021/002156/215644e.pdf}, accessed 9 Nov. 2013.
-\tcblower
-\begin{Verbatim}
-%</n>
-%<*n|bib>
-@report{unesco2012unw,
-  author = {UNESCO},
-  maintitle = {The United Nations World Water Development Report 4},
-  volume = {1},
-  title = {Managing Water under Uncertainty and Risk},
-  location = {Paris},
-  institution = {UNESCO},
-  date = {2012},
-  url = {http://unesdoc.unesco.org/images/0021/002156/215644e.pdf},
-  urldate = {2013-11-09}}
-%</n|bib>
-%<*n>
-\end{Verbatim}
-\end{bibexbox}
-
-%</n>
-%<*n|y>
 
 \section{Theses}
 
 %<n>\spec{Author, \enquote{Title}, Type (Institution, Year).}
 %<y>\spec{Author (Year), \enquote{Title}, Type (Institution).}
 
-%</n|y>
-%<*n>
-\begin{bibexbox}<OGS \S15.5.1>
+\begin{bibexbox}
+%<n><OGS \S15.5.1>
+%<y><OGS \S15.5.1\textdagger>
 {blackburn1970tlp}
-Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).
+%<n>Bonnie J. Blackburn, \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago, 1970).
+%<y>Blackburn, B. J. (1970), \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|y>
 @thesis{blackburn1970tlp,
   author = {Bonnie J. Blackburn},
   title = {The Lupus Problem},
   type = {Ph.D. diss.},
   institution = {University of Chicago},
   date = {1970}}
-%</n|bib>
-%<*n>
+%<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
-%<*n|y>
 
 The following form is also supported: to use it, pass the \texttt{altthesis} option.
 
