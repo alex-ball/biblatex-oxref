@@ -5262,11 +5262,38 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit}
 %    \end{macrocode}
 %
+% We provide an `organization+author' macro which allows the organization to
+% take the author position in proceedings (but only if the author is not
+% already given).
+%
+%    \begin{macrocode}
+\DeclareListFormat{authorlike}{%
+  \usebibmacro{list:delim}{#1}%
+  \iftoggle{blx@ox@scnames}{\textsc{#1}}{#1}\isdot
+  \usebibmacro{list:andothers}}
+\newbibmacro*{organization+author}{%
+  \ifnameundef{author}{%
+    \iflistundef{organization}{%
+      \global\undef\bbx@lasthash
+    }{%
+      \usebibmacro{bbx:dashcheck}{%
+        \bibnamedash
+      }{%
+        \edef\bbx@lasthash{\thefield{organization}}%
+        \usebibmacro{bbx:savehash}%
+        \printlist[authorlike]{organization}%
+        \clearlist{organization}}}%
+  }{%
+    \usebibmacro{author}%
+  }}
+%    \end{macrocode}
+%
 % The changes to the `proceedings' driver compared to the standard style
 % are as follows:
 % \begin{itemize}
 %   \item
-%   `organization' is moved before the title;
+%   We support the concept of an `author' before the title,
+%   which is usually the `organization';
 %   \item
 %   `editor' comes after the title, not before;
 %   \item
@@ -5283,7 +5310,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{proceedings}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \printlist{organization}%
+  \usebibmacro{organization+author}%
   \newunit
   \usebibmacro{maintitle+title}%
   \newunit
@@ -5302,6 +5329,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \printfield{note}%
   \newunit\newblock
+  \printlist{organization}%
+  \newunit
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -6856,9 +6885,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \xpatchbibmacro{bbx:translator}{%
   \global\undef\bbx@lasthash
 }{%
-\global\undef\bbx@lasthash
-\usebibmacro{labeltitle}%
-\setunit*{\addspace}%
+  \global\undef\bbx@lasthash
+  \usebibmacro{labeltitle}%
+  \setunit*{\addspace}%
 }{}{}%
 \xpatchbibmacro{bbx:translator}{%
   \usebibmacro{#1}%
@@ -6868,6 +6897,26 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit*{\addspace}%
   \usebibmacro{#1}%
 }{}{}%
+%    \end{macrocode}
+%
+% We apply one more patch of this nature, this time to the
+% `organization+author' macro used by the proceedings driver.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{organization+author}{%
+  \global\undef\bbx@lasthash
+}{%
+  \global\undef\bbx@lasthash
+  \usebibmacro{labeltitle}%
+  \setunit*{\addspace}%
+}{}{}
+\xpatchbibmacro{organization+author}{%
+  \printlist[authorlike]{organization}%
+}{%
+  \printlist{organization}%
+  \setunit{\addspace}%
+  \usebibmacro{date+extrayear}%
+}{}{}
 %    \end{macrocode}
 %
 % The `labeltitle' macro differs from the one from `authoryear' in that
