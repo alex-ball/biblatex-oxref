@@ -5888,20 +5888,34 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \newbibmacro*{publisher+type+series+number+date}{%
-  \nopunct\printtext[publication]{%
-    \printfield{howpublished}%
-    \setunit*{\addcomma\space}%
-    \printlist{publisher}%
-    \setunit*{\addspace}%
-    \printfield{type}%
-    \setunit*{\addspace}%
-    \printfield{series}%
-    \setunit*{\addcomma\space}%
-    \printfield{number}%
-    \newunit%
-    \usebibmacro{date}%
-  }%
-}
+  \ifboolexpr{%
+    test {\iffieldundef{howpublished}}
+    and
+    test {\iflistundef{publisher}}
+    and
+    test {\iffieldundef{type}}
+    and
+    test {\iffieldundef{series}}
+    and
+    test {\iffieldundef{number}}
+    and
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+  }{}{%
+    \nopunct\printtext[publication]{%
+      \printfield{howpublished}%
+      \setunit*{\addcomma\space}%
+      \printlist{publisher}%
+      \setunit*{\addspace}%
+      \printfield{type}%
+      \setunit*{\addspace}%
+      \printfield{series}%
+      \setunit*{\addcomma\space}%
+      \printfield{number}%
+      \newunit%
+      \usebibmacro{date}%
+    }}}
 %    \end{macrocode}
 %
 % We provide a specialist `audio'/`music' driver. It is currently based
