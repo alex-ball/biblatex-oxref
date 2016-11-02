@@ -3264,7 +3264,23 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<n>\spec{\emph{Title} (Publisher, Number, Year).}
 %<y>\spec{\emph{Title} (Year) (Publisher, Number).}
 
-\emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
+\begin{bibexbox}
+%<y><\textdagger>
+{bbc1987ava}
+%<n>\emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
+%<y>\emph{The Ashes: Victory in Australia} (1987) (BBCV 4040).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@video{bbc1987ava,
+  title = {The {Ashes}},
+  subtitle = {Victory in {Australia}},
+  publisher = {BBCV},
+  number = {4040},
+  date = {1987}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 %<n>\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle} \lit{series} (Publisher, Number, Year).}
 %<y>\spec{\enquote{EpisodeTitle} (Year), \emph{SeriesTitle} \lit{series} (Publisher, Number).}
@@ -5830,6 +5846,56 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{finentry}}
 
 \DeclareBibliographyAlias{music}{audio}
+%    \end{macrocode}
+%
+% We provide a similar `video' driver.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{video}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{maintitle+title}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{publisher+type+series+number+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyAlias{movie}{video}
 %    \end{macrocode}
 %
 % \subsection{Related entries}
