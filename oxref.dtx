@@ -2664,8 +2664,8 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 
 \textsc{Extension} – Sometimes the title of the proceedings does not relate to the conference; in which case the following form might be used:
 
-%<n>\spec{\emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
-%<y>\spec{\emph{Title} (Year), EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
+%<n>\spec{\emph{Title}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
+%<y>\spec{\emph{Title} (Year), EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
 
 \begin{bibexbox}
 {ecdl2009}
@@ -2695,8 +2695,8 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 
 \subsection{All volumes}
 
-%<n>\spec{\emph{Title}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year).}
-%<y>\spec{\emph{Title} (Year), EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher).}
+%<n>\spec{\emph{Title}, EventTitle, Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year).}
+%<y>\spec{\emph{Title} (Year), EventTitle, Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher).}
 
 \begin{bibexbox}
 {iced2009}
@@ -2720,8 +2720,8 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 
 \subsection{One volume}
 
-%<n>\spec{\emph{Title}, VolNo: \emph{VolTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
-%<y>\spec{\emph{Title} (Year), VolNo: \emph{VolTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
+%<n>\spec{\emph{Title}, VolNo: \emph{VolTitle}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
+%<y>\spec{\emph{Title} (Year), VolNo: \emph{VolTitle}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
 
 \begin{bibexbox}
 {iced2009dik}
@@ -2748,8 +2748,8 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 
 The \code{inproceedings} entry type is intended for a conference paper published as part of a proceedings volume. For papers that have not been collected into a proceedings volume, or presentation slide sets, use the \code{unpublished} entry type instead (see below).
 
-%<n>\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
-%<y>\spec{Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
+%<n>\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
+%<y>\spec{Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
 
 \begin{bibexbox}
 {tonkin.strelnikov2009iem}
@@ -2777,8 +2777,8 @@ The \code{inproceedings} entry type is intended for a conference paper published
 \end{Verbatim}
 \end{bibexbox}
 
-%<n>\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year), VolNo. Pages.}
-%<y>\spec{Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle: Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher), VolNo. Pages.}
+%<n>\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle, Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher, Year), VolNo. Pages.}
+%<y>\spec{Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, EventTitle, Venue, ConfDate, \lit{ed.} Editor, n \lit{vols.} (Series, Number; Location: Publisher), VolNo. Pages.}
 
 \begin{bibexbox}
 {ding.etal2009sfc}
@@ -2822,7 +2822,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
 @proceedings{gombrich1957as,
   author = {E. H. Gombrich},
   title = {Art and Scholarship},
-  note = {Inaugural Lecture},
+  eventtitle = {Inaugural Lecture},
   venue = {University College London},
   eventdate = {1957-02-14},
   location = {London},
@@ -2832,6 +2832,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{Use the \texttt{eventtitle} field to indicate the type of the oration.}
 
 \section{Unpublished conference paper}
 
@@ -5257,7 +5258,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % \subsection{Proceedings}
 %
 % In our version of the `event+venue+date' macro, the venue and date
-% are set off with a colon and comma respectively instead of
+% are set off with commas respectively instead of
 % parentheses. A bit of jiggery-pokery is used to make the colon italic
 % if it follows italic text.
 %
@@ -5276,8 +5277,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       test {\iffieldundef{language}}
       and
       test {\iffieldundef{eventtitle}}
-    }{\setunit{\mkbibemph{\addcolon}\addspace}}%
-    {\setunit{\addcolon\addspace}}%
+    }{\setunit{\mkbibemph{\addcomma}\space}}%
+    {\newunit}%
     \printfield{venue}%
     \newunit%
     \printeventdate}%
