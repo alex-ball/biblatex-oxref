@@ -3294,8 +3294,9 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \begin{Verbatim}
 %</n|y>
 @video{britt1986pho,
+  entrysubtype = {episode},
   title = {{Percy} and {Harold} and Other Stories},
-  series = {\emph{Thomas the Tank Engine and Friends} series},
+  maintitle = {Thomas the Tank Engine and Friends \textup{series}},
   publisher = {Britt Allcroft},
   number = {5-014861-100224},
   date = {1986}}
@@ -3387,9 +3388,9 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \begin{Verbatim}
 %</n|y>
 @video{bbc2013iim,
+  entrysubtype = {clip},
   author = {{BBC News}},
   title = {Inside India's Mars Mission HQ},
-  entrysubtype = {video},
   date = {2013-11-05},
   url = {http://www.bbc.co.uk/news/world-24826253},
   urldate = {2013-11-05}}
@@ -3407,9 +3408,9 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \begin{Verbatim}
 %</n|y>
 @video{rubinstein1956rpc,
+  entrysubtype = {clip},
   author = {Arthur Rubinstein},
   title = {Rachmaninoff Piano Concerto No. 2, Op. 18, I Moderato, Allegro (Fritz Reiner)},
-  entrysubtype = {video},
   organization = {YouTube},
   date = {1956-01-09},
   options = {datetype={recorded}},
@@ -3453,6 +3454,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \begin{Verbatim}
 %</n|y>
 @video{berger1972ws,
+  entrysubtype = {episode},
   author = {John Berger},
   title = {Ways of Seeing},
   note = {Episode 1},
@@ -3477,9 +3479,9 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \begin{Verbatim}
 %</n|y>
 @audio{perry2013ifm,
+  entrysubtype = {podcast},
   author = {Grayson Perry},
   title = {I Found Myself in the Art World},
-  entrysubtype = {podcast},
   note = {Reith Lecture},
   date = {2013-11-05},
   publisher = {BBC Radio 4},
@@ -3499,16 +3501,19 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \begin{Verbatim}
 %</n|y>
 @video{nicholson2011qsm,
+  entrysubtype = {clip},
   author = {Christie Nicholson},
   title = {A Quirk of Speech May Become a New Vocal Style},
-  entrysubtype = {video},
-  journaltitle = {Scientific American},
+  maintitle = {Scientific American},
   date = {2011-12-17},
   url = {http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17},
   urldate = {2013-11-04}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\tip{You could also treat this like an article, and clarify the medium (i.e.\@ video)
+  using the \texttt{titleaddon} field.}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
@@ -3520,10 +3525,10 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \begin{Verbatim}
 %</n|y>
 @video{yousafzai2013mwa,
+  entrysubtype = {webcast},
   author = {Malala Yousafzai},
   title = {Making a Wish for Action on Global Education},
   subtitle = {Malala Yousafzai Addresses Youth Assembly at UN on her 16th Birthday, 12 July 2013},
-  entrysubtype = {webcast},
   organization = {UN Web TV},
   date = {2013-07-12},
   url = {http://webtv.un.org/search/malala-yousafzai-un-youth-assembly/2542094251001?term=malala},
@@ -3672,7 +3677,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 @online{tan2013wdt,
   author = {Siu-Lan Tan},
   title = {Why does this Baby Cry when her Mother Sings?},
-  entrysubtype = {including video},
+  titleaddon = {including video},
   organization = {OUPblog},
   date = {2013-11-05},
   url = {http://blog.oup.com/2013/11/why-does-this-baby-cry-when-her-mother-sings-viral-video/},
@@ -3736,7 +3741,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 @online{obama2013tvd,
   author = {Barack Obama},
   title = {Tomorrow is Veterans Day},
-  entrysubtype = {Facebook post},
+  entrysubtype = {facebook},
   date = {2013-11-10},
   url = {https://www.facebook.com/barackobama/photos/a.53081056748.66806.6815841748/10151936988101749/},
   urldate = {2013-11-13}}
@@ -3756,7 +3761,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 @online{harvey2013tfm,
   author = {John Harvey},
   title = {\enquote{These are a Few of My Favourite Things}, No.~28},
-  entrysubtype = {Facebook post},
+  entrysubtype = {facebook},
   date = {2013-11-13},
   url = {https://www.facebook.com/photo.php?fbid=229786530530896&set=a.108896335953250.15125.100004986510149&type=1&theatre},
   urldate = {2013-11-13}}
@@ -3776,7 +3781,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 @online{globe2013otd,
   author = {{Shakespeare's Globe}},
   title = {On this day in 1611 first production of The Tempest was performed by King's Men at Whitehall Palace before James I},
-  entrysubtype = {Twitter post},
+  entrysubtype = {tweet},
   date = {2013-11-01T05:48:00},
   url = {https://twitter.com/The_Globe/status/396257422928400385},
   urldate = {2013-11-05}}
@@ -3799,7 +3804,7 @@ Simoga, \emph{Device 6}, (version 1.1) [mobile application for iPhone and iPad],
   author = {Simoga},
   title = {Device 6},
   version = {1.1},
-  entrysubtype = {mobile application for iPhone and iPad},
+  titleaddon = {mobile application for iPhone and iPad},
   urldate = {2013-11-09}}
 %<*n|y>
 \end{Verbatim}
@@ -3818,7 +3823,7 @@ Simoga, \emph{Device 6}, (version 1.1) [mobile application for iPhone and iPad],
   author = {T. S. Eliot},
   title = {The Waste Land},
   version = {1.1.1},
-  entrysubtype = {mobile application for iPad},
+  titleaddon = {mobile application for iPad},
   location = {London},
   publisher = {Touch Press},
   date = {2013},
@@ -3843,7 +3848,7 @@ Simoga, \emph{Device 6}, (version 1.1) [mobile application for iPhone and iPad],
   author = {{United Nations}},
   title = {World Population Prospects},
   subtitle = {The 2010 Revision},
-  entrysubtype = {CD-ROM},
+  titleaddon = {CD-ROM},
   location = {New York},
   publisher = {United Nations Department of Economic and Social Affairs, Population Division},
   date = {2011}}
@@ -3993,7 +3998,11 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   performer, byperformer,
   director, bydirector,
   reader, byreader,
-  reviser, byreviser}
+  reviser, byreviser,
+  facebook, tweet,
+  podcast,
+  clip, webcast,
+  poster}
 %    \end{macrocode}
 %
 % We provide some magic values for triggering formatting changes.
@@ -5791,10 +5800,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
 %    \end{macrocode}
 %
-% The `entrysubtype' field is wrapped in square brackets.
+% We provide an `onlinetype' macro for clarifying the type of online
+% material.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[online]{entrysubtype}{\mkbibbrackets{#1}}
+\newbibmacro*{onlinetype}{%
+  \ifboolexpr{
+    test {\iffieldundef{url}}
+    or
+    test {\iffieldundef{entrysubtype}}
+  }{}{%
+    \ifbibxstring{\thefield{entrysubtype}}{%
+      \printtext[brackets]{\bibstring{\thefield{entrysubtype}}}%
+    }{}}}
 %    \end{macrocode}
 %
 % The changes to the `online' driver compared to the standard style
@@ -5823,10 +5841,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{author/editor+others/translator+others}%
   \setunit{\labelnamepunct}\newblock
   \usebibmacro{title}%
+  \setunit{\addspace}%
+  \usebibmacro{onlinetype}%
   \newunit
   \usebibmacro{maintitle}
-  \setunit{\addspace}\newblock
-  \printfield{entrysubtype}%
   \newunit
   \printlist{language}%
   \newunit\newblock
@@ -5839,7 +5857,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printfield{note}%
   \newunit\newblock
   \printlist{organization}%
-  \iffieldequalstr{entrysubtype}{Twitter post}{%
+  \iffieldequalstr{entrysubtype}{tweet}{%
     \newunit\newblock
     \usebibmacro{time+date}%
   }{%
@@ -5927,12 +5945,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{begentry}%
   \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
-  \usebibmacro{maintitle+title}%
+  \usebibmacro{title}%
+  \setunit{\addspace}
+  \usebibmacro{onlinetype}%
   \newunit
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+  \usebibmacro{maintitle}
   \newunit
   \printlist{language}%
   \newunit\newblock
@@ -5969,7 +5986,22 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyAlias{music}{audio}
 %    \end{macrocode}
 %
-% We provide a similar `video' driver.
+% Titles for videos do not have a consistent format, so we define some
+% `entrysubtype'-based variation.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[video]{title}{%
+  \ifboolexpr{
+    test {\iffieldequalstr{entrysubtype}{episode}}
+    or
+    test {\iffieldequalstr{entrysubtype}{clip}}
+    or
+    test {\iffieldequalstr{entrysubtype}{webcast}}
+  }{\mkbibquote{#1\isdot}}{\mkbibemph{#1}}%
+}
+%    \end{macrocode}
+%
+% The`video' driver is very similar to the audio one.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{video}{%
@@ -5977,12 +6009,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{begentry}%
   \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
-  \usebibmacro{maintitle+title}%
+  \usebibmacro{title}%
+  \setunit{\addspace}
+  \usebibmacro{onlinetype}%
   \newunit
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+  \usebibmacro{maintitle}
   \newunit
   \printlist{language}%
   \newunit\newblock
@@ -7300,7 +7331,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
   at               = {{at}{at}},
-  under            = {{s.v.}{s.v.}},
+  under            = {{s\adddot v\adddot}{s\adddot v\adddot}},
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
   suppto           = {{supplement to}{supplement to}},
@@ -7313,6 +7344,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   byreader         = {{read by}{read by}},
   reviser          = {{reviser}{rev\adddot}},
   byreviser        = {{revised by}{rev\adddot}},
+  facebook         = {{Facebook post}{Facebook post}},
+  tweet            = {{Twitter post}{Twitter post}},
+  podcast          = {{podcast}{podcast}},
+  clip             = {{video}{video}},
+  webcast          = {{webcast}{webcast}},
+  poster           = {{poster}{poster}},
 %    \end{macrocode}
 %
 % These are standard strings, some of which are redefined by \textsf{oxref}.
