@@ -3285,22 +3285,97 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<n>\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle} \lit{series} (Publisher, Number, Year).}
 %<y>\spec{\enquote{EpisodeTitle} (Year), \emph{SeriesTitle} \lit{series} (Publisher, Number).}
 
-\enquote{Percy and Harold and Other Stories}, \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224, 1986).
+\begin{bibexbox}
+%<y><\textdagger>
+{britt1986pho}
+%<n>\enquote{Percy and Harold and Other Stories}, \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224, 1986).
+%<y>\enquote{Percy and Harold and Other Stories} (1986), \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@video{britt1986pho,
+  title = {{Percy} and {Harold} and Other Stories},
+  series = {\emph{Thomas the Tank Engine and Friends} series},
+  publisher = {Britt Allcroft},
+  number = {5-014861-100224},
+  date = {1986}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 %<n>\spec{Director (\lit{dir.}), \emph{Title} (Publisher, Number, Year).}
 %<y>\spec{Director (Year) (\lit{dir.}), \emph{Title} (Publisher, Number).}
 
-Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
+\begin{bibexbox}
+%<y><\textdagger>
+{chaplin1936mt}
+%<n>Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
+%<y>Chaplin, C. (1936) (dir.), \emph{Modern Times} (United Artists).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@video{chaplin1936mt,
+  author = {Charles Chaplin},
+  authortype = {director},
+  title = {Modern Times},
+  publisher = {United Artists},
+  date = {1936}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 %<n>\spec{\emph{Title}, \lit{dir.} Director (Publisher, Number, Year).}
 %<y>\spec{\emph{Title} (Year), \lit{dir.} Director (Publisher, Number).}
 
-\emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi}, dir.\ Rob Reiner (Embassy Pictures, 1983).
+\begin{bibexbox}
+%<y><\textdagger>
+{reiner1983tst}
+%<n>\emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi}, dir.\ Rob Reiner (Embassy Pictures, 1983).
+%<y>\emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi} (1983), dir.\ R. Reiner (Embassy Pictures).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@video{reiner1983tst,
+  title = {This is {Spinal} {Tap}},
+  subtitle = {A Rockumentary by {Marti} {Di} {Bergi}},
+  editor = {Rob Reiner},
+  editortype = {director},
+  publisher = {Embassy Pictures},
+  date = {1983}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 %<n>\spec{\emph{Title} (Publisher, Number, Year), Credit.}
 %<y>\spec{\emph{Title} (Year) (Publisher, Number), Credit.}
 
-\emph{Leningrad Cowboys Go America} (Villealfa Filmproductions, 1989), dir.\ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki, Mato Valtonen.
+\begin{bibexbox}
+%<n>{kaurismaki1989lcg-n}
+%<n>\emph{Leningrad Cowboys Go America} (Villealfa Filmproductions, 1989), dir.\@ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki, Mato Valtonen.
+%<y><\textdagger>{kaurismaki1989lcg-y}
+%<y>\emph{Leningrad Cowboys Go America} (1989) (Villealfa Filmproductions), dir.\@ and screenplay by A. Kaurismäki, story by S. Järvenpää, A. Kaurismäki, M. Valtonen.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+%<*n|bib>
+@video{kaurismaki1989lcg-n,
+  title = {Leningrad Cowboys Go America},
+  publisher = {Villealfa Filmproductions},
+  date = {1989},
+  addendum = {dir.\ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki,
+    Mato Valtonen}}
+%</n|bib>
+%<*y|bib>
+@video{kaurismaki1989lcg-y,
+  title = {Leningrad Cowboys Go America},
+  publisher = {Villealfa Filmproductions},
+  date = {1989},
+  addendum = {dir.\@ and screenplay by A. Kaurismäki, story by S. Järvenpää, A. Kaurismäki,
+    M. Valtonen}}
+%</y|bib>
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
@@ -3350,12 +3425,45 @@ Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 %<n>\spec{\emph{Title}, Channel, Date.}
 %<y>\spec{\emph{Title} (Date), Channel.}
 
-\emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
+\begin{bibexbox}
+%<y><\textdagger>
+{bbc1995sg}
+%<n>\emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
+%<y>\emph{Sunday Grandstand} (1995), BBC2, 17 Sept.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@video{bbc1995sg,
+  title = {Sunday Grandstand},
+  organization = {BBC2},
+  date = {1995-09-17}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 %<n>\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.}
 %<y>\spec{\enquote{EpisodeTitle} (Date), \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel.}
 
-John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.youtube.com/watch?v=0pDE4VX_9Kk}, accessed 9 Nov. 2013.
+\begin{bibexbox}
+%<y><\textdagger>
+{berger1972ws}
+%<n>John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.youtube.com/watch?v=0pDE4VX_9Kk}, accessed 9 Nov. 2013.
+%<y>Berger, J. (1972), Episode 1, \emph{Ways of Seeing}, BBC, \url{https://www.youtube.com/watch?v=0pDE4VX_9Kk}, accessed 9 Nov. 2013.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@video{berger1972ws,
+  author = {John Berger},
+  title = {Ways of Seeing},
+  note = {Episode 1},
+  organization = {BBC},
+  date = {1972},
+  url = {https://www.youtube.com/watch?v=0pDE4VX_9Kk},
+  urldate = {2013-11-09}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 \section{Podcasts, video podcasts and webcasts}
 
