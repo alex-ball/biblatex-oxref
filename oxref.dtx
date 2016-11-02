@@ -3990,10 +3990,10 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   revised,
   suppto,
   equals,
-  byperformer,
-  bydirector,
-  byreader,
-  byreviser}
+  performer, byperformer,
+  director, bydirector,
+  reader, byreader,
+  reviser, byreviser}
 %    \end{macrocode}
 %
 % We provide some magic values for triggering formatting changes.
@@ -4195,14 +4195,13 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
       {}
       {\setunit{\addspace}%
         \printfield{nameaddon}}%
-      \iffieldundef{authortype}
-      {\setunit{\addspace}}
-      {\newunit}}%
+      \setunit{\addspace}}%
     \iffieldundef{authortype}
     {}
     {\usebibmacro{authorstrg}%
       \setunit{\addspace}}}%
   {\global\undef\bbx@lasthash}}
+\DeclareFieldFormat{authortype}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
 % Following `authortitle' and `authoryear', we redefine the `editor' and
@@ -6942,13 +6941,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \xpatchbibmacro{author}{%
+  \iffieldundef{authortype}%
+}{%
+  \usebibmacro{date+extrayear}%
+  \setunit*{\addspace}%
+  \iffieldundef{authortype}%
+}{}{}%
+\xpatchbibmacro{author}{%
   \global\undef\bbx@lasthash
 }{%
   \global\undef\bbx@lasthash
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
-}{}{}%
-\xapptobibmacro{author}{%
   \usebibmacro{date+extrayear}%
 }{}{}%
 %    \end{macrocode}
@@ -7287,9 +7291,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
   suppto           = {{supplement to}{supplement to}},
   equals           = {{=}{=}},
+  performer        = {{}{}},
   byperformer      = {{}{}},
+  director         = {{director}{dir\adddot}},
   bydirector       = {{directed by}{dir\adddot}},
+  reader           = {{reader}{reader}},
   byreader         = {{read by}{read by}},
+  reviser          = {{reviser}{rev\adddot}},
   byreviser        = {{revised by}{rev\adddot}},
 %    \end{macrocode}
 %
