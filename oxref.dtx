@@ -2258,15 +2258,15 @@ Where the publisher has changed, the following form is used:
 %<y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; Location: Publisher).}
 
 \begin{bibexbox}(hacked)
-%<n><OGS \S15.2.5>
-%<y><OGS \S15.2.5\textdagger>
-{holfordstrevens1988ag}
+%<n><OGS \S15.2.5>{holfordstrevens1988ag-n}
 %<n>L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).
+%<y><OGS \S15.2.5\textdagger>{holfordstrevens1988ag-y}
 %<y>Holford-Strevens, L. A. (1988/1989), \emph{Aulus Gellius} (London: Duckworth; Chapel Hill: University of North Carolina Press).
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@book{holfordstrevens1988ag,
+%<*n|bib>
+@book{holfordstrevens1988ag-n,
   author = {L. A. Holford-Strevens},
   title = {Aulus Gellius},
   origlocation = {London},
@@ -2275,9 +2275,29 @@ Where the publisher has changed, the following form is used:
   location = {Chapel Hill},
   publisher = {University of North Carolina Press},
   date = {1989}}
+%</n|bib>
+%<*y|bib>
+@book{holfordstrevens1988ag-y,
+  author = {L. A. Holford-Strevens},
+  year = {1988/1989},
+  title = {Aulus Gellius},
+  origlocation = {London},
+  origpublisher = {Duckworth},
+  location = {Chapel Hill},
+  publisher = {University of North Carolina Press}}
+%</y|bib>
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\hack{There is no explicit support for referencing multiple publishers at once,
+  but if there are two, you can get the right format by using the
+%<n>  \texttt{origlocation}, \texttt{origpublisher}, and \texttt{origdate} fields
+%<y>  \texttt{origlocation} and \texttt{origpublisher} fields
+  for the first publication%
+%<n>  .
+%<y>  \ and putting both dates in the \texttt{year} field.
+}
 
 \subsection{Work from a series}
 
