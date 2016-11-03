@@ -29,7 +29,8 @@
     [\Version\space Author-year citation style inspired by the Oxford Guide to Style]
 %</cbx&y>
 %<*dbx>
-\ProvidesFile{oxref.dbx}
+%<n>\ProvidesFile{oxnotes.dbx}
+%<y>\ProvidesFile{oxyear.dbx}
     [\Version\space Data model for the Oxref family of styles]
 %</dbx>
 %<*lbx&gb>
@@ -119,7 +120,8 @@ Copyright (C) 2016 Alex Ball
   \file{oxyear.bbx}{\from{\jobname.dtx}{bbx,y}}
   \file{oxnotes.cbx}{\from{\jobname.dtx}{cbx,n}}
   \file{oxyear.cbx}{\from{\jobname.dtx}{cbx,y}}
-  \file{\jobname.dbx}{\from{\jobname.dtx}{dbx}}
+  \file{oxnotes.dbx}{\from{\jobname.dtx}{dbx,n}}
+  \file{oxyear.dbx}{\from{\jobname.dtx}{dbx,y}}
   \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx,gb}}
   \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc,n}}
   \file{oxyear-doc.tex}{\from{\jobname.dtx}{doc,y}}
@@ -551,7 +553,7 @@ UNIX-like systems:
       - oxref.bbx, oxnotes.bbx, oxyear.bbx
       - oxnotes.cbx, oxyear.cbx
       - british-oxref.lbx
-      - oxref.dbx
+      - oxnotes.dbx, oxyear.dbx
       - oxref.bib
       - oxref.ins
       - oxnotes-doc.tex, oxyear-doc.tex
@@ -588,21 +590,22 @@ first two steps.
         oxref.dtx,
         (oxref.ins)
       - `tex/latex/biblatex-oxref`:
-        oxref.bbx,
+        british-oxref.lbx,
         oxnotes.bbx,
-        oxyear.bbx,
         oxnotes.cbx,
+        oxnotes.dbx,
+        oxref.bbx,
+        oxyear.bbx,
         oxyear.cbx,
-        oxref.dbx,
-        british-oxref.lbx
+        oxyear.dbx
       - `doc/latex/biblatex-oxref`:
         README.md,
-        oxref.pdf,
         oxnotes-doc.pdf,
-        oxyear-doc.pdf,
         oxnotes-doc.tex,
-        oxyear-doc.tex,
-        oxref.bib
+        oxref.bib,
+        oxref.pdf,
+        oxyear-doc.pdf,
+        oxyear-doc.tex
 
  4. You may then have to update your installation's file name database
     before TeX and friends can see the files.
@@ -3411,7 +3414,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
   title = {Rachmaninoff Piano Concerto No. 2, Op. 18, I Moderato, Allegro (Fritz Reiner)},
   organization = {YouTube},
   date = {1956-01-09},
-  options = {datetype={recorded}},
+  datetype = {recorded},
   note = {uploaded 8 Nov. 2011},
   url = {http://www.youtube.com/watch?v=0Vv0Sy9FJrc&list=PLDB11C4F39E09047F},
   urldate = {2013-11-09}}
@@ -3717,7 +3720,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
   title = {Oxford University Press},
   organization = {Wikipedia},
   date = {2013-11-05},
-  options = {datetype=last{\space}modified},
+  datetype = {last modified},
   url = {http://en.wikipedia.org/wiki/Oxford_University_Press},
   urldate = {2013-11-05}}
 %<*n|y>
@@ -4385,10 +4388,9 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 % intended for online resources.
 %
 %    \begin{macrocode}
-\def\dateType{}
-\DeclareEntryOption{datetype}{\def\dateType{#1}}
 \renewbibmacro*{date}{%
-  \ifdefvoid{\dateType}{}{\printtext{\dateType\addspace}}%
+  \printfield{datetype}%
+  \setunit*{\addspace}%
   \printdate}
 %    \end{macrocode}
 %
@@ -5892,6 +5894,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \newbibmacro*{time+date}{%
+  \printfield{datetype}%
+  \setunit*{\addspace}%
   \printtime
   \newunit
   \printdate
@@ -5933,7 +5937,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \printfield{series}%
       \setunit*{\addcomma\space}%
       \printfield{number}%
-      \newunit%
+      \setunit*{\addcomma\space}%
       \usebibmacro{date}%
     }}}
 %    \end{macrocode}
@@ -6432,7 +6436,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \renewbibmacro*{date}{%
     \iffieldundef{month}
       {}
-      {\printdate}}%
+      {\printfield{datetype}%
+       \setunit*{\addspace}%
+       \printdate}}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
       test {\iffieldundef{issue}}
@@ -6540,7 +6546,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       test {\iffieldundef{extrayear}}
     }
       {}
-      {\printdate}}%
+      {\printfield{datetype}%
+       \setunit*{\addspace}%
+       \printdate}}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
       test {\iffieldundef{issue}}
@@ -6583,7 +6591,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       {\printtext[parens]{%
          \printfield{labelyear}%
          \printfield{extrayear}}}}%
-  \renewbibmacro*{date}{\printdate}%
+  \renewbibmacro*{date}{%
+    \printfield{datetype}%
+    \setunit*{\addspace}%
+    \printdate}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{(
       test {\iffieldundef{volume}}
@@ -7299,6 +7310,24 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</y>
 %</cbx>
+%<*dbx>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \chapter{Data model adjustments}
+%
+% \section{oxnotes.dbx and oxyear.dbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% We add a `datetype' field to the data model.
+%
+%    \begin{macrocode}
+\DeclareDatamodelFields[type=field,datatype=literal]{datetype}
+\DeclareDatamodelEntryfields{datetype}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</dbx>
 %<*lbx>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %

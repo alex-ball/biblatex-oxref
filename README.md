@@ -32,7 +32,7 @@ UNIX-like systems:
       - oxref.bbx, oxnotes.bbx, oxyear.bbx
       - oxnotes.cbx, oxyear.cbx
       - british-oxref.lbx
-      - oxref.dbx
+      - oxnotes.dbx, oxyear.dbx
       - oxref.bib
       - oxref.ins
       - oxnotes-doc.tex, oxyear-doc.tex
@@ -69,21 +69,22 @@ first two steps.
         oxref.dtx,
         (oxref.ins)
       - `tex/latex/biblatex-oxref`:
-        oxref.bbx,
+        british-oxref.lbx,
         oxnotes.bbx,
-        oxyear.bbx,
         oxnotes.cbx,
+        oxnotes.dbx,
+        oxref.bbx,
+        oxyear.bbx,
         oxyear.cbx,
-        oxref.dbx,
-        british-oxref.lbx
+        oxyear.dbx
       - `doc/latex/biblatex-oxref`:
         README.md,
-        oxref.pdf,
         oxnotes-doc.pdf,
-        oxyear-doc.pdf,
         oxnotes-doc.tex,
-        oxyear-doc.tex,
-        oxref.bib
+        oxref.bib,
+        oxref.pdf,
+        oxyear-doc.pdf,
+        oxyear-doc.tex
 
  4. You may then have to update your installation's file name database
     before TeX and friends can see the files.

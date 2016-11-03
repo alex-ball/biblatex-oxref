@@ -17,7 +17,7 @@ all:	$(NAME).pdf $(STY1)-doc.pdf $(STY2)-doc.pdf clean
 source: $(NAME).dtx
 	luatex -interaction=nonstopmode $(NAME).dtx >/dev/null
 
-$(NAME).bbx $(NAME).dbx british-$(NAME).lbx $(STY1)-doc.tex $(STY1).bbx $(STY1).cbx $(STY2)-doc.tex $(STY2).bbx $(STY2).cbx: source
+$(NAME).bbx british-$(NAME).lbx $(STY1)-doc.tex $(STY1).bbx $(STY1).cbx $(STY1).dbx $(STY2)-doc.tex $(STY2).bbx $(STY2).cbx $(STY1).dbx: source
 
 $(NAME).pdf: $(NAME).dtx $(NAME).bbx $(STY1).bbx $(STY1).cbx british-$(NAME).lbx
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $(NAME).dtx >/dev/null
@@ -32,12 +32,12 @@ clean:
 	rm -rf _minted-*
 	rm -rf _markdown_*
 distclean: clean
-	rm -f $(NAME).{bbx,bib,dbx,ins,pdf} {$(STY1),$(STY2)}.{b,c}bx british-$(NAME).lbx $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf}
+	rm -f $(NAME).{bbx,bib,ins,pdf} {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf}
 
 inst: all
 	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
 	cp $(NAME).{dtx,ins} $(UTREE)/source/latex/$(NAME)
-	cp $(NAME).{b,d}bx {$(STY1),$(STY2)}.{b,c}bx british-$(NAME).lbx $(UTREE)/tex/latex/$(NAME)
+	cp $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(UTREE)/tex/latex/$(NAME)
 	cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(UTREE)/doc/latex/$(NAME)
 	mktexlsr
 uninst:
@@ -48,7 +48,7 @@ uninst:
 install: all
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
 	sudo $(NAME).{dtx,ins} $(LOCAL)/source/latex/$(NAME)
-	sudo $(NAME).{b,d}bx {$(STY1),$(STY2)}.{b,c}bx british-$(NAME).lbx $(LOCAL)/tex/latex/$(NAME)
+	sudo $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(LOCAL)/tex/latex/$(NAME)
 	sudo cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(LOCAL)/doc/latex/$(NAME)
 	mktexlsr
 uninstall:
@@ -57,7 +57,7 @@ uninstall:
 
 zip: all
 	mkdir $(TDIR)
-	cp $(NAME).{dtx,pdf} $(STY1)-doc.pdf $(STY2)-doc.pdf README.md Makefile $(NAME).{b,d}bx {$(STY1),$(STY2)}.{b,c}bx british-$(NAME).lbx $(TDIR)
+	cp $(NAME).{dtx,pdf} $(STY1)-doc.pdf $(STY2)-doc.pdf README.md Makefile $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(TDIR)
 	cd $(TEMP); zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)
 ctan: all
 	mkdir $(TDIR)
