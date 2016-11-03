@@ -4298,7 +4298,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 % preceeded by punctuation.
 %
 %    \begin{macrocode}
-\newbibmacro*{title}{%
+\renewbibmacro*{title}{%
   \ifboolexpr{
     test {\iffieldundef{title}}
     and
@@ -4719,7 +4719,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 % supplement.
 %
 %    \begin{macrocode}
-\newbibmacro*{note+pages}{%
+\renewbibmacro*{note+pages}{%
   \printfield{note}%
   \setunit{\bibpagespunct}%
   \iffieldequalstr{relatedtype}{suppto}{}{%
