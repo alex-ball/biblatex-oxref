@@ -793,9 +793,7 @@ that is, there are no examples of them in this documentation.
     \item suppcollection
     \item misc
     \item patent
-    \item periodical
     \item suppperiodical
-    \item mvproceedings
     \item inreference
     \item artwork
     \item commentary
@@ -2704,7 +2702,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@proceedings{iced2009,
+@mvproceedings{iced2009,
   title = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
   volumes = {10},
   editor = {Margareta Norell Bergendahl and Martin Grimheden and Larry Leifer},
@@ -2729,7 +2727,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@proceedings{iced2009dik,
+@mvproceedings{iced2009dik,
   maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
   title = {Design Information and Knowledge},
   volume = {8},
@@ -5463,6 +5461,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %   before `related', there is a full stop instead of a comma.
 % \end{itemize}
 %
+% As in the (inherited) standard style, `mvproceedings' is an alias for this
+% driver, since it is unlikely that the proceedings of a single meeting will
+% be split into long series of independently published volumes!
+%
 %    \begin{macrocode}
 \DeclareBibliographyDriver{proceedings}{%
   \usebibmacro{bibindex}%
@@ -6211,6 +6213,44 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareSortExclusion{book,reference,mvreference,proceedings,music}{editor,translator}
 %    \end{macrocode}
 %
+% We use the source mapping capabilities of Biber to fix the following sorting
+% issues:
+%
+% \begin{itemize}
+%   \item
+%   `proceedings' and `mvproceedings' entries print the organization at the
+%   beginning.
+%   \item
+%   `mvbook', `mvcollection', `mvreference', `proceedings' and `mvproceedings'
+%   entries print the maintitle before the title.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareStyleSourcemap{%
+  \maps[datatype=bibtex]{%
+    \map{%
+      \pertype{proceedings}
+      \pertype{mvproceedings}
+      \step[fieldsource=organization]%
+      \step[notfield=author, fieldset=sortname, origfieldval]%
+    }
+    \map{
+      \pertype{mvbook}
+      \pertype{mvcollection}
+      \pertype{mvreference}
+      \pertype{proceedings}
+      \pertype{mvproceedings}
+      \step[fieldsource=maintitle]%
+      \step[fieldset=sorttitle, origfieldval]%
+      \step[fieldsource=volume]%
+      \step[fieldset=sorttitle, append, origfieldval]%
+      \step[fieldsource=title]%
+      \step[fieldset=sorttitle, append, origfieldval]%
+    }%
+  }%
+}
+%    \end{macrocode}
+%
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</o>
 %<*n>
@@ -6237,32 +6277,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareNameAlias[book,booklet,collection,manual,misc,mvbook,mvcollection,%
   mvproceedings,mvreference,online,proceedings,reference]%
   {editor}{bib-family-given/cite-given-family}
-%    \end{macrocode}
-%
-% \subsection{Source mappings}
-%
-% This is used by Biber to fix the following sorting issues:
-% \begin{itemize}
-%   \item
-%   `proceedings' entries print the organization at the beginning.
-%   \item
-%   `proceedings' entries print the maintitle before the title.
-% \end{itemize}
-%
-%    \begin{macrocode}
-\DeclareStyleSourcemap{%
-  \maps[datatype=bibtex]{%
-    \map{%
-      \pertype{proceedings}
-      \step[fieldsource=organization]%
-      \step[notfield=author, fieldset=sortname, origfieldval]%
-      \step[fieldsource=maintitle]%
-      \step[fieldset=sorttitle, origfieldval]%
-      \step[fieldsource=volume]%
-      \step[fieldset=sorttitle, append, origfieldval]%
-    }%
-  }%
-}
 %    \end{macrocode}
 %
 % \subsection{Page ranges in citations}
@@ -7245,32 +7259,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \addcolon\space
   }{%
     \addcomma\space
-  }%
-}
-%    \end{macrocode}
-%
-% \subsection{Source mappings}
-%
-% This is used by Biber to fix the following sorting issues:
-% \begin{itemize}
-%   \item
-%   `proceedings' entries print the organization at the beginning.
-%   \item
-%   `proceedings' entries print the maintitle before the title.
-% \end{itemize}
-%
-%    \begin{macrocode}
-\DeclareStyleSourcemap{%
-  \maps[datatype=bibtex]{%
-    \map{%
-      \pertype{proceedings}
-      \step[fieldsource=organization]%
-      \step[fieldset=sortname, origfieldval]%
-      \step[fieldsource=maintitle]%
-      \step[fieldset=sorttitle, origfieldval]%
-      \step[fieldsource=volume]%
-      \step[fieldset=sorttitle, append, origfieldval]%
-    }%
   }%
 }
 %    \end{macrocode}
