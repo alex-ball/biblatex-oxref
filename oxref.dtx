@@ -7015,10 +7015,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % This technique uses saveboxes to extract the hashes.
 %
-% An unfortunate side effect of this is that where short author names are
-% provided, the author list is no longer truncated, but I hope this represents
-% something of an edge case.
-%
 %    \begin{macrocode}
 \newcounter{namepairs}
 \newsavebox{\bbx@ox@shortnamebox}
@@ -7036,6 +7032,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \renewbibmacro*{name:andothers}{}%
     \whileboolexpr{%
       test {\ifnumcomp{\value{namepairs}}{<}{\value{author}}}
+      and (
+        test {\ifdefvoid{\c@maxnames}}
+        or
+        test {\ifnumequal{\c@maxnames}{0}}
+        or
+        test {\ifnumcomp{\value{namepairs}}{<}{\c@maxnames}}
+      )
     }{%
       \stepcounter{namepairs}%
       \ifnumcomp{\value{namepairs}}{>}{1}{%
@@ -7062,6 +7065,16 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
       }%
     }%
+    \ifboolexpr{
+      test {\ifnumequal{\value{namepairs}}{\c@maxnames}}
+      and
+      test {\ifnumcomp{\c@maxnames}{<}{\value{author}}}
+    }{%
+      \ifnumgreater{\c@maxnames}{1}{%
+        \finalandcomma
+      }{}%
+     \andothersdelim\bibstring{andothers}%
+    }{}%
     \restorebibmacro{name:andothers}%
   }{%
     \printnames{author}%
