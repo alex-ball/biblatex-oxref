@@ -3173,7 +3173,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y><OGS \S15.14.1\textdagger>
 {pageNDmn}
 %<n>\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut}, Gothic Voices, dir. Christopher Page (Hyperion compact disc CDA 66087).
-%<y>\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut}, Gothic Voices, dir. C. Page (Hyperion compact disc CDA 66087).
+%<y>\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut} (n.d.), Gothic Voices, dir. C. Page (Hyperion compact disc CDA 66087).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3528,7 +3528,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y><NHR \S18.8.5\textdagger>
 {clarkeNDeci}
 %<n>M. Clarke, \enquote{Exports of Coal to the IFS} [poster], Manchester Art Gallery, \url{http://www.machestergalleries.org/the-collections/search-the-collection/display.php?EMUSESSID=70bd7f1a388d79a82f52ea9aae713ef2&irn=4128}, accessed 5 Nov. 2013.
-%<y>Clarke, M., \enquote{Exports of Coal to the IFS} [poster], Manchester Art Gallery, \url{http://www.machestergalleries.org/the-collections/search-the-collection/display.php?EMUSESSID=70bd7f1a388d79a82f52ea9aae713ef2&irn=4128}, accessed 5 Nov. 2013.
+%<y>Clarke, M. (n.d.), \enquote{Exports of Coal to the IFS} [poster], Manchester Art Gallery, \url{http://www.machestergalleries.org/the-collections/search-the-collection/display.php?EMUSESSID=70bd7f1a388d79a82f52ea9aae713ef2&irn=4128}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3548,7 +3548,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y><NHR \S18.8.5\textdagger>
 {ibwNDcgs}
 %<n>\enquote{Christ the Good Shepherd}, stained glass window, Church of St Erfyl, Llanerfyl, Powys, Imaging the Bible in Wales Database, \url{http://imagingthebible.llgc.org.uk/object/1884}, accessed 10 Nov. 2013.
-%<y>\enquote{Christ the Good Shepherd}, stained glass window, Church of St Erfyl, Llanerfyl, Powys, Imaging the Bible in Wales Database, \url{http://imagingthebible.llgc.org.uk/object/1884}, accessed 10 Nov. 2013.
+%<y>\enquote{Christ the Good Shepherd} (n.d.), stained glass window, Church of St Erfyl, Llanerfyl, Powys, Imaging the Bible in Wales Database, \url{http://imagingthebible.llgc.org.uk/object/1884}, accessed 10 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3676,7 +3676,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<n><NHR \S18.8.5>
 %<y><NHR \S18.8.5\textdagger>
 {eb2013gp}
-\enquote{Gunpowder Plot}, \emph{Encyclopaedia Britannica}, \url{http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot}, accessed 5 Nov. 2013.
+%<n>\enquote{Gunpowder Plot}, \emph{Encyclopaedia Britannica}, \url{http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot}, accessed 5 Nov. 2013.
+%<y>\enquote{Gunpowder Plot} (n.d.), \emph{Encyclopaedia Britannica}, \url{http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3779,7 +3780,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<n><NHR \S18.8.5>
 %<y><NHR \S18.8.5\textdagger>
 {simoga1.1d6}
-Simoga, \emph{Device 6}, (version 1.1) [mobile application for iPhone and iPad], downloaded 9 Nov. 2013.
+%<n>Simoga, \emph{Device 6}, (version 1.1) [mobile application for iPhone and iPad], downloaded 9 Nov. 2013.
+%<y>Simoga (n.d.), \emph{Device 6}, (version 1.1) [mobile application for iPhone and iPad], downloaded 9 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3968,20 +3970,24 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 \DeclareLanguageMapping{american}{british-oxref}
 %    \end{macrocode}
 %
-% We provide some additional bibliography strings.
+% We provide some additional bibliography strings:
+%
+% \begin{itemize}
+%   \item conjunctive phrases;
+%   \item types of edition;
+%   \item types of editor\slash author;
+%   \item subtypes of online entries;
+%   \item subtypes of audio entries;
+%   \item subtypes of video entries;
+%   \item subtypes of image entries.
+% \end{itemize}
 %
 %    \begin{macrocode}
 \NewBibliographyString{%
-  at,
-  under,
-  facsimile,
-  revised,
-  suppto,
-  equals,
-  performer, byperformer,
-  director, bydirector,
-  reader, byreader,
-  reviser, byreviser,
+  at, under, urldown,
+  facsimile, revised,
+  suppto, equals,
+  performer, byperformer, director, bydirector, reader, byreader, reviser, byreviser,
   facebook, tweet,
   podcast,
   clip, webcast,
@@ -5629,27 +5635,45 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
-  \nopunct\printtext[publication]{%
-    \usebibmacro{series+type+number}%
-    \setunit{\addsemicolon\space}%
-    \printfield{edition}%
-    \setunit*{\addcomma\space}%
-    \iflistundef{publisher}%
-    {}%
-    {\printlist{organization}%
-      \setunit*{\addcomma\space}}%
-    \printlist{location}%
-    \iflistundef{publisher}%
-    {\iflistundef{organization}%
-      {\setunit*{\addcomma\space}}%
-      {\setunit*{\addcolon\space}%
-        \printlist{organization}}}%
-    {\setunit*{\addcolon\space}
-      \printlist{publisher}}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
+  \nopunct
+  \ifboolexpr{
+    test {\iffieldundef{type}}
+    and
+    test {\iffieldundef{series}}
+    and
+    test {\iffieldundef{number}}
+    and
+    test {\iffieldundef{edition}}
+    and
+    test {\iflistundef{organization}}
+    and
+    test {\iflistundef{publisher}}
+    and
+    test {\iflistundef{location}}
+    and
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+  }{}{%
+    \printtext[publication]{%
+        \usebibmacro{series+type+number}%
+        \setunit{\addsemicolon\space}%
+        \printfield{edition}%
+        \setunit*{\addcomma\space}%
+        \iflistundef{publisher}%
+        {}%
+        {\printlist{organization}%
+        \setunit*{\addcomma\space}}%
+        \printlist{location}%
+        \iflistundef{publisher}%
+        {\iflistundef{organization}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addcolon\space}%
+            \printlist{organization}}}%
+        {\setunit*{\addcolon\space}
+        \printlist{publisher}}%
+        \setunit*{\addcomma\space}%
+        \usebibmacro{date}}}}
 %    \end{macrocode}
 %
 % The changes to the `report' driver compared to the standard style
@@ -6044,6 +6068,79 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat[image]{title}{\mkbibquote{#1\isdot}}
 \DeclareFieldFormat[image]{citetitle}{\mkbibquote{#1\isdot}}
 
+%    \end{macrocode}
+%
+% \subsection{Software}
+%
+% The version for software goes between the \texttt{title} and \texttt{titleaddon}.
+%
+%    \begin{macrocode}
+\newbibmacro*{title+version}{%
+  \ifboolexpr{
+    test {\iffieldundef{title}}
+    and
+    test {\iffieldundef{subtitle}}
+  }
+  {}
+  {\printtext[title]{%
+      \printfield[titlecase]{title}%
+      \setunit{\subtitlepunct}%
+      \printfield[titlecase]{subtitle}}%
+    \setunit{\addspace}}%
+  \printfield{version}%
+  \setunit{\addspace}%
+  \printfield{titleaddon}%
+}
+\DeclareFieldFormat[software]{version}{\mkbibparens{\bibstring{version}~#1}}
+%    \end{macrocode}
+%
+% The url date string is different for software: `downloaded' rather than `accessed'.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[software]{urldate}{\bibstring{urldown}\space#1}
+%    \end{macrocode}
+%
+% The software driver is based loosely on the manual driver.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{software}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title+version}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor}%
+  \newunit\newblock
+  \printfield{type}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
 %    \end{macrocode}
 %
 % \subsection{Related entries}
@@ -7348,6 +7445,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
   at               = {{at}{at}},
   under            = {{s\adddot v\adddot}{s\adddot v\adddot}},
+  urldown          = {{downloaded}{downloaded}},
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
   suppto           = {{supplement to}{supplement to}},
