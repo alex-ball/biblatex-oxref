@@ -3248,7 +3248,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y>\spec{\emph{Title} (Year) (Publisher, Number).}
 
 \begin{bibexbox}
-%<y><\textdagger>
+%<n><OGS \S15.14.2>
+%<y><OGS \S15.14.2\textdagger>
 {bbc1987ava}
 %<n>\emph{The Ashes: Victory in Australia} (BBCV 4040, 1987).
 %<y>\emph{The Ashes: Victory in Australia} (1987) (BBCV 4040).
@@ -3269,7 +3270,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y>\spec{\enquote{EpisodeTitle} (Year), \emph{SeriesTitle} \lit{series} (Publisher, Number).}
 
 \begin{bibexbox}
-%<y><\textdagger>
+%<n><OGS \S15.14.2>
+%<y><OGS \S15.14.2\textdagger>
 {britt1986pho}
 %<n>\enquote{Percy and Harold and Other Stories}, \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224, 1986).
 %<y>\enquote{Percy and Harold and Other Stories} (1986), \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224).
@@ -3291,7 +3293,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y>\spec{Director (Year) (\lit{dir.}), \emph{Title} (Publisher, Number).}
 
 \begin{bibexbox}
-%<y><\textdagger>
+%<n><OGS \S15.14.2>
+%<y><OGS \S15.14.2\textdagger>
 {chaplin1936mt}
 %<n>Charles Chaplin (dir.), \emph{Modern Times} (United Artists, 1936).
 %<y>Chaplin, C. (1936) (dir.), \emph{Modern Times} (United Artists).
@@ -3312,7 +3315,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y>\spec{\emph{Title} (Year), \lit{dir.} Director (Publisher, Number).}
 
 \begin{bibexbox}
-%<y><\textdagger>
+%<n><OGS \S15.14.2>
+%<y><OGS \S15.14.2\textdagger>
 {reiner1983tst}
 %<n>\emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi}, dir.\ Rob Reiner (Embassy Pictures, 1983).
 %<y>\emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi} (1983), dir.\ R. Reiner (Embassy Pictures).
@@ -3334,9 +3338,9 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y>\spec{\emph{Title} (Year) (Publisher, Number), Credit.}
 
 \begin{bibexbox}
-%<n>{kaurismaki1989lcg-n}
+%<n><OGS \S15.14.2>{kaurismaki1989lcg-n}
 %<n>\emph{Leningrad Cowboys Go America} (Villealfa Filmproductions, 1989), dir.\@ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki, Mato Valtonen.
-%<y><\textdagger>{kaurismaki1989lcg-y}
+%<y><OGS \S15.14.2\textdagger>{kaurismaki1989lcg-y}
 %<y>\emph{Leningrad Cowboys Go America} (1989) (Villealfa Filmproductions), dir.\@ and screenplay by A. Kaurismäki, story by S. Järvenpää, A. Kaurismäki, M. Valtonen.
 \tcblower
 \begin{Verbatim}
@@ -3412,7 +3416,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y>\spec{\emph{Title} (Date), Channel.}
 
 \begin{bibexbox}
-%<y><\textdagger>
+%<n><OGS \S15.14.3>
+%<y><OGS \S15.14.3\textdagger>
 {bbc1995sg}
 %<n>\emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
 %<y>\emph{Sunday Grandstand} (1995), BBC2, 17 Sept.
@@ -3431,7 +3436,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y>\spec{\enquote{EpisodeTitle} (Date), \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel.}
 
 \begin{bibexbox}
-%<y><\textdagger>
+%<n><NHR \S18.8.5>
+%<y><NHR \S18.8.5\textdagger>
 {berger1972ws}
 %<n>John Berger, Episode 1, \emph{Ways of Seeing}, BBC (1972), \url{https://www.youtube.com/watch?v=0pDE4VX_9Kk}, accessed 9 Nov. 2013.
 %<y>Berger, J. (1972), Episode 1, \emph{Ways of Seeing}, BBC, \url{https://www.youtube.com/watch?v=0pDE4VX_9Kk}, accessed 9 Nov. 2013.
@@ -3881,8 +3887,8 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 \spec{Author, \enquote{Title}, in\dots}
 
 \begin{bibexbox}
-%<n><>
-%<y><\textdagger>
+%<n><OGS \S15.8>
+%<y><OGS \S15.8\textdagger>
 {auden1990era}
 W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}], in \enquote{The German Auden: Six Early Poems}, trans. David Constantine, in Katherine Bucknell and Nicholas Jenkins (eds.), \emph{W. H. Auden, \enquote{The Map of All my Youth}: Early Works, Friends, and Influences} (Auden Studies, 1; Oxford, 1990), 1--15 at 6.
 \tcblower
@@ -3893,12 +3899,14 @@ W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}],
   title = {Es regnet auf mir in den Schottische Lände},
   titleaddon = {\emph{sic}},
   related = {constantine1990gas},
-  relatedtype = {in}}
+  relatedtype = {in},
+  pages = {6}}
 @incollection{constantine1990gas,
   title = {The {German} {Auden}},
   subtitle = {Six Early Poems},
-  translator = {David Constantine},
-  author = {},
+  author = {David Constantine},
+  authortype = {translator},
+  options = {useauthor=false},
   editor = {Katherine Bucknell and Nicholas Jenkins},
   booktitle = {W. H. Auden, \enquote{The Map of All my Youth}},
   booksubtitle = {Early Works, Friends, and Influences},
@@ -3913,8 +3921,8 @@ W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}],
 
 
 \begin{bibexbox}
-%<n><>
-%<y><\textdagger>
+%<n><OGS \S15.8>
+%<y><OGS \S15.8\textdagger>
 {blois1993qff}
 William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Jan M. Ziolkowski, \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. Edward Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
 \tcblower
@@ -4341,12 +4349,12 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   }{%
     \ifnamesequal{author}{editor}{%
       \bibstring{idem\thefield{gender}}%
-      \addspace
+      \setunit{\addspace}%
       \usebibmacro{editor+othersstrg}%
       \clearname{editor}%
     }{%
       \printnames[bookeditor]{editor}%
-      \newunit%
+      \setunit*{\addspace}%
       \usebibmacro{editor+othersstrg}%
       \clearname{editor}%
     }%
@@ -6352,6 +6360,42 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
   \usebibmacro{finentry}}
+
+\newbibmacro*{related:in}[1]{%
+  \entrydata*{#1}{%
+    \usedriver
+      {\ifnameundef{savedauthor}
+         {\ifnameundef{savededitor}
+            {}
+            {\ifnamesequal{editor}{savededitor}
+               {\clearname{editor}}
+               {}}}
+         {\ifnamesequal{author}{savedauthor}
+            {\clearname{author}}
+            {}}%
+       \renewbibmacro*{related:init}{}%
+       \DeclareNameAlias{sortname}{default}%
+       \ifbibmacroundef{date+extrayear}
+         {}
+         {\renewbibmacro*{date+extrayear}{}%
+          \renewbibmacro*{date}{\printdate}}%
+       \renewbibmacro*{pageref}{}}
+      {\thefield{entrytype}}%
+    \ifboolexpr{
+      test {\iffieldundef{pages}}
+      or
+      test {\iffieldundef{savedpages}}
+    }{%
+      \newunit\newblock
+    }{%
+      \setunit{\addspace}%
+      \bibstring{at}%
+      \printunit{\addspace}%
+    }%
+  }%
+  \usebibmacro{chapter+pages}%
+}
+
 %    \end{macrocode}
 %
 % \subsection{Sort order}
