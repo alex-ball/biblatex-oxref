@@ -4456,26 +4456,6 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   {\setunit*{\addcomma\addspace}}{}{}
 %    \end{macrocode}
 %
-% The `urldatetype' implementation below was intended to support a use
-% case from the OGS, but it is not something promoted by NHR, and that
-% sort of use case is probably better met with a note of some kind.
-% It will be removed.
-%
-%    \begin{macrocode}
-\DeclareEntryOption{urldatetype}{%
-  \DeclareFieldFormat{urldate}{\printtext{#1}\space##1}%
-  \renewbibmacro*{url+urldate}{%
-    \iffieldundef{url}{}{%
-      \newunit
-      \printurldate%
-      \setunit*{\addspace}%
-      \printfield{url}%
-      \nopunct
-    }%
-  }%
-}
-%    \end{macrocode}
-%
 % The DOI is introduced by \enquote{doi} in lowercase.
 %
 %    \begin{macrocode}
