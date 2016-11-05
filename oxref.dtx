@@ -3404,6 +3404,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{Use the (non-standard) \texttt{datetype} field to clarify the event represented by the main date.}
+
 \section{Broadcasts}
 
 %<n>\spec{\emph{Title}, Channel, Date.}
@@ -3710,6 +3712,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{Use the (non-standard) \texttt{datetype} field to clarify the event represented by the main date.}
+
 
 \section{Social media}
 
@@ -3835,7 +3839,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
   subtitle = {The 2010 Revision},
   titleaddon = {CD-ROM},
   location = {New York},
-  publisher = {United Nations Department of Economic and Social Affairs, Population Division},
+  publisher = {{United Nations Department of Economic and Social Affairs, Population Division}},
   date = {2011}}
 %<*n|y>
 \end{Verbatim}
@@ -3998,12 +4002,10 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 %
 % \begin{itemize}
 % \item \cs{isInferred} relates to author names;
-% \item \cs{whenPublished} relates to URL dates.
 % \end{itemize}
 %
 %    \begin{macrocode}
 \def\isInferred{inferred}
-\def\whenPublished{published}
 %    \end{macrocode}
 %
 % We base our styles on the standard on the principle of least surprise
@@ -4722,7 +4724,10 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 %    \begin{macrocode}
 \newbibmacro*{related:suppto}[1]{%
   \entrydata*{#1}{%
-    \usedriver{}{%
+    \usedriver{%
+      \ifbibmacroundef{date+extrayear}{}{%
+        \renewbibmacro*{date+extrayear}{}}%
+    }{%
       \thefield{entrytype}%
     }%
   }%
