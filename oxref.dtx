@@ -4376,6 +4376,9 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 % intended for online resources.
 %
 %    \begin{macrocode}
+\DeclareFieldFormat{datetype}{%
+  \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
+}
 \renewbibmacro*{date}{%
   \printfield{datetype}%
   \setunit*{\addspace}%
