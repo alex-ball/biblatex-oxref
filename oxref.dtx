@@ -3849,9 +3849,6 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \section{Notes}
 
 \begin{itemize}
-  \item Indicate missing date of publication with n.d.
-  \item Clarify meaning of date if needed: posted 10 Oct. 2001.
-  \item Access date can be omitted if publication date is given.
   \item Division can include instruction to search: s.v. \enquote{trignonometry}.
 \end{itemize}
 
@@ -3883,9 +3880,66 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 
 \spec{Author, \enquote{Title}, in\dots}
 
+\begin{bibexbox}
+%<n><>
+%<y><\textdagger>
+{auden1990era}
 W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}], in \enquote{The German Auden: Six Early Poems}, trans. David Constantine, in Katherine Bucknell and Nicholas Jenkins (eds.), \emph{W. H. Auden, \enquote{The Map of All my Youth}: Early Works, Friends, and Influences} (Auden Studies, 1; Oxford, 1990), 1--15 at 6.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@misc{auden1990era,
+  author = {W. H. Auden},
+  title = {Es regnet auf mir in den Schottische Lände},
+  titleaddon = {\emph{sic}},
+  related = {constantine1990gas},
+  relatedtype = {in}}
+@incollection{constantine1990gas,
+  title = {The {German} {Auden}},
+  subtitle = {Six Early Poems},
+  translator = {David Constantine},
+  author = {},
+  editor = {Katherine Bucknell and Nicholas Jenkins},
+  booktitle = {W. H. Auden, \enquote{The Map of All my Youth}},
+  booksubtitle = {Early Works, Friends, and Influences},
+  series = {Auden Studies},
+  number = {1},
+  location = {Oxford},
+  date = {1990},
+  pages = {1-15}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
+
+\begin{bibexbox}
+%<n><>
+%<y><\textdagger>
+{blois1993qff}
 William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Jan M. Ziolkowski, \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. Edward Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@misc{blois1993qff,
+  author = {{William of Blois}},
+  title = {The Quarrel of the Flea and the Fly},
+  origtitle = {Pulicis et musce iurgia},
+  related = {ziolkowski1993tam},
+  relatedtype = {in},
+  relatedstring = {trans.\@ in},
+  pages = {274-278}}
+@book{ziolkowski1993tam,
+  author = {Jan M. Ziolkowski},
+  title = {Talking Animals},
+  subtitle = {Medieval Latin Beast Poetry, 750-1150},
+  series = {Middle Ages Series},
+  serieseditor = {Edward Peters},
+  location = {Philadelphia},
+  publisher = {University of Pennsylvania Press},
+  date = {1993}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 \section{Plays}\label{sec:play}
 
@@ -3991,7 +4045,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   at, under, urldown,
   facsimile, revised,
   suppto, equals,
-  performer, byperformer, director, bydirector, reader, byreader, reviser, byreviser,
+  performer, byperformer, director, bydirector, reader, byreader, reviser, byreviser, byserieseditor,
   facebook, tweet,
   podcast,
   clip, webcast,
@@ -4299,6 +4353,19 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
   }{}}
 %    \end{macrocode}
 %
+% We provide a macro for printing series editors.
+%
+%    \begin{macrocode}
+\newbibmacro*{byserieseditor}{%
+  \ifnameundef{serieseditor}
+    {}
+    {\usebibmacro{bytypestrg}{serieseditor}{serieseditor}%
+     \setunit{\addspace}%
+     \printnames[byeditor]{serieseditor}%
+     \newunit}}
+
+%    \end{macrocode}
+%
 % \subsection{Titles}
 %
 % Title handling is mostly as it is in the standard styles, except
@@ -4318,6 +4385,8 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
       \setunit{\subtitlepunct}%
       \printfield[titlecase]{subtitle}}%
     \setunit{\addspace}}%
+  \printfield{origtitle}%
+  \setunit*{\addspace}%
   \printfield{titleaddon}%
   \iffieldequalstr{relatedtype}{equals}{%
     \iftoggle{bbx:related}{%
@@ -4327,6 +4396,7 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
     }{}%
   }{}%
 }
+\DeclareFieldFormat{origtitle}{\mkbibparens{\mkbibemph{#1}}}
 \DeclareFieldFormat{titleaddon}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
@@ -4785,14 +4855,16 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \end{macrocode}
 %
 % Standard \pkg{biblatex} puts a space between series name and number.
-% OGS separates them with a comma.
+% OGS separates them with a comma. It also has an example with a series editor.
 %
 %    \begin{macrocode}
 \renewbibmacro*{series+number}{%
-  \printfield{series}%
-  \newunit
-  \printfield{number}%
-  \newunit}
+  \printtext{%
+    \printfield{series}%
+    \newunit
+    \usebibmacro{byserieseditor}%
+    \newunit
+    \printfield{number}}}
 %    \end{macrocode}
 %
 % When citing both the first and a later edition, the first one comes
@@ -7398,7 +7470,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{datetype}
-\DeclareDatamodelEntryfields{datetype}
+\DeclareDatamodelFields[type=list,datatype=name]{serieseditor}
+\DeclareDatamodelEntryfields{datetype,serieseditor}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -7454,6 +7527,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   byreader         = {{read by}{read by}},
   reviser          = {{reviser}{rev\adddot}},
   byreviser        = {{revised by}{rev\adddot}},
+  byserieseditor   = {{edited by}{ed\adddot}},
   facebook         = {{Facebook post}{Facebook post}},
   tweet            = {{Twitter post}{Twitter post}},
   podcast          = {{podcast}{podcast}},
