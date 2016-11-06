@@ -4867,12 +4867,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \renewbibmacro*{series+number}{%
-  \printtext{%
     \printfield{series}%
-    \newunit
+    \setunit*{\addcomma\space}%
     \usebibmacro{byserieseditor}%
-    \newunit
-    \printfield{number}}}
+    \setunit*{\addcomma\space}%
+    \printfield{number}}
 %    \end{macrocode}
 %
 % When citing both the first and a later edition, the first one comes
@@ -4948,7 +4947,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newbibmacro*{series+number+edition+publisher+location+date}{%
   \nopunct\printtext[publication]{%
     \usebibmacro{series+number}%
-    \setunit*{\addsemicolon\addspace}%
+    \setunit{\addsemicolon\addspace}%
     \usebibmacro{edition+publisher+location+date}%
   }%
 }
@@ -4962,7 +4961,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newbibmacro*{series+number+publisher+location+date}{%
   \nopunct\printtext[publication]{%
     \usebibmacro{series+number}%
-    \setunit*{\addsemicolon\addspace}%
+    \setunit{\addsemicolon\addspace}%
     \usebibmacro{publisher+location+date}%
   }%
 }
