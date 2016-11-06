@@ -6361,6 +6361,21 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 
+%    \end{macrocode}
+%
+% \subsubsection{Subitems}
+%
+% This macro provides a non-Biber method of inserting a formatted
+% reference within a review reference. It is deprecated and will
+% be removed in a future release.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[misc]{title}{%
+  \iffieldequalstr{relatedtype}{in}{%
+    \mkbibquote{#1\isdot}%
+  }{%
+    \mkbibemph{#1}%
+  }}
 \newbibmacro*{related:in}[1]{%
   \entrydata*{#1}{%
     \usedriver
