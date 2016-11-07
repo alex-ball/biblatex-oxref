@@ -3192,15 +3192,17 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \end{bibexbox}
 
 
-%<n>\spec{Composer, \emph{Title}, Artist (Publisher Series, Number, Year) (Medium).}
-%<y>\spec{Composer (Year), \emph{Title}, Artist (Publisher Series, Number) (Medium).}
+%<n>\spec{Composer, \emph{Title}, Artist (Publisher Series, Number, Year) [Medium].}
+%<y>\spec{Composer (Year), \emph{Title}, Artist (Publisher Series, Number) [Medium].}
+
+\tip{To describe the medium in a separate note, use the \texttt{howpublished} field.}
 
 \begin{bibexbox}
 %<n><NHR \S18.7.2>
 %<y><NHR \S18.7.2\textdagger>
 {hopkinsNDcar}
 %<n>Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) [2-vol.\@ CD set].
-%<y>Lightnin' Hopkins, \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) [2-vol.\@ CD set].
+%<y>Lightnin' Hopkins (n.d.), \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) [2-vol.\@ CD set].
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3210,13 +3212,15 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
   publisher = {EMI},
   series = {Blues Series},
   number = {CDP-7-96843-2},
-  pubstate = {2-vol.\@ CD set}}
+  howpublished = {2-vol.\@ CD set}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 %<n>\spec{Author, \emph{Title}, \lit{read by} Reader (Medium, Number, Year).}
 %<y>\spec{Author (Year), \emph{Title}, \lit{read by} Reader (Medium, Number).}
+
+\tip{To describe the medium as part of the publication statement, use the \texttt{type} field.}
 
 \begin{bibexbox}
 %<n><OGS \S15.14.1>
@@ -3232,15 +3236,12 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
   title = {The Lion, the Witch, and the Wardrobe},
   editor = {Sir Michael Hordern},
   editortype = {reader},
-  howpublished = {2 audio cassettes},
+  type = {2 audio cassettes},
   number = {TO1611},
   date = {1981}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%<n>\spec{Speaker, \emph{Title} (Publisher, Number, Year).}
-%<y>\spec{Speaker (Year), \emph{Title} (Publisher, Number).}
 
 \section{Video recordings}
 
@@ -4561,9 +4562,18 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 %    \begin{macrocode}
 \renewbibmacro*{addendum+pubstate}{%
   \iffieldundef{pubstate}{}{\nopunct}%
-  \printfield[parens]{pubstate}%
+  \printfield{pubstate}%
   \setunit{\addperiod\addspace}\newblock
   \printfield{addendum}}
+\DeclareFieldFormat{pubstate}{\mkbibparens{#1}}
+%    \end{macrocode}
+%
+% Publication descriptions are printed plain for unpublished works, and in
+% brackets for other entry types.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{howpublished}{\mkbibbrackets{#1}}
+\DeclareFieldFormat[misc,unpublished]{howpublished}{#1}
 %    \end{macrocode}
 %
 % \subsection{Periodical-style entries}
@@ -5008,7 +5018,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit
   \usebibmacro{series+number+edition+publisher+location+date}%
   \setunit{\addspace}%
-  \printfield[brackets]{howpublished}%
+  \printfield{howpublished}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -5980,14 +5990,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % The publication block for audiovisual resources is quite different
 % from the normal, as the `type', `series' and `number' come
 % between the `publisher' and `date'. We do not use `location'.
-% Specification of the medium goes at the start, which we implement
-% using the `howpublished' field.
+% In the absence of `publisher', the `type' is set off with a comma.
 %
 %    \begin{macrocode}
 \newbibmacro*{publisher+type+series+number+date}{%
   \ifboolexpr{%
-    test {\iffieldundef{howpublished}}
-    and
     test {\iflistundef{publisher}}
     and
     test {\iffieldundef{type}}
@@ -6001,12 +6008,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     test {\iffieldundef{month}}
   }{}{%
     \nopunct\printtext[publication]{%
-      \printfield{howpublished}%
-      \setunit*{\addcomma\space}%
       \printlist{publisher}%
       \setunit*{\addspace}%
       \printfield{type}%
-      \setunit*{\addspace}%
+      \iflistundef{publisher}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addspace}}%
       \printfield{series}%
       \setunit*{\addcomma\space}%
       \printfield{number}%
@@ -6043,6 +6050,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printlist{organization}%
   \newunit\newblock%
   \usebibmacro{publisher+type+series+number+date}%
+  \setunit{\addspace}%
+  \printfield{howpublished}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit
@@ -6063,8 +6072,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-
+%    \end{macrocode}
+%
+% The same driver will do very well for `music', `video' and `movie'.
+%
+%    \begin{macrocode}
 \DeclareBibliographyAlias{music}{audio}
+\DeclareBibliographyAlias{movie}{audio}
+\DeclareBibliographyAlias{video}{audio}
 %    \end{macrocode}
 %
 % Titles for videos do not have a consistent format, so we define some
@@ -6080,57 +6095,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     test {\iffieldequalstr{entrysubtype}{webcast}}
   }{\mkbibquote{#1\isdot}}{\mkbibemph{#1}}%
 }
+
 %    \end{macrocode}
 %
-% The`video' driver is very similar to the audio one.
+% The examples of image references in \emph{New Hart's Rules} are all for online
+% images, and the `online' driver seems to work well for them. The main
+% difference is that they use a different format for the title.
 %
 %    \begin{macrocode}
-\DeclareBibliographyDriver{video}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
-  \usebibmacro{title}%
-  \setunit{\addspace}
-  \usebibmacro{onlinetype}%
-  \newunit
-  \usebibmacro{maintitle}
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{volumes}%
-  \newunit\newblock
-  \printfield{note}%
-  \newunit\newblock%
-  \printlist{organization}%
-  \newunit\newblock%
-  \usebibmacro{publisher+type+series+number+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-
-\DeclareBibliographyAlias{movie}{video}
 \DeclareBibliographyAlias{image}{online}
 \DeclareFieldFormat[image]{title}{\mkbibquote{#1\isdot}}
 \DeclareFieldFormat[image]{citetitle}{\mkbibquote{#1\isdot}}
