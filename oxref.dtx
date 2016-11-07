@@ -3293,6 +3293,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<n>\spec{Director (\lit{dir.}), \emph{Title} (Publisher, Number, Year).}
 %<y>\spec{Director (Year) (\lit{dir.}), \emph{Title} (Publisher, Number).}
 
+\tip{Use the \texttt{author} field to place a credit at the head of the reference.}
+
 \begin{bibexbox}
 %<n><OGS \S15.14.2>
 %<y><OGS \S15.14.2\textdagger>
@@ -3302,7 +3304,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@video{chaplin1936mt,
+@movie{chaplin1936mt,
   author = {Charles Chaplin},
   authortype = {director},
   title = {Modern Times},
@@ -3315,6 +3317,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<n>\spec{\emph{Title}, \lit{dir.} Director (Publisher, Number, Year).}
 %<y>\spec{\emph{Title} (Year), \lit{dir.} Director (Publisher, Number).}
 
+\tip{Use the \texttt{editor} field to place a credit after the title.}
+
 \begin{bibexbox}
 %<n><OGS \S15.14.2>
 %<y><OGS \S15.14.2\textdagger>
@@ -3324,7 +3328,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@video{reiner1983tst,
+@movie{reiner1983tst,
   title = {This is {Spinal} {Tap}},
   subtitle = {A Rockumentary by {Marti} {Di} {Bergi}},
   editor = {Rob Reiner},
@@ -3338,30 +3342,29 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<n>\spec{\emph{Title} (Publisher, Number, Year), Credit.}
 %<y>\spec{\emph{Title} (Year) (Publisher, Number), Credit.}
 
+\tip{You can place up to four credits in the editor position, more if any of them correspond to the built-in editor types like \texttt{commentator} or \texttt{translator}.
+  If you do supply a lot of credits, the \emph{Oxford Guide to Style} recommends you shift them to the end of the reference.
+  You can do this with the \texttt{endeditor} option.}
+
+
 \begin{bibexbox}
-%<n><OGS \S15.14.2>{kaurismaki1989lcg-n}
+%<n><OGS \S15.14.2>
+%<y><OGS \S15.14.2\textdagger>
+{kaurismaki1989lcg}
 %<n>\emph{Leningrad Cowboys Go America} (Villealfa Filmproductions, 1989), dir.\@ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki, Mato Valtonen.
-%<y><OGS \S15.14.2\textdagger>{kaurismaki1989lcg-y}
 %<y>\emph{Leningrad Cowboys Go America} (1989) (Villealfa Filmproductions), dir.\@ and screenplay by A. Kaurismäki, story by S. Järvenpää, A. Kaurismäki, M. Valtonen.
 \tcblower
 \begin{Verbatim}
 %</n|y>
-%<*n|bib>
-@video{kaurismaki1989lcg-n,
+@movie{kaurismaki1989lcg,
   title = {Leningrad Cowboys Go America},
   publisher = {Villealfa Filmproductions},
   date = {1989},
-  addendum = {dir.\ and screenplay by Aki Kaurismäki, story by Sakke Järvenpää, Aki Kaurismäki,
-    Mato Valtonen}}
-%</n|bib>
-%<*y|bib>
-@video{kaurismaki1989lcg-y,
-  title = {Leningrad Cowboys Go America},
-  publisher = {Villealfa Filmproductions},
-  date = {1989},
-  addendum = {dir.\@ and screenplay by A. Kaurismäki, story by S. Järvenpää, A. Kaurismäki,
-    M. Valtonen}}
-%</y|bib>
+  editortype = {dir.\ and screenplay by},
+  editor = {Aki Kaurismäki},
+  editoratype = {story by},
+  editora = {Sakke Järvenpää and Aki Kaurismäki and Mato Valtonen},
+  options = {endeditor}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -6040,8 +6043,24 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 }
 %    \end{macrocode}
 %
-% We provide a specialist `audio'/`music' driver. It is currently based
-% closely on `book'; it could do with a more thoughtful implementation.
+% We provide the \texttt{endeditor} option to determine if credits should be
+% placed before or after the publication block.
+%
+%    \begin{macrocode}
+\newtoggle{endeditor}
+\DeclareEntryOption[boolean]{endeditor}[true]{\settoggle{endeditor}{#1}}
+\newbibmacro*{pre-byeditor+others}{%
+  \iftoggle{endeditor}{}{%
+    \usebibmacro{byeditor+others}%
+  }}
+\newbibmacro*{post-byeditor+others}{%
+  \iftoggle{endeditor}{%
+    \usebibmacro{byeditor+others}%
+  }{}}
+%    \end{macrocode}
+%
+% We provide a specialist `audio' driver. It borrows elements from the `book'
+% and `online' drivers, and incorporates the above variations.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{audio}{%
@@ -6059,7 +6078,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
-  \usebibmacro{byeditor+others}%
+  \usebibmacro{pre-byeditor+others}%
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
@@ -6071,9 +6090,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\addspace}%
   \printfield{howpublished}%
   \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
+  \usebibmacro{post-byeditor+others}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
   {\printfield{isbn}}
