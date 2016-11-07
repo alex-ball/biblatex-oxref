@@ -3402,14 +3402,16 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
   organization = {YouTube},
   date = {1956-01-09},
   datetype = {recorded},
-  note = {uploaded 8 Nov. 2011},
+  eventdate = {2011-11-08},
+  eventtitle = {uploaded},
   url = {http://www.youtube.com/watch?v=0Vv0Sy9FJrc&list=PLDB11C4F39E09047F},
   urldate = {2013-11-09}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Use the (non-standard) \texttt{datetype} field to clarify the event represented by the main date.}
+\tip{Use the (non-standard) \texttt{datetype} field to clarify the event represented by the main date.
+  You can also use \texttt{eventtitle} and \texttt{eventdate} to specify a secondary publication event.}
 
 \section{Broadcasts}
 
@@ -6006,6 +6008,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     test {\iffieldundef{year}}
     and
     test {\iffieldundef{month}}
+    and
+    test {\iffieldundef{eventyear}}
+    and
+    test {\iffieldundef{eventmonth}}
   }{}{%
     \nopunct\printtext[publication]{%
       \printlist{publisher}%
@@ -6019,7 +6025,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \printfield{number}%
       \setunit*{\addcomma\space}%
       \usebibmacro{date}%
-    }}}
+      \ifboolexpr{
+        test {\iffieldundef{eventyear}}
+        and
+        test {\iffieldundef{eventmonth}}
+      }{}{%
+        \setunit*{\addcomma\space}%
+        \printfield{eventtitle}%
+        \setunit*{\addspace}%
+        \printeventdate
+      }}}}
+\DeclareFieldFormat[audio,music,movie,video]{eventtitle}{%
+  \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
+}
 %    \end{macrocode}
 %
 % We provide a specialist `audio'/`music' driver. It is currently based
