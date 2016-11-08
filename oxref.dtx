@@ -286,6 +286,10 @@ Copyright (C) 2016 Alex Ball
   \egroup
 }
 \makeatother
+% bibexbox displays a sample reference:
+% (colour)<source reference>[citation postnote]{bib key}[additional TCB options]
+% Put hand-coded reference in the environment upper part.
+% Put a bib entry (wrapped in a Verbatim environment) in the environment lower part.
 \NewTColorBox{bibexbox}{D(){ok}d<>omo}%
   {bicolor
   ,colframe = #1
@@ -304,7 +308,7 @@ Copyright (C) 2016 Alex Ball
       \node[anchor=south east,text=teal] at (frame.south east) {#2};
       }
     }
-  , IfNoValueTF={#5}{}{#5}
+  ,IfNoValueTF={#5}{}{#5}
   }
 \NewTotalTColorBox{\spec}{m}%
   {enhanced
@@ -315,13 +319,23 @@ Copyright (C) 2016 Alex Ball
   ,bottomrule = 0pt
   ,rightrule = 0pt
   }{#1}
+% egcite displays a sample citation:
+% (colour)[title]{hand-coded citation text}[additional TCB options]
+% Put the citation command in the environment.
+\NewTCBListing{egcite}{D(){ok}omo}%
+  {colframe = #1
+  ,colback = #1!5!white
+  ,listing side text
+  ,IfNoValueTF={#2}{}{title = #2}
+  ,before lower = {\raggedright\hangfrom{\booksym\space}#3\par\hangfrom{\cogsym\space}}
+  ,IfNoValueTF={#4}{}{#4}}
 % \egcite gives a citation as an example. Arguments:
 % #1 = page range
 % #2 = bib key
-\NewDocumentCommand\egcite{om}{%
-  \makebox[0pt][r]{\footnotesize\textcolor{teal}{#2}\quad}%
-  \IfNoValueTF{#1}{\dbgcolor{#2}{\fullcite{#2}.}}%
-  {\dbgcolor{#2}{\fullcite[#1]{#2}}.}}
+% \NewDocumentCommand\egcite{om}{%
+%   \makebox[0pt][r]{\footnotesize\textcolor{teal}{#2}\quad}%
+%   \IfNoValueTF{#1}{\dbgcolor{#2}{\fullcite{#2}.}}%
+%   {\dbgcolor{#2}{\fullcite[#1]{#2}}.}}
 
 \frenchspacing
 %</driver|doc>
@@ -868,7 +882,26 @@ The \emph{Oxford Guide to Style} consistently promotes an author–date citation
   \item (Rowland 1961, ed. 1961; Wells and Wiley eds. 1967; Dohnert 1954\emph{a}, et al. eds. 1956) – mixing authored and edited works
 \end{itemize}
 
-\emph{New Hart's Rules} is mostly consistent with this, but has some variations where the author and date are separated by a comma, and where multple references are also separated by commas.
+\emph{New Hart's Rules} is mostly consistent with this, but has some variations where the author and date are separated by a comma, and where multiple references are also separated by commas.
+
+\begin{egcite}{Hankinson (1988: 93, 96; 1989: 72)}
+\textcites%
+  [93, 96]{hankinson1988mmm}%
+  [72]{hankinson1989gba}
+\end{egcite}
+
+\begin{egcite}{(Barnes and Griffin 1989)}
+\parencite{barnes.griffin1989pte}
+\end{egcite}
+
+\begin{egcite}{(P. Smith, forthcoming; T. Smith 1988)}
+\parencite{smithFCgaf,smith1988fag}
+\end{egcite}
+
+\begin{egcite}{(Brady et al. 1994; WHO 1986)}
+\parencite{who1986nde,%
+  brady.etal1994hehsa}
+\end{egcite}
 %</y>
 
 \section{Anonymous works}
@@ -1593,7 +1626,7 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
 @book{smith1988fag,
   author = {Smith, T.},
   title = {Famine and Gender},
-  year = {1988},
+  date = {1988},
   location = {New Haven, Conn.}}
 %</y|bib>
 %<*y>
@@ -6594,7 +6627,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % can still override them.
 %
 %    \begin{macrocode}
-\ExecuteBibliographyOptions{uniquename=init,giveninits,labeldateparts,sorting=nyt,pagetracker}
+\ExecuteBibliographyOptions{uniquename=init,giveninits,labeldateparts,sorting=nyt,pagetracker,maxcitenames=2}
 %    \end{macrocode}
 %
 % \subsection{Date merging option}
@@ -7576,7 +7609,35 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % \setcounter{FancyVerbLine}{19}
 %
 %    \begin{macrocode}
-\RequireCitationStyle{authoryear}
+\RequireCitationStyle{authoryear-comp}
+%    \end{macrocode}
+%
+% The name and year are usually separated by a space, but if the date is
+% replaced by a word (e.g. `forthcoming', `n.d.'), they are separated by
+% a comma.
+%
+%    \begin{macrocode}
+\renewcommand*{\nameyeardelim}{%
+  \ifboolexpr{
+    test {\iffieldundef{\thefield{labeldatesource}year}}
+    and
+    test {\iffieldundef{year}}
+  }%
+    {\addcomma\space}%
+    {\addspace}}
+%    \end{macrocode}
+%
+% Compressed citations are delimited with a semicolon, just like
+% non-compressed citations.
+%
+%    \begin{macrocode}
+\renewcommand*{\compcitedelim}{\addsemicolon\space}
+%    \end{macrocode}
+%
+% The page reference postnote is given after a colon.
+%
+%    \begin{macrocode}
+\renewcommand*{\postnotedelim}{\addcolon\space}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
