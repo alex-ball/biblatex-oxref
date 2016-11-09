@@ -4926,6 +4926,13 @@ William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis e
 %
 % \subsection{Monograph-style entries}
 %
+% By default, editors do not appear before the title in book or reference
+% entries.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions[book,mvbook,reference,mvreference]{useeditor=false,usetranslator=false}
+%    \end{macrocode}
+%
 % The titles of books that have been collected into an anthology are
 % treated like regular chapters and set in quotes.
 %
@@ -5079,8 +5086,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % follows:
 % \begin{itemize}
 %   \item
-%   only `author' appears before the title, never `editor'.
-%   \item
 %   `maintitle' is processed with `volume' just before `series', instead
 %   of with `title';
 %   \item
@@ -5100,8 +5105,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{book}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
+  \usebibmacro{author/editor+others/translator+others}%
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -5144,8 +5149,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % standard `book' driver. The changes are as follows:
 % \begin{itemize}
 %   \item
-%   only `author' appears before the title, never `editor';
-%   \item
 %   `volume'/`part' is processed just after `maintitle+title';
 %   \item
 %   `edition' is processed where the standard style processes `note';
@@ -5161,8 +5164,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{mvbook}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
+  \usebibmacro{author/editor+others/translator+others}%
   \usebibmacro{maintitle+title}%
   \newunit
   \iffieldundef{maintitle}
@@ -5399,22 +5402,22 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % Unlike the standard styles, we provide a separate driver for
 % `reference'. It is just like `book' except that `edition' is given
-% between `byauthor' and `byeditor+others'.
+% directly after the title.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{reference}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{author}%
   \setunit{\labelnamepunct}\newblock
+  \usebibmacro{author/editor+others/translator+others}%
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
   \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
   \printfield{edition}%
   \newunit
+  \usebibmacro{byauthor}%
+  \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
   \printfield{note}%
@@ -5554,6 +5557,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \subsection{Proceedings}
 %
+% By default, editors do not appear before the title in proceedings
+% entries.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions[proceedings,mvproceedings]{useeditor=false,usetranslator=false}
+%    \end{macrocode}
+%
 % In our version of the `event+venue+date' macro, the venue and date
 % are set off with commas respectively instead of
 % parentheses. A bit of jiggery-pokery is used to make the colon italic
@@ -5582,7 +5592,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \newunit}
 %    \end{macrocode}
 %
-% We provide an `organization+author' macro which allows the organization to
+% We provide an `organization+author+others' macro which allows the organization to
 % take the author position in proceedings (but only if the author is not
 % already given).
 %
@@ -5591,10 +5601,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{list:delim}{#1}%
   \iftoggle{blx@ox@scnames}{\textsc{#1}}{#1}\isdot
   \usebibmacro{list:andothers}}
-\newbibmacro*{organization+author}{%
+\newbibmacro*{organization+author+others}{%
   \ifnameundef{author}{%
     \iflistundef{organization}{%
-      \global\undef\bbx@lasthash
+      \usebibmacro{editor+others}%
     }{%
       \usebibmacro{bbx:dashcheck}{%
         \bibnamedash
@@ -5634,7 +5644,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{proceedings}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{organization+author}%
+  \usebibmacro{organization+author+others}%
   \newunit
   \usebibmacro{maintitle+title}%
   \newunit
@@ -7499,17 +7509,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \end{macrocode}
 %
 % We apply one more patch of this nature, this time to the
-% `organization+author' macro used by the proceedings driver.
+% `organization+author+others' macro used by the proceedings driver.
 %
 %    \begin{macrocode}
-\xpatchbibmacro{organization+author}{%
-  \global\undef\bbx@lasthash
-}{%
-  \global\undef\bbx@lasthash
-  \usebibmacro{labeltitle}%
-  \setunit*{\addspace}%
-}{}{}
-\xpatchbibmacro{organization+author}{%
+\xpatchbibmacro{organization+author+others}{%
   \printlist[authorlike]{organization}%
 }{%
   \printlist{organization}%
