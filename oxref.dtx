@@ -881,23 +881,7 @@ The \emph{Oxford Guide to Style} does not prescribe a particular way of abbrevia
 
 %</n>
 %<*y>
-The \emph{Oxford Guide to Style} consistently promotes an author–date citation scheme that uses the following forms:
-
-\begin{itemize}
-  \item Annas (1983)
-  \item Barnes (1982: 15–17) – pages set off with colon
-  \item Hankinson (1988\emph{a}: 93, 96; 1989 72) – works separated with semicolon
-  \item Rowland (1961, ed. 1961), Wells and Wiley (eds. 1967), Dohnert (1954\emph{a}, et al. eds. 1956) – mixing authored and edited works
-  \item (Blumenthal 1971) – no punctuation between author and date
-  \item (WHO 1986) – using a corporate short author
-  \item (Smith, forthcoming \emph{b}: i.\@ 24) – comma between author and publication state
-  \item (P. Jones 1994; L. Jones 1996) – distinguishing different authors with the same surname
-  \item (Bohus 1981; De Kloet and De Wied 1980)
-  \item (Lloyd-Evans et al. 1979; Dencker and Lindberg 1977; Feris et al.\@ 1908) – no more than two names
-  \item (Rowland 1961, ed. 1961; Wells and Wiley eds. 1967; Dohnert 1954\emph{a}, et al. eds. 1956) – mixing authored and edited works
-\end{itemize}
-
-\emph{New Hart's Rules} is mostly consistent with this, but has some variations where the author and date are separated by a comma, and where multiple references are also separated by commas.
+The \emph{Oxford Guide to Style} consistently promotes an author–date citation scheme which uses parentheses, within which there is only a space between the name and date. Pages are set off with a colon, and multiple works are separated with a semicolon.
 
 \begin{egcite}{Hankinson (1988: 93, 96; 1989: 72)}
 \textcites%
@@ -905,18 +889,43 @@ The \emph{Oxford Guide to Style} consistently promotes an author–date citation
   [72]{hankinson1989gba}
 \end{egcite}
 
-\begin{egcite}{(Barnes and Griffin 1989)}
-\parencite{barnes.griffin1989pte}
+Up to two author names are given, after which ‘et al.’ is used.
+
+\begin{egcite}{(Barnes and Griffin 1989; Brady et al. 1994)}
+\parencite{barnes.griffin1989pte,%
+  brady.etal1994hehsa}
 \end{egcite}
 
-\begin{egcite}{(P. Smith, forthcoming; T. Smith 1988)}
+If different authors have the same surname, they are distiguished by their initial.
+If there is no date, the replacement text is separated from the name by a comma.
+
+%</y>
+%</n|y>
+%<*bib>
+@inbook{smithFCct,
+  author = {P. Smith},
+  title = {The Case of {Tigray}},
+  bookauthor = {P. Smith},
+  booktitle = {Gender and Famine},
+  volume = {2},
+  pages = {76-94},
+  location = {London},
+  pubstate = {forthcoming}}
+%</bib>
+%<*n|y>
+%<*y>
+\nocite{smithFCct}
+\begin{egcite}{(P. Smith, forthcoming \emph{a}; T. Smith 1988)}
 \parencite{smithFCgaf,smith1988fag}
 \end{egcite}
 
-\begin{egcite}{(Brady et al. 1994; WHO 1986)}
-\parencite{who1986nde,%
-  brady.etal1994hehsa}
+If a short author label is provided, it is used in place of the full author.
+
+\begin{egcite}{(WHO 1986)}
+\parencite{who1986nde}
 \end{egcite}
+
+\emph{New Hart's Rules} is mostly consistent with this, but has some variations where the author and date are separated by a comma, and where multiple references are also separated by commas.
 %</y>
 
 \section{Anonymous works}
@@ -1566,7 +1575,7 @@ Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake},
 %<*y>
 \begin{bibexbox}<NHR \S18.5>
 {lyons1981lli}
-Lyons, J. (1981a), \emph{Language and Linguistics: An Introduction} (Cambridge: Cambridge University Press).
+Lyons, J. (1981\emph{a}), \emph{Language and Linguistics: An Introduction} (Cambridge: Cambridge University Press).
 \tcblower
 \begin{Verbatim}
 %</y>
@@ -1585,7 +1594,7 @@ Lyons, J. (1981a), \emph{Language and Linguistics: An Introduction} (Cambridge: 
 
 \begin{bibexbox}<NHR \S18.5>
 {lyons1981lmc}
-Lyons, J. (1981b), \emph{Language, Meaning and Context} (London: Fontana Paperbacks).
+Lyons, J. (1981\emph{b}), \emph{Language, Meaning and Context} (London: Fontana Paperbacks).
 \tcblower
 \begin{Verbatim}
 %</y>
@@ -2458,7 +2467,7 @@ Barnes, J. (1982), \emph{Aristotle} (Past Masters; Oxford).
 %<*y>
 \begin{bibexbox}<OGS \S15.19.2>
 {smithFCgaf}
-Smith, P. (forthcoming), \emph{Gender and Famine}, 2 vols. (London).
+Smith, P. (forthcoming \emph{a}), \emph{Gender and Famine}, 2 vols. (London).
 \tcblower
 \begin{Verbatim}
 %</y>
@@ -7250,6 +7259,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \field{pubstate}
   \literal{nodate}
 }
+%    \end{macrocode}
+%
+% The `extrayear' string should be printed bare.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{extrayear}{%
+  \iffieldundef{\thefield{labeldatesource}}{%
+    \iffieldnums{\thefield{labeldatesource}year}{}{~}%
+  }{%
+    \iffieldnums{\thefield{labeldatesource}}{}{~}%
+  }%
+  \mkbibemph{\mknumalph{#1}}}%
 
 %    \end{macrocode}
 %
