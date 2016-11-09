@@ -257,7 +257,22 @@ Copyright (C) 2016 Alex Ball
 ,hyperref=false%
 %,isbn=false%
 ]{biblatex}
-\bibliography{oxref}
+\addbibresource{oxref.bib}
+\makeatletter
+\DeclareCiteCommand{\fullcite}
+  {\usebibmacro{prenote}}
+  {\usedriver
+     {\defcounter{maxnames}{\blx@maxbibnames}}
+     {\thefield{entrytype}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}\finentrypunct}
+\makeatother
+% \xpretobibmacro{finentry}{%
+%   \ifboolexpr{ test {\ifcitation} and  }{%
+%     \finentrypunct
+%   }{}%
+% }{}{}
+
 \hypersetup{pdfborder={0 0 0},pdfencoding=auto}
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
 
@@ -298,9 +313,9 @@ Copyright (C) 2016 Alex Ball
   ,fontlower = \footnotesize
   ,before upper = {\hangfrom{\booksym\space}\biburlsetup}
   ,IfNoValueTF={#3}%
-    {after upper = {\par\hangfrom{\cogsym\space}\fullcite{#4}.}
+    {after upper = {\par\hangfrom{\cogsym\space}\fullcite{#4}}
     }%
-    {after upper = {\par\hangfrom{\cogsym\space}\fullcite[#3]{#4}.}
+    {after upper = {\par\hangfrom{\cogsym\space}\fullcite[#3]{#4}}
     ,title = {\texttt{\string\autocite[#3]\{#4\}}}
     }
   ,IfNoValueTF={#2}{}%
@@ -1802,7 +1817,7 @@ Where all volumes were published consistently, the following form is used:
 {straeten1867lmp}%
 [title = {\texttt{\string\autocite[\string\nopp\ ii.~\string\mkcomprange\{367--368\}]\{straeten1867lmp\}}}]
 %<n>Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.
-%<y>Vander Straeten, E. (1867--88), \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels), ii. 367--8.
+%<y>Vander Straeten, E. (1867--88), \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels): ii. 367--8.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1932,7 +1947,7 @@ the following form is used:
 [42-56]
 {ward.waller1932che}
 %<n>A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.
-%<y>Ward, A. W., and Waller, A. E. (1932) (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP), 42--56.
+%<y>Ward, A. W., and Waller, A. E. (1932) (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP): 42--56.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -2019,7 +2034,7 @@ Translators are credited as follows:
 %<y><NHR \S18.2.14\textdagger>
 {bischoff1990lpa}
 %<n>Bernhard Bischoff, \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge, 1990).
-%<y>Bischoff, B. (1990), \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. Dáibhi Ó Cróinín and David Ganz (Cambridge).
+%<y>Bischoff, B. (1990), \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. D. Ó Cróinín and D. Ganz (Cambridge).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3992,7 +4007,8 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 %<n><OGS \S15.8>
 %<y><OGS \S15.8\textdagger>
 {auden1990era}
-W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}], in \enquote{The German Auden: Six Early Poems}, trans. David Constantine, in Katherine Bucknell and Nicholas Jenkins (eds.), \emph{W. H. Auden, \enquote{The Map of All my Youth}: Early Works, Friends, and Influences} (Auden Studies, 1; Oxford, 1990), 1--15 at 6.
+%<n>W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}], in \enquote{The German Auden: Six Early Poems}, trans. David Constantine, in Katherine Bucknell and Nicholas Jenkins (eds.), \emph{W. H. Auden, \enquote{The Map of All my Youth}: Early Works, Friends, and Influences} (Auden Studies, 1; Oxford, 1990), 1--15 at 6.
+%<y>Auden, W. H. (n.d.), \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}], in \enquote{The German Auden: Six Early Poems}, trans. D. Constantine, in K. Bucknell and N. Jenkins (eds.), \emph{W. H. Auden, \enquote{The Map of All my Youth}: Early Works, Friends, and Influences} (Auden Studies, 1; Oxford, 1990), 1--15 at 6.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4026,7 +4042,8 @@ W. H. Auden, \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}],
 %<n><OGS \S15.8>
 %<y><OGS \S15.8\textdagger>
 {blois1993qff}
-William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Jan M. Ziolkowski, \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. Edward Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
+%<n>William of Blois, \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Jan M. Ziolkowski, \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. Edward Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
+%<y>William of Blois (n.d.), \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Ziolkowski, J. M., \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. E. Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
 \tcblower
 \begin{Verbatim}
 %</n|y>
