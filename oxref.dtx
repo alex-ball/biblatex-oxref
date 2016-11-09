@@ -2800,7 +2800,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 \subsection{One volume}
 
 %<n>\spec{\emph{Title}, VolNo: \emph{VolTitle}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
-%<y>\spec{\emph{Title} (Year), VolNo: \emph{VolTitle}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
+%<y>\spec{\emph{VolTitle} (Year), VolNo \lit{of} \emph{Title}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
 
 \begin{bibexbox}
 {iced2009dik}
@@ -4962,12 +4962,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     or
     test {\iffieldundef{volume}}
   }{}%
-  {\printtext[brackets]{%
+  {\printtext[maintitle+volume]{%
     \bibstring{volume}\addspace
     \printfield{volume}\printfield{part}\addspace
     \bibstring{ofseries}\addspace
     \usebibmacro{maintitle}}}
 }
+\DeclareFieldFormat{maintitle+volume}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
 % Oxford style signifies formal publication by putting the relevant
@@ -6553,19 +6554,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \step[fieldsource=organization]%
       \step[notfield=author, fieldset=sortname, origfieldval]%
     }
-    \map{
-      \pertype{mvbook}
-      \pertype{mvcollection}
-      \pertype{mvreference}
-      \pertype{proceedings}
-      \pertype{mvproceedings}
-      \step[fieldsource=maintitle]%
-      \step[fieldset=sorttitle, origfieldval]%
-      \step[fieldsource=volume]%
-      \step[fieldset=sorttitle, append, origfieldval]%
-      \step[fieldsource=title]%
-      \step[fieldset=sorttitle, append, origfieldval]%
-    }%
   }%
 }
 %    \end{macrocode}
@@ -6593,9 +6581,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \DeclareNameAlias{author}{bib-family-given/cite-given-family}
 \DeclareNameAlias[related:reviewof]{author}{given-family}
-\DeclareNameAlias[book,booklet,collection,manual,misc,mvbook,mvcollection,%
-  mvproceedings,mvreference,online,proceedings,reference]%
-  {editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[related:reviewof]{editor}{given-family}
 %    \end{macrocode}
 %
 % \subsection{Page ranges in citations}
@@ -6614,6 +6601,29 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     }{%
       \printtext{\addspace\bibstring{at}\space}%
       \printfield{postnote}}}}
+%    \end{macrocode}
+%
+% \subsection{Sort order}
+%
+%    \begin{macrocode}
+\DeclareStyleSourcemap{%
+  \maps[datatype=bibtex]{%
+    \map{
+      \pertype{mvbook}
+      \pertype{mvcollection}
+      \pertype{mvreference}
+      \pertype{proceedings}
+      \pertype{mvproceedings}
+      \pertype{report}
+      \step[fieldsource=maintitle]%
+      \step[fieldset=sorttitle, origfieldval]%
+      \step[fieldsource=volume]%
+      \step[fieldset=sorttitle, append, origfieldval]%
+      \step[fieldsource=title]%
+      \step[fieldset=sorttitle, append, origfieldval]%
+    }%
+  }%
+}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -7522,9 +7532,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \end{macrocode}
 %
 % The `labeltitle' macro differs from the one from `authoryear' in that
-% it also includes the subtitle.
+% it also includes the subtitle. We record the fact that we have cleared
+% the title.
 %
 %    \begin{macrocode}
+\newtoggle{blx@ox@clearedtitle}
 \newbibmacro*{labeltitle}{%
   \iffieldundef{label}{%
     \iffieldundef{shorttitle}{%
@@ -7539,6 +7551,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           \printfield[titlecase]{subtitle}}%
         \clearfield{title}%
         \clearfield{subtitle}%
+        \toggletrue{blx@ox@clearedtitle}%
         \setunit{\addspace}%
       }%
     }{%
@@ -7548,6 +7561,20 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \printfield{label}%
   }%
 }
+%    \end{macrocode}
+%
+% If the labeltitle pulls the title from a maintitle+title macro,
+% we flick a switch to make the driver use maintitle+volume instead.
+%
+%    \begin{macrocode}
+\xpretobibmacro{maintitle+title}{%
+  \iftoggle{blx@ox@clearedtitle}{%
+    \usebibmacro{maintitle+volume}%
+    \clearfield{maintitle}%
+    \clearfield{volume}%
+  }{}%
+}{}{}
+\DeclareFieldFormat[mvbook,mvcollection,mvreference,proceedings,mvproceedings]{maintitle+volume}{#1}
 %    \end{macrocode}
 %
 % The date of `online' entries is printed in parentheses; as the year
