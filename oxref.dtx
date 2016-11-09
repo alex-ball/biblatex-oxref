@@ -5105,8 +5105,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{book}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \setunit{\labelnamepunct}\newblock
   \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -5164,8 +5164,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{mvbook}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \setunit{\labelnamepunct}\newblock
   \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
   \iffieldundef{maintitle}
@@ -5214,7 +5214,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -5266,7 +5266,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{editor+others}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -5309,7 +5309,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{editor+others}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
   \iffieldundef{maintitle}
@@ -5358,7 +5358,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -5408,8 +5408,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{reference}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \setunit{\labelnamepunct}\newblock
   \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -5455,7 +5455,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
   \iffieldundef{maintitle}
@@ -5507,7 +5507,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -5696,7 +5696,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -5878,7 +5878,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
   \iffieldundef{maintitle}
@@ -5947,7 +5947,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/editor}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
@@ -6034,7 +6034,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/editor+others/translator+others}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \setunit{\addspace}%
   \usebibmacro{onlinetype}%
@@ -6170,7 +6170,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \setunit{\addspace}
   \usebibmacro{onlinetype}%
@@ -6284,7 +6284,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/editor}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title+version}%
   \newunit
   \printlist{language}%
@@ -6431,7 +6431,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/translator+others}%
-  \setunit{\labelnamepunct}\newblock
+  \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
