@@ -938,6 +938,37 @@ Where works have no attribution, both the \emph{Oxford Guide to Style} and \emph
 The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’ in place of the author name, while \emph{New Hart's Rules} suggests using ‘anon.’ or a short title.
 
 %</y>
+\subsection{Pseudepigraphy}
+Some older works are known to have been written pseudepigraphically, that is, falsely attributed to a more famous author. The way of indicating this in Oxford style, if desired, is
+%<n>to add the prefix ‘Pseudo-’ before the name in notes, and
+to put ‘(Ps.-)’ after the name in the bibliography.
+
+\tip{With \textsf{oxref}, you can achieve this by annotating the name with the keyword \code{pseudo}.
+%<n>Since this mechanism is aimed at ancient texts, it has only been designed to work with single-part names
+%<n>(i.e. either a single word, or a whole name wrapped in braces).
+}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
+{boethius1976dds}
+%<n>Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).
+%<y>Boethius (Ps.-) (1976), \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. O.\ Weijers (Leiden).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{boethius1976dds,
+  author = {Boethius},
+  author+an = {1=pseudo},
+  title = {De disciplina scolarium},
+  subtitle = {Édition critique, introduction et notes},
+  editor = {Olga Weijers},
+  location = {Leiden},
+  date = {1976}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 \chapter{Articles and periodicals}\label{sec:article}
 \chapterprecis{article, periodical, suppperiodical, review}
@@ -1664,26 +1695,6 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
 
 %<n>\spec{Author, \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title}, \lit{ed.} Editor(s) (Location: Publisher).}
-
-\begin{bibexbox}
-%<n><OGS \S15.2.1>
-%<y><OGS \S15.2.1\textdagger>
-{boethius1976dds}
-%<n>Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).
-%<y>Pseudo-Boethius (1976), \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. O.\ Weijers (Leiden).
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@book{boethius1976dds,
-  author = {Pseudo-Boethius},
-  title = {De disciplina scolarium},
-  subtitle = {Édition critique, introduction et notes},
-  editor = {Olga Weijers},
-  location = {Leiden},
-  date = {1976}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
 
 %<n>\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 %<y>\spec{\emph{Title} (Year), \lit{ed.} Editor(s) (Location: Publisher).}
@@ -4166,6 +4177,8 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 % \begin{itemize}
 %   \item conjunctive phrases;
 %   \item types of edition;
+%   \item types of relations;
+%   \item name variations;
 %   \item types of editor\slash author;
 %   \item subtypes of online entries;
 %   \item subtypes of audio entries;
@@ -4178,6 +4191,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
   at, under, urldown,
   facsimile, revised,
   suppto, equals,
+  pseudo, pseudobib,
   performer, byperformer, director, bydirector, reader, byreader, reviser, byreviser, byserieseditor,
   facebook, tweet,
   podcast,
@@ -4263,6 +4277,14 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
         {\namepartprefix}%
         {\namepartsuffix}%
     }%
+    \ifitemannotation{pseudo}{%
+      \addspace\printtext[parens]{%
+        \iftoggle{blx@ox@scnames}{%
+          \textsc{\bibstring{pseudobib}}%
+        }{%
+          \bibstring{pseudobib}%
+        }}%
+    }{}%
     \iftoggle{blx@ox@scnames}{%
       \renewcommand*{\mkbibnamefamily}[1]{##1}%
       \renewcommand*{\mkbibnamegiven}[1]{##1}%
@@ -4272,13 +4294,13 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
   }{%
     \ifgiveninits{%
       \usebibmacro{name:given-family}%
-        {\namepartfamily}%
+        {\ifitemannotation{pseudo}{\bibstring{pseudo}}{}\namepartfamily}%
         {\namepartgiveni}%
         {\namepartprefix}%
         {\namepartsuffix}%
     }{%
       \usebibmacro{name:given-family}%
-        {\namepartfamily}%
+        {\ifitemannotation{pseudo}{\bibstring{pseudo}}{}\namepartfamily}%
         {\namepartgiven}%
         {\namepartprefix}%
         {\namepartsuffix}%
@@ -7283,6 +7305,30 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat{shorthandwidth}{#1}
 %    \end{macrocode}
 %
+% We patch the `family-given' name format  to handle the \texttt{pseudo}
+% annotation.
+%
+%    \begin{macrocode}
+\DeclareNameFormat{family-given}{%
+  \ifgiveninits{%
+    \usebibmacro{name:family-given}
+      {\namepartfamily}
+      {\namepartgiveni}
+      {\namepartprefix}
+      {\namepartsuffix}%
+  }{%
+    \usebibmacro{name:family-given}
+      {\namepartfamily}
+      {\namepartgiven}
+      {\namepartprefix}
+      {\namepartsuffix}%
+  }%
+  \ifitemannotation{pseudo}{%
+    \addspace\printtext[parens]{\bibstring{pseudobib}}%
+  }{}%
+  \usebibmacro{name:andothers}}
+%    \end{macrocode}
+%
 % We declare a variant of the `family-given' name format which exports the hash
 % of the name, so we can compare `shortauthor' with `author' and `shorteditor'
 % with `editor'.
@@ -7311,6 +7357,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }{%
     \savefield{hash}{\bbx@ox@secondhash}%
   }%
+  \ifitemannotation{pseudo}{%
+    \addspace\printtext[parens]{\bibstring{pseudobib}}%
+  }{}%
   \usebibmacro{name:andothers}%
 }
 \DeclareNameAlias{shortauthor}{family-given-hash}
@@ -7773,6 +7822,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
   suppto           = {{supplement to}{supplement to}},
   equals           = {{=}{=}},
+  pseudo           = {{Pseudo-}{Pseudo-}},
+  pseudobib        = {{Pseudo-}{Ps\adddot-}},
   performer        = {{}{}},
   byperformer      = {{}{}},
   director         = {{director}{dir\adddot}},
