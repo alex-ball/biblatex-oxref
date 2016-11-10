@@ -864,20 +864,48 @@ and indeed loads a tweaked version of a generic \textsf{biblatex} one.
 \section{Test citations}
 
 %<*n>
-The \emph{Oxford Guide to Style} does not prescribe a particular way of abbreviating the second and subsequent citations of a work, but does suggest the following shorthand expressions for use with closely proximate repeated citations:
+Following the advice of \emph{New Hart's Rules}, \textsf{oxnotes} loads by default the standard \textsf{verbose} citation style, in which repeated citations are abbreviated to the author surname and a short title.
 
-\begin{description}
-  \item[Ibid.] (in the same place) same author and title as immediately preceding citation.
-  \item[Author, op. cit.] (in the cited work) same title as the last cited work by the specified author. Best suited to occasions where a work is being singled out from a recently cited list of works. 
-  \item[Author, art. cit.] (in the cited article) same title as the last cited article by the specified author. Best suited to occasions where a work is being singled out from a recently cited list of works.
-  \item[Author, loc. cit.] (at the cited place) same title and page range as the last cited work by the specified author. Rarely needed.
-  \item[Id.] (same) same male author as the immediately preceding citation.
-  \item[Ead.] (same) same female author as the immediately preceding citation.
-  \item[Eid.] (same) same male authors, or male and female authors, as the immediately preceding citation.
-  \item[Eaed.] (same) same female authors as the immediately preceding citation.
-\end{description}
+%</n>
+%</n|y>
+%<*bib>
+@book{faith1997epg,
+  author = {R. J. Faith},
+  title = {The {English} Peasantry and the Growth of Lordship},
+  shorttitle = {{English} Peasantry},
+  date = {1997}}
+@book{knowles.hadcock1953mrh,
+  author = {D. Knowles and R. N. Hadcock},
+  title = {Medieval Religious Houses},
+  subtitle = {England and Wales},
+  date = {1953}}
+@book{kershaw1973bp,
+  author = {I. Kershaw},
+  title = {Bolton Priory},
+  date = {1973}}
+@article{cobban,
+  author = {Cobban},
+  title = {Colleges and halls}}
+%</bib>
+%<*n|y>
+%<*n>
+\begin{egcite}{}[before lower = {\hangfrom{\cogsym\space}}]
+Test\footcite{faith1997epg}
+Test\footcite[49-50]{faith1997epg}
+\end{egcite}
+\begin{egcite}{}[before lower = {\hangfrom{\cogsym\space}}]
+Test\footcites[80 (Westminster), 66
+  (Glastonbury), 149 (Osney), 128
+  (Bolton)]{knowles.hadcock1953mrh}%
+  [186]{kershaw1973bp}[609]{cobban}
+\end{egcite}
+\addtocategory{reviewed}{cobban}
 
-\emph{New Hart's Rules} discourages use of these terms, instead preferring that the later citations are abbreviated to the author surname and a short title.
+Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} describe an alternative system that uses the abbreviations ‘ibid.\@’, ‘op.\@ cit.\@’, ‘loc.\@ cit.\@’, and ‘id.\@’ and friends, though with underwhelming enthusiasm. If you would like to use these abbreviations, load the \textsf{verbose-trad1} citation scheme instead (and remember to use the \code{gender} field):
+
+\begin{tcblisting}{listing only}
+\usepackage[bibstyle=oxnotes,citestyle=verbose-trad1]{biblatex}
+\end{tcblisting}
 
 %</n>
 %<*y>
