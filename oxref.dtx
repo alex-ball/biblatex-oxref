@@ -970,6 +970,15 @@ to put ‘(Ps.-)’ after the name in the bibliography.
 \end{Verbatim}
 \end{bibexbox}
 
+\subsection{Inferred attribution}
+
+If the attribution is missing from the work but may be inferred from other sources,
+Oxford style is to give the attribution in square brackets.
+
+\tip{With \textsf{oxref}, you can achieve this by annotating the whole name field
+  (usually \code{author} or \code{editor}) with the keyword \code{inferred}.
+  You can also annotate names individually within the list, if only some of them should be taken as inferred.}
+
 
 \chapter{Articles and periodicals}\label{sec:article}
 \chapterprecis{article, periodical, suppperiodical, review}
@@ -1661,7 +1670,7 @@ Lyons, J. (1981\emph{b}), \emph{Language, Meaning and Context} (London: Fontana 
 %<*n|bib>
 @book{balfour1768pe,
   author = {James Balfour},
-  authortype = {inferred},
+  author+an = {=inferred},
   title = {Philosophical Essays},
   location = {Edinburgh},
   date = {1768}}
@@ -2243,7 +2252,7 @@ J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).
 %<*n|bib>
 @book{gibbon1686dfs,
   author = {John Gibbon},
-  authortype = {inferred},
+  author+an = {=inferred},
   title = {Day-Fatality},
   subtitle = {Or Some Observations on Days Lucky and Unlucky},
   edition = {revised},
@@ -4200,16 +4209,6 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
   poster}
 %    \end{macrocode}
 %
-% We provide some magic values for triggering formatting changes.
-%
-% \begin{itemize}
-% \item \cs{isInferred} relates to author names;
-% \end{itemize}
-%
-%    \begin{macrocode}
-\def\isInferred{inferred}
-%    \end{macrocode}
-%
 % We base our styles on the standard on the principle of least surprise
 % (and to aid with maintenance in the face of new \pkg{biblatex} versions).
 %
@@ -4258,6 +4257,8 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 %
 %    \begin{macrocode}
 \DeclareNameFormat{bib-family-given/cite-given-family}{%
+  \iffieldannotation{inferred}{\ifnumequal{\value{listcount}}{1}{\bibopenbracket}{}}{}%
+  \ifitemannotation{inferred}{\bibopenbracket}{}%
   \ifbibliography{%
     \iftoggle{blx@ox@scnames}{%
       \renewcommand*{\mkbibnamefamily}[1]{\textsc{##1}}%
@@ -4307,7 +4308,15 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
         {\namepartsuffix}%
     }%
   }%
+  \ifitemannotation{inferred}{\bibclosebracket}{}%
   \usebibmacro{name:andothers}%
+  \iffieldannotation{inferred}{%
+    \ifboolexpr{
+      test {\ifnumequal{\value{listcount}}{\value{maxnames}}}
+      or
+      test {\ifnumequal{\value{listcount}}{\value{listtotal}}}
+    }{\bibclosebracket}{}%
+  }{}%
 }
 %    \end{macrocode}
 %
@@ -4381,8 +4390,6 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 %   including a dash check, to see if the name(s) should be replaced
 %   with a dash (as in `authortitle' and `authoryear');
 %   \item
-%   checking if the author name(s) should be formatted as if inferred;
-%   \item
 %   inserting the `nameaddon' field if provided;
 %   \item
 %   inserting the author type if provided (as in `authoryear').
@@ -4398,9 +4405,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
   {\usebibmacro{bbx:dashcheck}
     {\bibnamedash}
     {\usebibmacro{bbx:savehash}%
-      \iffieldequals{authortype}{\isInferred}
-      {\mkbibbrackets{\printnames{author}}\clearfield{authortype}}%
-      {\printnames{author}}%
+      \printnames{author}%
       \iffieldundef{nameaddon}
       {}
       {\setunit{\addspace}%
@@ -7307,10 +7312,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \end{macrocode}
 %
 % We patch the `family-given' name format  to handle the \texttt{pseudo}
-% annotation.
+% and \texttt{inferred} annotations.
 %
 %    \begin{macrocode}
 \DeclareNameFormat{family-given}{%
+  \iffieldannotation{inferred}{\ifnumequal{\value{listcount}}{1}{\bibopenbracket}{}}{}%
+  \ifitemannotation{inferred}{\bibopenbracket}{}%
   \ifgiveninits{%
     \usebibmacro{name:family-given}
       {\namepartfamily}
@@ -7327,7 +7334,16 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \ifitemannotation{pseudo}{%
     \addspace\printtext[parens]{\bibstring{pseudobib}}%
   }{}%
-  \usebibmacro{name:andothers}}
+  \ifitemannotation{inferred}{\bibclosebracket}{}%
+  \usebibmacro{name:andothers}%
+  \iffieldannotation{inferred}{%
+    \ifboolexpr{
+      test {\ifnumequal{\value{listcount}}{\value{maxnames}}}
+      or
+      test {\ifnumequal{\value{listcount}}{\value{listtotal}}}
+    }{\bibclosebracket}{}%
+  }{}%
+}
 %    \end{macrocode}
 %
 % We declare a variant of the `family-given' name format which exports the hash
