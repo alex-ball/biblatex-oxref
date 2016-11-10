@@ -1007,6 +1007,35 @@ Oxford style is to give the attribution in square brackets.
   (usually \code{author} or \code{editor}) with the keyword \code{inferred}.
   You can also annotate names individually within the list, if only some of them should be taken as inferred.}
 
+\subsection{Pseudonyms}
+
+If an author publishes under a pen name, and you want to link the names in the bibliography,
+the name as given in the work should be given first, immediately followed by the other name
+in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rules}).
+
+\tip{If you don't mind the second name being printed unformatted,
+  the canonical place to include it is the \code{nameaddon} field.}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
+{dodgson1896sl}
+%<n>C. L. Dodgson (Lewis Carroll), \emph{Symbolic Logic} (Oxford: Clarendon Press, 1896).
+%<y>Dodgson, C. L. (Lewis Carroll) (1896), \emph{Symbolic Logic} (Oxford: Clarendon Press).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{dodgson1896sl,
+  author = {C. L. Dodgson},
+  nameaddon = {Lewis Carroll},
+  title = {Symbolic Logic},
+  location = {Oxford},
+  publisher = {Clarendon Press},
+  date = {1896}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 \chapter{Articles and periodicals}\label{sec:article}
 \chapterprecis{article, periodical, suppperiodical, review}
