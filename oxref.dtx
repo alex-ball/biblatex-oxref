@@ -341,6 +341,7 @@ Copyright (C) 2016 Alex Ball
   {colframe = #1
   ,colback = #1!5!white
   ,listing side text
+  ,lefthand width = 14em
   ,IfNoValueTF={#2}{}{title = #2}
   ,before lower = {\raggedright\hangfrom{\booksym\space}#3\par\hangfrom{\cogsym\space}}
   ,IfNoValueTF={#4}{}{#4}}
@@ -842,9 +843,7 @@ that is, there are no examples of them in this documentation.
 Additional tasks:
 
 \begin{itemize}
-  \item Provide citation style that matches the \emph{OGS} suggestions for shorthand expressions in notes?
   \item Provide mechanism for using ‘Anonymous’ as an author name.
-  \item Provide improved mechanism for marking inferred authors and pseudonyms.
 \end{itemize}
 
 
@@ -1013,15 +1012,15 @@ If an author publishes under a pen name, and you want to link the names in the b
 the name as given in the work should be given first, immediately followed by the other name
 in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rules}).
 
-\tip{If you don't mind the second name being printed unformatted,
+\tip{If you don't mind the second name being printed as-is,
   the canonical place to include it is the \code{nameaddon} field.}
 
 \begin{bibexbox}
-%<n><OGS \S15.2.1>
-%<y><OGS \S15.2.1\textdagger>
+%<n><NHR \S18.2.2>
+%<y><NHR \S18.2.2\textdagger>
 {dodgson1896sl}
-%<n>C. L. Dodgson (Lewis Carroll), \emph{Symbolic Logic} (Oxford: Clarendon Press, 1896).
-%<y>Dodgson, C. L. (Lewis Carroll) (1896), \emph{Symbolic Logic} (Oxford: Clarendon Press).
+%<n>C. L. Dodgson [Lewis Carroll], \emph{Symbolic Logic} (Oxford, 1896).
+%<y>Dodgson, C. L. [Lewis Carroll] (1896), \emph{Symbolic Logic} (Oxford).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1030,8 +1029,37 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
   nameaddon = {Lewis Carroll},
   title = {Symbolic Logic},
   location = {Oxford},
-  publisher = {Clarendon Press},
   date = {1896}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\tip{You can switch to using parentheses for name addons by changing the \code{nameaddon} field format.}
+
+\begin{tcblisting}{listing only}
+\DeclareFieldFormat{nameaddon}{\mkbibparens{#1}}
+\end{tcblisting}
+
+\tip{If you do want the second name to be normalized, or you are dealing with a list of names,
+  you can use the (non-standard) \code{authoraddon} and \code{editoraddon} fields. The addon
+  name will be printed after the corresponding name in the regular name list, but only if it is different.
+  This method also uses the \code{nameaddon} field format.}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.2>
+%<y><NHR \S18.2.2\textdagger>
+{lauder1965lss}
+%<n>Afferbeck Lauder [Alistair Morrison], \emph{Let Stalk Strine} (Sydney, 1965).
+%<y>Lauder, A. [Morrison, A.] (1965), \emph{Let Stalk Strine} (Sydney).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{lauder1965lss,
+  author = {Afferbeck Lauder},
+  authoraddon = {Alistair Morrison},
+  title = {Let Stalk Strine},
+  location = {Sydney},
+  date = {1965}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4310,9 +4338,11 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 % Oxford style (for the humanities) is to write author names surname first in
 % the bibliography, but in natural order in citations. We implement this with
 % the `bib-family-given/cite-given-family' name format. The case changing option
-% only affects this name format.
+% only affects this name format. We also add a second hash for checking if names
+% (e.g. author and authoraddon) are the same.
 %
 %    \begin{macrocode}
+\def\bbx@ox@lasthash{}
 \DeclareNameFormat{bib-family-given/cite-given-family}{%
   \iffieldannotation{inferred}{\ifnumequal{\value{listcount}}{1}{\bibopenbracket}{}}{}%
   \ifitemannotation{inferred}{\bibopenbracket}{}%
@@ -4336,6 +4366,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
         {\namepartprefix}%
         {\namepartsuffix}%
     }%
+    \savefield{hash}{\bbx@ox@lasthash}%
     \ifitemannotation{pseudo}{%
       \addspace\printtext[parens]{%
         \iftoggle{blx@ox@scnames}{%
@@ -4364,6 +4395,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
         {\namepartprefix}%
         {\namepartsuffix}%
     }%
+    \savefield{hash}{\bbx@ox@lasthash}%
   }%
   \ifitemannotation{inferred}{\bibclosebracket}{}%
   \usebibmacro{name:andothers}%
@@ -4377,6 +4409,18 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 }
 %    \end{macrocode}
 %
+% We patch the `given-family' name format to include the altname hash
+% as well.
+%
+%    \begin{macrocode}
+\xpatchnameformat{given-family}{%
+  \usebibmacro{name:andothers}%
+}{%
+  \savefield{hash}{\bbx@ox@lasthash}%
+  \usebibmacro{name:andothers}%
+}{}{}
+%    \end{macrocode}
+%
 % When using natural order for names, there is no comma before numeric
 % suffixes, but there is before textual ones (e.g. ‘junior’).
 %
@@ -4388,10 +4432,137 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 %
 % For pseudonyms, Oxford style is to put the other name in parentheses
 % after the main one. \pkg{Biblatex} provides the `nameaddon' field for this
-% use case.
+% use case, but it is a literal field (it doesn't format the name provided).
 %
 %    \begin{macrocode}
-\DeclareFieldFormat{nameaddon}{\mkbibparens{#1}}
+\DeclareFieldFormat{nameaddon}{\mkbibbrackets{#1}}
+%    \end{macrocode}
+%
+% We provide an alternative method that uses new name fields `authoraddon'
+% and `editoraddon'. This technique uses saveboxes to extract the hashes.
+%
+%    \begin{macrocode}
+\newcounter{namepairs}
+\newsavebox{\bbx@ox@namebox}
+\newsavebox{\bbx@ox@altnamebox}
+\newbibmacro*{author+altauthor}{%
+  \ifboolexpr{%
+    ( not test {\ifnameundef{authoraddon}} )
+    and
+    test {\ifnumequal{\value{authoraddon}}{\value{author}}}
+  }{%
+    \setcounter{namepairs}{0}%
+    \savebibmacro{name:andothers}%
+    \renewbibmacro*{name:andothers}{}%
+    \whileboolexpr{%
+      test {\ifnumcomp{\value{namepairs}}{<}{\value{author}}}
+      and (
+        test {\ifdefvoid{\c@maxnames}}
+        or
+        test {\ifnumequal{\c@maxnames}{0}}
+        or
+        test {\ifnumcomp{\value{namepairs}}{<}{\c@maxnames}}
+      )
+    }{%
+      \stepcounter{namepairs}%
+      \ifnumcomp{\value{namepairs}}{>}{1}{%
+        \ifnumequal{\value{author}}{2}{%
+          \setunit*{\addspace\bibstring{and}\addspace}%
+        }{%
+          \ifnumequal{\value{namepairs}}{\value{author}}{%
+            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          }{%
+            \setunit*{\addcomma\space}%
+          }%
+        }%
+      }{}%
+      \savebox{\bbx@ox@namebox}{%
+        \printnames[author][\value{namepairs}-\value{namepairs}]{author}%
+      }%
+      \let\bbx@ox@firsthash=\bbx@ox@lasthash
+      \savebox{\bbx@ox@altnamebox}{%
+        \printnames[byauthor][\value{namepairs}-\value{namepairs}]{authoraddon}%
+      }%
+      \let\bbx@ox@secondhash=\bbx@ox@lasthash
+      \unhbox\bbx@ox@namebox
+      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{}{%
+        \addspace\printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}%
+      }%
+    }%
+    \ifboolexpr{
+      test {\ifnumequal{\value{namepairs}}{\c@maxnames}}
+      and
+      test {\ifnumcomp{\c@maxnames}{<}{\value{author}}}
+    }{%
+      \ifnumgreater{\c@maxnames}{1}{%
+        \finalandcomma
+      }{}%
+    \andothersdelim\bibstring{andothers}%
+    }{}%
+    \restorebibmacro{name:andothers}%
+  }{%
+    \printnames{author}%
+  }%
+}
+\newbibmacro*{editor+alteditor}{%
+  \ifboolexpr{%
+    ( not test {\ifnameundef{editoraddon}} )
+    and
+    test {\ifnumequal{\value{editoraddon}}{\value{editor}}}
+  }{%
+    \setcounter{namepairs}{0}%
+    \savebibmacro{name:andothers}%
+    \renewbibmacro*{name:andothers}{}%
+    \whileboolexpr{%
+      test {\ifnumcomp{\value{namepairs}}{<}{\value{editor}}}
+      and (
+        test {\ifdefvoid{\c@maxnames}}
+        or
+        test {\ifnumequal{\c@maxnames}{0}}
+        or
+        test {\ifnumcomp{\value{namepairs}}{<}{\c@maxnames}}
+      )
+    }{%
+      \stepcounter{namepairs}%
+      \ifnumcomp{\value{namepairs}}{>}{1}{%
+        \ifnumequal{\value{editor}}{2}{%
+          \setunit*{\addspace\bibstring{and}\addspace}%
+        }{%
+          \ifnumequal{\value{namepairs}}{\value{editor}}{%
+            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          }{%
+            \setunit*{\addcomma\space}%
+          }%
+        }%
+      }{}%
+      \savebox{\bbx@ox@namebox}{%
+        \printnames[editor][\value{namepairs}-\value{namepairs}]{editor}%
+      }%
+      \let\bbx@ox@firsthash=\bbx@ox@lasthash
+      \savebox{\bbx@ox@altnamebox}{%
+        \printnames[byeditor][\value{namepairs}-\value{namepairs}]{editoraddon}%
+      }%
+      \let\bbx@ox@secondhash=\bbx@ox@lasthash
+      \unhbox\bbx@ox@namebox
+      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{}{%
+        \addspace\printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}%
+      }%
+    }%
+    \ifboolexpr{
+      test {\ifnumequal{\value{namepairs}}{\c@maxnames}}
+      and
+      test {\ifnumcomp{\c@maxnames}{<}{\value{editor}}}
+    }{%
+      \ifnumgreater{\c@maxnames}{1}{%
+        \finalandcomma
+      }{}%
+    \andothersdelim\bibstring{andothers}%
+    }{}%
+    \restorebibmacro{name:andothers}%
+  }{%
+    \printnames{editor}%
+  }%
+}
 %    \end{macrocode}
 %
 % Traditional Oxford style is to use dashes instead of repeating author
@@ -4462,7 +4633,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
   {\usebibmacro{bbx:dashcheck}
     {\bibnamedash}
     {\usebibmacro{bbx:savehash}%
-      \printnames{author}%
+      \usebibmacro{author+altauthor}%
       \iffieldundef{nameaddon}
       {}
       {\setunit{\addspace}%
@@ -4494,7 +4665,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
   }
   {\usebibmacro{bbx:dashcheck}
     {\bibnamedash}
-    {\printnames{editor}%
+    {\usebibmacro{editor+alteditor}%
      \setunit{\addspace}%
      \usebibmacro{bbx:savehash}}%
     \usebibmacro{#1}%
@@ -7369,7 +7540,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \end{macrocode}
 %
 % We patch the `family-given' name format  to handle the \texttt{pseudo}
-% and \texttt{inferred} annotations.
+% and \texttt{inferred} annotations, and add a second hash for checking
+% if names (e.g. shortauthor and author) are the same.
 %
 %    \begin{macrocode}
 \DeclareNameFormat{family-given}{%
@@ -7388,6 +7560,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       {\namepartprefix}
       {\namepartsuffix}%
   }%
+  \savefield{hash}{\bbx@ox@lasthash}%
   \ifitemannotation{pseudo}{%
     \addspace\printtext[parens]{\bibstring{pseudobib}}%
   }{}%
@@ -7401,43 +7574,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     }{\bibclosebracket}{}%
   }{}%
 }
-%    \end{macrocode}
-%
-% We declare a variant of the `family-given' name format which exports the hash
-% of the name, so we can compare `shortauthor' with `author' and `shorteditor'
-% with `editor'.
-%
-%    \begin{macrocode}
-\DeclareNameFormat{family-given-hash}{%
-  \ifgiveninits{%
-    \usebibmacro{name:family-given}%
-      {\namepartfamily}%
-      {\namepartgiveni}%
-      {\namepartprefix}%
-      {\namepartsuffix}%
-  }{%
-    \usebibmacro{name:family-given}%
-      {\namepartfamily}%
-      {\namepartgiven}%
-      {\namepartprefix}%
-      {\namepartsuffix}%
-  }%
-  \ifboolexpr{
-    test {\ifcurrentname{shortauthor}}
-    or
-    test {\ifcurrentname{shorteditor}}
-  }{%
-    \savefield{hash}{\bbx@ox@firsthash}%
-  }{%
-    \savefield{hash}{\bbx@ox@secondhash}%
-  }%
-  \ifitemannotation{pseudo}{%
-    \addspace\printtext[parens]{\bibstring{pseudobib}}%
-  }{}%
-  \usebibmacro{name:andothers}%
-}
-\DeclareNameAlias{shortauthor}{family-given-hash}
-\DeclareNameAlias{shorteditor}{family-given-hash}
+\DeclareNameAlias{shortauthor}{family-given}
+\DeclareNameAlias{shorteditor}{family-given}
 %    \end{macrocode}
 %
 % Names at the head of the reference are family-given, but names elsewhere
@@ -7524,15 +7662,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % (different) short author name, the short name is given first and the long
 % name given in parentheses.
 %
-% This technique uses saveboxes to extract the hashes.
-%
 %    \begin{macrocode}
-\newcounter{namepairs}
-\newsavebox{\bbx@ox@shortnamebox}
-\newsavebox{\bbx@ox@namebox}
-\xpatchbibmacro{author}{%
-  {\printnames{author}}\iffieldundef%
-}{{%
+\xpatchbibmacro{author+altauthor}{%
+  \printnames[byauthor]%
+}{%
+  \printnames[author]%
+}{}{}
+\xpatchbibmacro{author+altauthor}{%
+  \printnames{author}%
+}{%
   \ifboolexpr{%
     ( not test {\ifnameundef{shortauthor}} )
     and
@@ -7563,16 +7701,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           }%
         }%
       }{}%
-      \savebox{\bbx@ox@shortnamebox}{%
-        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{shortauthor}%
+      \savebox{\bbx@ox@altnamebox}{%
+        \printnames[author][\value{namepairs}-\value{namepairs}]{shortauthor}%
       }%
+      \let\bbx@ox@firsthash=\bbx@ox@lasthash
       \savebox{\bbx@ox@namebox}{%
-        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{author}%
+        \printnames[author][\value{namepairs}-\value{namepairs}]{author}%
       }%
+      \let\bbx@ox@secondhash=\bbx@ox@lasthash
       \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
         \unhbox\bbx@ox@namebox
       }{%
-        \unhbox\bbx@ox@shortnamebox
+        \unhbox\bbx@ox@altnamebox
         \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
       }%
     }%
@@ -7589,7 +7729,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \restorebibmacro{name:andothers}%
   }{%
     \printnames{author}%
-  }}\iffieldundef%
+  }%
 }{}{}%
 %    \end{macrocode}
 %
@@ -7612,7 +7752,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit*{\addspace}%
   \usebibmacro{date+extrayear}%
 }{}{}%
-\xpatchbibmacro{bbx:editor}{%
+\xpatchbibmacro{editor+alteditor}{%
+  \printnames[byeditor]%
+}{%
+  \printnames[editor]%
+}{}{}
+\xpatchbibmacro{editor+alteditor}{%
   \printnames{editor}%
 }{%
   \ifboolexpr{%
@@ -7638,16 +7783,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
           }%
         }%
       }{}%
-      \savebox{\bbx@ox@shortnamebox}{%
-        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{shorteditor}%
+      \savebox{\bbx@ox@altnamebox}{%
+        \printnames[editor][\value{namepairs}-\value{namepairs}]{shorteditor}%
       }%
+      \let\bbx@ox@firsthash=\bbx@ox@lasthash
       \savebox{\bbx@ox@namebox}{%
-        \printnames[family-given-hash][\value{namepairs}-\value{namepairs}]{editor}%
+        \printnames[editor][\value{namepairs}-\value{namepairs}]{editor}%
       }%
+      \let\bbx@ox@secondhash=\bbx@ox@lasthash
       \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
         \unhbox\bbx@ox@namebox
       }{%
-        \unhbox\bbx@ox@shortnamebox
+        \unhbox\bbx@ox@altnamebox
         \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
       }%
     }%
@@ -7847,6 +7994,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{datetype}
+\DeclareDatamodelFields[type=list,datatype=name]{authoraddon}
+\DeclareDatamodelFields[type=list,datatype=name]{editoraddon}
 \DeclareDatamodelFields[type=list,datatype=name]{serieseditor}
 \DeclareDatamodelEntryfields{datetype,serieseditor}
 %    \end{macrocode}
