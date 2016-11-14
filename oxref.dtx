@@ -144,8 +144,8 @@ Copyright (C) 2016 Alex Ball
     [\Version\space Biblatex styles inspired by the Oxford Guide to Style]
 \PassOptionsToPackage{style=oxnotes}{biblatex}
 %</driver>
-%<doc&n>\PassOptionsToPackage{style=oxnotes,scnames}{biblatex}
-%<doc&y>\PassOptionsToPackage{style=oxyear}{biblatex}
+%<doc&n>\PassOptionsToPackage{style=oxnotes,scnames,anon}{biblatex}
+%<doc&y>\PassOptionsToPackage{style=oxyear,anon}{biblatex}
 %<*driver|doc>
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \setlrmarginsandblock{3cm}{3cm}{*}
@@ -683,6 +683,23 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   Puts the thesis type inside, rather than outside, the parenthetical publication block.
 \end{docKey}
 
+\begin{docKey}{anon}{=\val{literal}|\val{long}|\val{short}}{default \val{short}, initially \val{literal}}
+  Affects how the author name ‘Anonymous’ is handled.
+  Renew the command \cs{oxrefanon} to check for a different word instead of ‘Anonymous’.
+  \begin{itemize}
+  \item\docValue{literal}
+    means no special handling is used.
+  \item\docValue{long}
+    will print the unabbreviated localization string \code{anon} (‘Anonymous’) instead of the author name
+%<y>    in citations and the bibliography.
+%<n>    in the bibliography, but neither are printed in citations.
+  \item\docValue{short}
+    will print the abbreviated localization string \code{anon} (‘Anon.\@’) instead of the author name
+%<y>    in citations and the bibliography.
+%<n>    in the bibliography, but neither are printed in citations.
+  \end{itemize}
+\end{docKey}
+
 \begin{docKey}{issuestyle}{=\val{slash}|\val{colon}|\val{comma}|\val{parens}}{default \val{slash}, initially \val{slash}}
   Affects how journal volumes and numbers are printed.
   \begin{itemize}
@@ -840,12 +857,6 @@ that is, there are no examples of them in this documentation.
   \end{itemize}
 \end{multicols}
 
-Additional tasks:
-
-\begin{itemize}
-  \item Provide mechanism for using ‘Anonymous’ as an author name.
-\end{itemize}
-
 
 \chapter{Citations and common formatting}\label{sec:citing}
 
@@ -959,12 +970,62 @@ If a short author label is provided, it is used in place of the full author.
 
 \subsection{Missing attribution}
 %<*n>
-Where works have no attribution, both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} suggest printing them without further adornment in notes, but listing them under ‘Anonymous’ (or ‘Anon.\@’ in the latter case) in the bibliography. While it does not give the desired behaviour,
+Where works have no attribution, both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} suggest printing them without further adornment in notes, but listing them under ‘Anonymous’ (or ‘Anon.\@’ in the latter case) in the bibliography.
 %</n>
 %<*y>
-The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’ in place of the author name, while \emph{New Hart's Rules} suggests using ‘Anon.\@’ or a short title. To implement this,
+The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’ in place of the author name, while \emph{New Hart's Rules} suggests using ‘Anon.\@’ or a short title.
 %</y>
-the current workaround is simply to give ‘Anon.\@’ as the author name, but support is planned for an option to enable anonymous labelling automatically.
+
+\tip{\textsf{Oxref} will not automatically generate anonymous labels for you, but if you use the \key{anon} option (see \cref{sec:loading}), you can transform an author name of ‘Anonymous’ (or whatever \cs{oxrefanon} is set to) in your .bib file to either the long or short localization string \code{anon}.
+%<n>  Doing this will automatically suppress the printing of the anonymous author in notes.
+}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
+{anon1822san}
+%<n>\emph{Stories after Nature} (London: Allman, 1822).
+%<y>Anon.\@ (1822), \emph{Stories after Nature} (London: Allman).\makeatletter\toggletrue{blx@bibliography}\makeatother
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{anon1822san,
+  author = {Anonymous},
+  title = {Stories after Nature},
+  location = {London},
+  publisher = {Allman},
+  date = {1822}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
+{anon1956lu}
+%<n>\emph{Liber usualis} (Tournai: Desclée, 1956).
+%<y>Anon.\@ (1956), \emph{Liber usualis} (Tournai: Desclée).\makeatletter\toggletrue{blx@bibliography}\makeatother
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{anon1956lu,
+  author = {Anonymous},
+  title = {Liber usualis},
+  location = {Tournai},
+  publisher = {Desclée},
+  date = {1956}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+%<n>Compare the above with how these examples appear in the bibliography.
+
+%<*y>
+\begin{egcite}{(Anon.\@ 1822; 1956)}
+\parencite{anon1822san,anon1956lu}
+\end{egcite}
+%</y>
+
 
 \subsection{Pseudepigraphy}
 Some older works are known to have been written pseudepigraphically, that is, falsely attributed to a more famous author. The way of indicating this in Oxford style, if desired, is
@@ -4612,8 +4673,40 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
   \finentry}
 %    \end{macrocode}
 %
+% We provide options for how to handle the author name ‘Anonymous’.
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@autoanon}
+\newtoggle{blx@ox@abbranon}
+\DeclareBibliographyOption[string]{anon}[short]{%
+  \ifcsdef{bbx@ox@opt@anon@#1}{%
+    \csuse{bbx@ox@opt@anon@#1}%
+  }{%
+    \PackageError{oxref}
+    {Invalid option 'anon=#1'}
+    {Valid values are 'long', 'short', and 'literal'.}}}
+\csdef{bbx@ox@opt@anon@literal}{\togglefalse{blx@ox@autoanon}}
+\csdef{bbx@ox@opt@anon@long}{\toggletrue{blx@ox@autoanon}\togglefalse{blx@ox@abbranon}}
+\csdef{bbx@ox@opt@anon@short}{\toggletrue{blx@ox@autoanon}\toggletrue{blx@ox@abbranon}}
+%    \end{macrocode}
+%
+% We copy the `author' to `rawauthor' for easier testing.
+%
+%    \begin{macrocode}
+\DeclareStyleSourcemap{
+  \maps[datatype=bibtex]{%
+    \map{%
+      \step[fieldsource=author]%
+      \step[fieldset=rawauthor, origfieldval]%
+    }
+  }%
+}
+%    \end{macrocode}
+%
 % The `author' macro is enhanced from the standard version by
 % \begin{itemize}
+%   \item
+%   checking if the author name is ‘Anonymous’;
 %   \item
 %   including a dash check, to see if the name(s) should be replaced
 %   with a dash (as in `authortitle' and `authoryear');
@@ -4624,16 +4717,34 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 % \end{itemize}
 %
 %    \begin{macrocode}
+\newcommand*{\oxrefanon}{Anonymous}
+\newtoggle{blx@ox@isanon}
 \renewbibmacro*{author}{%
+  \iffieldequals{rawauthor}{\oxrefanon}{\toggletrue{blx@ox@isanon}}{\togglefalse{blx@ox@isanon}}%
   \ifboolexpr{
     test \ifuseauthor
     and
-    not test {\ifnameundef{author}}
+    ( not test {\ifnameundef{author}} )
+    and (
+      ( not togl {blx@ox@isanon} )
+      or
+      ( not togl {blx@ox@autoanon} )
+      or
+      test {\ifbibliography}
+    )
   }
   {\usebibmacro{bbx:dashcheck}
     {\bibnamedash}
     {\usebibmacro{bbx:savehash}%
-      \usebibmacro{author+altauthor}%
+      \ifboolexpr{
+        togl {blx@ox@autoanon}
+        and
+        togl {blx@ox@isanon}
+      }{%
+        \iftoggle{blx@ox@abbranon}{\bibcpsstring{anon}}{\bibcplstring{anon}}%
+      }{%
+        \usebibmacro{author+altauthor}%
+      }%
       \iffieldundef{nameaddon}
       {}
       {\setunit{\addspace}%
@@ -6433,14 +6544,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % placed before or after the publication block.
 %
 %    \begin{macrocode}
-\newtoggle{endeditor}
-\DeclareEntryOption[boolean]{endeditor}[true]{\settoggle{endeditor}{#1}}
+\newtoggle{blx@ox@endeditor}
+\DeclareEntryOption[boolean]{endeditor}[true]{\settoggle{blx@ox@endeditor}{#1}}
 \newbibmacro*{pre-byeditor+others}{%
-  \iftoggle{endeditor}{}{%
+  \iftoggle{blx@ox@endeditor}{}{%
     \usebibmacro{byeditor+others}%
   }}
 \newbibmacro*{post-byeditor+others}{%
-  \iftoggle{endeditor}{%
+  \iftoggle{blx@ox@endeditor}{%
     \usebibmacro{byeditor+others}%
   }{}}
 %    \end{macrocode}
@@ -6807,14 +6918,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \subsection{Sort order}
 %
-% We exclude editor and translator from the sort order for books,
-% reference works, and proceedings, music, since they come after the
-% title.
-%
-%    \begin{macrocode}
-\DeclareSortExclusion{book,reference,mvreference,proceedings,music}{editor,translator}
-%    \end{macrocode}
-%
 % We use the source mapping capabilities of Biber to fix the following sorting
 % issues:
 %
@@ -6865,6 +6968,20 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareNameAlias[related:reviewof]{author}{given-family}
 \DeclareNameAlias{editor}{bib-family-given/cite-given-family}
 \DeclareNameAlias[related:reviewof]{editor}{given-family}
+%    \end{macrocode}
+%
+% We ensure the printing of the `anon' localization string matches.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{author}{%
+  \iftoggle{blx@ox@abbranon}{\bibcpsstring{anon}}{\bibcplstring{anon}}%
+}{%
+  \iftoggle{blx@ox@abbranon}{%
+    \iftoggle{blx@ox@scnames}{\bibcpsstring[\textsc]{anon}}{\bibcpsstring{anon}}%
+  }{%
+    \iftoggle{blx@ox@scnames}{\bibcplstring[\textsc]{anon}}{\bibcplstring{anon}}%
+  }%
+}
 %    \end{macrocode}
 %
 % \subsection{Page ranges in citations}
@@ -7950,6 +8067,26 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \RequireCitationStyle{authoryear-comp}
 %    \end{macrocode}
 %
+% We insert anonymous author handling into `cite'.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{cite}{%
+  \printnames{labelname}%
+}{%
+  \ifboolexpr{
+    test {\iffieldequalstr{labelnamesource}{author}}
+    and
+    togl {blx@ox@autoanon}
+    and
+    test {\iffieldequals{rawauthor}{\oxrefanon}}
+  }{%
+    \iftoggle{blx@ox@abbranon}{\bibcpsstring{anon}}{\bibcplstring{anon}}%
+  }{%
+    \printnames{labelname}%
+  }%
+}{}{}
+%    \end{macrocode}
+%
 % The name and year are usually separated by a space, but if the date is
 % replaced by a word (e.g. `forthcoming', `n.d.'), they are separated by
 % a comma.
@@ -7997,7 +8134,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareDatamodelFields[type=list,datatype=name]{authoraddon}
 \DeclareDatamodelFields[type=list,datatype=name]{editoraddon}
 \DeclareDatamodelFields[type=list,datatype=name]{serieseditor}
-\DeclareDatamodelEntryfields{datetype,serieseditor}
+\DeclareDatamodelFields[type=field,datatype=literal]{rawauthor}
+\DeclareDatamodelEntryfields{datetype,authoraddon,editoraddon,serieseditor,rawauthor}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
