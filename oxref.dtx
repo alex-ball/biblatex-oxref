@@ -33,10 +33,18 @@
 %<y>\ProvidesFile{oxyear.dbx}
     [\Version\space Data model for the Oxref family of styles]
 %</dbx>
+%<*lbx&en>
+\ProvidesFile{english-oxref.lbx}
+    [\Version\space Generic English conventions required by the biblatex-oxref styles]
+%</lbx&en>
 %<*lbx&gb>
 \ProvidesFile{british-oxref.lbx}
     [\Version\space British English conventions required by the biblatex-oxref styles]
 %</lbx&gb>
+%<*lbx&us>
+\ProvidesFile{american-oxref.lbx}
+    [\Version\space American English conventions required by the biblatex-oxref styles]
+%</lbx&us>
 %<*doc&n>
 \ProvidesFile{oxnotes-doc.tex}
     [\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]
@@ -122,7 +130,9 @@ Copyright (C) 2016 Alex Ball
   \file{oxyear.cbx}{\from{\jobname.dtx}{cbx,y}}
   \file{oxnotes.dbx}{\from{\jobname.dtx}{dbx,n}}
   \file{oxyear.dbx}{\from{\jobname.dtx}{dbx,y}}
+  \file{american-\jobname.lbx}{\from{\jobname.dtx}{lbx,us}}
   \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx,gb}}
+  \file{english-\jobname.lbx}{\from{\jobname.dtx}{lbx,en}}
   \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc,n}}
   \file{oxyear-doc.tex}{\from{\jobname.dtx}{doc,y}}
 }
@@ -582,7 +592,7 @@ UNIX-like systems:
       - README.md
       - oxref.bbx, oxnotes.bbx, oxyear.bbx
       - oxnotes.cbx, oxyear.cbx
-      - british-oxref.lbx
+      - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx
       - oxnotes.dbx, oxyear.dbx
       - oxref.bib
       - oxref.ins
@@ -620,7 +630,9 @@ first two steps.
         oxref.dtx,
         (oxref.ins)
       - `tex/latex/biblatex-oxref`:
+        american-oxref.lbx,
         british-oxref.lbx,
+        english-oxref.lbx,
         oxnotes.bbx,
         oxnotes.cbx,
         oxnotes.dbx,
@@ -4325,34 +4337,58 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 %    \begin{macrocode}
 \DeclareLanguageMapping{english}{british-oxref}
 \DeclareLanguageMapping{british}{british-oxref}
-\DeclareLanguageMapping{american}{british-oxref}
+\DeclareLanguageMapping{american}{american-oxref}
 %    \end{macrocode}
 %
 % We provide some additional bibliography strings:
 %
 % \begin{itemize}
-%   \item conjunctive phrases;
-%   \item types of edition;
-%   \item types of relations;
-%   \item name variations;
-%   \item types of editor\slash author;
-%   \item subtypes of online entries;
-%   \item subtypes of audio entries;
-%   \item subtypes of video entries;
-%   \item subtypes of image entries.
+%   \item roles expressed as functions;
 % \end{itemize}
 %
 %    \begin{macrocode}
 \NewBibliographyString{%
-  at, under, urldown,
-  facsimile, revised,
-  suppto, equals,
-  anon, pseudo, pseudobib,
-  performer, byperformer, director, bydirector, reader, byreader, reviser, byreviser, byserieseditor,
-  facebook, tweet,
-  podcast,
-  clip, webcast,
-  poster}
+  director, performer, reader,
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item roles expressed as actions;
+% \end{itemize}
+%
+%    \begin{macrocode}
+  byperformer, bydirector, byreader, byserieseditor,
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item publication details;
+% \end{itemize}
+%
+%    \begin{macrocode}
+  facsimile, revised, suppto, equals,
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item types;
+% \end{itemize}
+%
+%    \begin{macrocode}
+  facebook, tweet, podcast, clip, webcast, poster,
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item labels;
+% \end{itemize}
+%
+%    \begin{macrocode}
+  anon, pseudo, pseudobib, urldown,
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item citations.
+% \end{itemize}
+%
+%    \begin{macrocode}
+  under}
 %    \end{macrocode}
 %
 % We base our styles on the standard on the principle of least surprise
@@ -6907,7 +6943,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \newunit\newblock
     }{%
       \setunit{\addspace}%
-      \bibstring{at}%
+      \bibstring{thiscite}%
       \printunit{\addspace}%
     }%
   }%
@@ -6998,7 +7034,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \setunit{\postnotedelim}%
       \printfield{postnote}%
     }{%
-      \printtext{\addspace\bibstring{at}\space}%
+      \printtext{\addspace\bibstring{thiscite}\space}%
       \printfield{postnote}}}}
 %    \end{macrocode}
 %
@@ -8127,13 +8163,32 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \setcounter{FancyVerbLine}{19}
 %
-% We add a `datetype' field to the data model.
+% The `datetype' field is used for prefixing the date with a
+% description.
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{datetype}
+%    \end{macrocode}
+%
+% The `authoraddon' and `editoraddon' fields are used for handling
+% pseudonyms.
+%
+%    \begin{macrocode}
 \DeclareDatamodelFields[type=list,datatype=name]{authoraddon}
 \DeclareDatamodelFields[type=list,datatype=name]{editoraddon}
+%    \end{macrocode}
+%
+% The `serieseditor' field is used for the editor of a book series,
+% as opposed to the editor of the particular cited work.
+%
+%    \begin{macrocode}
 \DeclareDatamodelFields[type=list,datatype=name]{serieseditor}
+%    \end{macrocode}
+%
+% The `rawauthor' field is used internally for checking whether an
+% the name given in the `author' field is a keyword meaning `anonymous'.
+%
+%    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{rawauthor}
 \DeclareDatamodelEntryfields{datetype,authoraddon,editoraddon,serieseditor,rawauthor}
 %    \end{macrocode}
@@ -8146,55 +8201,69 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % \chapter{Localization modules}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%<*gb>
+%<*en>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% \section{British English: british-oxref.lbx}
+% \section{English: english-oxref.lbx}
 %
 % \setcounter{FancyVerbLine}{19}
 %
+% Here we set some language-specific punctuation and date formatting.
+%
 %    \begin{macrocode}
-\InheritBibliographyExtras{british}
+\InheritBibliographyExtras{english}
 \DeclareBibliographyExtras{%
-  \protected\def\mkbibdatelong#1#2#3{%
-    \iffieldundef{#3}
-      {}
-      {\stripzeros{\thefield{#3}}%
-       \iffieldundef{#2}{}{\nobreakspace}}%
-    \iffieldundef{#2}
-      {}
-      {\mkbibmonth{\thefield{#2}}%
-       \iffieldundef{#1}{}{\space}}%
-    \stripzeros{\thefield{#1}}}%
   \def\finalandcomma{\addcomma}%
-  \def\bibtimesep{\addperiod}%
 }
-\DeclareBibliographyStrings{%
-  inherit          = {british},
 %    \end{macrocode}
 %
-% These are new strings defined by \textsf{oxref}.
+% We load the standard set of localization strings, then add our
+% adjustments.
 %
 %    \begin{macrocode}
-  at               = {{at}{at}},
-  under            = {{s\adddot v\adddot}{s\adddot v\adddot}},
-  urldown          = {{downloaded}{downloaded}},
+\DeclareBibliographyStrings{%
+  inherit          = {english},
+%    \end{macrocode}
+%
+% These are new strings defined by \textsf{oxref}:
+%
+% \begin{itemize}
+%   \item Roles expressed as functions
+% \end{itemize}
+%
+%    \begin{macrocode}
+  director         = {{director}{dir\adddot}},
+  performer        = {{}{}},
+  reader           = {{reader}{reader}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Roles expressed as actions
+% \end{itemize}
+%
+%    \begin{macrocode}
+  byperformer      = {{}{}},
+  bydirector       = {{directed by}{dir\adddot}},
+  byreader         = {{read by}{read by}},
+  byserieseditor   = {{edited by}{ed\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Publication details
+% \end{itemize}
+%
+%    \begin{macrocode}
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
   suppto           = {{supplement to}{supplement to}},
   equals           = {{=}{=}},
-  anon             = {{Anonymous}{Anon\adddot}},
-  pseudo           = {{Pseudo-}{Pseudo-}},
-  pseudobib        = {{Pseudo-}{Ps\adddot-}},
-  performer        = {{}{}},
-  byperformer      = {{}{}},
-  director         = {{director}{dir\adddot}},
-  bydirector       = {{directed by}{dir\adddot}},
-  reader           = {{reader}{reader}},
-  byreader         = {{read by}{read by}},
-  reviser          = {{reviser}{rev\adddot}},
-  byreviser        = {{revised by}{rev\adddot}},
-  byserieseditor   = {{edited by}{ed\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Types
+% \end{itemize}
+%
+%    \begin{macrocode}
   facebook         = {{Facebook post}{Facebook post}},
   tweet            = {{Twitter post}{Twitter post}},
   podcast          = {{podcast}{podcast}},
@@ -8203,25 +8272,44 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   poster           = {{poster}{poster}},
 %    \end{macrocode}
 %
-% These are standard strings, some of which are redefined by \textsf{oxref}.
+% \begin{itemize}
+%   \item Labels
+% \end{itemize}
 %
 %    \begin{macrocode}
-  introduction     = {{introduction}{introduction}},
-  withintroduction = {{with an introduction by}{with an introduction by}},
+  anon             = {{Anonymous}{Anon\adddot}},
+  pseudo           = {{Pseudo-}{Pseudo-}},
+  pseudobib        = {{Pseudo-}{Ps\adddot-}},
+  urldown          = {{downloaded}{downloaded}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Citations
+% \end{itemize}
+%
+%    \begin{macrocode}
+  under            = {{s\adddot v\adddot}{s\adddot v\adddot}},
+%    \end{macrocode}
+%
+% The rest of these strings are the standard ones, overridden to match the
+% examples in the \emph{Oxford Guide to Style} and \emph{New Hart's Rules}.
+% Many of these are guesses extrapolated from what is given.
+%
+% The roles expressed as functions do not need adjusting. The roles
+% expressed as actions do not typically end in `by' when abbreviated.
+%
+%    \begin{macrocode}
   byeditor         = {{edited by}{ed\adddot}},
   bycompiler       = {{compiled by}{comp\adddot}},
-  byredactor       = {{redacted by}{red\adddot}},
   byfounder        = {{founded by}{found\adddot}},
   bycontinuator    = {{continued by}{cont\adddot}},
+  byredactor       = {{redacted by}{red\adddot}},
+  byreviser        = {{revised by}{rev\adddot}},
+  byreviewer       = {{reviewed by}{rev\adddot}},
   bycollaborator   = {{in collaboration with}{in collab\adddotspace with}},
   bytranslator     = {{translated \lbx@lfromlang\ by}{trans\adddot\ \lbx@sfromlang}},
   bycommentator    = {{commented by}{comm\adddot}},
   byannotator      = {{annotated by}{annot\adddot}},
-  withcommentator  = {{with a commentary by}{with a commentary by}},
-  withannotator    = {{with annotations by}{with annotations by}},
-  withintroduction = {{with an introduction by}{with an introduction by}},
-  withforeword     = {{with a foreword by}{with a foreword by}},
-  withafterword    = {{with an afterword by}{with an afterword by}},
   byeditortr       = {{edited and translated \lbx@lfromlang\ by}%
                       {ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
   byeditorco       = {{edited and commented by}%
@@ -8269,9 +8357,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   byeditortranaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an afterword, by}%
                       {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with afterword}},
   bytranslatorco   = {{translated \lbx@lfromlang\ and commented by}%
-                      {trans\adddot\ \lbx@sfromlang\ and comm\adddot\ by}},
+                      {trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
   bytranslatoran   = {{translated \lbx@lfromlang\ and annotated by}%
-                      {trans\adddot\ \lbx@sfromlang\ and annot\adddot\ by}},
+                      {trans\adddot\ \lbx@sfromlang\ and annot\adddot}},
   bytranslatorin   = {{translated \lbx@lfromlang, with an introduction, by}%
                       {trans\adddot\ \lbx@sfromlang\ with introduction}},
   bytranslatorfo   = {{translated \lbx@lfromlang, with a foreword, by}%
@@ -8290,6 +8378,42 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
                       {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with foreword}},
   bytranslatoranaf = {{translated \lbx@lfromlang\ and annotated, with an afterword, by}%
                       {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with afterword}},
+%    \end{macrocode}
+%
+% The roles expressed as objects and terms for supplementary material
+% are not abbreviated.
+%
+%    \begin{macrocode}
+  withintroduction = {{with an introduction by}{with an introduction by}},
+  withcommentator  = {{with a commentary by}{with a commentary by}},
+  withannotator    = {{with annotations by}{with annotations by}},
+  withintroduction = {{with an introduction by}{with an introduction by}},
+  withforeword     = {{with a foreword by}{with a foreword by}},
+  withafterword    = {{with an afterword by}{with an afterword by}},
+  introduction     = {{introduction}{introduction}},
+%    \end{macrocode}
+%
+% The abbreviations for some publication details are different.
+%
+%    \begin{macrocode}
+  newseries        = {{new series}{\mkbibacro{NS}}},
+  oldseries        = {{old series}{\mkbibacro{OS}}},
+  edition          = {{edition}{edn\adddot}},
+  reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
+  reviewof         = {{review of}{review of}},
+  reprintfrom      = {{from}{from}},
+%    \end{macrocode}
+%
+% \emph{New Hart's Rules} uses `accessed' for URL dates.
+%
+%    \begin{macrocode}
+  urlseen          = {{accessed}{accessed}},
+%    \end{macrocode}
+%
+% Scholarly citation terms are abbreviated. Oxford style is to use
+% `at' to cite a page within a range.
+%
+%    \begin{macrocode}
   idem             = {{idem}{id\adddot}},
   idemsm           = {{idem}{id\adddot}},
   idemsf           = {{eadem}{ead\adddot}},
@@ -8298,13 +8422,44 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   idempf           = {{eaedem}{eaed\adddot}},
   idempn           = {{eadem}{ead\adddot}},
   idempp           = {{eidem}{eid\adddot}},
-  newseries        = {{new series}{\mkbibacro{NS}}},
-  oldseries        = {{old series}{\mkbibacro{OS}}},
-  edition          = {{edition}{edn\adddot}},
-  reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
-  reviewof         = {{review of}{review of}},
-  reprintfrom      = {{from}{from}},
-  urlseen          = {{accessed}{accessed}},
+  thiscite         = {{at}{at}},
+}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</en>
+%<*gb>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{British English: british-oxref.lbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% Here we set some language-specific punctuation and date formatting.
+%
+%    \begin{macrocode}
+\InheritBibliographyExtras{british}
+\DeclareBibliographyExtras{%
+  \protected\def\mkbibdatelong#1#2#3{%
+    \iffieldundef{#3}
+      {}
+      {\stripzeros{\thefield{#3}}%
+       \iffieldundef{#2}{}{\nobreakspace}}%
+    \iffieldundef{#2}
+      {}
+      {\mkbibmonth{\thefield{#2}}%
+       \iffieldundef{#1}{}{\space}}%
+    \stripzeros{\thefield{#1}}}%
+  \def\finalandcomma{\addcomma}%
+  \def\bibtimesep{\addperiod}%
+}
+%    \end{macrocode}
+%
+% We use the British abbreviations for 12-hour clock times.
+%
+%    \begin{macrocode}
+\DeclareBibliographyStrings{%
+  inherit          = {english-oxref},
   am               = {{a\adddot m\adddot}{a\adddot m\adddot}},
   pm               = {{p\adddot m\adddot}{p\adddot m\adddot}},
 }
@@ -8312,5 +8467,20 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</gb>
+%<*us>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{American English: american-oxref.lbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+%    \begin{macrocode}
+\InheritBibliographyExtras{english-oxref}
+\DeclareBibliographyExtras{\uspunctuation}
+\InheritBibliographyStrings{english-oxref}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</us>
 %</lbx>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

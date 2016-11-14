@@ -31,7 +31,7 @@ UNIX-like systems:
       - README.md
       - oxref.bbx, oxnotes.bbx, oxyear.bbx
       - oxnotes.cbx, oxyear.cbx
-      - british-oxref.lbx
+      - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx
       - oxnotes.dbx, oxyear.dbx
       - oxref.bib
       - oxref.ins
@@ -69,7 +69,9 @@ first two steps.
         oxref.dtx,
         (oxref.ins)
       - `tex/latex/biblatex-oxref`:
+        american-oxref.lbx,
         british-oxref.lbx,
+        english-oxref.lbx,
         oxnotes.bbx,
         oxnotes.cbx,
         oxnotes.dbx,
