@@ -35,24 +35,24 @@ distclean: clean
 	rm -f $(NAME).{bbx,bib,ins,pdf} {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf}
 
 inst: all
-	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
-	cp $(NAME).{dtx,ins} $(UTREE)/source/latex/$(NAME)
-	cp $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(UTREE)/tex/latex/$(NAME)
-	cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(UTREE)/doc/latex/$(NAME)
+	mkdir -p $(UTREE)/{tex,source,doc}/latex/biblatex-$(NAME)
+	cp $(NAME).{dtx,ins} $(UTREE)/source/latex/biblatex-$(NAME)
+	cp $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(UTREE)/tex/latex/biblatex-$(NAME)
+	cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(UTREE)/doc/latex/biblatex-$(NAME)
 	mktexlsr
 uninst:
-	rm -r $(UTREE)/{tex,source,doc}/latex/$(NAME)
+	rm -r $(UTREE)/{tex,source,doc}/latex/biblatex-$(NAME)
 	mktexlsr
 
 
 install: all
-	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
-	sudo $(NAME).{dtx,ins} $(LOCAL)/source/latex/$(NAME)
-	sudo $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(LOCAL)/tex/latex/$(NAME)
-	sudo cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(LOCAL)/doc/latex/$(NAME)
+	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/biblatex-$(NAME)
+	sudo $(NAME).{dtx,ins} $(LOCAL)/source/latex/biblatex-$(NAME)
+	sudo $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx british-$(NAME).lbx $(LOCAL)/tex/latex/biblatex-$(NAME)
+	sudo cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(LOCAL)/doc/latex/biblatex-$(NAME)
 	mktexlsr
 uninstall:
-	sudo rm -r $(LOCAL)/{tex,source,doc}/latex/$(NAME)
+	sudo rm -r $(LOCAL)/{tex,source,doc}/latex/biblatex-$(NAME)
 	mktexlsr
 
 zip: all
