@@ -737,11 +737,9 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \end{docKey}
 %</n>
 
-\textsf{Oxref} makes of Biber-specific techniques to solve some of the challenges
+\textsf{Oxref} makes use of Biber-specific techniques to solve some of the challenges
 presented by Oxford style. If you resort to using Bib\TeX\ instead,
-you will have to correct the sort order of certain entries manually with
-\texttt{sortkey}, and use some messy workarounds to get things like reviews
-working properly.
+you will have to use some messy workarounds to achieve some of the nuances.
 
 \section{How to use this document}
 
@@ -1069,6 +1067,8 @@ to put ‘(Ps.-)’ after the name in the bibliography.
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+%<n>Compare the above with how this example appears in the bibliography.
 
 \subsection{Inferred attribution}
 
@@ -1958,7 +1958,7 @@ Hankinson, R. J. (1988) (ed.), \emph{Method, Medicine, and Metaphysics} (Edmonto
 
 \section{Reference works}
 
-Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board whose membership might change between successive editions. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). The \emph{Oxford Guide to Style} considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first, but the \emph{New Hart's Rules} doesn't. \textsf{Oxref} takes the former approach, but you can switch to the latter by setting the \texttt{useeditor} option back to true for this type.
+Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board whose membership might change between successive editions. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). The \emph{Oxford Guide to Style} considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first, but \emph{New Hart's Rules} doesn't. \textsf{Oxref} takes the former approach, but you can switch to the latter by setting the \texttt{useeditor} option back to true for this type.
 
 %<n>\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 %<y>\spec{\emph{Title} (Year), \lit{ed.} Editor(s) (Location: Publisher).}
@@ -4157,13 +4157,6 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \end{bibexbox}
 
 
-\section{Notes}
-
-\begin{itemize}
-  \item Division can include instruction to search: s.v. \enquote{trignonometry}.
-\end{itemize}
-
-
 \chapter{Legal references}\label{sec:legal}
 \chapterprecis{jurisdiction, legislation, legal}
 
@@ -4368,6 +4361,14 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 %    \end{macrocode}
 %
 % \begin{itemize}
+%   \item pagination;
+% \end{itemize}
+%
+%    \begin{macrocode}
+  book, books, canto, cantos, stanza, stanzas,
+%    \end{macrocode}
+%
+% \begin{itemize}
 %   \item types;
 % \end{itemize}
 %
@@ -4380,15 +4381,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 % \end{itemize}
 %
 %    \begin{macrocode}
-  anon, pseudo, pseudobib, urldown,
-%    \end{macrocode}
-%
-% \begin{itemize}
-%   \item citations.
-% \end{itemize}
-%
-%    \begin{macrocode}
-  under}
+  anon, pseudo, pseudobib, urldown}
 %    \end{macrocode}
 %
 % We base our styles on the standard on the principle of least surprise
@@ -8283,14 +8276,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   urldown          = {{downloaded}{downloaded}},
 %    \end{macrocode}
 %
-% \begin{itemize}
-%   \item Citations
-% \end{itemize}
-%
-%    \begin{macrocode}
-  under            = {{s\adddot v\adddot}{s\adddot v\adddot}},
-%    \end{macrocode}
-%
 % The rest of these strings are the standard ones, overridden to match the
 % examples in the \emph{Oxford Guide to Style} and \emph{New Hart's Rules}.
 % Many of these are guesses extrapolated from what is given.
@@ -8402,6 +8387,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
   reviewof         = {{review of}{review of}},
   reprintfrom      = {{from}{from}},
+%    \end{macrocode}
+%
+% Here are some additional pagination keys to use with poems.
+%
+%    \begin{macrocode}
+  book             = {{book}{bk\adddot}},
+  books            = {{books}{bks\adddot}},
+  canto            = {{canto}{canto}},
+  cantos           = {{cantos}{cantos}},
+  stanza           = {{stanza}{stanza}},
+  stanzas          = {{stanzas}{stanzas}},
 %    \end{macrocode}
 %
 % \emph{New Hart's Rules} uses `accessed' for URL dates.
