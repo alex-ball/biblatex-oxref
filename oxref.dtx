@@ -6061,7 +6061,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \DeclareListFormat{authorlike}{%
   \usebibmacro{list:delim}{#1}%
-  \iftoggle{blx@ox@scnames}{\textsc{#1}}{#1}\isdot
+  \ifboolexpr{
+    togl {blx@bibliography}
+    and
+    togl {blx@ox@scnames}
+  }{\textsc{#1}}{#1}\isdot
   \usebibmacro{list:andothers}}
 \newbibmacro*{organization+author+others}{%
   \ifnameundef{author}{%
@@ -6992,10 +6996,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % \begin{itemize}
 %   \item
 %   `proceedings' and `mvproceedings' entries print the organization at the
-%   beginning.
-%   \item
-%   `mvbook', `mvcollection', `mvreference', `proceedings' and `mvproceedings'
-%   entries print the maintitle before the title.
+%   beginning (if, as is likely, an author is not present).
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -7004,9 +7005,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \map{%
       \pertype{proceedings}
       \pertype{mvproceedings}
-      \step[fieldsource=organization]%
-      \step[notfield=author, fieldset=sortname, origfieldval]%
-    }
+      \step[fieldsource=author]%
+      \step[notfield=author, fieldsource=organization]%
+      \step[fieldset=sortname, origfieldval]%
+    }%
   }%
 }
 %    \end{macrocode}
