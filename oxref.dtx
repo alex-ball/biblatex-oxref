@@ -2001,9 +2001,9 @@ Where all volumes were published consistently, the following form is used:
 \begin{bibexbox}
 %<n><OGS \S15.2.6>
 %<y><OGS \S15.2.6\textdagger>
-[\nopp ii.~\mkcomprange{367--368}]
+[ii.~\mkcomprange{367--368}]
 {straeten1867lmp}%
-[title = {\texttt{\string\autocite[\string\nopp\ ii.~\string\mkcomprange\{367--368\}]\{straeten1867lmp\}}}]
+[title = {\texttt{\string\autocite[ii.~\string\mkcomprange\{367--368\}]\{straeten1867lmp\}}}]
 %<n>Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.
 %<y>Vander Straeten, E. (1867--88), \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels): ii. 367--8.
 \tcblower
@@ -4166,23 +4166,11 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 
 \section{Poems}\label{sec:poem}
 
-\subsection{Long poems}
-
-Used for poems divided into cantos. When using numerals, Book uses full capital roman, Canto uses small capital roman, Stanza uses lowercase roman, Line uses arabic.
-
-\spec{Author, \emph{Title}, Book. Canto. Stanza. Line.}
-
-Spenser, \emph{Faerie Queene}, II. \textsc{vi}. xxxv. 7
-
-When using words (i.e. when citing whole stanzas or greater), use small capital roman numerals: bk. ii, canto iv, stanza xxxi.
-
-\spec{Author, \emph{Title}, \lit{bk.} Book, \lit{canto} Canto, \lit{stanza} Stanza, \lit{line} Line.}
-
-Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
-
 \subsection{Short poems}
 
-\spec{Author, \enquote{Title}, in\dots}
+\tip{Use the \code{incollection} entry type for a poem in a collection.
+  If it appears in an article or a work that is itself in a collection,
+  use the \code{misc} entry type for the poem, with a relation of type \code{in} pointing to the containing work.}
 
 \begin{bibexbox}
 %<n><OGS \S15.8>
@@ -4249,21 +4237,55 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 \end{Verbatim}
 \end{bibexbox}
 
+\subsection{Long poems}
+
+If a poem is divided into cantos, the title is set in italics rather than quoted.
+
+\tip{To achieve this, use the entry type \code{book} if the poem is published on its own,
+  and \code{bookinbook} with entry subtype \code{poem} if the poem is published in an anthology.}
+
+\tip{To assist with quoting passages, \textsf{oxref} provides the additional pagination types
+  \code{book}, \code{canto}, and \code{stanza} (\code{line} is already defined),
+  though in reality you are probably better off doing it by hand.}
+
+\begin{bibexbox}
+%<n><OGS \S15.8*>
+%<y><OGS \S15.8*\textdagger>
+[\pno~ii, canto vi, stanza iii]
+{spenser1965fq}%
+[title = {\texttt{\string\autocite[\string\pno~ii, canto vi, stanza iii]\{spenser1965fq\}}}]
+%<n>Edmund Spenser, \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent, 1965–6) (originally pub. 1590–6), bk. ii, canto vi, stanza iii.
+%<y>Spenser, E. (1965–6), \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent) (originally pub. 1590–6): bk. ii, canto vi, stanza iii.
+%<y>
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{spenser1965fq,
+  author = {Edmund Spenser},
+  title = {The Faerie Queene},
+  shorttitle = {Faerie Queene},
+  series = {Everyman's Library},
+  number = {443–4},
+  location = {London},
+  publisher = {Dent},
+  date = {1965/1966},
+  pubstate = {originally pub\adddotspace 1590--6},
+  pagination = {book}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+
 \section{Plays}\label{sec:play}
 
-\spec{Author, \emph{Title}, Act. Scene. Line.}
+Play titles are set in italics rather than quoted.
 
-\spec{Author, \emph{Title}, \lit{Act} Act, \lit{Scene} Scene, \lit{line} Line.}
+\tip{To achieve this, use the entry type \code{book} if the poem is published on its own,
+  and \code{bookinbook} with entry subtype \code{play} if the poem is published in an anthology.}
 
-\subsection{Notes}
-
-\begin{itemize}
-  \item When using numerals only in a parenthetical citation, Act uses small capital roman numerals. Otherwise, Act uses full capital roman numerals.
-
-  \item Scene always uses lowercase roman numerals and Line always uses arabic.
-
-  \item The words \enquote{Act} and \enquote{Scene} are capitalized, whereas \enquote{line} is not: Act IV, Scene iii, line 10.
-\end{itemize}
+\tip{To assist with quoting passages, \textsf{oxref} provides the additional pagination types
+  \code{act} and \code{scene} (\code{line} is already defined),
+  though in reality you are probably better off doing it by hand.}
 
 \section{Manuscripts}\label{sec:ms}
 
@@ -4365,7 +4387,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 % \end{itemize}
 %
 %    \begin{macrocode}
-  book, books, canto, cantos, stanza, stanzas,
+  book, books, canto, cantos, stanza, stanzas, act, acts, scene, scenes,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -5016,7 +5038,7 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 \DeclareFieldFormat{postnote}{%
   \iffieldundef{pagination}%
   {\mkcomprange{#1}}%
-  {\mkcomprange[{\mkpageprefix[pagination]}]{#1}}%
+  {\mkcomprange[{\mkpageprefix}]{#1}}%
 }
 
 %    \end{macrocode}
@@ -5356,11 +5378,28 @@ Spenser, \emph{Faerie Queene}, bk. ii, canto vi, stanza iii
 %    \end{macrocode}
 %
 % The titles of books that have been collected into an anthology are
-% treated like regular chapters and set in quotes.
+% treated like regular chapters and set in quotes. Poems and plays,
+% however, are set in italics.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[bookinbook]{citetitle}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[bookinbook]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[bookinbook]{citetitle}{%
+  \ifboolexpr{
+    test {\iffieldequalstr{entrysubtype}{poem}}
+    or
+    test {\iffieldequalstr{entrysubtype}{play}}
+  }{%
+    \mkbibemph{#1}%
+  }{%
+    \mkbibquote{#1\isdot}}}
+\DeclareFieldFormat[bookinbook]{title}{%
+  \ifboolexpr{
+    test {\iffieldequalstr{entrysubtype}{poem}}
+    or
+    test {\iffieldequalstr{entrysubtype}{play}}
+  }{%
+    \mkbibemph{#1}%
+  }{%
+    \mkbibquote{#1\isdot}}}
 %    \end{macrocode}
 %
 % Volume numbers in monograph-style entries are formatted as roman
@@ -8253,6 +8292,23 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \end{macrocode}
 %
 % \begin{itemize}
+%   \item Pagination
+% \end{itemize}
+%
+%    \begin{macrocode}
+  book             = {{book}{bk\adddot}},
+  books            = {{books}{bks\adddot}},
+  canto            = {{canto}{canto}},
+  cantos           = {{cantos}{cantos}},
+  stanza           = {{stanza}{stanza}},
+  stanzas          = {{stanzas}{stanzas}},
+  act              = {{Act}{Act}},
+  acts             = {{Acts}{Acts}},
+  scene            = {{Scene}{Scene}},
+  scenes           = {{Scenes}{Scenes}},
+%    \end{macrocode}
+%
+% \begin{itemize}
 %   \item Types
 % \end{itemize}
 %
@@ -8387,17 +8443,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
   reviewof         = {{review of}{review of}},
   reprintfrom      = {{from}{from}},
-%    \end{macrocode}
-%
-% Here are some additional pagination keys to use with poems.
-%
-%    \begin{macrocode}
-  book             = {{book}{bk\adddot}},
-  books            = {{books}{bks\adddot}},
-  canto            = {{canto}{canto}},
-  cantos           = {{cantos}{cantos}},
-  stanza           = {{stanza}{stanza}},
-  stanzas          = {{stanzas}{stanzas}},
 %    \end{macrocode}
 %
 % \emph{New Hart's Rules} uses `accessed' for URL dates.
