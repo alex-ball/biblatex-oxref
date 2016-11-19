@@ -4300,6 +4300,12 @@ Thomas Chaundler, \enquote{Collocutiones}, Balliol College, Oxford, MS288.
 \tcblower
 \begin{Verbatim}
 %</n|y>
+@manuscript{chaundlerMS288,
+  author = {Thomas Chaundler},
+  title = {Collocutiones},
+  library = {Balliol College},
+  location = {Oxford},
+  shelfmark = {MS288}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4312,18 +4318,32 @@ exchequer accounts, Dec. 1798, Cheshire Record Office, E311.
 \tcblower
 \begin{Verbatim}
 %</n|y>
+@manuscript{exchequerE311,
+  title = {exchequer accounts},
+  title+an = {=descriptor},
+  date = {1798-12},
+  library = {Cheshire Record Office},
+  shelfmark = {E311}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 \begin{bibexbox}
-%<n><NHR 18.6.3>
-%<y><NHR 18.6.3>
+%<n><NHR 18.6.3*>
+%<y><NHR 18.6.3*>
 {smithMS23116}
-Francis Smith, travel diaries, 1912–17, British Library, Add. MS 23116.
+Francis Smith, travel diaries, 1912–7, British Library, Add. MS 23116.
 \tcblower
 \begin{Verbatim}
 %</n|y>
+@manuscript{smithMS23116,
+  author = {Francis Smith},
+  title = {travel diaries},
+  title+an = {=descriptor},
+  date = {1912/1917},
+  library = {British Library},
+  collection = {Add. MS},
+  shelfmark = {23116}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4336,6 +4356,12 @@ Bearsden Ladies' Club minutes, 12 June 1949, Bearsden and Milngavie District Lib
 \tcblower
 \begin{Verbatim}
 %</n|y>
+@manuscript{blcBOX19d,
+  title = {Bearsden Ladies' Club minutes},
+  title+an = {=descriptor},
+  date = {1949-06-12},
+  library = {Bearsden and Milngavie District Libraries},
+  shelfmark = {box 19/d}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4348,6 +4374,35 @@ Bodleian Library, Oxford, MS Rawlinson D. 520, fo. 7.
 \tcblower
 \begin{Verbatim}
 %</n|y>
+@manuscript{bodMSrawl-d520,
+  library = {Bodleian Library},
+  location = {Oxford},
+  collection = {MS Rawlinson D.},
+  shelfmark = {520},
+  pages = {7},
+  bookpagination = {folio}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{cantabAGM4429}
+(???)
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@manuscript{cantabAGM4429,
+  library = {University Library},
+  location = {Cambridge},
+  collection = {Add. Greek MS},
+  shelfmark = {4489},
+  support = {pergament},
+  dating = {8th--9th c.},
+  pagetotal = {16},
+  columns = {1},
+  pages = {11\recto-11\verso},
+  layer = {inf},
+  bookpagination = {folio}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4448,7 +4503,7 @@ Bodleian Library, Oxford, MS Rawlinson D. 520, fo. 7.
 % \end{itemize}
 %
 %    \begin{macrocode}
-  book, books, canto, cantos, stanza, stanzas, act, acts, scene, scenes,
+  book, books, canto, cantos, stanza, stanzas, act, acts, scene, scenes, folio, folios,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -4464,7 +4519,15 @@ Bodleian Library, Oxford, MS Rawlinson D. 520, fo. 7.
 % \end{itemize}
 %
 %    \begin{macrocode}
-  anon, pseudo, pseudobib, urldown}
+  anon, pseudo, pseudobib, urldown,
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item borrowed from other styles.
+% \end{itemize}
+%
+%    \begin{macrocode}
+  1column, 2column, inflayer, suplayer, paper, papyrus, pergament}
 %    \end{macrocode}
 %
 % We base our styles on the standard on the principle of least surprise
@@ -5008,8 +5071,15 @@ Bodleian Library, Oxford, MS Rawlinson D. 520, fo. 7.
     }{}%
   }{}%
 }
-\DeclareFieldFormat{origtitle}{\mkbibparens{\mkbibemph{#1}}}
 \DeclareFieldFormat{titleaddon}{\mkbibbrackets{#1}}
+%    \end{macrocode}
+%
+% The `origtitle' field is intended for foreign titles
+% that have been translated (in `title') and are therefore
+% in parentheses and italics.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{origtitle}{\mkbibparens{\mkbibemph{#1}}}
 %    \end{macrocode}
 %
 % \subsection{Date handling}
@@ -6855,6 +6925,138 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyAlias{dataset}{manual}
 %    \end{macrocode}
 %
+% \subsection{Manuscripts}
+%
+% In the spirit of compatibility, this code is borrowed and adapted
+% from \textsf{biblatex-manuscripts-philology} by Maïeul Rouquette.
+%
+%    \begin{macrocode}
+\newcommand{\locationlibrarypunct}{\addcomma\addspace}
+\newcommand{\collectionshelfmarkpunct}{\addspace}
+\newcommand{\datingpagespunct}{\addcomma\addspace}
+\newcommand{\librarycollectionpunct}{\addcomma\addspace}
+\newcommand{\pagetotalpagespunct}{\addcolon\addspace}
+\newcommand{\columnslayerpunct}{\addsemicolon\addspace}%
+
+\def\recto{r}
+\def\verso{v}
+\DeclareNumChars*{\recto\verso}
+%    \end{macrocode}
+%
+%
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[manuscript]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1}}%
+  \undef\currentfield}
+\DeclareFieldFormat{columns+layer}{\mkbibparens{#1}}
+\DeclareFieldFormat{columns}{\mkbibparens{#1}}
+\DeclareFieldFormat{layer}{\mkbibparens{#1}}
+\DeclareFieldFormat{dating}{#1\isdot}%
+\DeclareFieldFormat{support}{\ifbibstring{#1}{\bibstring{#1}}{#1}}
+
+\newbibmacro{manuscript:date}{%
+  \ifboolexpr{
+    test {\ifnameundef{author}}
+    and
+    test {\iffieldundef{title}}
+  }{}{\usebibmacro{date}}}
+
+\newbibmacro{dating}{\iffieldundef{year}{\printfield{dating}}{}}
+
+\newbibmacro{location+library+collection+shelfmark}{%
+  \printfield{library}%
+  \setunit{\locationlibrarypunct}%
+  \printlist{location}%
+  \setunit{\librarycollectionpunct}%
+  \usebibmacro{collection+shelfmark}}
+
+\newbibmacro{collection+shelfmark}{%
+  \printtext[collection+shelfmark]{%
+    \printfield{collection}%
+    \setunit*{\collectionshelfmarkpunct}%
+    \printfield{shelfmark}}}
+
+\newbibmacro{manuscript:pages}{%
+  \printfield{pagetotal}%
+  \setunit{\addspace}%
+  \iffieldundef{pages}{%
+    \usebibmacro{manuscript:columns+layer}%
+  }{%
+    \usebibmacro{manuscript:columns}%
+    \setunit{\pagetotalpagespunct}%
+    \printfield{pages}%
+    \setunit{\addspace}%
+    \usebibmacro{manuscript:layer}}}
+
+\newbibmacro{manuscript:columns}{%
+  \iffieldundef{columns}{}{%
+    \printtext[columns]{\bibstring{\strfield{columns}column}}}%
+}%
+
+\newbibmacro{manuscript:layer}{%
+  \iffieldundef{layer}{}{%
+    \printtext[layer]{\bibstring{\strfield{layer}layer}}}%
+}%
+
+\newbibmacro{manuscript:columns+layer}{%
+  \ifboolexpr{
+    test {\iffieldundef{columns}}
+    or
+    test{\iffieldundef{layer}}
+  }{%
+    \usebibmacro{manuscript:columns}%
+    \usebibmacro{manuscript:layer}%
+  }{%
+    \printtext[columns+layer]{%
+      \bibstring{\strfield{columns}column}%
+      \setunit*{\columnslayerpunct}%
+      \bibstring{\strfield{layer}layer}}}}%
+
+%    \end{macrocode}
+%
+%
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{manuscript}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{howpublished}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{manuscript:date}%
+  \newunit\newblock
+  \usebibmacro{location+library+collection+shelfmark}%
+  \newunit
+  \printfield{support}%
+  \newunit
+  \usebibmacro{dating}%
+  \setunit{\datingpagespunct}
+  \usebibmacro{manuscript:pages}
+  \iftoggle{bbx:related}
+    {\newunit\newblock%
+     \usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \newunit\newblock%
+  \iftoggle{bbx:url}%
+    {\usebibmacro{url+urldate}}%
+    {}%
+  \usebibmacro{finentry}
+  }
+
+%    \end{macrocode}
+%
 % \subsection{Related entries}
 %
 % \subsubsection{Reprints}
@@ -7072,6 +7274,84 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     }%
   }%
 }
+%    \end{macrocode}
+%
+% We adjust the sort order to take into account some other fields that might
+% end up at the front.
+%
+%    \begin{macrocode}
+\DeclareSortingScheme{nty}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort{
+    \field{sortname}
+    \field{author}
+    \field{editor}
+    \field{translator}
+    \field{sorttitle}
+    \field{title}
+    \field{library}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+  \sort{
+    \field{sortyear}
+    \field{year}
+  }
+  \sort{
+    \field{volume}
+    \literal{0}
+  }
+  \sort{
+    \field{location}
+  }
+  \sort{
+    \field{collection}
+  }
+}
+
+\DeclareSortingScheme{nyt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort{
+    \field{sortname}
+    \field{author}
+    \field{editor}
+    \field{translator}
+    \field{sorttitle}
+    \field{title}
+    \field{library}
+  }
+  \sort{
+    \field{sortyear}
+    \field{year}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+  \sort{
+    \field{volume}
+    \literal{0}
+  }
+  \sort{
+    \field{location}
+  }
+  \sort{
+    \field{collection}
+  }
+}
+
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -8288,6 +8568,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareDatamodelEntryfields{datetype,authoraddon,editoraddon,serieseditor,rawauthor}
 %    \end{macrocode}
 %
+% This data model is borrowed from \textsf{biblatex-manuscripts-philology}.
+%
+%    \begin{macrocode}
+\DeclareDatamodelEntrytypes{manuscript}
+\DeclareDatamodelFields[type=field,datatype=literal]{catalog,dating,shortlibrary,columns, collection,shortcollection,usualtitle,shelfmark,sortshelfmark,support,columns,layer}
+\DeclareDatamodelFields[type=list,datatype=name]{scribe,owner}
+\DeclareDatamodelFields[type=list,datatype=literal]{origin}
+\DeclareDatamodelEntryfields[manuscript]{catalog,dating,shortlibrary,shortcollection,columns,languages, collection,usualtitle,shelfmark,sortshelfmark,support,columns,origin,scribe,owner}
+
+%    \end{macrocode}
+%
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</dbx>
 %<*lbx>
@@ -8369,6 +8660,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   acts             = {{Acts}{Acts}},
   scene            = {{Scene}{Scene}},
   scenes           = {{Scenes}{Scenes}},
+  folio            = {{folio}{fo\adddot}},
+  folios           = {{folios}{fos\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -8393,6 +8686,20 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   pseudo           = {{Pseudo-}{Pseudo-}},
   pseudobib        = {{Pseudo-}{Ps\adddot-}},
   urldown          = {{downloaded}{downloaded}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item These are borrowed from other styles.
+% \end{itemize}
+%
+%    \begin{macrocode}
+  1column          = {{one column}{1\addnbspace col\adddot}},
+  2column          = {{two columns}{2\addnbspace col\adddot}},
+  inflayer         = {{inferior layer}{inf\adddotspace lay\adddot}},
+  suplayer         = {{superior layer}{sup\adddotspace lay\adddot}},
+  paper            = {{paper}{pap\adddot}},
+  papyrus          = {{papyrus}{papy\adddot}},
+  pergament        = {{pergament}{perg\adddot}},
 %    \end{macrocode}
 %
 % The rest of these strings are the standard ones, overridden to match the
