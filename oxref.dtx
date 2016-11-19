@@ -4290,13 +4290,76 @@ Play titles, like those of epic poems, are set in italics rather than quoted.
 
 \section{Manuscripts}\label{sec:ms}
 
-\spec{Author, Title, Archive, City, Collection Series, Volume.}
+%<*y>
+An author–date system like \textsf{oxyear} does not really lend itself to manuscript references,
+but support is provided anyway for the sake of completeness.
+
+%</y>
+%<n>\spec{Author, Title/Descriptor, Date, Archive, Location, Collection Series, Shelfmark, Folios.}
+%<y>\spec{Author, Title/Descriptor, Date, Archive, Location, Collection Series, Shelfmark, Folios.}
+
+With \textsf{oxref}, you can enter manuscripts in either of two ways. The first uses the \code{unpublished} entry type.
+
+\tip{Use \code{author} and \code{date} as normal. Note that the \code{date} will not be printed if both the \code{author} and \code{title} fields are left blank.}
+
+\tip{If the manuscript has a title, put it in the \code{title} field. If it also has a descriptor, put it in the \code{note} field.}
+
+\tip{If the manuscript has a descriptor but no title, put the descriptor in the \code{title} field and annotate the field with the term \enquote{\code{descriptor}}.}
+
+\tip{Put the library or archive where the manuscript is kept in the \code{library} field, and the city or place name in the \code{location} field. Note that the \code{library} field is required to switch on the special support for manuscripts.}
+
+\tip{Put the collection name in the \code{series} field and the shelfmark in the \code{number} field.}
+
+\tip{Put the page range studied (or some other subdivision) in the \code{pages} field. You can use \cs{recto} and \cs{verso} for the respective sides of a folio, and you can also specify a \code{pagetotal}.}
+
+\tip{You can use the \code{folio} key in the \code{pagination} and \code{bookpagination} fields.}
+
+\begin{bibexbox}
+%<n><NHR 18.6.3*>
+%<y><NHR 18.6.3*\textdagger>
+{smithMS23116}
+%<n>Francis Smith, travel diaries, 1912–7, British Library, Add. MS 23116.
+%<y>Smith, F. [1912–7], travel diaries, British Library, Add. MS 23116.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@unpublished{smithMS23116,
+  author = {Francis Smith},
+  title = {travel diaries},
+  title+an = {=descriptor},
+  date = {1912/1917},
+  library = {British Library},
+  series = {Add. MS},
+  number = {23116}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex-manuscripts-philology}.
+\textsf{Oxref} does not have all the bells and whistles of that style, but it understands a subset of its data model.
+
+\tip{You can use \code{author}, \code{title}, \code{note} and \code{date} as described above. (This is a departure from \textsf{biblatex-manuscripts-philology}.)}
+
+\tip{Put the library or archive where the manuscript is kept in the \code{library} field, and the city or place name in the \code{location} field}
+
+\tip{Put the collection name in the \code{collection} field and the shelfmark in the \code{shelfmark} field.}
+
+\tip{If the date is vague (e.g. a century), you can put this in the \code{dating} field. Note that it will only be printed if the \code{date} is missing\slash not printed.}
+
+\tip{Put the page range studied (or some other subdivision) in the \code{pages} field. You can use \cs{recto} and \cs{verso} for the respective sides of a folio, and you can also specify a \code{pagetotal}.}
+
+\tip{You can specify the number of columns (either \code{1} or \code{2}) in the \code{columns} field.}
+
+\tip{You can specify the layer of a palimpsest in the \code{layer} field. Use \code{inf} for the inferior layer and \code{sup} for the superior layer.}
+
+\tip{You can specify the writing support material in the \code{support} field. Three special keys – \code{papyrus}, \code{paper}, and \code{pergament} – are recognized and (potentially) translated, but other values will be printed as-is.}
 
 \begin{bibexbox}
 %<n><NHR 18.6.2>
-%<y><NHR 18.6.2>
+%<y><NHR 18.6.2\textdagger>
 {chaundlerMS288}
-Thomas Chaundler, \enquote{Collocutiones}, Balliol College, Oxford, MS288.
+%<n>Thomas Chaundler, \enquote{Collocutiones}, Balliol College, Oxford, MS288.
+%<y>Chaundler, T. [n.d.], \enquote{Collocutiones}, Balliol College, Oxford, MS288.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4312,9 +4375,10 @@ Thomas Chaundler, \enquote{Collocutiones}, Balliol College, Oxford, MS288.
 
 \begin{bibexbox}
 %<n><NHR 18.6.2>
-%<y><NHR 18.6.2>
+%<y><NHR 18.6.2\textdagger>
 {exchequerE311}
-exchequer accounts, Dec. 1798, Cheshire Record Office, E311.
+%<n>exchequer accounts, Dec. 1798, Cheshire Record Office, E311.
+%<y>exchequer accounts [1798], Dec., Cheshire Record Office, E311.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4329,30 +4393,10 @@ exchequer accounts, Dec. 1798, Cheshire Record Office, E311.
 \end{bibexbox}
 
 \begin{bibexbox}
-%<n><NHR 18.6.3*>
-%<y><NHR 18.6.3*>
-{smithMS23116}
-Francis Smith, travel diaries, 1912–7, British Library, Add. MS 23116.
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@manuscript{smithMS23116,
-  author = {Francis Smith},
-  title = {travel diaries},
-  title+an = {=descriptor},
-  date = {1912/1917},
-  library = {British Library},
-  collection = {Add. MS},
-  shelfmark = {23116}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
 %<n><NHR 18.6.3>
-%<y><NHR 18.6.3>
+%<y><NHR 18.6.3\textdagger>
 {blcBOX19d}
-Bearsden Ladies' Club minutes, 12 June 1949, Bearsden and Milngavie District Libraries, box 19/d.
+Bearsden Ladies' Club minutes [1949], 12 June, Bearsden and Milngavie District Libraries, box 19/d.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4368,9 +4412,9 @@ Bearsden Ladies' Club minutes, 12 June 1949, Bearsden and Milngavie District Lib
 
 \begin{bibexbox}
 %<n><NHR 18.6.5>
-%<y><NHR 18.6.5>
+%<y><NHR 18.6.5\textdagger>
 {bodMSrawl-d520}
-Bodleian Library, Oxford, MS Rawlinson D. 520, fo. 7.
+Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4387,7 +4431,7 @@ Bodleian Library, Oxford, MS Rawlinson D. 520, fo. 7.
 
 \begin{bibexbox}
 {cantabAGM4429}
-(???)
+(not in book)
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4407,13 +4451,13 @@ Bodleian Library, Oxford, MS Rawlinson D. 520, fo. 7.
 \end{Verbatim}
 \end{bibexbox}
 
-\subsection{Notes}
-
-\begin{itemize}
-  \item Volume means any lower level division (file, bundle, box). Use whatever system the archive uses.
-  \item Abbreviate folio to fo. (or fos.). Superscript \textsuperscript{r} and \textsuperscript{v} for recto and verso: fo. 7\textsuperscript{r--v}, fos. 117\textsuperscript{v}--121\textsuperscript{r}.
-\end{itemize}
-
+%<*y>
+\begin{egcite}{(Bodleian Library, n.d.; Chaundler, n.d.; exchequer accounts 1798)}
+\parencite{chaundlerMS288,%
+  exchequerE311,%
+  bodMSrawl-d520}
+\end{egcite}
+%</y>
 
 \printbibliography[notcategory=reviewed]
 %</n|y>
@@ -6589,7 +6633,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[online]{citetitle}{\mkbibquote{#1\isdot}}
 %    \end{macrocode}
 %
 % We provide an `onlinetype' macro for clarifying the type of online
@@ -6840,7 +6883,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \DeclareBibliographyAlias{image}{online}
 \DeclareFieldFormat[image]{title}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[image]{citetitle}{\mkbibquote{#1\isdot}}
 
 %    \end{macrocode}
 %
@@ -6927,26 +6969,36 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \subsection{Manuscripts}
 %
-% In the spirit of compatibility, this code is borrowed and adapted
-% from \textsf{biblatex-manuscripts-philology} by Maïeul Rouquette.
+% In the spirit of compatibility, this code is adapted from
+% \textsf{biblatex-manuscripts-philology} by Maïeul Rouquette.
+%
+% Here are the additional punctuation commands.
 %
 %    \begin{macrocode}
 \newcommand{\locationlibrarypunct}{\addcomma\addspace}
 \newcommand{\collectionshelfmarkpunct}{\addspace}
 \newcommand{\datingpagespunct}{\addcomma\addspace}
 \newcommand{\librarycollectionpunct}{\addcomma\addspace}
-\newcommand{\pagetotalpagespunct}{\addcolon\addspace}
+\newcommand{\pagetotalpagespunct}{\addcomma\addspace}
 \newcommand{\columnslayerpunct}{\addsemicolon\addspace}%
-
-\def\recto{r}
-\def\verso{v}
-\DeclareNumChars*{\recto\verso}
 %    \end{macrocode}
 %
-%
+% Here are the configurable macros for the two sides of a folio.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[manuscript]{title}{%
+\def\recto{r}
+\def\verso{v}
+\NumCheckSetup{\def\recto{r}\def\verso{v}}
+\DeclareNumChars*{rv}
+%    \end{macrocode}
+%
+% Here are some special field formats for the `manuscripts' driver.
+% Note that the title is transformed into a descriptor by means of
+% an annotation, rather than using a dedicated field. This greatly
+% simplifies the code used elsewhere.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[manuscript,unpublished]{title}{%
   \def\currentfield{title}%
   \iffieldannotation{descriptor}{#1}{\mkbibquote{#1}}%
   \undef\currentfield}
@@ -6955,29 +7007,61 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat{layer}{\mkbibparens{#1}}
 \DeclareFieldFormat{dating}{#1\isdot}%
 \DeclareFieldFormat{support}{\ifbibstring{#1}{\bibstring{#1}}{#1}}
-
+%    \end{macrocode}
+%
+% Here are the unique bibmacros used by the `manuscripts' driver.
+% We hide the date if there is no author or title to prevent it
+% appearing as the first element in the reference. Similarly, we
+% hide the (vague) `dating' field if the (exact) date is displayed.
+%
+%    \begin{macrocode}
 \newbibmacro{manuscript:date}{%
   \ifboolexpr{
     test {\ifnameundef{author}}
     and
     test {\iffieldundef{title}}
   }{}{\usebibmacro{date}}}
-
-\newbibmacro{dating}{\iffieldundef{year}{\printfield{dating}}{}}
-
+\newbibmacro{dating}{%
+  \ifboolexpr{(
+      test {\ifnameundef{author}}
+      and
+      test {\iffieldundef{title}}
+    ) or
+    test {\iffieldundef{year}}
+  }{%
+    \printfield{dating}%
+  }{}}
+%    \end{macrocode}
+%
+% We follow the structure of the \textsf{biblatex-manuscripts-philology}
+% approach to allow special formatting to be applied to the collection
+% and shelfmark, but we do not actually apply any.
+%
+%    \begin{macrocode}
 \newbibmacro{location+library+collection+shelfmark}{%
   \printfield{library}%
   \setunit{\locationlibrarypunct}%
   \printlist{location}%
   \setunit{\librarycollectionpunct}%
   \usebibmacro{collection+shelfmark}}
-
 \newbibmacro{collection+shelfmark}{%
-  \printtext[collection+shelfmark]{%
-    \printfield{collection}%
-    \setunit*{\collectionshelfmarkpunct}%
-    \printfield{shelfmark}}}
-
+  \ifboolexpr{
+    test {\iffieldundef{collection}}
+    and
+    test {\iffieldundef{shelfmark}}
+  }{}{%
+    \printtext[collection+shelfmark]{%
+      \printfield{collection}%
+      \setunit*{\collectionshelfmarkpunct}%
+      \printfield{shelfmark}}}}
+%    \end{macrocode}
+%
+% Again, following \textsf{biblatex-manuscripts-philology}, we allow
+% different formatting to be applied to columns and layers according
+% to whether they occur adjacently or not, as they might be separated
+% by a page specification.
+%
+%    \begin{macrocode}
 \newbibmacro{manuscript:pages}{%
   \printfield{pagetotal}%
   \setunit{\addspace}%
@@ -6989,17 +7073,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \printfield{pages}%
     \setunit{\addspace}%
     \usebibmacro{manuscript:layer}}}
-
 \newbibmacro{manuscript:columns}{%
   \iffieldundef{columns}{}{%
     \printtext[columns]{\bibstring{\strfield{columns}column}}}%
 }%
-
 \newbibmacro{manuscript:layer}{%
   \iffieldundef{layer}{}{%
     \printtext[layer]{\bibstring{\strfield{layer}layer}}}%
 }%
-
 \newbibmacro{manuscript:columns+layer}{%
   \ifboolexpr{
     test {\iffieldundef{columns}}
@@ -7013,10 +7094,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \bibstring{\strfield{columns}column}%
       \setunit*{\columnslayerpunct}%
       \bibstring{\strfield{layer}layer}}}}%
-
 %    \end{macrocode}
 %
-%
+% Putting it all together, here is the `manuscript' driver.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{manuscript}{%
@@ -7052,8 +7132,78 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \iftoggle{bbx:url}%
     {\usebibmacro{url+urldate}}%
     {}%
-  \usebibmacro{finentry}
-  }
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% We provide an alternative bibmacro for doing much the same but with
+% the regular \textsf{biblatex} fields.
+%
+%    \begin{macrocode}
+\newbibmacro*{library+location+series+number}{%
+  \printfield{library}%
+  \setunit{\locationlibrarypunct}%
+  \printlist{location}%
+  \setunit{\librarycollectionpunct}%
+  \ifboolexpr{
+    test {\iffieldundef{series}}
+    and
+    test {\iffieldundef{number}}
+  }{}{%
+    \printtext[collection+shelfmark]{%
+      \printfield{series}%
+      \setunit*{\collectionshelfmarkpunct}%
+      \printfield{number}}}}
+%    \end{macrocode}
+%
+% Lastly, we adapt the `unpublished' driver to allow it to do a similar
+% thing but with the regular \textsf{biblatex} fields. The presence of
+% the `library' field is what triggers `manuscript mode'.
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@ms}
+\DeclareBibliographyDriver{unpublished}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iffieldundef{library}{\togglefalse{blx@ox@ms}}{\toggletrue{blx@ox@ms}}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{howpublished}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \iftoggle{blx@ox@ms}{%
+    \usebibmacro{manuscript:date}%
+    \newunit\newblock
+    \usebibmacro{library+location+series+number}%
+    \newunit
+    \printfield{support}%
+    \newunit
+    \usebibmacro{dating}%
+    \setunit{\datingpagespunct}
+    \usebibmacro{manuscript:pages}
+  }{%
+    \usebibmacro{location+date}%
+  }%
+  \newunit\newblock
+  \iftoggle{bbx:url}
+    {\usebibmacro{url+urldate}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
 
 %    \end{macrocode}
 %
@@ -7313,6 +7463,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }
   \sort{
     \field{collection}
+    \field{series}
   }
 }
 
@@ -7349,6 +7500,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }
   \sort{
     \field{collection}
+    \field{series}
   }
 }
 
@@ -7478,10 +7630,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         'year', 'true' (=year), and 'false'.}}}
 %    \end{macrocode}
 %
-% The various values affect the definition of the following macro.
+% The various values affect the definition of the following macro, for
+% which we coin the `labeldate' field format.
 %
 %    \begin{macrocode}
 \providebibmacro*{date+extrayear}{}
+\DeclareFieldFormat{labeldate}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
 % Here we provide the various possible definitions. Note that, unlike in
@@ -7506,7 +7660,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{labelyear}
       {}
-      {\printtext[parens]{%
+      {\printtext[labeldate]{%
          \printfield{issue}%
          \setunit*{\addspace}%
          \iffieldsequal{year}{labelyear}
@@ -7529,7 +7683,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{labelyear}
       {}
-      {\printtext[parens]{%
+      {\printtext[labeldate]{%
          \iffieldsequal{year}{labelyear}
            {\printdateextralabel}%
            {\printfield{labelyear}%
@@ -7565,7 +7719,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{labelyear}
       {}
-      {\printtext[parens]{%
+      {\printtext[labeldate]{%
          \printfield{labelyear}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{%
@@ -7612,7 +7766,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \def\bbx@opt@mergedate@year{%
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{labelyear}{}{%
-      \printtext[parens]{%
+      \printtext[labeldate]{%
         \printfield{labelyear}%
         \iffieldundef{labelendyear}{}{%
           \iffieldsequal{labelyear}{labelendyear}{}{%
@@ -7671,7 +7825,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{labelyear}
       {}
-      {\printtext[parens]{%
+      {\printtext[labeldate]{%
          \printfield{labelyear}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{%
@@ -7723,7 +7877,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \renewbibmacro*{date+extrayear}{%
     \iffieldundef{labelyear}
       {}
-      {\printtext[parens]{%
+      {\printtext[labeldate]{%
          \printfield{labelyear}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{%
@@ -8380,7 +8534,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         test {\iffieldundef{title}}
         and
         test {\iffieldundef{subtitle}}
-      }{}{%
+      }{%
+        \printfield{library}%
+        \clearfield{library}%
+      }{%
         \printtext[title]{%
           \printfield[titlecase]{title}%
           \setunit{\subtitlepunct}%
@@ -8423,6 +8580,19 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 }{%
   \iffieldundef{month}%
 }{}{}
+\DeclareFieldFormat[online,image]{citetitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[manuscript,unpublished]{citetitle}{%
+  \def\currentfield{title}%
+  \ifboolexpr{
+    test {\iffieldannotation{descriptor}}
+    or (
+      test {\iffieldundef{shorttitle}}
+      and
+      test {\iffieldundef{title}}
+    )
+  }{#1}{\mkbibquote{#1\isdot}}%
+  \undef\currentfield}
+
 %    \end{macrocode}
 %
 % \subsection{Journal division formatting}
@@ -8443,6 +8613,31 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \addcomma\space
   }%
 }
+%    \end{macrocode}
+%
+% \subsection{Manuscripts}
+%
+% The dates for manuscripts should not really be in parentheses, but it
+% looks really odd to have them bare, when compared to other entries.
+% As a compromise, we use square brackets.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[manuscript]{labeldate}{\mkbibbrackets{#1}}
+\DeclareFieldFormat[unpublished]{labeldate}{%
+  \iftoggle{blx@ox@ms}{\mkbibbrackets{#1}}{\mkbibparens{#1}}}
+\renewbibmacro*{manuscript:date}{\usebibmacro{date}}
+%    \end{macrocode}
+%
+% We include the `library' field as a fallback title.
+%
+%    \begin{macrocode}
+\DeclareLabeltitle{%
+  \field{shorttitle}
+  \field{title}
+  \field{maintitle}
+  \field{library}
+}
+
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -8504,11 +8699,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \renewcommand*{\nameyeardelim}{%
-  \ifboolexpr{
-    test {\iffieldundef{\thefield{labeldatesource}year}}
-    and
-    test {\iffieldundef{year}}
-  }%
+  \iffieldundef{\thefield{labeldatesource}year}%
+    {\addcomma\space}%
+    {\addspace}}
+\renewcommand*{\nonameyeardelim}{%
+  \iffieldundef{\thefield{labeldatesource}year}%
     {\addcomma\space}%
     {\addspace}}
 %    \end{macrocode}
