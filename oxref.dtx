@@ -3525,14 +3525,14 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<y><OGS \S15.14.1\textdagger>
 {lewis1981lww}
 %<n>C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).
-%<y>Lewis, C. S. (1981), \emph{The Lion, the Witch, and the Wardrobe}, read by Sir M. Hordern (2 audio cassettes, TO1611).
+%<y>Lewis, C. S. (1981), \emph{The Lion, the Witch, and the Wardrobe}, read by M. Hordern (2 audio cassettes, TO1611).
 \tcblower
 \begin{Verbatim}
 %</n|y>
 @audio{lewis1981lww,
   author = {C. S. Lewis},
   title = {The Lion, the Witch, and the Wardrobe},
-  editor = {Sir Michael Hordern},
+  editor = {title=Sir, given=Michael, family=Hordern},
   editortype = {reader},
   type = {2 audio cassettes},
   number = {TO1611},
@@ -4615,6 +4615,56 @@ Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
 }
 %    \end{macrocode}
 %
+% We provide some additional macros for formatting names with titles. We only
+% print the title if \key{giveninits} is \val{false}. Here is the one for
+% natural name order.
+%
+%    \begin{macrocode}
+\newbibmacro*{name:title-given-family}[5]{%
+  \usebibmacro{name:delim}{#2#3#1}%
+  \usebibmacro{name:hook}{#2#3#1}%
+  \ifdefvoid{#5}{}{\ifgiveninits{}{\mkbibnametitle{#5}\isdot\bibnamedelimd}}%
+  \ifdefvoid{#2}{}{\mkbibnamegiven{#2}\isdot\bibnamedelimd}%
+  \ifdefvoid{#3}{}{%
+    \mkbibnameprefix{#3}\isdot
+    \ifprefchar
+      {}
+      {\ifuseprefix{\bibnamedelimc}{\bibnamedelimd}}}%
+  \mkbibnamefamily{#1}\isdot
+  \ifdefvoid{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}\isdot}}
+%    \end{macrocode}
+%
+% Here is the one for inverted name order.
+%
+%    \begin{macrocode}
+\newbibmacro*{name:family-title-given}[5]{%
+  \ifuseprefix
+    {\usebibmacro{name:delim}{#3#1}%
+     \usebibmacro{name:hook}{#3#1}%
+     \ifdefvoid{#3}{}{%
+       \ifcapital
+         {\mkbibnameprefix{\MakeCapital{#3}}\isdot}
+         {\mkbibnameprefix{#3}\isdot}%
+       \ifprefchar{}{\bibnamedelimc}}%
+     \mkbibnamefamily{#1}\isdot
+     \ifdefvoid{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
+     \ifdefvoid{#5}{}{\ifgiveninits{}{\mkbibnametitle{#5}\isdot\bibnamedelimd}}%
+     \ifdefvoid{#2}{}{\revsdnamepunct\bibnamedelimd\mkbibnamegiven{#2}\isdot}}
+    {\usebibmacro{name:delim}{#1}%
+     \usebibmacro{name:hook}{#1}%
+     \mkbibnamefamily{#1}\isdot
+     \ifdefvoid{#4}{}{\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
+     \ifboolexpe{%
+       test {\ifdefvoid{#2}}
+       and
+       test {\ifdefvoid{#3}}}
+       {}
+       {\revsdnamepunct}%
+     \ifdefvoid{#5}{}{\ifgiveninits{}{\mkbibnametitle{#5}\isdot\bibnamedelimd}}%
+     \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
+     \ifdefvoid{#3}{}{\bibnamedelimd\mkbibnameprefix{#3}\isdot}}}
+%    \end{macrocode}
+%
 % Oxford style (for the humanities) is to write author names surname first in
 % the bibliography, but in natural order in citations. We implement this with
 % the `bib-family-given/cite-given-family' name format. The case changing option
@@ -4632,19 +4682,22 @@ Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
       \renewcommand*{\mkbibnamegiven}[1]{\textsc{##1}}%
       \renewcommand*{\mkbibnameprefix}[1]{\textsc{##1}}%
       \renewcommand*{\mkbibnamesuffix}[1]{\textsc{##1}}%
+      \renewcommand*{\mkbibnametitle}[1]{\textsc{##1}}%
     }{}%
     \ifgiveninits{%
-      \usebibmacro{name:family-given}%
+      \usebibmacro{name:family-title-given}%
         {\namepartfamily}%
         {\namepartgiveni}%
         {\namepartprefix}%
         {\namepartsuffix}%
+        {\nameparttitle}%
     }{%
-      \usebibmacro{name:family-given}%
+      \usebibmacro{name:family-title-given}%
         {\namepartfamily}%
         {\namepartgiven}%
         {\namepartprefix}%
         {\namepartsuffix}%
+        {\nameparttitle}%
     }%
     \savefield{hash}{\bbx@ox@lasthash}%
     \ifitemannotation{pseudo}{%
@@ -4660,20 +4713,23 @@ Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
       \renewcommand*{\mkbibnamegiven}[1]{##1}%
       \renewcommand*{\mkbibnameprefix}[1]{##1}%
       \renewcommand*{\mkbibnamesuffix}[1]{##1}%
+      \renewcommand*{\mkbibnametitle}[1]{##1}%
     }{}%
   }{%
     \ifgiveninits{%
-      \usebibmacro{name:given-family}%
+      \usebibmacro{name:title-given-family}%
         {\ifitemannotation{pseudo}{\bibstring{pseudo}}{}\namepartfamily}%
         {\namepartgiveni}%
         {\namepartprefix}%
         {\namepartsuffix}%
+        {\nameparttitle}%
     }{%
-      \usebibmacro{name:given-family}%
+      \usebibmacro{name:title-given-family}%
         {\ifitemannotation{pseudo}{\bibstring{pseudo}}{}\namepartfamily}%
         {\namepartgiven}%
         {\namepartprefix}%
         {\namepartsuffix}%
+        {\nameparttitle}%
     }%
     \savefield{hash}{\bbx@ox@lasthash}%
   }%
@@ -4689,23 +4745,56 @@ Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
 }
 %    \end{macrocode}
 %
-% We patch the `given-family' name format to include the altname hash
-% as well.
+% We change the regular `given-family' format to include the altname hash
+% and use the title-enhanced name format.
 %
 %    \begin{macrocode}
-\xpatchnameformat{given-family}{%
-  \usebibmacro{name:andothers}%
-}{%
+\DeclareNameFormat{given-family}{%
+  \ifgiveninits
+    {\usebibmacro{name:title-given-family}
+      {\namepartfamily}
+      {\namepartgiveni}
+      {\namepartprefix}
+      {\namepartsuffix}
+      {\nameparttitle}}
+    {\usebibmacro{name:title-given-family}
+      {\namepartfamily}
+      {\namepartgiven}
+      {\namepartprefix}
+      {\namepartsuffix}
+      {\nameparttitle}}%
   \savefield{hash}{\bbx@ox@lasthash}%
-  \usebibmacro{name:andothers}%
-}{}{}
+  \usebibmacro{name:andothers}}
 %    \end{macrocode}
 %
-% When using natural order for names, there is no comma before numeric
-% suffixes, but there is before textual ones (e.g. ‘junior’).
+% We do likewise for the regular `family-given' format.
+%
+%    \begin{macrocode}
+\DeclareNameFormat{family-given}{%
+  \ifgiveninits
+    {\usebibmacro{name:family-title-given}
+      {\namepartfamily}
+      {\namepartgiveni}
+      {\namepartprefix}
+      {\namepartsuffix}
+      {\nameparttitle}}
+    {\usebibmacro{name:family-title-given}
+      {\namepartfamily}
+      {\namepartgiven}
+      {\namepartsuffix}
+      {\nameparttitle}}%
+  \savefield{hash}{\bbx@ox@lasthash}%
+  \usebibmacro{name:andothers}}
+%    \end{macrocode}
+%
+% There is no comma before numeric suffixes, but there is before textual
+% ones (e.g. ‘junior’).
 %
 %    \begin{macrocode}
 \xpatchbibmacro{name:given-family}%
+  {\bibnamedelimd\mkbibnamesuffix{#4}}%
+  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}{}{}
+\xpatchbibmacro{name:family-given}%
   {\bibnamedelimd\mkbibnamesuffix{#4}}%
   {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}{}{}
 %    \end{macrocode}
@@ -8732,6 +8821,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % \section{oxnotes.dbx and oxyear.dbx}
 %
 % \setcounter{FancyVerbLine}{19}
+%
+% We provide an additional name part for handling titles.
+%
+%    \begin{macrocode}
+\DeclareDatamodelConstant[type=list]{nameparts}{prefix,family,suffix,given,title}
+%    \end{macrocode}
 %
 % The `datetype' field is used for prefixing the date with a
 % description.
