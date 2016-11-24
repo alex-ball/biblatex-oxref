@@ -4476,6 +4476,7 @@ Joined Cases C-430/93–C-431/93 \emph{Jereon van Schijndel v Stichting Pensioen
   institution = {ECJ},
   journaltitle = {ECR},
   volume = {I},
+  date = {1998},
   pages = {4705},
   hyphenation = {dutch}}
 %<*n|y>
@@ -4536,7 +4537,8 @@ OJ L122/48
   title = {Alcatel/Telettra},
   userb = {IV/M.042},
   number = {91\slash 251\slash EEC},
-  institution = {Commission},
+  institution = {commission},
+  type = {Decision},
   date = {1991},
   journaltitle = {OJ},
   series = {L},
@@ -4558,7 +4560,7 @@ OJ L122/48
   title = {Georg Verkehrsorgani v Ferrovie dello Stato},
   userb = {Case COMP\slash 37.685},
   number = {2004\slash 33\slash EC},
-  institution = {Commission},
+  institution = {commission},
   year = {2004},
   journaltitle = {OJ},
   series = {L},
@@ -5688,7 +5690,9 @@ Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
 % \end{itemize}
 %
 %    \begin{macrocode}
-  1column, 2column, inflayer, suplayer, paper, papyrus, pergament}
+  1column, 2column, inflayer, suplayer, paper, papyrus, pergament,
+  eucase, eujoinedcases, commissiondecision,
+}
 %    \end{macrocode}
 %
 % We base our styles on the standard on the principle of least surprise
@@ -8607,6 +8611,271 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
+% \subsection{Legal references}
+%
+% Legal references are a law unto themselves, and thus require extensive
+% fiddly coding. This entire section is adapted from \textsf{oscola} by
+% Paul Stanley.
+%
+% \subsection{Field formats}
+%
+%    \begin{macrocode}
+\newtoggle{bbx:scotstyle}
+\DeclareEntryOption{scottish-style}[true]{%
+  \settoggle{bbx:scotstyle}{#1}}
+
+\DeclareFieldFormat{casenotetitle}{\mkbibquote{\mkbibemph{#1}}}
+\DeclareFieldFormat[jurisdiction]{journaltitle}{#1}
+\DeclareFieldFormat[jurisdiction]{volume}{#1}
+
+\DeclareListFormat{checkcontains}{%
+  \bbx@check{#1}}
+\newtoggle{bbx@institutiontoggle}
+\newcommand\iflistcontains[2]{%
+  \global\togglefalse{bbx@institutiontoggle}%
+  \def\bbx@check##1{%
+    \ifdefstring{#2}{##1}{\global\toggletrue{bbx@institutiontoggle}}{}}%
+  \printlist[checkcontains]{#1}%
+  \iftoggle{bbx@institutiontoggle}}
+
+%    \end{macrocode}
+%
+% \subsection{Common macros}
+%
+%    \begin{macrocode}
+\newbibmacro*{issue/volume}{%
+  \iffieldundef{volume}%
+    {\iffieldundef{issue}%
+     {}%
+     {\printfield{issue}}}%
+    {\printfield[default]{volume}}}
+\newcommand*{\subtypenewsp}{newspaper}
+\newbibmacro*{year+vol+report}{%
+  \iffieldequals{entrysubtype}{\subtypenewsp}
+    {}%
+    {\usebibmacro{journaldate}%
+     \setunit{\addspace}}%
+  \printfield{volume}%
+  \setunit{\addspace}%
+  \printfield{journaltitle}%
+  \setunit*{\addspace}%
+  \iffieldundef{series}
+    {}
+    {\setunit{\addspace}%
+     \printfield{series}%
+     \setunit{\addspace}}%
+  \iffieldequals{entrysubtype}{\subtypenewsp}
+     {\setunit{\addcomma\space}\usebibmacro{newspaperdate}}%
+     {}}
+\newbibmacro*{journaldate}{%
+  \ifboolexpr{
+    test {\iffieldundef{volume}}
+    or
+    bool {bbx@year-essential}
+  }{%
+    \ifboolexpr{
+      test {\ifkeyword{sc}}
+      or
+      test {\iftoggle{bbx:scotstyle}}
+    }{%
+      \usebibmacro{year}%
+    }{%
+      \usebibmacro{year}[brackets]}%
+  }{%
+    \usebibmacro{year}[parens]}}
+\newcommand*{\casenote}{casenote}
+\newcommand{\casenotetext}{\bibstring{casenote}}
+\newbibmacro{journaltitle}{%
+  \iffieldequals{entrysubtype}{\casenote}{%
+    \iffieldundef{crossref}{%
+      \usebibmacro{title}%
+    }{%
+      \iffieldundef{note}{%
+        \restorefield{note}{\casenotetext}%
+      }{}%
+      \ifboolexpr{
+        test {\iffootnote}
+        and test {\iftoggle{bbx@samefootnote}}
+        and test {\iffieldequals{crossref}{\blx@lastkey@foot}}%
+      }{}{\printfield[casenotetitle]{title}}}%
+  }{%
+    \usebibmacro{title}}}
+\newbibmacro{court-note}{%
+  \iffieldundef{note}%
+    {}%
+    {\printfield{note}%
+     \bbx@unsetpostnotedelim}}
+
+%    \end{macrocode}
+%
+% \subsubsection{Legal cases}
+%
+% There are different formats depending on the jurisdiction.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{jurisdiction}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{juriscitation}%
+  \usebibmacro{doi+eprint+url}%
+  \setunit{\addspace}%\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addspace}%\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
+\newbibmacro*{juriscitation}{%
+  \ifkeyword{eu}{%
+    \usebibmacro{eujuriscitation}%
+  }{%
+    \ifkeyword{echr}{%
+      \usebibmacro{echrjuriscitation}%
+    }{%
+      \ifkeyword{int}{%
+        \usebibmacro{intjuriscitation}%
+      }{%
+        \ifkeyword{ca}{%
+          \usebibmacro{canjuriscitation}%
+        }{%
+          \ifkeyword{us}{%
+            \usebibmacro{usjuriscitation}%
+          }{%
+            \usebibmacro{enjuriscitation}}}}}}}%
+%    \end{macrocode}
+%
+% Here is the format for EU cases.
+%
+%    \begin{macrocode}
+\newcommand*\commission{commission}
+\newbibmacro*{eujuriscitation}{%
+  \iflistcontains{institution}{\commission}{}{%
+    \usebibmacro{eucasenumber}}%
+  \usebibmacro{title}%
+  \setunit{\addspace}%
+  \iflistcontains{institution}{\commission}{%
+    \usebibmacro{eucommissiondecision}}{}%
+  \setunit{\addspace}%%
+  \usebibmacro{eu:reportinfo}%
+  \setunit{\addspace}%%
+  \usebibmacro{court-note}%
+}
+\newbibmacro{eucasenumber}{%
+  \iffieldundef{type}{%
+    \ifboolexpr{
+      test {\IfSubStr{\thefield{number}}{,}}
+      or
+      test {\IfSubStr{\thefield{number}}{--}}
+      or
+      test {\IfSubStr{\thefield{number}}{ and }}
+    }{%
+      \bibstring{eujoinedcases}%
+    }{%
+      \bibstring{eucase}}%
+  }{%
+    \printfield{type}}%
+  \setunit{\addnbspace}%
+  \printfield{number}%
+  \setunit{\addspace}}
+\newbibmacro{eucommissiondecision}{%
+  \iffieldundef{userb}{}{%
+    \printfield[parens]{userb}}%
+  \setunit{\addspace}%
+  \iffieldundef{type}{%
+    \setunit{\addspace\bibstring{commissiondecision}\addspace}%
+  }{%
+    \setunit{\addspace\printfield{type}\addspace}}%
+  \printfield{number}}
+\newbibmacro*{eu:reportinfo}{%
+  \iffieldundef{journaltitle}%
+    {\usebibmacro{eu:unreported}}%
+    {\usebibmacro{eu:year+vol+report}}}
+\newbibmacro*{eu:unreported}{%
+  \ifboolexpr{
+    test {\iflistundef{institution}}
+    and
+    test {\iffieldundef{date}}
+    and
+    test {\iffieldundef{year}}
+  }{}{%
+    \ifboolexpr{
+      test {\iffieldundef{date}}
+      and
+      test {\iffieldundef{year}}
+    }{%
+      \mkbibparens{\printlist[jurisdiction]{institution}}%
+    }{%
+      \bbx@unsetpostnotedelim
+      \iflistundef{institution}{%
+        \mkbibparens{\usebibmacro{date}}%
+      }{%
+        \printtext[parens]{%
+          \printlist[jurisdiction]{institution}%
+          \setunit{\addcomma\space}
+          \usebibmacro{date}}}}}}
+\newcommand*\officialjournaltitle{OJ}
+\newcommand*\ecrreporttitle{ECR}
+\newbibmacro*{eu:year+vol+report}{%
+  \iffieldequals{journaltitle}{\ecrreporttitle}{%
+    \printfield[brackets]{year}%
+    \setunit{\addspace}%
+    \printfield{journaltitle}%
+    \setunit{\addspace}%
+    \printfield{volume}%
+    \setunit*{\printtext{--\allowbreak}}%
+    \printfield{pages}%
+  }{%
+    \iffieldequals{journaltitle}{\officialjournaltitle}{%
+      \printfield[brackets]{year}%
+      \setunit{\addspace}%
+      \printfield{journaltitle}%
+      \setunit{\addspace}%
+      \printfield[default]{series}%
+      \usebibmacro{issue/volume}%
+      \setunit{\printtext{\slash}}%
+      \printfield{pages}%
+    }{%
+      \usebibmacro{year+vol+report}}}}
+
+%    \end{macrocode}
+%
+% Here is the format for European Court of Human Rights cases.
+%
+%    \begin{macrocode}
+\newbibmacro*{echrjuriscitation}{}
+%    \end{macrocode}
+%
+% Here is the format for international cases.
+%
+%    \begin{macrocode}
+\newbibmacro*{intjuriscitation}{}
+%    \end{macrocode}
+%
+% Here is the format for Canadian cases.
+%
+%    \begin{macrocode}
+\newbibmacro*{canjuriscitation}{}
+%    \end{macrocode}
+%
+% Here is the format for American cases.
+%
+%    \begin{macrocode}
+\newbibmacro*{usjuriscitation}{}
+%    \end{macrocode}
+%
+% Here is the format for English cases.
+%
+%    \begin{macrocode}
+\newbibmacro*{enjuriscitation}{}
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+%    \end{macrocode}
+%
 % \subsection{Sort order}
 %
 % We use the source mapping capabilities of Biber to fix the following sorting
@@ -10115,6 +10384,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   paper            = {{paper}{pap\adddot}},
   papyrus          = {{papyrus}{papy\adddot}},
   pergament        = {{pergament}{perg\adddot}},
+  eucase           = {{Case}{Case}},
+  eujoinedcases    = {{Joined Cases}{Joined Cases}},
+  commissiondecision = {{Commission Decision}{Commission Decision}},
 %    \end{macrocode}
 %
 % The rest of these strings are the standard ones, overridden to match the
