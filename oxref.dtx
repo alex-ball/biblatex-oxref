@@ -5691,7 +5691,7 @@ Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
 %
 %    \begin{macrocode}
   1column, 2column, inflayer, suplayer, paper, papyrus, pergament,
-  eucase, eujoinedcases, commissiondecision,
+  eucase, eujoinedcases, commissiondecision, application,
 }
 %    \end{macrocode}
 %
@@ -8617,16 +8617,53 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % fiddly coding. This entire section is adapted from \textsf{oscola} by
 % Paul Stanley.
 %
-% \subsection{Field formats}
+% \subsection{Entry options}
 %
 %    \begin{macrocode}
 \newtoggle{bbx:scotstyle}
 \DeclareEntryOption{scottish-style}[true]{%
   \settoggle{bbx:scotstyle}{#1}}
-
+\newboolean{bbx@year-essential}\setboolean{bbx@year-essential}{false}
+\DeclareEntryOption{year-essential}[true]{%
+    \setboolean{bbx@year-essential}{#1}}
+\newtoggle{blx@ox@nopostnotedelim}
+%    \end{macrocode}
+%
+% \subsection{Field formats}
+%
+%    \begin{macrocode}
 \DeclareFieldFormat{casenotetitle}{\mkbibquote{\mkbibemph{#1}}}
 \DeclareFieldFormat[jurisdiction]{journaltitle}{#1}
 \DeclareFieldFormat[jurisdiction]{volume}{#1}
+\DeclareListFormat{echrinst}{%
+  \ifboolexpr{%
+    test {\ifnumequal{\value{listtotal}}{1}}
+    or
+    test {\ifnumequal{\value{listcount}}{\value{listtotal}}}
+  }{%
+    \ifboolexpr{
+      test {\ifdefstring{\Commission}{#1}}
+      or
+      test {\ifdefstring{\commission}{#1}}%
+    }{%
+      \bibstring{commissiondecision}%
+    }{#1}%
+  }{%
+    \setcounter{blx@tmpcnt}{\value{listcount}}%
+    \addtocounter{blx@tmpcnt}{1}%
+    \ifnumequal{\value{blx@tmpcnt}}{\value{listtotal}}{%
+      #1\space\bibstring{and}\addspace
+    }{%
+      #1\addcomma\space}}}%
+\newcommand*{\commission}{commission}
+\newcommand*{\Commission}{Commission}
+\DeclareListFormat{ecthr}{%
+  \ifboolexpr{
+    test {\ifdefstring{\Commission}{#1}}
+    or
+    test {\ifdefstring{\commission}{#1}}
+  }{\bibstring[\mkbibparens]{commissiondecision}\toggletrue{blx@ox@nopostnotedelim}}{}}
+\DeclareFieldFormat{romanvol}{\RN{#1}}
 
 \DeclareListFormat{checkcontains}{%
   \bbx@check{#1}}
@@ -8651,22 +8688,21 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     {\printfield[default]{volume}}}
 \newcommand*{\subtypenewsp}{newspaper}
 \newbibmacro*{year+vol+report}{%
-  \iffieldequals{entrysubtype}{\subtypenewsp}
-    {}%
-    {\usebibmacro{journaldate}%
-     \setunit{\addspace}}%
+  \iffieldequals{entrysubtype}{\subtypenewsp}{}{%
+    \usebibmacro{journaldate}%
+    \setunit{\addspace}}%
   \printfield{volume}%
   \setunit{\addspace}%
   \printfield{journaltitle}%
   \setunit*{\addspace}%
-  \iffieldundef{series}
-    {}
-    {\setunit{\addspace}%
-     \printfield{series}%
-     \setunit{\addspace}}%
-  \iffieldequals{entrysubtype}{\subtypenewsp}
-     {\setunit{\addcomma\space}\usebibmacro{newspaperdate}}%
-     {}}
+  \iffieldundef{series}{}{%
+    \setunit{\addspace}%
+    \printfield{series}%
+    \setunit{\addspace}}%
+  \iffieldequals{entrysubtype}{\subtypenewsp}{%
+    \setunit{\addcomma\space}%
+    \usebibmacro{newspaperdate}%
+  }{}}
 \newbibmacro*{journaldate}{%
   \ifboolexpr{
     test {\iffieldundef{volume}}
@@ -8678,11 +8714,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       or
       test {\iftoggle{bbx:scotstyle}}
     }{%
-      \usebibmacro{year}%
+      \printfield{year}%
     }{%
-      \usebibmacro{year}[brackets]}%
+      \printfield[brackets]{year}}%
   }{%
-    \usebibmacro{year}[parens]}}
+    \printfield[parens]{year}}}
 \newcommand*{\casenote}{casenote}
 \newcommand{\casenotetext}{\bibstring{casenote}}
 \newbibmacro{journaltitle}{%
@@ -8700,11 +8736,34 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       }{}{\printfield[casenotetitle]{title}}}%
   }{%
     \usebibmacro{title}}}
+\newbibmacro*{unreported}[1][default]{%
+  \ifboolexpr{
+    test {\iflistundef{institution}}
+    and
+    test {\iffieldundef{date}}
+    and
+    test {\iffieldundef{year}}
+  }{}{%
+    \ifboolexpr{
+      test {\iffieldundef{date}}
+      and
+      test {\iffieldundef{year}}
+    }{%
+      \mkbibparens{\printlist[jurisdiction]{institution}}%
+    }{%
+      \toggletrue{blx@ox@nopostnotedelim}%
+      \iflistundef{institution}{%
+        \mkbibparens{\usebibmacro{date}}%
+      }{%
+        \printtext[parens]{%
+          \printlist[#1]{institution}%
+          \setunit{\addcomma\space}
+          \usebibmacro{date}}}}}}
 \newbibmacro{court-note}{%
   \iffieldundef{note}%
     {}%
     {\printfield{note}%
-     \bbx@unsetpostnotedelim}}
+     \toggletrue{blx@ox@nopostnotedelim}}}
 
 %    \end{macrocode}
 %
@@ -8750,7 +8809,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here is the format for EU cases.
 %
 %    \begin{macrocode}
-\newcommand*\commission{commission}
 \newbibmacro*{eujuriscitation}{%
   \iflistcontains{institution}{\commission}{}{%
     \usebibmacro{eucasenumber}}%
@@ -8791,31 +8849,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printfield{number}}
 \newbibmacro*{eu:reportinfo}{%
   \iffieldundef{journaltitle}%
-    {\usebibmacro{eu:unreported}}%
+    {\usebibmacro{unreported}}%
     {\usebibmacro{eu:year+vol+report}}}
-\newbibmacro*{eu:unreported}{%
-  \ifboolexpr{
-    test {\iflistundef{institution}}
-    and
-    test {\iffieldundef{date}}
-    and
-    test {\iffieldundef{year}}
-  }{}{%
-    \ifboolexpr{
-      test {\iffieldundef{date}}
-      and
-      test {\iffieldundef{year}}
-    }{%
-      \mkbibparens{\printlist[jurisdiction]{institution}}%
-    }{%
-      \bbx@unsetpostnotedelim
-      \iflistundef{institution}{%
-        \mkbibparens{\usebibmacro{date}}%
-      }{%
-        \printtext[parens]{%
-          \printlist[jurisdiction]{institution}%
-          \setunit{\addcomma\space}
-          \usebibmacro{date}}}}}}
 \newcommand*\officialjournaltitle{OJ}
 \newcommand*\ecrreporttitle{ECR}
 \newbibmacro*{eu:year+vol+report}{%
@@ -8842,10 +8877,64 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
-% Here is the format for European Court of Human Rights cases.
+% Here is the format for European Human Rights cases.
 %
 %    \begin{macrocode}
-\newbibmacro*{echrjuriscitation}{}
+\newbibmacro*{echrjuriscitation}{%
+  \usebibmacro{title}%
+  \setunit{\addspace}\newblock
+  \iffieldundef{journaltitle}{%
+    \iffieldundef{number}{}{%
+      \printtext{\bibstring{application}\space\bibstring{number}\space}%
+      \printfield{number}%
+      \setunit{\addspace}}%
+    \setunit{\addspace}\newblock
+    \usebibmacro{unreported}[echrinst]%
+  }{%
+    \usebibmacro{echr:year+vol+report}
+    \setunit{\addspace}\newblock
+    \usebibmacro{echr:courtid}}%
+  \setunit{\addspace}%
+  \usebibmacro{court-note}%
+  \newblock
+  \setunit{\addspace}}
+\newcommand*{\seriesa}{Series A}
+\newcommand*{\echrreports}{ECHR}
+\newbibmacro*{echr:year+vol+report}{%
+  \iffieldequals{journaltitle}{\seriesa}{%
+    \usebibmacro{seriesareport}%
+  }{%
+    \iffieldequals{journaltitle}{\echrreports}{%
+      \usebibmacro{echrreports}%
+    }{%
+      \usebibmacro{year+vol+report}
+      \setunit{\addspace}%
+  \printfield{pages}}}}
+\newbibmacro*{seriesareport}{%
+  \printfield[parens]{year}%
+  \setunit{\addspace}%
+  \printfield{journaltitle}%
+  \setunit{\addspace}%
+  \printtext{\bibstring{number}\addspace}%
+  \printfield{pages}}
+\newbibmacro*{echrreports}{%
+  \printfield{journaltitle}%
+  \setunit{\addspace}%
+  \printfield{year}%
+  \iffieldundef{volume}{}{%
+    \printtext{--}\printfield[romanvol]{volume}}
+  \setunit{\addspace}%
+  \printfield{pages}}
+\newcommand*{\decisionsandreports}{DR}
+\newcommand*{\collectionofdecisions}{CD}
+\newbibmacro*{echr:courtid}{%
+  \ifboolexpr{
+    test {\iffieldequals{journaltitle}{\decisionsandreports}}
+    or
+    test {\iffieldequals{journaltitle}{\collectionofdecisions}}%
+  }{}{%
+    \printlist[ecthr]{institution}}}
+
 %    \end{macrocode}
 %
 % Here is the format for international cases.
@@ -9040,11 +9129,16 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \printfield{postnote}}}}
 %    \end{macrocode}
 %
-% \subsection{Sort order}
+% \subsection{Source maps}
 %
 %    \begin{macrocode}
 \DeclareStyleSourcemap{%
   \maps[datatype=bibtex]{%
+%    \end{macrocode}
+%
+% \subsubsection{Sort order}
+%
+%    \begin{macrocode}
     \map{
       \pertype{mvbook}
       \pertype{mvcollection}
@@ -9058,6 +9152,30 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \step[fieldset=sorttitle, append, origfieldval]%
       \step[fieldsource=title]%
       \step[fieldset=sorttitle, append, origfieldval]%
+    }%
+%    \end{macrocode}
+%
+% \subsubsection{Legal references}
+%
+% These help ensure compatibility with \textsf{oscola}.
+%
+%    \begin{macrocode}
+  \map[overwrite=false]{
+    \pertype{jurisdiction}
+    \step[fieldsource=reporter,
+          fieldtarget=journaltitle]
+    \step[fieldsource=parvolume,
+          fieldtarget=userb]
+    \step[fieldsource=parreporter,
+          fieldtarget=userc]
+    \step[fieldsource=parseries,
+          fieldtarget=userd]
+    \step[fieldsource=parpages,
+          fieldtarget=usere]
+    \step[fieldsource=court,
+          fieldtarget=institution]
+    \step[fieldsource=additionalreports,
+          fieldtarget=listb]
     }%
   }%
 }
@@ -10252,6 +10370,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareDatamodelFields[type=list,datatype=name]{scribe,owner}
 \DeclareDatamodelFields[type=list,datatype=literal]{origin}
 \DeclareDatamodelEntryfields[manuscript]{catalog,dating,shortlibrary,shortcollection,columns,languages, collection,usualtitle,shelfmark,sortshelfmark,support,columns,origin,scribe,owner}
+%    \end{macrocode}
+%
+% This data model is borrowed from \textsf{oscola}.
+%
+%    \begin{macrocode}
 
 %    \end{macrocode}
 %
@@ -10387,6 +10510,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   eucase           = {{Case}{Case}},
   eujoinedcases    = {{Joined Cases}{Joined Cases}},
   commissiondecision = {{Commission Decision}{Commission Decision}},
+  application      = {{Application}{App\adddot}},
 %    \end{macrocode}
 %
 % The rest of these strings are the standard ones, overridden to match the
