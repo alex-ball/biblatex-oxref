@@ -5178,7 +5178,7 @@ CCR
 \begin{bibexbox}
 <OSCOLA>
 {scheldt}
-International Agreement on the Scheldt (Belgium—France—Netherlands) (signed 1 December 2002, entered into force 1 December 2005) 2351 UNTS 13
+International Agreement on the Scheldt (Belgium—France—Netherlands) (signed 1 Dec.\@ 2002, entered into force 1 Dec.\@ 2005) 2351 UNTS 13
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5199,7 +5199,7 @@ International Agreement on the Scheldt (Belgium—France—Netherlands) (signed 
 \begin{bibexbox}
 <OSCOLA>
 {aaland}
-Convention Relating to the Non-Fortification and Neutralisation of the Aaland Islands (opened for signature 2 October 1921, entered into force 6 December 1922) 9 LNTS 211
+Convention Relating to the Non-Fortification and Neutralisation of the Aaland Islands (opened for signature 2 Oct.\@ 1921, entered into force 6 Dec.\@ 1922) 9 LNTS 211
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5227,7 +5227,7 @@ Agreement with Mongolia (Economic Co-operation) [1978] OJ L264/1
 @legal{mongolia,
   title = {Agreement with Mongolia (Economic Co-operation)},
   shortitle = {Mongolia Cooperation Agreement},
-  journaltitle= {O.J.},
+  journaltitle= {OJ},
   series = {L},
   issue = {264},
   pages = {1},
@@ -5240,7 +5240,7 @@ Agreement with Mongolia (Economic Co-operation) [1978] OJ L264/1
 \begin{bibexbox}
 <OSCOLA>
 {echr:treaty}
-Convention for the Protection of Human Rights and Fundamental Freedoms (opened for signature 4 November 1950, entered into force 3 September 1953) 213 UNTS 221, as amended by Protocol No 14bis to the Convention for the Protection of Human Rights and Fundamental Freedoms (opened for signature 27 May 2009, entered into force 1 September 2009) CETS No 204 (ECHR)
+Convention for the Protection of Human Rights and Fundamental Freedoms (opened for signature 4 Nov.\@ 1950, entered into force 3 Sept.\@ 1953) 213 UNTS 221, as amended by Protocol No 14bis to the Convention for the Protection of Human Rights and Fundamental Freedoms (opened for signature 27 May 2009, entered into force 1 Sept.\@ 2009) CETS No 204 (ECHR)
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5248,10 +5248,10 @@ Convention for the Protection of Human Rights and Fundamental Freedoms (opened f
   title = {Convention for the Protection of Human Rights and Fundamental Freedoms},
   execution = {opened=1950-11-04 and inforce=1953-09-03},
   volume = {213},
-  reporter = {U.N.T.S.},
+  reporter = {UNTS},
   pages = {221},
   note = {as amended by Protocol No 14bis to the Convention for the Protection of Human Rights
-    and Fundamental Freedoms (opened for signature 27 May 2009, entered into force 1 September
+    and Fundamental Freedoms (opened for signature 27 May 2009, entered into force 1 Sept.\@
     2009) CETS No 204},
   shorthand = {ECHR},
   entrysubtype = {piltreaty}}
@@ -5671,7 +5671,7 @@ Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
 %    \begin{macrocode}
   1column, 2column, inflayer, suplayer, paper, papyrus, pergament,
   eucase, eujoinedcases, commissiondecision, application,
-  order, bill, draft,
+  order, bill, draft, opened, signed, adopted, inforce,
 }
 %    \end{macrocode}
 %
@@ -8613,7 +8613,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{casenotetitle}{\mkbibquote{\mkbibemph{#1}}}
-\DeclareFieldFormat[jurisdiction,legislation]{journaltitle}{#1}
+\DeclareFieldFormat[jurisdiction,legislation,legal]{journaltitle}{#1}
 \DeclareFieldFormat[jurisdiction]{volume}{#1}
 \DeclareFieldFormat[jurisdiction]{titleaddon}{\mkbibparens{#1}}
 \DeclareFieldFormat{romanvol}{\RN{#1}}
@@ -8677,6 +8677,34 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \strfield{number}%
     \togglefalse{blx@ox@nopostnotedelim}}}
 
+\newcommand*{\treatypartysep}{\allowbreak ---\allowbreak}
+\DeclareListFormat{treaty}{%
+  \ifmoreitems{}{%
+    \ifnumequal{\value{listcount}}{1}{%
+      \bibopenparen
+    }{}%
+    \ifnumgreater{\value{liststop}}{\value{listcount}}{%
+      #1\treatypartysep
+    }{%
+      #1\bibcloseparen}}}
+
+\def\siganddate#1{%
+  \def\bbx@tempa{#1}%
+  \expandafter\bbx@signeddatei#1/relax}
+\def\bbx@signeddatei#1=#2/relax{%
+  \def\bbx@tempa{#2-}%
+  \bibstring{#1}\space\expandafter\makebbx@datei\bbx@tempa}
+\def\makebbx@datei#1-#2-#3-{%
+  \makebbx@dateii{#1}{#2}{#3}}
+\def\makebbx@dateii#1#2#3{%
+  \blx@imc@stripzeros{#3}~\mkbibmonth{#2}%
+  \space
+  #1}
+\DeclareListFormat{treatydates}{%
+  \ifnumequal{\value{listcount}}{1}{%
+    \siganddate{#1}%
+  }{%
+    \addcomma\space\siganddate{#1}}}
 %    \end{macrocode}
 %
 % \subsection{Common macros}
@@ -9323,9 +9351,89 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
-% \subsubsection{Treaties}
+% \subsubsection{Treaties, explanatory notes and Hansard}
 %
 %    \begin{macrocode}
+\newcommand*{\explanatorynote}{explanatory note}
+\newcommand*{\parliamentarytype}{parliamentary}
+\newcommand*{\treatysubtype}{piltreaty}
+\DeclareBibliographyDriver{legal}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iffieldequals{entrysubtype}{\explanatorynote}{%
+    \printfield[default]{title}%
+    \setunit{\addspace}\newblock
+  }{%
+    \iffieldequals{entrysubtype}{\parliamentarytype}{%
+      \usebibmacro{legal:parliamentary}%
+    }{%
+      \usebibmacro{treatycitation}}}%
+  \setunit{\addcomma\space}\newblock
+  \printfield[default]{note}
+  \setunit{\addspace}\newblock
+  \setunit{\bibpagerefpunct}%
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+\newbibmacro{legal:parliamentary}{%
+  \printfield[default]{title}%
+  \newblock\newunit
+  \usebibmacro{date}%
+  \setunit{\addcomma\space}%
+  \printfield{volume}%
+  \setunit{\addcomma\space}%
+  \usebibmacro{hansard-ref}%
+  \togglefalse{blx@ox@nopostnotedelim}}
+\newbibmacro*{hansard-ref}{%
+  \iffieldundef{postnote}{%
+    \iffieldundef{pages}{}{%
+      \printfield{pages}}%
+  }{}}%
+\newbibmacro{treatycitation}{%
+  \printfield[default]{title}%
+  \setunit{\addspace}\newblock%
+  \printlist[treaty]{institution}
+  \setunit{\addspace}\newblock
+  \usebibmacro{treatyinfo}%
+  \setunit{\addspace}\newblock
+  \usebibmacro{treaty:year+vol+report}}
+\newbibmacro{treatyinfo}{%
+  \iflistundef{lista}{% execution
+    \iffieldundef{year}{}{%
+      \iffieldundef{volume}{}{%
+        \printtext[parens]{\printdate}}}%
+  }{%
+    \printtext[parens]{\printlist[treatydates]{lista}}}}
+\newbibmacro{treaty:year+vol+report}{%
+  \iffieldequals{journaltitle}{\officialjournaltitle}{%
+    \usebibmacro{eulegref}%
+  }{%
+    \usebibmacro{treaty:date}%
+    \setunit{\addspace}%
+    \printfield[default]{volume}%
+    \setunit{\addspace}%
+    \printfield{journaltitle}%
+    \setunit*{\addspace}%
+    \iffieldundef{series}{}{%
+      \setunit{\addspace}%
+      \printfield{series}%
+      \setunit{\addspace}}%
+    \printfield{pages}}}%
+\newbibmacro*{treaty:date}{%
+  \ifboolexpr{
+    test {\iffieldundef{volume}}
+    or
+    bool {bbx@year-essential}
+  }{%
+    \ifboolexpr{
+      test {\ifkeyword{sc}}
+      or
+      test {\iftoggle{bbx:scotstyle}}
+    }{%
+      \printfield{year}%
+    }{%
+      \printfield[brackets]{year}%
+    }}{}}
+
 %    \end{macrocode}
 %
 % \subsection{Source maps}
@@ -9374,6 +9482,18 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \step[fieldsource=additionalreports,
             fieldtarget=listb]
     }%
+    \map[overwrite=false]{
+      \pertype{legal}
+      \step[fieldsource=reporter,
+            fieldtarget=journaltitle]
+    }
+    \map[overwrite=true]{
+        \pertype{legal}
+        \step[fieldsource=parties,
+              fieldtarget=institution]
+        \step[fieldsource=execution,
+              fieldtarget=lista]
+    }
   }%
 }
 %    \end{macrocode}
@@ -10878,6 +10998,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   order            = {{Order}{Ord\adddot}},
   bill             = {{Bill}{Bill}},
   draft            = {{draft}{draft}},
+  opened           = {{opened for signature}{opened for signature}},
+  signed           = {{signed}{signed}},
+  adopted          = {{adopted}{adopted}},
+  inforce          = {{entered into force}{entered into force}},
 %    \end{macrocode}
 %
 % The rest of these strings are the standard ones, overridden to match the
