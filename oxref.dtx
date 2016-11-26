@@ -8617,6 +8617,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat[jurisdiction]{titleaddon}{\mkbibparens{#1}}
 \DeclareFieldFormat{romanvol}{\RN{#1}}
 \DeclareListFormat[jurisdiction]{listb}{}
+\DeclareFieldFormat{usseries}{\ifinteger{#1}{\mkusbibordinal{#1}}{#1}}
 
 \DeclareListFormat{echrinst}{%
   \ifboolexpr{%
@@ -9014,7 +9015,49 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here is the format for Canadian cases.
 %
 %    \begin{macrocode}
-\newbibmacro*{canjuriscitation}{}
+\newbibmacro{canjuriscitation}{%
+  \usebibmacro{title}%
+  \setunit{\addspace}\newblock
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \iffieldundef{journaltitle}{}{%
+    \usebibmacro{can:year+vol+report}}%
+  \usebibmacro{jurisdictionpages}%
+  \usebibmacro{pcitenote}%
+  \usebibmacro{altreportdetails}%
+  \unspace\printlist[jurisdiction][1-\value{listtotal}]{listb}%
+  \newunit\newblock
+  \usebibmacro{courtid}%
+  \newunit%
+  \usebibmacro{court-note}%
+  \newblock%
+  \newunit}
+\newbibmacro*{can:year+vol+report}{%
+  \iffieldundef{number}{%
+    \setunit{\addspace}%
+  }{%
+    \ifboolexpr{
+      test {\iffieldundef{volume}}
+      or
+      bool {bbx@year-essential}%
+    }{}{%
+      \clearfield{year}}}%
+  \iffieldequals{entrysubtype}{\subtypenewsp}{}{%
+    \iffieldundef{year}{}{%
+      \usebibmacro{journaldate}%
+      \setunit{\addspace}}}
+  \printfield{volume}%
+  \setunit{\addspace}%
+  \printfield{journaltitle}%
+  \setunit*{\addspace}%
+  \iffieldundef{series}{}{%
+    \setunit{\addspace}%
+    \printtext[parens]{\printfield[usseries]{series}}%
+    \setunit{\addspace}}%
+  \iffieldequals{entrysubtype}{\subtypenewsp}{%
+    \setunit{\addcomma\space}%
+    \usebibmacro{newspaperdate}%
+  }{}}
 %    \end{macrocode}
 %
 % Here is the format for American cases.
