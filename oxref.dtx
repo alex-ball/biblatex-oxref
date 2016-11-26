@@ -4837,7 +4837,7 @@ OJ L122/48
 \begin{bibexbox}
 <OSCOLA>
 {nicaragua}
-\emph{Land, Island and Maritime Frontier Case (El Salvador/ Honduras, Nicaragua intervening)} (Application for Inter- vention) [1994] ICJ Rep 92
+\emph{Land, Island and Maritime Frontier Case (El Salvador/ Honduras, Nicaragua intervening)} (Application for Intervention) [1994] ICJ Rep 92
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -8635,6 +8635,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat{casenotetitle}{\mkbibquote{\mkbibemph{#1}}}
 \DeclareFieldFormat[jurisdiction]{journaltitle}{#1}
 \DeclareFieldFormat[jurisdiction]{volume}{#1}
+\DeclareFieldFormat[jurisdiction]{titleaddon}{\mkbibparens{#1}}
+\DeclareFieldFormat{romanvol}{\RN{#1}}
+
 \DeclareListFormat{echrinst}{%
   \ifboolexpr{%
     test {\ifnumequal{\value{listtotal}}{1}}
@@ -8655,6 +8658,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       #1\space\bibstring{and}\addspace
     }{%
       #1\addcomma\space}}}%
+
 \newcommand*{\commission}{commission}
 \newcommand*{\Commission}{Commission}
 \DeclareListFormat{ecthr}{%
@@ -8663,7 +8667,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     or
     test {\ifdefstring{\commission}{#1}}
   }{\bibstring[\mkbibparens]{commissiondecision}\toggletrue{blx@ox@nopostnotedelim}}{}}
-\DeclareFieldFormat{romanvol}{\RN{#1}}
+
+\newcommand*{\pcijrep}{PCIJ Rep}
+\DeclareFieldFormat{international}{%
+  \iffieldequals{journaltitle}{\pcijrep}{%
+    \bibcplstring{jourser}\space #1%
+  }{#1}}
 
 \DeclareListFormat{checkcontains}{%
   \bbx@check{#1}}
@@ -8687,7 +8696,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
      {\printfield{issue}}}%
     {\printfield[default]{volume}}}
 \newcommand*{\subtypenewsp}{newspaper}
-\newbibmacro*{year+vol+report}{%
+\newbibmacro*{year+vol+report}[1][default]{%
   \iffieldequals{entrysubtype}{\subtypenewsp}{}{%
     \usebibmacro{journaldate}%
     \setunit{\addspace}}%
@@ -8697,7 +8706,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit*{\addspace}%
   \iffieldundef{series}{}{%
     \setunit{\addspace}%
-    \printfield{series}%
+    \printfield[#1]{series}%
     \setunit{\addspace}}%
   \iffieldequals{entrysubtype}{\subtypenewsp}{%
     \setunit{\addcomma\space}%
@@ -8940,7 +8949,49 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here is the format for international cases.
 %
 %    \begin{macrocode}
-\newbibmacro*{intjuriscitation}{}
+\newbibmacro*{intjuriscitation}{%
+  \iflistundef{institution}{%
+    \setunit{}\printtext{}%
+  }{%
+    \printlist{institution}%
+    \setunit{\addcomma\space}}%
+  \usebibmacro{int:title}%
+  \setunit{\addspace}\newblock
+  \iffieldundef{journaltitle}{%
+    \printfield{number}%
+    \setunit{\addspace}\newblock
+    \printtext[parens]{\printdate}%
+  }{%
+    \usebibmacro{year+vol+report}[international]%
+  }%
+  \setunit{\addspace}%
+  \usebibmacro{int:jurisdictionpages}%
+  \setunit{\addspace}\newblock
+  \usebibmacro{court-note}%
+}
+\newbibmacro*{int:title}{%
+  \ifboolexpr{
+    test {\iffieldundef{title}}
+    and
+    test {\iffieldundef{subtitle}}
+  }{}{%
+    \printtext[title]{%
+      \printfield[titlecase]{title}%
+      \setunit{\addspace}%
+      \printfield[parens]{subtitle}}}%
+  \setunit{\addspace}%
+  \printfield{titleaddon}%
+}
+\newbibmacro*{int:jurisdictionpages}{%
+  \iffieldequals{journaltitle}{\pcijrep}{%
+    \printtext{\bibcpstring{number}\addspace}%
+    \iffieldundef{pages}{%
+      \printfield{number}%
+    }{%
+      \printfield{pages}}%
+  }{%
+    \printfield{pages}}}
+
 %    \end{macrocode}
 %
 % Here is the format for Canadian cases.
@@ -8965,26 +9016,51 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 %    \end{macrocode}
 %
-% \subsection{Sort order}
+% \subsection{Source maps}
 %
-% We use the source mapping capabilities of Biber to fix the following sorting
-% issues:
-%
-% \begin{itemize}
-%   \item
-%   `proceedings' and `mvproceedings' entries print the organization at the
-%   beginning (if, as is likely, an author is not present).
-% \end{itemize}
+% We use the source mapping capabilities of Biber to fix the following issues.
 %
 %    \begin{macrocode}
 \DeclareStyleSourcemap{%
   \maps[datatype=bibtex]{%
+%    \end{macrocode}
+%
+% \subsubsection{Sort order}
+%
+% `proceedings' and `mvproceedings' entries print the organization at the
+% beginning (if, as is likely, an author is not present).
+%
+%    \begin{macrocode}
     \map{%
       \pertype{proceedings}
       \pertype{mvproceedings}
       \step[fieldsource=author]%
       \step[notfield=author, fieldsource=organization]%
       \step[fieldset=sortname, origfieldval]%
+    }%
+%    \end{macrocode}
+%
+% \subsubsection{Legal references}
+%
+% These help ensure compatibility with \textsf{oscola}.
+%
+%    \begin{macrocode}
+    \map[overwrite=false]{
+      \pertype{jurisdiction}
+      \step[fieldsource=reporter,
+            fieldtarget=journaltitle]
+      \step[fieldsource=parvolume,
+            fieldtarget=userb]
+      \step[fieldsource=parreporter,
+            fieldtarget=userc]
+      \step[fieldsource=parseries,
+            fieldtarget=userd]
+      \step[fieldsource=parpages,
+            fieldtarget=usere]
+      \step[fieldsource=court,
+            fieldtarget=institution]
+      \step[fieldsource=additionalreports,
+            fieldtarget=listb]
     }%
   }%
 }
@@ -9152,30 +9228,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \step[fieldset=sorttitle, append, origfieldval]%
       \step[fieldsource=title]%
       \step[fieldset=sorttitle, append, origfieldval]%
-    }%
-%    \end{macrocode}
-%
-% \subsubsection{Legal references}
-%
-% These help ensure compatibility with \textsf{oscola}.
-%
-%    \begin{macrocode}
-  \map[overwrite=false]{
-    \pertype{jurisdiction}
-    \step[fieldsource=reporter,
-          fieldtarget=journaltitle]
-    \step[fieldsource=parvolume,
-          fieldtarget=userb]
-    \step[fieldsource=parreporter,
-          fieldtarget=userc]
-    \step[fieldsource=parseries,
-          fieldtarget=userd]
-    \step[fieldsource=parpages,
-          fieldtarget=usere]
-    \step[fieldsource=court,
-          fieldtarget=institution]
-    \step[fieldsource=additionalreports,
-          fieldtarget=listb]
     }%
   }%
 }
