@@ -4738,7 +4738,7 @@ OJ L122/48
 \begin{bibexbox}
 <OSCOLA>
 {harbor91}
-\emph{Harbor Insurance Co v Tishman Construction Co} 578 NE2d 1197, 1199 (Ill App Ct 1991)
+\emph{Harbor Insurance Co v Tishman Construction Co} 578 NE2d 1197 (Ill App Ct 1991)
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -8617,7 +8617,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat[jurisdiction]{titleaddon}{\mkbibparens{#1}}
 \DeclareFieldFormat{romanvol}{\RN{#1}}
 \DeclareListFormat[jurisdiction]{listb}{}
-\DeclareFieldFormat{usseries}{\ifinteger{#1}{\mkusbibordinal{#1}}{#1}}
+\DeclareFieldFormat{usseries}{\ifinteger{#1}{\mkbibordinal{#1}}{#1}}
 
 \DeclareListFormat{echrinst}{%
   \ifboolexpr{%
@@ -8763,7 +8763,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \setunit{\addcomma\space}%
     \iffieldundef{postnote}{}{%
       \printfield{postnote}%
-      %\global\toggletrue{cbx@postnoteprinted}%
+      \clearfield{postnote}%
       \setunit{\addsemicolon\space}}}}
 \newbibmacro*{courtid}{%
   \iffieldundef{number}{%
@@ -9063,7 +9063,57 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here is the format for American cases.
 %
 %    \begin{macrocode}
-\newbibmacro*{usjuriscitation}{}
+\newbibmacro{usjuriscitation}{%
+  \usebibmacro{title}%
+  \setunit{\addspace}\newblock%
+  \iffieldundef{journaltitle}{%
+    \printfield{number}%
+    \setunit{\addcomma\space}%
+    \printfield[default]{eprint}%
+    \clearfield{eprint}%
+  }{
+    \usebibmacro{us:vol+report}}%
+  \setunit{\addspace}%
+  \usebibmacro{jurisdictionpages}%
+  \usebibmacro{us:postnote}%
+  \usebibmacro{altreportdetails}%
+  \setunit{\addspace}\newblock
+  \unspace\printlist[jurisdiction][1-\value{listtotal}]{listb}%
+  \setunit{\addspace}%
+  \usebibmacro{us:courtid+date}%
+  \setunit{\addspace}%
+  \usebibmacro{court-note}%
+  \newblock
+  \setunit{\addspace}}
+\newbibmacro{us:vol+report}{%
+  \printfield{volume}%
+  \setunit{\addspace}%
+  \printfield{journaltitle}%
+  \iffieldundef{series}{}{%
+    \setunit{\addspace}%
+    \printfield[usseries]{series}}}
+\newbibmacro{us:postnote}{%
+  \iffieldundef{postnote}{}{%
+    \setunit{\addcomma\space}%
+    \printfield{postnote}%
+    \clearfield{postnote}%
+  }}
+\newbibmacro{us:courtid+date}{%
+  \ifboolexpr{
+    test {\iflistundef{institution}}
+    and
+    test {\iflistundef{location}}
+    and
+    test {\iffieldundef{year}}
+  }{}{%
+    \printtext[parens]{%
+      \printlist{location}%
+      \setunit*{\addspace}%
+      \printlist{institution}%
+      \setunit{\addspace}%
+      \printfield{year}%
+      \nopunct}}}
+
 %    \end{macrocode}
 %
 % Here is the format for English cases.
