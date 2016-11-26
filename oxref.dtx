@@ -4166,29 +4166,8 @@ For a more thorough and robust treatment, intended for a specialist readership, 
 
 \begin{bibexbox}
 <OSCOLA>
-{antaios85}
-Antaios Compania Naviera SA v Salen Rederierna AB (The Nema) [1985] AC 191, [1984] 3 WLR 592, (1984) 128 SJ 564, [1984] 3 All ER 229, [1984] 2 Lloyd’s Rep 235 (HL)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{antaios85,
-  title = {Antaios Compania Naviera S.A. v. Salen Rederierna A.B. (The Nema)},
-  shorttitle = {The Nema},
-  date = {1985},
-  reporter = {A.C.},
-  pages = {191},
-  court = {H.L.},
-  additionalreports = {[1984] 3 WLR 592 and (1984) 128 SJ 564 and [1984] 3 All ER 229
-    and [1984] 2 Lloyd’s Rep 235},
-  keywords = {gb}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
 {corr08}
-\emph{Corr v IBC Vehicles Ltd} [2008] UKHL 13, [2008] 1 AC 884 [11]
+\emph{Corr v IBC Vehicles Ltd} [2008] UKHL 13, [2008] 1 AC 884
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4387,7 +4366,7 @@ Antaios Compania Naviera SA v Salen Rederierna AB (The Nema) [1985] AC 191, [198
 \begin{bibexbox}
 <OSCOLA>
 {davidson05}
-Davidson v Scottish Ministers [2005] UKHL 74, 2006 SC (HL)
+\emph{Davidson v Scottish Ministers} [2005] UKHL 74, 2006 SC (HL)
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4405,7 +4384,7 @@ Davidson v Scottish Ministers [2005] UKHL 74, 2006 SC (HL)
 \begin{bibexbox}
 <OSCOLA>
 {smart06}
-Smart v HM Advocate [2006] HJAC 12, 2006 JC 119
+\emph{Smart v HM Advocate} [2006] HJAC 12, 2006 JC 119
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -8637,6 +8616,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat[jurisdiction]{volume}{#1}
 \DeclareFieldFormat[jurisdiction]{titleaddon}{\mkbibparens{#1}}
 \DeclareFieldFormat{romanvol}{\RN{#1}}
+\DeclareListFormat[jurisdiction]{listb}{}
 
 \DeclareListFormat{echrinst}{%
   \ifboolexpr{%
@@ -8710,7 +8690,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \setunit{\addspace}}%
   \iffieldequals{entrysubtype}{\subtypenewsp}{%
     \setunit{\addcomma\space}%
-    \usebibmacro{newspaperdate}%
+    \printdate%
   }{}}
 \newbibmacro*{journaldate}{%
   \ifboolexpr{
@@ -8773,6 +8753,43 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     {}%
     {\printfield{note}%
      \toggletrue{blx@ox@nopostnotedelim}}}
+\newbibmacro*{jurisdictionpages}{%
+  \iffieldequals{entrysubtype}{\subtypenewsp}{}{%
+    \setunit{\addspace}%
+    \printfield{pages}}}
+\newbibmacro{pcitenote}{%
+  \iffieldundef{userc}{}{% parreporter
+    \setunit{\addcomma\space}%
+    \iffieldundef{postnote}{}{%
+      \printfield{postnote}%
+      %\global\toggletrue{cbx@postnoteprinted}%
+      \setunit{\addsemicolon\space}}}}
+\newbibmacro*{courtid}{%
+  \iffieldundef{number}{%
+    \ifboolexpr{
+      test {\iflistundef{institution}}
+      and
+      test {\iffieldundef{location}}%
+    }{%
+      \togglefalse{blx@ox@nopostnotedelim}%
+    }{%
+      \printtext[parens]{%
+        \printfield{location}%
+        \setunit{\addspace}%
+        \printlist{institution}%
+        \usebibmacro{unrep:date}}%
+      \toggletrue{blx@ox@nopostnotedelim}}%
+  }{%
+    \togglefalse{blx@ox@nopostnotedelim}}}
+\newbibmacro*{unrep:date}{%
+  \ifboolexpr{
+    test {\iffieldundef{journaltitle}}%
+    and
+    test {\iffieldundef{number}}%
+  }{%
+    \setunit{\addcomma\space}%
+    \usebibmacro{date}%
+  }{}}
 
 %    \end{macrocode}
 %
@@ -9009,7 +9026,56 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % Here is the format for English cases.
 %
 %    \begin{macrocode}
-\newbibmacro*{enjuriscitation}{}
+\newbibmacro{enjuriscitation}{%
+  \usebibmacro{title}%
+  \setunit{\addspace}\newblock
+  \printfield{number}%
+  \setunit*{\addcomma\space}%
+  \iffieldundef{journaltitle}{}{%
+    \usebibmacro{year+vol+report}}%
+  \usebibmacro{jurisdictionpages}%
+  \usebibmacro{pcitenote}%
+  \usebibmacro{altreportdetails}%
+  \unspace\printlist[jurisdiction][1-\value{listtotal}]{listb}% additionalreports
+  \setunit{\addspace}\newblock
+  \usebibmacro{courtid}%
+  \setunit{\addspace}%
+  \usebibmacro{court-note}}
+\newbibmacro{altreportdetails}{%
+  \restorefield{prenote}{\postnotesecond}%
+  \iffieldundef{userc}{}{% parreporter
+    \usebibmacro{altreportvolume}%
+    \setunit{\addspace}\newblock
+    \usebibmacro{altjournaltitle}%
+    \setunit{\addspace}\newblock
+    \usebibmacro{altseries}%
+    \setunit{\addspace}\newblock
+    \usebibmacro{altjurisdictionpages}%
+    \iffieldundef{prenote}{}{%
+      \setunit{\addcomma\space}%
+      \printfield[postnote]{prenote}}}}
+\newbibmacro*{altreportvolume}{%
+  \iffieldundef{userb}{% parvolume
+    \printfield{volume}%
+  }{%
+    \printfield{userb}}}
+\newbibmacro*{altjournaltitle}{%
+  \iffieldundef{userc}{% parreporter
+    \printfield{journaltitle}%
+    \setunit{\addspace}%
+  }{
+    \printfield{userc}}}
+\newbibmacro*{altseries}{%
+  \iffieldundef{userd}{% parseries
+    \printfield{series}%
+  }{%
+    \printfield{userd}}}
+\newbibmacro*{altjurisdictionpages}{%
+  \iffieldundef{usere}{% parpages
+    \usebibmacro{jurisdictionpages}%
+  }{%
+    \printfield{usere}}}%
+
 %    \end{macrocode}
 %
 %
