@@ -4952,7 +4952,7 @@ Penalties for Disorderly Behaviour (Amendment of Minimum Age) Order 2004, SI 200
 \begin{bibexbox}
 <OSCOLA>
 {hollowware}
-Penalties for Disorderly Behaviour (Amendment of Minimum Age) Order 2004, SI 2004/3166
+Hollow-ware and Galvanising Welfare Order 1921, SR~\&~O 1921/2032
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4969,7 +4969,7 @@ Penalties for Disorderly Behaviour (Amendment of Minimum Age) Order 2004, SI 200
 \begin{bibexbox}
 <OSCOLA>
 {eggs}
-Eggs and Chicks (England) Regulations 2009, SI 2009/ 2163
+Eggs and Chicks (England) Regulations 2009, SI 2009/2163
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5082,7 +5082,7 @@ Consolidated Version of the Treaty on European Union [2010] OJ C83/13 (TEU)
 \begin{bibexbox}
 <OSCOLA>
 {2002/60}
-Council Directive 2002/60/EC of 27 June 2002 laying down specific provisions for the control of African swine fever and amending Directive 99/119/EEC as re- gards Teschen disease and African swine fever [2002] OJ L192/27
+Council Directive 2002/60/EC of 27 June 2002 laying down specific provisions for the control of African swine fever and amending Directive 99/119/EEC as regards Teschen disease and African swine fever [2002] OJ L192/27
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5107,7 +5107,7 @@ Council Directive 2002/60/EC of 27 June 2002 laying down specific provisions for
 \begin{bibexbox}
 <OSCOLA>
 {cpr}
-
+CPR
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5124,7 +5124,7 @@ Council Directive 2002/60/EC of 27 June 2002 laying down specific provisions for
 \begin{bibexbox}
 <OSCOLA>
 {pd}
-
+PD
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5140,7 +5140,7 @@ Council Directive 2002/60/EC of 27 June 2002 laying down specific provisions for
 \begin{bibexbox}
 <OSCOLA>
 {rsc}
-
+RSC
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5158,7 +5158,7 @@ Council Directive 2002/60/EC of 27 June 2002 laying down specific provisions for
 \begin{bibexbox}
 <OSCOLA>
 {ccr}
-
+CCR
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5671,6 +5671,7 @@ Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
 %    \begin{macrocode}
   1column, 2column, inflayer, suplayer, paper, papyrus, pergament,
   eucase, eujoinedcases, commissiondecision, application,
+  order, bill, draft,
 }
 %    \end{macrocode}
 %
@@ -8612,7 +8613,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{casenotetitle}{\mkbibquote{\mkbibemph{#1}}}
-\DeclareFieldFormat[jurisdiction]{journaltitle}{#1}
+\DeclareFieldFormat[jurisdiction,legislation]{journaltitle}{#1}
 \DeclareFieldFormat[jurisdiction]{volume}{#1}
 \DeclareFieldFormat[jurisdiction]{titleaddon}{\mkbibparens{#1}}
 \DeclareFieldFormat{romanvol}{\RN{#1}}
@@ -8664,6 +8665,17 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \ifdefstring{#2}{##1}{\global\toggletrue{bbx@institutiontoggle}}{}}%
   \printlist[checkcontains]{#1}%
   \iftoggle{bbx@institutiontoggle}}
+
+\DeclareFieldFormat{draftleg}{%
+  \StrBefore{#1}{ Bill}}
+
+\DeclareListFormat{billprinting}{%
+  \ifstrequal{#1}{HC}{%
+    \mkbibbrackets{\strfield{number}}%
+    \toggletrue{blx@ox@nopostnotedelim}%
+  }{%
+    \strfield{number}%
+    \togglefalse{blx@ox@nopostnotedelim}}}
 
 %    \end{macrocode}
 %
@@ -9171,6 +9183,147 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
+% \subsubsection{Legislation}
+%
+% Legislation tends to have a more consistent format, though European
+% entries need special handling.
+%
+%    \begin{macrocode}
+\newcommand*{\subtypecourtrules}{procedure-rule}
+\DeclareBibliographyDriver{legislation}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iffieldequals{entrysubtype}{\subtypecourtrules}{%
+    \usebibmacro{courtrules}%
+  }{%
+    \ifkeyword{draft}{%
+      \usebibmacro{legislation:bill}%
+    }{%
+      \ifkeyword{eu}{%
+        \usebibmacro{eulegislation}%
+      }{%
+        \printfield[default]{title}%
+        \setunit{\addspace}%
+        \printfield[default]{year}%
+        \setunit*{\addspace}%
+        \usebibmacro{legnumber}%
+        \setunit{\addspace}\newblock
+        \usebibmacro{legsupp}}}}%
+  \setunit{\addcomma\space}%
+  \printfield{note}%
+  \setunit{\addspace}%
+  \usebibmacro{finentry}}
+\newbibmacro*{courtrules}{%
+  \restorefield{prenote}{\postnotesecond}%
+  \iffieldequalstr{shorttitle}{PD}{%
+    \printfield{postnote}%
+    \clearfield{postnote}%
+    \setunit{\addspace}%
+  }{}%
+  \iffieldundef{shorttitle}{%
+    \printfield[default]{title}%
+  }{%
+    \printfield[default]{shorttitle}}%
+  \setunit{\addspace}\newblock
+  \iffieldundef{postnote}{%
+    \toggletrue{blx@ox@nopostnotedelim}%
+  }{%
+    \iffieldequalstr{shorttitle}{CPR}{%
+      \printfield{postnote}%
+      \setunit{\addspace}%
+    }{%
+      \printtext{%
+        \bibstring{order}\space
+        \printfield{postnote}%
+        \setunit{\addcomma\space}}}}%
+  \restorefield{postnote}{\postnotesecond}%
+  \usebibmacro{postnote}%
+  \clearfield{postnote}%
+  \setunit{\addspace}\newblock}
+\newcommand*{\subtypeprimarylegislation}{primary}
+\newbibmacro*{legislation:bill}{%
+  \printfield[draftleg]{title}%
+  \setunit{\addspace}%
+  \printlist{institution}%
+  \setunit*{\addspace}%
+  \iffieldequals{entrysubtype}{\subtypeprimarylegislation}{%
+    \bibcpstring{bill}%
+    \setunit{\addspace}%
+    \printtext[parens]{\usebibmacro{sessionyear}}%
+    \setunit{\addspace}%
+    \iffieldundef{number}{}{%
+      \printlist[billprinting]{institution}}%
+  }{%
+    \printtext[parens]{%
+      \bibstring{draft}\space
+      \printdate}}
+  \setunit{\addspace}}
+\newbibmacro*{sessionyear}{%
+  \iffieldundef{year}{}{%
+    \printfield{year}%
+    \iffieldundef{endyear}{}{%
+      \bibdaterangesep
+      \blx@ox@compyear{\thefield{year}}{\thefield{endyear}}}}}
+\newbibmacro{eulegislation}{%
+  \printfield[default]{title}%
+  \newunit\newblock%
+  \usebibmacro{eulegref}}
+\newcommand*{\ojspecedtitle}{OJ Spec Ed}
+\newbibmacro*{eulegref}{%
+  \ifboolexpr{
+    test {\iffieldequals{journaltitle}{\officialjournaltitle}}
+    or
+    test {\iffieldequals{journaltitle}{\ojspecedtitle}}%
+  }{%
+    \printfield[brackets]{year}%
+    \setunit{\addspace}%
+    \printfield{journaltitle}%
+    \setunit{\addspace}%
+    \iffieldundef{series}{%
+      \printtext{L}%
+    }{%
+      \printfield[default]{series}}%
+    \usebibmacro{issue/volume}%
+    \printtext{\slash}%
+    \printfield{pages}%
+    \togglefalse{blx@ox@nopostnotedelim}%
+  }{%
+    \usebibmacro{year+vol+report}}}
+\newbibmacro*{legnumber}{%
+  \iffieldequals{entrysubtype}{\subtypeprimarylegislation}{%
+    \ifboolexpr{(
+        test {\iffieldundef{number}}
+        or
+        not test {\iffieldundef{title}} )
+      and not (
+        test {\ifkeyword{cy}}
+        or
+        test {\ifkeyword{sc}}
+        or
+        test {\ifkeyword{ni}} )
+    }{}{%
+      \printtext[parens]{\printfield{number}}%
+      \toggletrue{blx@ox@nopostnotedelim}}%
+  }{%
+    \iffieldundef{number}{}{%
+      \setunit{\addcomma\addspace}%
+      \printfield{number}%
+      \togglefalse{blx@ox@nopostnotedelim}}}}
+%    \end{macrocode}
+%
+% This adds additional material for Welsh statutory instruments.
+%
+%    \begin{macrocode}
+\newbibmacro*{legsupp}{%
+  \ifkeyword{cy}
+    {\iffieldundef{userb}
+      {}
+      {\printtext{\mkbibparens{\printfield{userb}}}\toggletrue{blx@ox@nopostnotedelim}}}
+    {}}
+
+%    \end{macrocode}
+%
+% \subsubsection{Treaties}
 %
 %    \begin{macrocode}
 %    \end{macrocode}
@@ -10722,6 +10875,9 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   eujoinedcases    = {{Joined Cases}{Joined Cases}},
   commissiondecision = {{Commission Decision}{Commission Decision}},
   application      = {{Application}{App\adddot}},
+  order            = {{Order}{Ord\adddot}},
+  bill             = {{Bill}{Bill}},
+  draft            = {{draft}{draft}},
 %    \end{macrocode}
 %
 % The rest of these strings are the standard ones, overridden to match the
