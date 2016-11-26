@@ -4162,6 +4162,8 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \textsf{Oxref} provides only a basic level of support for legal references, in case you need to use some in a mainly non-legal text.
 For a more thorough and robust treatment, intended for a specialist readership, I recommend you use the \href{http://www.ctan.org/pkg/oscola}{\textsf{oscola}} style instead.
 
+Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules} and the \emph{Oxford Standard for the Citation of Legal Authorities}, \textsf{oxref} largely mimics \textsf{oscola} and its data model, though there are some small formatting differences. What you should \emph{not} expect from \textsf{oxref} are facilities for compiling specialist indices of sources, or anything special regarding the handling of postnotes.
+
 \section{Temporary examples of cases}
 
 \begin{bibexbox}
@@ -9436,6 +9438,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
+% \subsection{Common macros}
+%
+%    \begin{macrocode}
+\DeclareBibliographyAlias{commentary}{book}
+%    \end{macrocode}
+%
 % \subsection{Source maps}
 %
 % We use the source mapping capabilities of Biber to fix the following issues.
@@ -9493,6 +9501,124 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
               fieldtarget=institution]
         \step[fieldsource=execution,
               fieldtarget=lista]
+    }
+%    \end{macrocode}
+%
+% This is how \textsf{oscola} removes dots from entries.
+%
+%    \begin{macrocode}
+    \map[overwrite=true]{
+     \pertype{jurisdiction}
+     \pertype{legislation}
+     \pertype{legal}
+     \step[fieldsource=title,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=title,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=title,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step [fieldsource=title,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
+     \step[fieldsource=shorttitle,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=shorttitle,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=shorttitle,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step [fieldsource=shorttitle,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
+     \step[fieldsource=userc,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=userc,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=userc,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step [fieldsource=userc,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
+     \step[fieldsource=journaltitle,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=journaltitle,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=journaltitle,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step [fieldsource=journaltitle,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
+     \step[fieldsource=institution,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=institution,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=institution,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step[fieldsource=institution,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
+     \step[fieldsource=publisher,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=publisher,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=publisher,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step [fieldsource=publisher,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
+     \step[fieldsource=location,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=location,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=location,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step [fieldsource=location,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
+     \step[fieldsource=series,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=series,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=series,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step [fieldsource=series,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
+     \step[fieldsource=indextitle,
+           match=\regexp{(\d)\.(\d)},
+           replace=\regexp{$1.$2}]
+     \step[fieldsource=indextitle,
+           match=\regexp{(\D)\.(\d)},
+           replace=\regexp{$1 $2}]
+     \step[fieldsource=indextitle,
+            match=\regexp{\.(\D)},
+            replace=\regexp{$1}]
+     \step [fieldsource=indextitle,
+            match=\regexp{(\D)\.},
+            replace=\regexp{$1}]
     }
   }%
 }
