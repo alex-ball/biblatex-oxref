@@ -353,15 +353,8 @@ Copyright (C) 2016 Alex Ball
   ,listing side text
   ,lefthand width = 14em
   ,IfNoValueTF={#2}{}{title = #2}
-  ,before lower = {\raggedright\hangfrom{\booksym\space}#3\par\hangfrom{\cogsym\space}}
+  ,before lower = {\raggedright\ifblank{#3}{}{\hangfrom{\booksym\space}#3\par}\hangfrom{\cogsym\space}}
   ,IfNoValueTF={#4}{}{#4}}
-% \egcite gives a citation as an example. Arguments:
-% #1 = page range
-% #2 = bib key
-% \NewDocumentCommand\egcite{om}{%
-%   \makebox[0pt][r]{\footnotesize\textcolor{teal}{#2}\quad}%
-%   \IfNoValueTF{#1}{\dbgcolor{#2}{\fullcite{#2}.}}%
-%   {\dbgcolor{#2}{\fullcite[#1]{#2}}.}}
 
 \frenchspacing
 %</driver|doc>
@@ -908,11 +901,11 @@ Following the advice of \emph{New Hart's Rules}, \textsf{oxnotes} loads by defau
 %</bib>
 %<*n|y>
 %<*n>
-\begin{egcite}{}[before lower = {\hangfrom{\cogsym\space}}]
+\begin{egcite}{}
 Test\footcite{faith1997epg}
 Test\footcite[49-50]{faith1997epg}
 \end{egcite}
-\begin{egcite}{}[before lower = {\hangfrom{\cogsym\space}}]
+\begin{egcite}{}
 Test\footcites[80 (Westminster), 66
   (Glastonbury), 149 (Osney), 128
   (Bolton)]{knowles.hadcock1953mrh}%
@@ -4164,420 +4157,373 @@ For a more thorough and robust treatment, intended for a specialist readership, 
 
 Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules} and the \emph{Oxford Standard for the Citation of Legal Authorities}, \textsf{oxref} largely mimics \textsf{oscola} and its data model, though there are some small formatting differences. What you should \emph{not} expect from \textsf{oxref} are facilities for compiling specialist indices of sources, or anything special regarding the handling of postnotes.
 
-\section{Temporary examples of cases}
+%<y>Another thing to bear in mind is that legal references are usually cited using footnotes, so how \textsf{oxyear} should behave is not defined. As a result, I have not configured it to do anything fancy: the full reference will be formatted just the same as with \textsf{oxnotes}, and citations will typically be title–year using parentheses in the usual way. I am open to suggestions for how to handle things better.
+
+\section{Cases}
+
+\subsection{Reported cases}
+
+Use the \code{jurisdiction} entry type for citing cases.
+
+\tip{Use the \code{keyword} field to specify the jurisdiction. The following are recognized:
+  \begin{itemize}
+  \item\val{gb}
+    United Kingdom
+  \item\val{en}:
+    England (default)
+  \item\val{cy}:
+    Wales
+  \item\val{sc}:
+    Scotland
+  \item\val{ni}:
+    Northern Ireland
+  \item\val{eu}:
+    European Union (including the EEC, EC, ECSC and EURATOM)
+  \item\val{echr}:
+    Organs of the Council of Europe dealing with the European Convention on Human Rights
+  \item\val{int}:
+    (Public) international law cases and materials
+  \item\val{us}:
+    United States of America
+  \item\val{ca}:
+    Canada
+  \item\val{aus}:
+    Australia
+  \item\val{nz}:
+    New Zealand
+  \end{itemize}
+}
+
+\tip{Use either the (non-standard) \code{reporter} or \code{journaltitle} field for the (abbreviated) name of the report series. Use the \code{series} field for a numeric sub-series.}
+
+\tip{If you want to include a parallel citation, you can use the non-standard \code{pardate}, \code{parreporter}, \code{parseries}, \code{parvolume}, and \code{parpages} fields.}
+
+\tip{If you need to, use either the (non-standard) \code{court} or \code{institution} field for the court that decided the case.}
+
+\tip{Use the \code{location} field for the location of the court in American, Australian or Canadian cases.}
 
 \begin{bibexbox}
-<OSCOLA>
-{corr08}
-\emph{Corr v IBC Vehicles Ltd} [2008] UKHL 13, [2008] 1 AC 884
+<NHR \S13.4.1>
+[78-79]{ridge1964}
+\emph{Ridge v Baldwin} [1964] AC 40 at 78–9
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@jurisdiction{corr08,
-  title = {Corr v. I.B.C. Vehicles Ltd.},
+@jurisdiction{ridge1964,
+  title = {Ridge v. Baldwin},
   keywords = {gb},
-  date = {2008},
-  number = {[2008] UKHL 13},
+  date = {1964},
+  journaltitle = {A.C.},
+  pages = {40}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+%<*y>
+The actual in-text citation would look like this:
+
+\begin{egcite}{(\emph{Ridge v Baldwin} 1964: 78–9)}
+\parencite[78-79]{ridge1964}
+\end{egcite}
+%</y>
+
+\tip{Use the \key{year-essential} Boolean entry option to specify whether the year is essential for locating the report, in cases where automatic detection (based on the presence or otherwise of a volume number) fails.}
+
+\begin{bibexbox}
+<NHR \S13.4.1>
+{lambert2001}
+\emph{R v Lambert} [2001] 2 WLR 211 (QBD)
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@jurisdiction{lambert2001,
+  title = {R v Lambert},
+  keywords = {gb},
+  date = {2001},
+  volume = {2},
+  journaltitle = {WLR},
+  pages = {211},
+  institution = {QBD},
+  options = {year-essential=true}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+<NHR \S13.4.1>
+{badische1897}
+\emph{Badische v Soda-Fabrics} (1897) 14 RPC 919 (HL)
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@jurisdiction{badische1897,
+  title = {Badische v. Soda-Fabrics},
+  date = {1897},
+  journaltitle = {RPC},
+  volume = {14},
+  pages = {919},
+  institution = {HL}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+<NHR \S13.4.1>
+{hughes1907}
+\emph{Hughes v Stewart}, 1907 SC 791
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@jurisdiction{hughes1907,
+  title = {Hughes v. Stewart},
+  date = {1907},
+  reporter = {SC},
+  pages = {791},
+  keywords = {sc}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+<NHR \S13.4.1>
+{corcoran1932}
+\emph{Corcoran v HM Advocate}, 1932 JC 42
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@jurisdiction{corcoran1932,
+  title = {Corcoran v. H.M. Advocate},
+  date = {1932},
+  reporter = {JC},
+  pages = {42},
+  keywords = {sc}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\tip{Scottish cases heard at the House of Lords or the Supreme Court should technically be given the keyword \val{gb}, therefore you can also identify them with the \key{scottish-style} option.}
+
+\begin{bibexbox}
+<NHR \S13.4.1>
+{michael1976}
+\emph{Michael v Johnson}, 426 US 346 (1976)
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@jurisdiction{michael1976,
+  title = {Michael v. Johnson},
+  volume = {426},
+  reporter = {U.S.},
+  pages = {346},
+  date = {1976},
+  keywords = {us}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\tip{Use the (non-standard) \code{neutralcite} or \code{number} field for the neutral citation or case number.}
+
+\tip{Several additional pagination types are defined for use with legal citations:
+  \val{article}, \val{clause}, \val{regulation}, and \val{rule} all work as normal.
+  There is also a special pagination type for paragraphs, \val{[]}, which prints the number in square brackets instead of giving it a prefix.
+}
+
+\begin{bibexbox}
+<NHR \S13.4.1>
+{rvg2004}
+\emph{R v G} [2003] UKHL 50, [2004] 1 AC 1034
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@jurisdiction{rvg2004,
+  title = {R. v. G.},
+  number = {[2003] UKHL 50},
+  date = {2004},
   journaltitle = {A.C.},
   volume = {1},
-  pages = {884},
-  options = {year-essential=true},
-  institution = {HL},
-  shorttitle = {Corr},
+  pages = {1034},
+  options = {year-essential},
   pagination = {[]}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\begin{bibexbox}
-<OSCOLA>
-{page96}
-\emph{Page v Smith} [1996] AC 155 (HL)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{page96,
-  title = {Page v Smith},
-  keywords = {gb},
-  date = {1996},
-  journaltitle = {AC},
-  pages = {155},
-  institution = {HL}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
+%<*n>
+\begin{egcite}{}
+  Test\footcite[13]{rvg2004}
+\end{egcite}
+%</n>
 
 \begin{bibexbox}
-<OSCOLA>
-{barrett01a}
-\emph{Barrett v Enfield LBC} (2001) 49 BMLR 1 (HL)
+<NHR \S13.4.3>
+{smith2001}
+\emph{Smith v Jones} [2001] (1948) 2 All ER 431
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@jurisdiction{barrett01a,
-  title = {Barrett v Enfield LBC},
+@jurisdiction{smith2001,
+  title = {Smith v Jones},
   date = {2001},
-  journaltitle = {BMLR},
-  volume = {49},
-  pages = {1},
-  institution = {HL}}
+  origdate = {1948},
+  journaltitle = {All ER},
+  volume = {2},
+  pages = {431},
+  options = {year-essential}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
+Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsistent on whether the court of decision should be printed plain or in parentheses at the end of a reference to a reported case. The default chosen by \textsf{oxref} is to use parentheses as per the \emph{Oxford Standard for the Citation of Legal Authorities}.
+
+\tip{To print the court of decision plain, you can use the \key{court-plain} option. You can set this globally at the style level or on a per-entry basis.}
+
 \begin{bibexbox}
-<OSCOLA>
-{stubbs90}
-\emph{Stubbs v Sayer} (CA, 8 November 1990)
+<NHR \S13.4.3>
+{bowman1978}
+\emph{Bowman v Fussy} [1978] RPC 545, HL
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@jurisdiction{stubbs90,
-  title = {Stubbs v. Sayer},
-  institution = {CA},
-  date = {1990-11-08}}
+@jurisdiction{bowman1978,
+  title = {Bowman v Fussy},
+  keywords = {gb},
+  date = {1978},
+  journaltitle = {RPC},
+  pages = {545},
+  institution = {HL},
+  options = {court-plain}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\begin{bibexbox}
-<OSCOLA>
-{calvert02}
-\emph{Calvert v Gardiner} [2002] EWHC 1394 (QB)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{calvert02,
-  title = {Calvert v. Gardiner},
-  number = {[2002] EWHC 1394 (QB)},
-  institution = {QB},
-  date = {2002-01-01}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
+
+\subsection{Unreported cases}
+
+\tip{For cases reported in newspapers, set the \code{entrysubtype} to \code{newspaper}.}
 
 \begin{bibexbox}
-<OSCOLA>
-{powick93}
-\emph{Powick v Malvern Wells Water Co} The Times, 28 September 1993 (QB)
+<NHR \S13.4.2*>
+{powick1993}
+\emph{Powick v Malvern Wells Water Co}, The Times, 28 Sept.\@ 1993
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@jurisdiction{powick93,
+@jurisdiction{powick1993,
   title = {Powick v. Malvern Wells Water Co},
   date = {1993-09-28},
   journaltitle = {The Times},
-  institution = {QB},
   entrysubtype = {newspaper}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 \begin{bibexbox}
-<OSCOLA>
-{henly28}
-\emph{Henly v Mayor of Lyme} (1828) 5 Bing 91, 130 ER 995
+<NHR \S13.4.2*>
+{marianishi1965}
+\emph{R v Marianishi, ex p London Borough of Camden} (CA, 13 Apr.\@ 1965)
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@jurisdiction{henly28,
-  title = {Henly v. Mayor of Lyme},
-  date = {1828},
-  volume = {5},
-  reporter = {Bing},
-  pages = {91},
-  keywords = {en},
-  parvolume = {130},
-  parreporter= {ER},
-  parpages = {995}}
+@jurisdiction{marianishi1965,
+  title = {R v Marianishi, ex p London Borough of Camden},
+  date = {1965-04-13},
+  institution = {C.A.}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\begin{bibexbox}
-<OSCOLA>
-{hislop42}
-\emph{Hislop v Durham} (1842) 4 D 1168
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{hislop42,
-  title = {Hislop v. Durham},
-  date = {1842},
-  volume = {4},
-  reporter = {D},
-  pages = {1168},
-  keywords = {sc}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
+
+\subsection{European cases}
 
 \begin{bibexbox}
-<OSCOLA>
-{adams03}
-\emph{Adams v Advocate General} 2003 SC 171 (OH)
+<OGS \S13.4.4>
+{C118/07}
+Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] ECR I–10889
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@jurisdiction{adams03,
-  title = {Adams v. Advocate General},
-  date = {2003},
-  reporter = {SC},
-  pages = {171},
-  institution = {OH},
-  keywords = {sc}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{dodds03}
-\emph{Dodds v HM Advocate} 2003 JC 8
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{dodds03,
-  title = {Dodds v. HM Advocate},
-  date = {2003},
-  reporter = {JC},
-  pages = {8},
-  keywords = {sc}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{crofters02}
-\emph{Crofters Commission v Scottish Ministers} 2002 SLT (Land Ct) 19
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{crofters02,
-  title = {Crofters Commission v. Scottish Ministers},
-  date = {2002},
-  reporter = {SLT},
-  series = {(Land Ct)},
-  pages = {19},
-  keywords = {sc}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{davidson05}
-\emph{Davidson v Scottish Ministers} [2005] UKHL 74, 2006 SC (HL)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{davidson05,
-  title = {Davidson v. Scottish Ministers},
-  date = {2006},
-  number = {[2005] UKHL 74},
-  reporter = {SC (HL)},
-  keywords = {gb},
-  options = {scottish-style=true}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{smart06}
-\emph{Smart v HM Advocate} [2006] HJAC 12, 2006 JC 119
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{smart06,
-  title = {Smart v HM Advocate},
-  number = {[2006] HJAC 12},
-  date = {2006},
-  journaltitle = {JC},
-  pages = {119},
-  keywords = {sc}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{adbhu}
-Case 240/83 \emph{Procureur de la République v ADBHU} [1985] ECR 531
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{adbhu,
+@jurisdiction{C118/07,
   keywords = {eu},
-  title = {Procureur de la République v ADBHU},
-  shorttitle = {ADBHU},
-  number = {240/83},
-  institution = {ECJ},
-  date = {1985},
+  title = {Commission of the European Communities v. Finland},
+  sorttitle = {Case C0118/0007},
+  number = {C\textendash 118/07},
   journaltitle = {ECR},
-  pages = {531}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{T344/99}
-Case T-344/99 \emph{Arne Mathisen AS v Council} [2002] ECR II–2905
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{T344/99,
-  keywords = {eu},
-  title = {Arne Mathisen AS v Council},
-  shorttitle = {Arne Mathisen},
-  number = {T-344/99},
-  institution = {CFI},
-  journaltitle = {ECR},
-  volume = {II},
-  pages = {2905},
+  volume = {I},
+  pages = {10889},
   date = {2002}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 \begin{bibexbox}
-<OSCOLA>
-{C430/93}
-Joined Cases C-430/93–C-431/93 \emph{Jereon van Schijndel v Stichting Pensioenfonds voor Fysiotherapeuten} [1998] ECR I–4705
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{C430/93,
-  keywords = {eu},
-  title = {Jereon van Schijndel v Stichting Pensioenfonds voor Fysiotherapeuten},
-  shorttitle = {van Schijndel},
-  number = {C-430/93--C-431/93},
-  institution = {ECJ},
-  journaltitle = {ECR},
-  volume = {I},
-  date = {1998},
-  pages = {4705},
-  hyphenation = {dutch}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{C556/07}
-Case C-556/07 \emph{Commission v France} [2009] OJ C102/8
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{C556/07,
-  keywords = {eu},
-  title = {Commission v France},
-  date = {2009},
-  journaltitle = {OJ},
-  series = {C},
-  volume = {102},
-  pages = {8},
-  number = {C-556/07},
-  institution = {ECJ}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{C176/03}
-Case C–176/03 \emph{Commission v Council} [2005] ECR I–7879
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{C176/03,
-  keywords = {eu},
-  title = {Commission v Council},
-  number = {C\textendash176/03},
-  date = {2005},
-  journaltitle = {ECR},
-  volume = {I},
-  pages = {7879},
-  institution = {ECJ}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
+<OGS \S13.2.6>
 {alcatel}
-\emph{Alcatel/Telettra} (IV/M.042) Decision 91/251/EEC [1991]
-OJ L122/48
+\emph{Alcatel/Telettra} (Case IV/M042) [1991] OJ L122/48, [1991] 4 CLMR 391
 \tcblower
 \begin{Verbatim}
 %</n|y>
 @jurisdiction{alcatel,
   keywords = {eu},
   title = {Alcatel/Telettra},
-  userb = {IV/M.042},
-  number = {91\slash 251\slash EEC},
+  titleaddon = {Case IV/M042},
   institution = {commission},
-  type = {Decision},
   date = {1991},
   journaltitle = {OJ},
   series = {L},
   volume = {122},
-  pages = {48}}
+  pages = {48},
+  note = {[1991] 4 CLMR 391}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 \begin{bibexbox}
-<OSCOLA>
-{verkehrsorgani}
-\emph{Georg Verkehrsorgani v Ferrovie dello Stato} (Case COMP/37.685) Commission Decision 2004/33/EC [2004] OJ L11/17
+<NHR \S13.4.5>
+{young1982}
+\emph{Young, James and Webster v UK} (App no 7601/76) (1982) 4 EHRR 38
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@jurisdiction{verkehrsorgani,
-  keywords = {eu},
-  title = {Georg Verkehrsorgani v Ferrovie dello Stato},
-  userb = {Case COMP\slash 37.685},
-  number = {2004\slash 33\slash EC},
-  institution = {commission},
-  year = {2004},
-  journaltitle = {OJ},
-  series = {L},
-  issue = {11},
-  pages = {17}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{johnston86}
-\emph{Johnston v Ireland} (1986) Series A no 122
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{johnston86,
-  title = {Johnston v Ireland},
-  reporter = {Series A},
-  pages = {122},
-  date = {1986},
-  institution = {ECtHR},
+@jurisdiction{young1982,
+  title = {Young, James and Webster v. UK},
+  number = {7601/76},
+  reporter = {EHRR},
+  volume = {4},
+  date = {1982},
+  pages = {38},
   keywords = {echr}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 \begin{bibexbox}
-<OSCOLA>
-{osman98}
-\emph{Osman v UK} ECHR 1998–VIII 3124
+<NHR \S13.4.5>
+{plattform1988}
+\emph{Plattform \enquote{Artze für das Leben} v Austria} (App no 10126/82) (1988) Series A no 139
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@jurisdiction{osman98,
+@jurisdiction{plattform1988,
+  title = {Plattform \enquote{Artze für das Leben} v. Austria},
+  number = {10126/82},
+  reporter = {Series A},
+  date = {1988},
+  pages = {139},
+  keywords = {echr}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+<NHR \S13.4.5>
+{osman1998}
+\emph{Osman v UK} (App no 23452/94) ECHR 1998–VIII 3124
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@jurisdiction{osman1998,
   title = {Osman v UK},
+  number = {23452/94},
   reporter = {ECHR},
   date = {1998},
   volume = {8},
@@ -4588,678 +4534,7 @@ OJ L122/48
 \end{Verbatim}
 \end{bibexbox}
 
-\begin{bibexbox}
-<OSCOLA>
-{omojudi10}
-\emph{Omojudi v UK} (2010) 51 EHRR 10,
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{omojudi10,
-  title = {Omojudi v UK},
-  reporter = {EHRR},
-  date = {2010},
-  pages = {10},
-  volume = {51},
-  institution = {ECtHR},
-  keywords = {echr}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
 
-\begin{bibexbox}
-<OSCOLA>
-{balogh04}
-\emph{Balogh v Hungary} App no 47940/99 (ECtHR, 20 July 2004)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{balogh04,
-  title = {Balogh v Hungary},
-  number = {47940/99},
-  date = {2004-07-20},
-  institution = {ECtHR},
-  keywords = {echr}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{x71}
-\emph{X v Netherlands} (1971) 38 CD 9
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{x71,
-  title = {X v Netherlands},
-  date = {1971},
-  volume = {38},
-  journaltitle = {CD},
-  pages = {9},
-  institution = {Commission},
-  keywords = {echr}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{ccsu87}
-\emph{Council of Civil Service Unions v UK} (1987) 10 EHRR 269 (Commission Decision)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{ccsu87,
-  title = {Council of Civil Service Unions v UK},
-  date = {1987},
-  volume = {10},
-  journaltitle = {EHRR},
-  pages = {269},
-  institution = {Commission},
-  keywords = {echr}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{simpson86}
-\emph{Simpson v UK} (1989) 64 DR 188
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{simpson86,
-  title = {Simpson v UK},
-  date = {1989},
-  volume = {64},
-  journaltitle = {DR},
-  pages = {188},
-  institution = {Commission},
-  keywords = {echr}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{clearbrook}
-\emph{Clearbrook Ironworks Ltd v Letorneau} 2006 FCA 42, 46 CPR (4th) 241
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{clearbrook,
-  title = {Clearbrook Ironworks Ltd. v. Letorneau},
-  number = {2006 FCA 42},
-  volume = {46},
-  reporter = {C.P.R.},
-  series = {4th},
-  pages = {241},
-  date = {2006},
-  pagination = {paragraph},
-  keywords = {ca}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{tang}
-\emph{R v Tang} (2008) 237 CLR 1
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{tang,
-  title = {R. v. Tang},
-  date = {2008},
-  volume = {237},
-  reporter = {C.L.R.},
-  pages = {1},
-  keywords = {au}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{bakker}
-\emph{Bakker v Stewart} [1980] VR 17
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{bakker,
-  title = {Bakker v. Stewart},
-  date = {1980},
-  reporter = {V.R.},
-  pages = {17},
-  keywords = {au}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{harbor91}
-\emph{Harbor Insurance Co v Tishman Construction Co} 578 NE2d 1197 (Ill App Ct 1991)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{harbor91,
-  title = {Harbor Insurance Co. v. Tishman Construction Co.},
-  volume = {578},
-  reporter = {N.E.2d.},
-  pages = {1197},
-  location = {Ill.},
-  court = {App. Ct.},
-  date = {1991},
-  keywords = {us}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{western97}
-\emph{Western Alliance Insurance Co v Gill} 686 NE 2d 997 (Mass 1997)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{western97,
-  title = {Western Alliance Insurance Co. v. Gill},
-  volume = {686},
-  reporter = {N.E.},
-  series = {2},
-  pages = {997},
-  location = {Mass.},
-  date = {1997},
-  keywords = {us}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{operadora09}
-\emph{Re Operadora DB Mexico SA} 6:09-cv-383-Orl 022GJK, 2009 WL 2423138 (MD Fla 2009)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{operadora09,
-  title = {Re Operadora D.B. Mexico S.A.},
-  indextitle = {Operadora D.B. Mexico S.A., Re},
-  number = {6:09-cv-383-Orl022GJK},
-  eprint = {2009 WL 2423138},
-  court = {M.D. Fla.},
-  date = {2009},
-  keywords = {us}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{corfu}
-\emph{Corfu Channel Case (UK v Albania)} (Merits) [1949] ICJ Rep 4
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{corfu,
-  title = {Corfu Channel Case},
-  subtitle = {UK v Albania},
-  titleaddon = {Merits},
-  date = {1949},
-  journaltitle = {ICJ Rep},
-  pages = {4},
-  keywords = {int}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{nicaragua}
-\emph{Land, Island and Maritime Frontier Case (El Salvador/ Honduras, Nicaragua intervening)} (Application for Intervention) [1994] ICJ Rep 92
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{nicaragua,
-  title = {Land, Island and Maritime Frontier Case},
-  subtitle = {El Salvador\slash Hon\-duras, Nicaragua intervening},
-  titleaddon = {Application for Intervention},
-  date = {1994},
-  journaltitle = {ICJ Rep},
-  pages = {92},
-  keywords = {int}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{wall}
-\emph{Legal Consequences of the Construction of a Wall} (Advisory Opinion) (2004) $\langle$\url{http://www.icj-cij.org/icjwww/imwp/imwpframe.htm}$\rangle$ accessed 21 July 2005
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{wall,
-  title = {Legal Consequences of the Construction of a Wall},
-  titleaddon = {Advisory Opinion},
-  date = {2004},
-  url = {http://www.icj-cij.org/icjwww/imwp/imwpframe.htm},
-  urldate = {2005-07-21},
-  pagination = {[]},
-  keywords = {int}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{chorzow}
-\emph{Case Concerning the Factory at Chorzów} (Germany v Poland) (Merits) [1928] PCIJ Rep Series A No 17
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@jurisdiction{chorzow,
-  title = {Case Concerning the Factory at Chorzów},
-  indextitle = {Chorzów Factory Case},
-  subtitle = {Germany v Poland},
-  titleaddon = {Merits},
-  journaltitle = {PCIJ Rep},
-  series = {A},
-  pages = {17},
-  date = {1929},
-  keywords = {int}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\section{Temporary examples of legislation}
-
-\begin{bibexbox}
-<OSCOLA>
-{ucta}
-Unfair Contract Terms Act 1977
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{ucta,
-  title = {Unfair Contract Terms Act},
-  shorttitle = {UCTA 77},
-  date = {1977},
-  entrysubtype = {primary},
-  pagination = {section},
-  keywords = {en},
-  number = {23 Eliz II, cap 23}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{nia1965}
-Nuclear Installations Act 1965, as amended (NIA 1965)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{nia1965,
-  title = {Nuclear Installations Act},
-  date = {1965},
-  shorthand = {NIA 1965},
-  keywords = {en},
-  pagination = {section},
-  entrysubtype= {primary},
-  keywords = {en},
-  note = {as amended}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{learner08}
- Learner Travel (Wales) Measure 2008 (nawm 2)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{learner08,
-  title = {Learner Travel (Wales) Measure},
-  date = {2008},
-  number = {nawm 2},
-  keywords = {cy},
-  entrysubtype = {primary},
-  pagination = {section}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{disorderly}
-Penalties for Disorderly Behaviour (Amendment of Minimum Age) Order 2004, SI 2004/3166
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{disorderly,
-  title={Penalties for Disorderly Behaviour (Amendment of Minimum Age) Order},
-  date={2004},
-  entrysubtype={secondary},
-  pagination={regulation},
-  keywords = {en},
-  number={SI 2004\slash 3166}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{hollowware}
-Hollow-ware and Galvanising Welfare Order 1921, SR~\&~O 1921/2032
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{hollowware,
-  title = {Hollow-ware and Galvanising Welfare Order},
-  date = {1921},
-  number = {SR~\&~O 1921\slash 2032},
-  pagination = {rule},
-  entrysubtype = {secondary}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{eggs}
-Eggs and Chicks (England) Regulations 2009, SI 2009/2163
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{eggs,
-  title = {Eggs and Chicks (England) Regulations},
-  date = {2009},
-  number = {SI 2009\slash 2163},
-  pagination = {regulation},
-  entrysubtype = {secondary}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{confund}
- Consolidated Fund HC Bill (2008–09) [5]
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{confund,
-  title = {Consolidated Fund Bill},
-  date = {2008/2009},
-  institution = {HC},
-  number = {5},
-  keywords = {gb, draft},
-  entrysubtype = {primary},
-  pagination = {clause}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{confund2}
- Consolidated Fund HC Bill (2008–09) [34]
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{confund2,
- title = {Consolidated Fund Bill},
- date = {2008/2009},
- institution = {HC},
- number = {34},
- keywords = {gb, draft},
- entrysubtype = {primary},
- pagination = {clause}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{academies}
-Academies HL Bill (2010–11) 1
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{academies,
-  title = {Academies Bill},
-  date = {2010/2011},
-  institution = {HL},
-  number = {1},
-  keywords = {gb, draft},
-  entrysubtype = {primary},
-  pagination = {clause}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{charitiesnotes}
-Explanatory Notes on the Charities Act 2006
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legal{charitiesnotes,
- title = {Explanatory Notes on the Charities Act 2006},
- indextitle = {Charities Act 2006, Explanatory Note},
- pagination = {paragraph},
- entrysubtype = {explanatory note}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{teu}
-Consolidated Version of the Treaty on European Union [2010] OJ C83/13 (TEU)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{teu,
-  title = {Consolidated Version of the Treaty on European Union},
-  indextitle = {Treaty on European Union},
-  date = {2010},
-  journaltitle = {OJ},
-  series = {C},
-  volume = {83},
-  pages = {13},
-  shorthand = {TEU},
-  entrysubtype = {eu-treaty},
-  pagination = {article},
-  keywords = {eu}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{2002/60}
-Council Directive 2002/60/EC of 27 June 2002 laying down specific provisions for the control of African swine fever and amending Directive 99/119/EEC as regards Teschen disease and African swine fever [2002] OJ L192/27
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{2002/60,
-  title = {Council Directive 2002\slash 60\slash EC of 27 June 2002 laying down specific
-    provisions for the control of African swine fever and amending Directive 99\slash 119\slash
-    EEC as regards Teschen disease and African swine fever},
-  date = {2002},
-  origdate = {2002-06-27},
-  journaltitle = {OJ},
-  series = {L},
-  issue = {192},
-  pages = {27},
-  type = {directive},
-  number = {2002/60/EC},
-  pagination = {article},
-  keywords = {eu}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{cpr}
-CPR
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{cpr,
-  title = {Civil Procedure Rules},
-  shorttitle = {CPR},
-  keywords = {en},
-  entrysubtype = {procedure-rule},
-  date = {1999}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{pd}
-PD
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{pd,
-  title = {CPR Practice Directions},
-  shorttitle = {PD},
-  keywords = {en},
-  entrysubtype = {procedure-rule}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{rsc}
-RSC
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{rsc,
-  title = {Rules of the Supreme Court},
-  shorttitle = {RSC},
-  keywords = {en},
-  date = {1965},
-  entrysubtype = {procedure-rule},
-  pagination = {rule}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{ccr}
-CCR
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legislation{ccr,
-  title = {County Court Rules},
-  shorttitle = {CCR},
-  keywords = {en},
-  date = {1985},
-  pagination = {rule},
-  entrysubtype = {procedure-rule}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\section{Temporary examples of treaties}
-
-\begin{bibexbox}
-<OSCOLA>
-{scheldt}
-International Agreement on the Scheldt (Belgium—France—Netherlands) (signed 1 Dec.\@ 2002, entered into force 1 Dec.\@ 2005) 2351 UNTS 13
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legal{scheldt,
-  title = {International Agreement on the Scheldt},
-  shorttitle = {Scheldt Agreement},
-  parties = {Belgium and France and Netherlands},
-  execution = {signed=2002-12-01 and inforce=2005-12-01},
-  pagination = {article},
-  volume = {2351},
-  journaltitle = {UNTS},
-  pages = {13},
-  entrysubtype = {piltreaty}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{aaland}
-Convention Relating to the Non-Fortification and Neutralisation of the Aaland Islands (opened for signature 2 Oct.\@ 1921, entered into force 6 Dec.\@ 1922) 9 LNTS 211
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legal{aaland,
-  title = {Convention Relating to the Non-Fortification and Neutralisation of the Aaland Islands},
-  parties = {{Aaaland Islands} and Germany and Denmark and Estonia and Finland and France},
-  execution = {opened=1921-10-02 and inforce=1922-12-06},
-  pagination = {article},
-  volume = {9},
-  date = {1921},
-  journaltitle = {LNTS},
-  pages = {211},
-  entrysubtype = {piltreaty}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{mongolia}
-Agreement with Mongolia (Economic Co-operation) [1978] OJ L264/1
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legal{mongolia,
-  title = {Agreement with Mongolia (Economic Co-operation)},
-  shortitle = {Mongolia Cooperation Agreement},
-  journaltitle= {OJ},
-  series = {L},
-  issue = {264},
-  pages = {1},
-  date = {1978},
-  entrysubtype= {piltreaty}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-<OSCOLA>
-{echr:treaty}
-Convention for the Protection of Human Rights and Fundamental Freedoms (opened for signature 4 Nov.\@ 1950, entered into force 3 Sept.\@ 1953) 213 UNTS 221, as amended by Protocol No 14bis to the Convention for the Protection of Human Rights and Fundamental Freedoms (opened for signature 27 May 2009, entered into force 1 Sept.\@ 2009) CETS No 204 (ECHR)
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@legal{echr:treaty,
-  title = {Convention for the Protection of Human Rights and Fundamental Freedoms},
-  execution = {opened=1950-11-04 and inforce=1953-09-03},
-  volume = {213},
-  reporter = {UNTS},
-  pages = {221},
-  note = {as amended by Protocol No 14bis to the Convention for the Protection of Human Rights
-    and Fundamental Freedoms (opened for signature 27 May 2009, entered into force 1 Sept.\@
-    2009) CETS No 204},
-  shorthand = {ECHR},
-  entrysubtype = {piltreaty}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
 
 \chapter{Specialist materials}\label{sec:special}
 \chapterprecis{misc, unpublished, letter}
@@ -8611,6 +7886,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareEntryOption{year-essential}[true]{%
     \setboolean{bbx@year-essential}{#1}}
 \newtoggle{blx@ox@nopostnotedelim}
+\newtoggle{bbx:altcourt}
+\DeclareBibliographyOption{court-plain}[true]{%
+  \settoggle{bbx:altcourt}{#1}}
+\DeclareEntryOption{court-plain}[true]{%
+  \settoggle{bbx:altcourt}{#1}}
 %    \end{macrocode}
 %
 % \subsection{Field formats}
@@ -8709,6 +7989,44 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \siganddate{#1}%
   }{%
     \addcomma\space\siganddate{#1}}}
+
+%    \end{macrocode}
+%
+% \subsection{Pagination formats}
+%
+% We define an alternative to \cs{mkpageprefix} that takes a pagination key
+% directly.
+%
+%    \begin{macrocode}
+\newrobustcmd*{\mkrawpageprefix}[1][none]{%
+  \begingroup
+  \def\blx@tempa{\blx@mkpageprefix@i}%
+  \ifstrequal{#1}{none}{}{%
+    \ifbibstring{#1}{%
+      \def\blx@tempa{\blx@mkpageprefix{#1}}%
+    }{%
+      \blx@warning@entry{Unknown pagination type '#1'}}}%
+  \@ifnextchar[%]
+    {\blx@tempa}
+    {\blx@tempa[\@firstofone]}}
+
+\newcommand*\paragraphmarkings{[]}
+\DeclareFieldFormat[jurisdiction,legislation,legal]{postnote}{%
+  \iffieldundef{pagination}{%
+    \ifboolexpr{
+      test {\ifkeyword{eu}}
+      or
+      test {\ifkeyword{echr}}
+    }{%
+      \mkcomprange[{\mkrawpageprefix[paragraph]}]{#1}%
+    }{%
+      \mkcomprange{#1}}%
+  }{%
+    \iffieldequals{pagination}{\paragraphmarkings}{%
+      \mkcomprange[\mkbibbrackets]{#1}%
+    }{%
+      \mkcomprange[{\mkpageprefix[pagination]}]{#1}}}}
+
 %    \end{macrocode}
 %
 % \subsection{Common macros}
@@ -8722,11 +8040,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     {\printfield[default]{volume}}}
 \newcommand*{\subtypenewsp}{newspaper}
 \newbibmacro*{year+vol+report}[1][default]{%
-  \iffieldequals{entrysubtype}{\subtypenewsp}{}{%
+  \iffieldequals{entrysubtype}{\subtypenewsp}{%
+    \setunit{\addcomma\space}%
+  }{%
     \usebibmacro{journaldate}%
+    \setunit{\addspace}%
+    \printfield[parens]{origyear}%
+    \setunit{\addspace}%
+    \printfield{volume}%
     \setunit{\addspace}}%
-  \printfield{volume}%
-  \setunit{\addspace}%
   \printfield{journaltitle}%
   \setunit*{\addspace}%
   \iffieldundef{series}{}{%
@@ -8737,7 +8059,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \setunit{\addcomma\space}%
     \printdate%
   }{}}
-\newbibmacro*{journaldate}{%
+\newbibmacro*{journaldate}[1][]{%
   \ifboolexpr{
     test {\iffieldundef{volume}}
     or
@@ -8748,11 +8070,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       or
       test {\iftoggle{bbx:scotstyle}}
     }{%
+      \setunit{\addcomma\space}%
       \printfield{year}%
     }{%
-      \printfield[brackets]{year}}%
+      \printfield[brackets]{#1year}}%
   }{%
-    \printfield[parens]{year}}}
+    \printfield[parens]{#1year}}}
 \newcommand*{\casenote}{casenote}
 \newcommand{\casenotetext}{\bibstring{casenote}}
 \newbibmacro{journaltitle}{%
@@ -8818,12 +8141,22 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     }{%
       \togglefalse{blx@ox@nopostnotedelim}%
     }{%
-      \printtext[parens]{%
+      \ifboolexpr{%
+        test {\iffieldundef{journaltitle}}
+        or
+        not togl {bbx:altcourt}
+      }{%
+        \printtext[parens]{%
+          \printfield{location}%
+          \setunit{\addspace}%
+          \printlist{institution}%
+          \usebibmacro{unrep:date}}%
+        \toggletrue{blx@ox@nopostnotedelim}
+      }{%
+        \setunit{\addcomma\space}%
         \printfield{location}%
-        \setunit{\addspace}%
-        \printlist{institution}%
-        \usebibmacro{unrep:date}}%
-      \toggletrue{blx@ox@nopostnotedelim}}%
+        \setunit*{\addspace}%
+        \printlist{institution}}}%
   }{%
     \togglefalse{blx@ox@nopostnotedelim}}}
 \newbibmacro*{unrep:date}{%
@@ -8887,9 +8220,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\addspace}%
   \iflistcontains{institution}{\commission}{%
     \usebibmacro{eucommissiondecision}}{}%
-  \setunit{\addspace}%%
+  \setunit{\addspace}%
   \usebibmacro{eu:reportinfo}%
-  \setunit{\addspace}%%
+  \iflistcontains{institution}{\commission}{%
+    \setunit{\addcomma\space}%
+  }{%
+    \setunit{\addspace}}%
   \usebibmacro{court-note}%
 }
 \newbibmacro{eucasenumber}{%
@@ -8913,11 +8249,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \iffieldundef{userb}{}{%
     \printfield[parens]{userb}}%
   \setunit{\addspace}%
-  \iffieldundef{type}{%
-    \setunit{\addspace\bibstring{commissiondecision}\addspace}%
-  }{%
-    \setunit{\addspace\printfield{type}\addspace}}%
-  \printfield{number}}
+  \iffieldundef{number}{}{%
+    \iffieldundef{type}{%
+      \setunit{\addspace\bibstring{commissiondecision}\addspace}%
+    }{%
+      \setunit{\addspace\printfield{type}\addspace}}%
+    \printfield{number}}}
 \newbibmacro*{eu:reportinfo}{%
   \iffieldundef{journaltitle}%
     {\usebibmacro{unreported}}%
@@ -8954,12 +8291,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newbibmacro*{echrjuriscitation}{%
   \usebibmacro{title}%
   \setunit{\addspace}\newblock
+  \iffieldundef{number}{}{%
+    \printtext[parens]{%
+      \def\adddot{}%
+      \bibstring{application}\space
+      \bibstring{number}\space
+      \printfield{number}}%
+    \setunit{\addspace}\newblock}%
   \iffieldundef{journaltitle}{%
-    \iffieldundef{number}{}{%
-      \printtext{\bibstring{application}\space\bibstring{number}\space}%
-      \printfield{number}%
-      \setunit{\addspace}}%
-    \setunit{\addspace}\newblock
     \usebibmacro{unreported}[echrinst]%
   }{%
     \usebibmacro{echr:year+vol+report}
@@ -8986,7 +8325,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \setunit{\addspace}%
   \printfield{journaltitle}%
   \setunit{\addspace}%
-  \printtext{\bibstring{number}\addspace}%
+  \printtext{\def\adddot{}\bibstring{number}\addspace}%
   \printfield{pages}}
 \newbibmacro*{echrreports}{%
   \printfield{journaltitle}%
@@ -9109,7 +8448,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \newbibmacro{usjuriscitation}{%
   \usebibmacro{title}%
-  \setunit{\addspace}\newblock%
+  \setunit{\addcomma\space}\newblock%
   \iffieldundef{journaltitle}{%
     \printfield{number}%
     \setunit{\addcomma\space}%
@@ -9181,6 +8520,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newbibmacro{altreportdetails}{%
   \restorefield{prenote}{\postnotesecond}%
   \iffieldundef{userc}{}{% parreporter
+    \usebibmacro{journaldate}[par]%
+    \setunit{\addspace}\newblock
     \usebibmacro{altreportvolume}%
     \setunit{\addspace}\newblock
     \usebibmacro{altjournaltitle}%
@@ -10984,10 +10325,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareDatamodelEntryfields[manuscript]{catalog,dating,shortlibrary,shortcollection,columns,languages, collection,usualtitle,shelfmark,sortshelfmark,support,columns,origin,scribe,owner}
 %    \end{macrocode}
 %
-% This data model is borrowed from \textsf{oscola}.
+% This data model helps with legal citations.
 %
 %    \begin{macrocode}
-
+\DeclareDatamodelFields[type=field,datatype=date]{pardate}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
