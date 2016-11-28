@@ -326,7 +326,7 @@ Copyright (C) 2016 Alex Ball
     {after upper = {\par\hangfrom{\cogsym\space}\fullcite{#4}}
     }%
     {after upper = {\par\hangfrom{\cogsym\space}\fullcite[#3]{#4}}
-    ,title = {\texttt{\string\autocite[#3]\{#4\}}}
+    ,title = {\texttt{\string\fullcite[#3]\{#4\}}}
     }
   ,IfNoValueTF={#2}{}%
     {overlay = {
@@ -906,7 +906,7 @@ Test\footcite{faith1997epg}
 Test\footcite[49-50]{faith1997epg}
 \end{egcite}
 \begin{egcite}{}
-Test\footcites[80 (Westminster), 66
+\cites[80 (Westminster), 66
   (Glastonbury), 149 (Osney), 128
   (Bolton)]{knowles.hadcock1953mrh}%
   [186]{kershaw1973bp}[609]{cobban}
@@ -1995,7 +1995,7 @@ Where all volumes were published consistently, the following form is used:
 %<y><OGS \S15.2.6\textdagger>
 [ii.~\mkcomprange{367--368}]
 {straeten1867lmp}%
-[title = {\texttt{\string\autocite[ii.~\string\mkcomprange\{367--368\}]\{straeten1867lmp\}}}]
+[title = {\texttt{\string\fullcite[ii.~\string\mkcomprange\{367--368\}]\{straeten1867lmp\}}}]
 %<n>Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.
 %<y>Vander Straeten, E. (1867--88), \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels): ii. 367--8.
 \tcblower
@@ -4203,9 +4203,11 @@ Use the \code{jurisdiction} entry type for citing cases.
 \tip{Use the \code{location} field for the location of the court in American, Australian or Canadian cases.}
 
 \begin{bibexbox}
-<NHR \S13.4.1>
+%<n><NHR \S13.4.1>
+%<y><NHR \S13.4.1\textdagger>
 [78-79]{ridge1964}
-\emph{Ridge v Baldwin} [1964] AC 40 at 78–9
+%<n>\emph{Ridge v Baldwin} [1964] AC 40 at 78–9
+%<y>\emph{Ridge v Baldwin} [1964] AC 40: 78–9
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4538,6 +4540,8 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 
 Use the \code{legislation} entry type for citing Acts, Bills, Orders, Measures, and the like.
 
+\subsection{UK legislation}
+
 \begin{bibexbox}
 <OGS \S13.2.3>
 {fwa1891}
@@ -4587,6 +4591,187 @@ Community Charge Support Grant (Abolition) Order 1987, SI 1987/466
   number = {SI 1987\slash 466},
   pagination = {regulation},
   entrysubtype = {secondary}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\subsection{European legislation}
+
+According to both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules},
+you can provide an absolutely minimal reference for primary legislation.
+
+%<*n>
+\begin{egcite}{EC Treaty (Treaty of Rome, as amended), art.\@ 3b}
+  \cite[\pno~3b]{ECT:Rome}
+\end{egcite}
+
+%</n>
+\begin{bibexbox}
+%<n><OGS \S13.2.7*>
+{ECT:Rome}%
+EC Treaty
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@legislation{ECT:Rome,
+  title = {EC Treaty},
+  shorthand = {Treaty of Rome, as amended},
+  pagination = {article},
+  keywords = {eu}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+It may be better to provide a full reference (including the relevant entry in the OJ or OJ Spec Ed) for the bibliography and use, say, \cs{citetitle} for citations.
+
+Secondary legislation should always have a full reference.
+
+\begin{bibexbox}
+<NHR \S13.5.2>
+{EC:97/1}
+Council Directive (EC) 97/1 on banking practice [1997] OJ L234/3
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@legislation{EC:97/1,
+  title = {Council Directive (EC) 97/1 on banking practice},
+  date = {1997},
+  journaltitle = {OJ},
+  series = {L},
+  issue = {234},
+  pages = {3},
+  pagination = {article},
+  keywords = {eu}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+<NHR \S13.5.2>
+{EEC:1017/68}
+Council Regulation (EEC) 1017/68 applying rules of competition to transport [1968] OJ Spec Ed 302
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@legislation{EEC:1017/68,
+  title = {Council Regulation (EEC) 1017/68 applying rules of competition to transport},
+  date = {1968},
+  journaltitle = {OJ Spec Ed},
+  pages = {302},
+  pagination = {article},
+  keywords = {eu}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+<NHR \S13.5.2>
+{ECN:1986}
+Commission Notice on agreements of minor importance [1986] OJ C231/2, as amended [1994] OJ C368/20
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@legislation{ECN:1986,
+  title = {Commission Notice on agreements of minor importance},
+  date = {1986},
+  journaltitle = {OJ},
+  series = {C},
+  issue = {231},
+  pages = {2},
+  note = {as amended [1994] OJ C368/20},
+  keywords = {eu}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+
+\section{Treaties}
+
+\begin{bibexbox}
+<NHR \S13.6*>
+{refugees}
+Convention Relating to the Status of Refugees (adopted 28 July 1951, entered into force 22 Apr.\@ 1954) 189 UNTS 137
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@legal{refugees,
+  title = {Convention Relating to the Status of Refugees},
+  shorthand = {Refugee Convention},
+  execution = {adopted=1951-07-28 and inforce=1954-04-22},
+  pagination = {article},
+  volume = {189},
+  journaltitle = {UNTS},
+  pages = {137},
+  entrysubtype = {piltreaty}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+
+\section{Hansard}
+
+\begin{bibexbox}
+<NHR \S13.7.3*>
+{hc357}
+Hansard, HC vol.\@ 357, cols.\@ 234–45 (13 Apr.\@ 1965)
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@legal{hc357,
+  title = {Hansard},
+  type = {HC},
+  volume = {357},
+  pages = {234-245},
+  date = {1965-04-13},
+  entrysubtype = {parliamentary},
+  bookpagination = {column}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+<NHR \S13.7.3*>
+{pd4/24}
+Parl.\@ Deb.\@ (series 4) vol.\@ 24, col.\@ 234 (24 Mar.\@ 1895)
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@legal{pd4/24,
+  title = {Parl. Deb.},
+  series = {4},
+  volume = {24},
+  pages = {234},
+  date = {1895-03-24},
+  entrysubtype = {parliamentary},
+  bookpagination = {column}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+
+\section{Legal reports}
+
+\tip{To print the identifying codes within the publication block, put them all in \code{number}; do not specify a \code{type} or code{series}.}
+
+\tip{Use an \code{entrysubtype} of \code{legal} to suppress the punctuation before the pinpoint.}
+
+\begin{bibexbox}
+%<n><NHR \S13.7.2>
+%<y><NHR \S13.7.2\textdagger>
+{lc2009icl}
+%<n>Law Commission, \emph{Intoxication and Criminal Liability} (Law Comm No 314, Cm 7526, 2009) para 1.15
+%<y>Law Commission (2009), \emph{Intoxication and Criminal Liability} (Law Comm No 314, Cm 7526) para 1.15
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@report{lc2009icl,
+  author = {{Law Commission}},
+  title = {Intoxication and Criminal Liability},
+  number = {Law Comm No 314, Cm 7526},
+  date = {2009},
+  pages = {1.15},
+  bookpagination = {paragraph},
+  entrysubtype = {legal}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4684,7 +4869,7 @@ If a poem is divided into cantos, the title is set in italics rather than quoted
 %<y><OGS \S15.8*\textdagger>
 [\pno~ii, canto vi, stanza iii]
 {spenser1965fq}%
-[title = {\texttt{\string\autocite[\string\pno~ii, canto vi, stanza iii]\{spenser1965fq\}}}]
+[title = {\texttt{\string\fullcite[\string\pno\path{~}ii, canto vi, stanza iii]\{spenser1965fq\}}}]
 %<n>Edmund Spenser, \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent, 1965–6) (originally pub. 1590–6), bk. ii, canto vi, stanza iii.
 %<y>Spenser, E. (1965–6), \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent) (originally pub. 1590–6): bk. ii, canto vi, stanza iii.
 %<y>
@@ -6915,19 +7100,24 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \newbibmacro*{series+type+number}{%
-  \printfield{series}%
-  \newunit
-  \ifboolexpr{%
-      test {\iffieldundef{type}}
-      and
-      not test {\iffieldundef{number}}
-  }{%
-    \bibcpstring{number}
-  }{%
-    \printfield{type}%
-  }%
-  \setunit*{\addspace}%
-  \printfield{number}}
+  \ifboolexpr{
+    test {\iffieldundef{series}}
+    and
+    test {\iffieldundef{type}}
+  }{}{%
+    \printfield{series}%
+    \newunit
+    \ifboolexpr{%
+        test {\iffieldundef{type}}
+        and
+        not test {\iffieldundef{number}}
+    }{%
+      \bibcpstring{number}
+    }{%
+      \printfield{type}%
+    }%
+    \setunit*{\addspace}%
+    \printfield{number}}}
 %    \end{macrocode}
 %
 % Our version of the `institution+location+date' macro is just like the
@@ -6938,6 +7128,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \renewbibmacro*{institution+location+date}{%
   \nopunct\printtext[publication]{%
+    \ifboolexpr{
+      test {\iffieldundef{series}}
+      and
+      test {\iffieldundef{type}}
+    }{%
+      \printfield{number}%
+      \setunit*{\addcomma\space}%
+    }{}%
     \printlist{location}%
     \iflistundef{institution}%
     {\setunit*{\addcomma\space}}%
@@ -7040,6 +7238,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % \end{itemize}
 %
 %    \begin{macrocode}
+\newcommand*{\legreport}{legal}
 \DeclareBibliographyDriver{report}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -7063,7 +7262,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{series+type+number}%
   \setunit{\addspace}%
   \usebibmacro{institution+location+date}%
-  \newunit\newblock
+  \iffieldequals{entrysubtype}{\legreport}{%
+    \setunit{\addspace}\nopunct
+  }{%
+    \newunit\newblock}%
   \usebibmacro{chapter+pages}%
   \newunit
   \printfield{pagetotal}%
@@ -7958,7 +8160,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareFieldFormat[jurisdiction]{titleaddon}{\mkbibparens{#1}}
 \DeclareFieldFormat{romanvol}{\RN{#1}}
 \DeclareListFormat[jurisdiction]{listb}{}
-\DeclareFieldFormat{usseries}{\ifinteger{#1}{\mkbibordinal{#1}}{#1}}
+\DeclareFieldFormat{usseries}{\ifinteger{#1}{\mkusbibordinal{#1}}{#1}}
 
 \DeclareListFormat{echrinst}{%
   \ifboolexpr{%
@@ -8082,6 +8284,30 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \mkcomprange[\mkbibbrackets]{#1}%
     }{%
       \mkcomprange[{\mkpageprefix[pagination]}]{#1}}}}
+%    \end{macrocode}
+%
+% \subsection{Shorthands}
+%
+% With legal references, the introduction of shorthands is less verbose.
+%
+%    \begin{macrocode}
+\renewbibmacro*{shorthandintro}{%
+  \iffieldundef{shorthandintro}
+    {\iffieldundef{shorthand}
+       {}
+       {\setunit{\addspace}%
+        \printtext[parens]{%
+          \ifboolexpr{
+            test {\ifentrytype{jurisdiction}}
+            or
+            test {\ifentrytype{legal}}
+            or
+            test {\ifentrytype{legislation}}
+          }{}{%
+            \bibstring{citedas}\space}%
+          \printfield{shorthand}}}}
+    {\setunit{\addspace}%
+     \printtext[parens]{\printfield{shorthandintro}}}}
 
 %    \end{macrocode}
 %
@@ -8695,15 +8921,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \blx@ox@compyear{\thefield{year}}{\thefield{endyear}}}}}
 \newbibmacro{eulegislation}{%
   \printfield[default]{title}%
-  \newunit\newblock%
+  \setunit{\addspace}\newblock%
   \usebibmacro{eulegref}}
 \newcommand*{\ojspecedtitle}{OJ Spec Ed}
 \newbibmacro*{eulegref}{%
-  \ifboolexpr{
-    test {\iffieldequals{journaltitle}{\officialjournaltitle}}
-    or
-    test {\iffieldequals{journaltitle}{\ojspecedtitle}}%
-  }{%
+  \iffieldequals{journaltitle}{\officialjournaltitle}{%
     \printfield[brackets]{year}%
     \setunit{\addspace}%
     \printfield{journaltitle}%
@@ -8713,11 +8935,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     }{%
       \printfield[default]{series}}%
     \usebibmacro{issue/volume}%
-    \printtext{\slash}%
+    \setunit*{\addslash}%
     \printfield{pages}%
     \togglefalse{blx@ox@nopostnotedelim}%
   }{%
-    \usebibmacro{year+vol+report}}}
+    \usebibmacro{year+vol+report}%
+    \setunit*{\addspace}%
+    \printfield{pages}}}
 \newbibmacro*{legnumber}{%
   \iffieldequals{entrysubtype}{\subtypeprimarylegislation}{%
     \ifboolexpr{(
@@ -8777,12 +9001,20 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{finentry}}
 \newbibmacro{legal:parliamentary}{%
   \printfield[default]{title}%
-  \newblock\newunit
-  \usebibmacro{date}%
-  \setunit{\addcomma\space}%
+  \newunit\newblock
+  \printfield{type}%
+  \setunit{\addspace}%
+  \iffieldundef{series}{}{%
+    \printtext[parens]{%
+      \biblstring{jourser}\space
+      \printfield{series}}}%
+  \setunit{\addspace}%
   \printfield{volume}%
   \setunit{\addcomma\space}%
   \usebibmacro{hansard-ref}%
+  \setunit{\addspace}%
+  \iffieldundef{year}{}{%
+    \printtext[parens]{\usebibmacro{date}}}%
   \togglefalse{blx@ox@nopostnotedelim}}
 \newbibmacro*{hansard-ref}{%
   \iffieldundef{postnote}{%
@@ -10408,6 +10640,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \InheritBibliographyExtras{english}
 \DeclareBibliographyExtras{%
   \def\finalandcomma{\addcomma}%
+  \protected\def\mkusbibordinal#1{%
+    \begingroup
+    \@tempcnta0#1\relax\number\@tempcnta
+    \@whilenum\@tempcnta>100\do{\advance\@tempcnta-100\relax}%
+    \ifnum\@tempcnta>20
+      \@whilenum\@tempcnta>9\do{\advance\@tempcnta-10\relax}%
+    \fi
+    \ifcase\@tempcnta th\or st\or d\or d\else th\fi
+    \endgroup}%
 }
 %    \end{macrocode}
 %
@@ -10640,6 +10881,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
   reviewof         = {{review of}{review of}},
   reprintfrom      = {{from}{from}},
+%    \end{macrocode}
+%
+% There is also a different abbreviation for `paragraph'.
+%
+%    \begin{macrocode}
+  paragraph        = {{paragraph}{para\adddot}},
+  paragraphs       = {{paragraphs}{paras\adddot}},
 %    \end{macrocode}
 %
 % \emph{New Hart's Rules} uses `accessed' for URL dates.
