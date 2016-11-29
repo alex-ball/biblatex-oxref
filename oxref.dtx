@@ -291,6 +291,7 @@ Copyright (C) 2016 Alex Ball
 \newcommand*{\code}[1]{\texttt{#1}}
 \newcommand*{\aside}[1]{\textcolor{violet}{[\textsc{tip:} #1]}}
 \newcommand{\tip}[1]{\hangfrom{\faLightbulbO\enskip}#1\par}
+\newcommand{\info}[1]{\hangfrom{\faInfoCircle\enskip}#1\par}
 \newcommand{\hack}[1]{\hangfrom{\faWrench\enskip}#1\par}
 
 % For debugging; userd is either ‘todo’, ‘hacked’, ‘manual’
@@ -729,6 +730,11 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   Prints initial author or editor names in bibliography entries in small capitals.
 \end{docKey}
 %</n>
+
+\begin{docKey}{timefirst}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Prints the time (if provided) before the date instead of after it.
+  This can also be set on a per-type and per-entry basis.
+\end{docKey}
 
 \textsf{Oxref} makes use of Biber-specific techniques to solve some of the challenges
 presented by Oxford style. If you resort to using Bib\TeX\ instead,
@@ -3797,11 +3803,33 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \section{Podcasts, video podcasts and webcasts}
 
 \begin{bibexbox}
-%<n><NHR \S18.8.5>
-%<y><NHR \S18.8.5\textdagger>
+%<n><NHR \S18.7.3>
+%<y><NHR \S18.7.3\textdagger>
+{weldon2010did}
+%<n>Fay Weldon, interview with Kirsty Young, \emph{Desert Island Discs Archive} [podcast], BBC Radio 4 (9 May 2010), \url{http://www.bbc.co.uk/podcasts/series/dida05/all}.
+%<y>Fay Weldon (2010), interview with Kirsty Young, \emph{Desert Island Discs Archive} [podcast], BBC Radio 4 (9 May), \url{http://www.bbc.co.uk/podcasts/series/dida05/all}.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@audio{weldon2010did,
+  entrysubtype = {podcast},
+  author = {Fay Weldon},
+  title = {interview with {Kirsty Young}},
+  title+an = {=descriptor},
+  maintitle = {Desert Island Discs Archive},
+  organization = {BBC Radio 4},
+  date = {2010-05-09},
+  url = {http://www.bbc.co.uk/podcasts/series/dida05/all}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+%<n><NHR \S18.8.5*>
+%<y><NHR \S18.8.5*\textdagger>
 {perry2013ifm}
-%<n>Grayson Perry, \enquote{I Found Myself in the Art World} [podcast], Reith Lecture (5 Nov. 2013), BBC Radio 4, \url{http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3}, accessed 5 Nov. 2013.
-%<y>Perry, G. (2013), \enquote{I Found Myself in the Art World} [podcast], Reith Lecture (5 Nov.), BBC Radio 4, \url{http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3}, accessed 5 Nov. 2013.
+%<n>Grayson Perry, \enquote{I Found Myself in the Art World} [podcast], Reith Lecture, BBC Radio 4  (5 Nov. 2013), \url{http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3}, accessed 5 Nov. 2013.
+%<y>Perry, G. (2013), \enquote{I Found Myself in the Art World} [podcast], Reith Lecture, BBC Radio 4 (5 Nov.), \url{http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3811,19 +3839,21 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   title = {I Found Myself in the Art World},
   note = {Reith Lecture},
   date = {2013-11-05},
-  publisher = {BBC Radio 4},
+  organization = {BBC Radio 4},
   url = {http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3},
   urldate = {2013-11-05}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
+\info{I am not sure why \emph{New Hart's Rules} places the channel after the date in the above case; it is probably a mistake or an odd variation, so I have adjusted it for consistency.}
+
 \begin{bibexbox}
-%<n><NHR \S18.8.5>
-%<y><NHR \S18.8.5\textdagger>
+%<n><NHR \S18.8.5*>
+%<y><NHR \S18.8.5*\textdagger>
 {nicholson2011qsm}
-%<n>Christie Nicholson, \enquote{A Quirk of Speech May Become a New Vocal Style} [video], \emph{Scientific American}, 17 Dec. 2011, \url{http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17}, accessed 4 Nov. 2013.
-%<y>Nicholson, C. (2011), \enquote{A Quirk of Speech May Become a New Vocal Style} [video], \emph{Scientific American}, 17 Dec., \url{http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17}, accessed 4 Nov. 2013.
+%<n>Christie Nicholson, \enquote{A Quirk of Speech May Become a New Vocal Style} [video], \emph{Scientific American} (17 Dec. 2011), \url{http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17}, accessed 4 Nov. 2013.
+%<y>Nicholson, C. (2011), \enquote{A Quirk of Speech May Become a New Vocal Style} [video], \emph{Scientific American} (17 Dec.), \url{http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17}, accessed 4 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3831,7 +3861,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   entrysubtype = {clip},
   author = {Christie Nicholson},
   title = {A Quirk of Speech May Become a New Vocal Style},
-  maintitle = {Scientific American},
+  organization = {\emph{Scientific American}},
   date = {2011-12-17},
   url = {http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17},
   urldate = {2013-11-04}}
@@ -3839,15 +3869,17 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{You could also treat this like an article, and clarify the medium (i.e.\@ video)
-  using the \texttt{titleaddon} field.}
+\info{The above is actually an episode of the audio podcast \emph{60-Second Mind} (which would be the \code{maintitle}).
+  \emph{Scientific American} is in this instance the \code{organization} that is hosting it, but because it is also the name of a journal, it has been manually formatted to match.}
+
+\tip{Perhaps a better way of achieiving consistency in this case would be to treat it like an article, and clarify the medium (i.e.\@ video, erroneously) using the \texttt{titleaddon} field.}
 
 \begin{bibexbox}
-%<n><NHR \S18.8.5>
-%<y><NHR \S18.8.5\textdagger>
+%<n><NHR \S18.8.5*>
+%<y><NHR \S18.8.5*\textdagger>
 {yousafzai2013mwa}
-%<n>Malala Yousafzai, \enquote{Making a Wish for Action on Global Education: Malala Yousafzai Addresses Youth Assembly at UN on her 16th Birthday, 12 July 2013} [webcast], UN Web TV, 12 Jul 2013, \url{http://webtv.un.org/search/malala-yousafzai-un-youth-assembly/2542094251001?term=malala}, accessed 15 Feb. 2015.
-%<y>Yousafzai, M. (2013), \enquote{Making a Wish for Action on Global Education: Malala Yousafzai Addresses Youth Assembly at UN on her 16th Birthday, 12 July 2013} [webcast], UN Web TV, 12 Jul, \url{http://webtv.un.org/search/malala-yousafzai-un-youth-assembly/2542094251001?term=malala}, accessed 15 Feb. 2015.
+%<n>Malala Yousafzai, \enquote{Making a Wish for Action on Global Education: Malala Yousafzai Addresses Youth Assembly at UN on her 16th Birthday, 12 July 2013} [webcast], UN Web TV (12 July 2013), \url{http://webtv.un.org/search/malala-yousafzai-un-youth-assembly/2542094251001?term=malala}, accessed 15 Feb. 2015.
+%<y>Yousafzai, M. (2013), \enquote{Making a Wish for Action on Global Education: Malala Yousafzai Addresses Youth Assembly at UN on her 16th Birthday, 12 July 2013} [webcast], UN Web TV, (12 July), \url{http://webtv.un.org/search/malala-yousafzai-un-youth-assembly/2542094251001?term=malala}, accessed 15 Feb. 2015.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3877,9 +3909,9 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \begin{Verbatim}
 %</n|y>
 @image{clarkeNDeci,
+  entrysubtype = {poster},
   author = {M. Clarke},
   title = {Exports of Coal to the IFS},
-  entrysubtype = {poster},
   organization = {Manchester Art Gallery},
   url = {http://www.machestergalleries.org/the-collections/search-the-collection/display.php?EMUSESSID=70bd7f1a388d79a82f52ea9aae713ef2&irn=4128},
   urldate = {2013-11-05}}
@@ -3910,6 +3942,9 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \chapter{Digital media}\label{sec:electronic}
 \chapterprecis{online, software, dataset}
 
+In Section 18.8.5 of \emph{New Hart's Rules}, some publication dates are printed in parentheses and some are left bare.
+In theory, the difference should be that parentheses indicate ‘proper’ publication (bare dates are when the resource was created or issued). In practice, it seems to be random. I have therefore decided to ignore the variation and leave all such dates in parentheses.
+
 \section{Website articles}
 
 \begin{bibexbox}
@@ -3937,7 +3972,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y><NHR \S18.8.5\textdagger>
 {hooper2013lfs}
 %<n>Richard Hooper, \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov. 2013), \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.
-%<y>Hooper, R. (2013), \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine, 14 Nov. \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.
+%<y>Hooper, R. (2013), \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov.} \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4069,9 +4104,9 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \begin{Verbatim}
 %</n|y>
 @online{obama2013tvd,
+  entrysubtype = {facebook},
   author = {Barack Obama},
   title = {Tomorrow is Veterans Day},
-  entrysubtype = {facebook},
   date = {2013-11-10},
   url = {https://www.facebook.com/barackobama/photos/a.53081056748.66806.6815841748/10151936988101749/},
   urldate = {2013-11-13}}
@@ -4089,9 +4124,9 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \begin{Verbatim}
 %</n|y>
 @online{harvey2013tfm,
+  entrysubtype = {facebook},
   author = {John Harvey},
   title = {\enquote{These are a Few of My Favourite Things}, No.~28},
-  entrysubtype = {facebook},
   date = {2013-11-13},
   url = {https://www.facebook.com/photo.php?fbid=229786530530896&set=a.108896335953250.15125.100004986510149&type=1&theatre},
   urldate = {2013-11-13}}
@@ -4100,25 +4135,45 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \end{bibexbox}
 
 \begin{bibexbox}
-%<n><NHR \S18.8.5>
-%<y><NHR \S18.8.5\textdagger>
+%<n><NHR \S18.8.5*>
+%<y><NHR \S18.8.5*\textdagger>
 {globe2013otd}
-%<n>Shakespeare's Globe, \enquote{On this day in 1611 first production of The Tempest was performed by King's Men at Whitehall Palace before James I} [Twitter post], 5.48~a.m., 1 Nov. 2013, \url{https://twitter.com/The_Globe/status/396257422928400385}, accessed 5 Nov. 2013.
-%<y>Shakespeare's Globe (2013), \enquote{On this day in 1611 first production of The Tempest was performed by King's Men at Whitehall Palace before James I} [Twitter post], 5.48~a.m., 1 Nov., \url{https://twitter.com/The_Globe/status/396257422928400385}, accessed 5 Nov. 2013.
+%<n>Shakespeare's Globe, \enquote{On this day in 1611 first production of The Tempest was performed by King's Men at Whitehall Palace before James I} [Twitter post] (5.48~a.m., 1~Nov. 2013), \url{https://twitter.com/The_Globe/status/396257422928400385}, accessed 5 Nov. 2013.
+%<y>Shakespeare's Globe (2013), \enquote{On this day in 1611 first production of The Tempest was performed by King's Men at Whitehall Palace before James I} [Twitter post] (5.48~a.m., 1~Nov.), \url{https://twitter.com/The_Globe/status/396257422928400385}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
 @online{globe2013otd,
+  entrysubtype = {tweet},
   author = {{Shakespeare's Globe}},
   title = {On this day in 1611 first production of The Tempest was performed by King's Men at Whitehall Palace before James I},
-  entrysubtype = {tweet},
   date = {2013-11-01T05:48:00},
+  options = {timefirst},
   url = {https://twitter.com/The_Globe/status/396257422928400385},
   urldate = {2013-11-05}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{If it feels odd putting the entire content of a tweet in your reference, \emph{New Hart's Rules} suggests using a descriptor like ‘Twitter post’ instead of the title. You can achieve this as in the following example.}
+
+\begin{bibexbox}
+{oup2015tweet}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@online{oup2015tweet,
+  author = {{Oxford University Press}},
+  shortauthor = {OUP},
+  title = {Twitter post},
+  title+an = {=descriptor},
+  date = {2015-11-16T01:07:00},
+  url = {https://twitter.com/OxUniPress/status/666180787251843072},
+  urldate = {2015-12-25}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 \section{Software}
 
@@ -4454,10 +4509,10 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \begin{Verbatim}
 %</n|y>
 @jurisdiction{powick1993,
+  entrysubtype = {newspaper},
   title = {Powick v. Malvern Wells Water Co},
   date = {1993-09-28},
-  journaltitle = {The Times},
-  entrysubtype = {newspaper}}
+  journaltitle = {The Times}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4607,10 +4662,10 @@ Factory and Workshop Act 1891
 \begin{Verbatim}
 %</n|y>
 @legislation{fwa1891,
+  entrysubtype = {primary},
   title = {Factory and Workshop Act},
   shorttitle = {FWA 91},
   date = {1891},
-  entrysubtype = {primary},
   pagination = {section},
   keywords = {en},
   number = {54 \& 55 Vict, c. 75}}
@@ -4629,11 +4684,11 @@ Local Authority Precepts Order 1897, SR~\&~O 1897/201
 \begin{Verbatim}
 %</n|y>
 @legislation{lap1897,
+  entrysubtype = {secondary},
   title = {Local Authority Precepts Order},
   date = {1897},
   number = {SR~\&~O 1897\slash 201},
-  pagination = {rule},
-  entrysubtype = {secondary}}
+  pagination = {rule}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4646,11 +4701,11 @@ Community Charge Support Grant (Abolition) Order 1987, SI 1987/466
 \begin{Verbatim}
 %</n|y>
 @legislation{ccsga1987,
+  entrysubtype = {secondary},
   title = {Community Charge Support Grant (Abolition) Order},
   date = {1987},
   number = {SI 1987\slash 466},
-  pagination = {regulation},
-  entrysubtype = {secondary}}
+  pagination = {regulation}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4764,14 +4819,14 @@ Convention Relating to the Status of Refugees (adopted 28 July 1951, entered int
 \begin{Verbatim}
 %</n|y>
 @legal{refugees,
+  entrysubtype = {piltreaty},
   title = {Convention Relating to the Status of Refugees},
   shorthand = {Refugee Convention},
   execution = {adopted=1951-07-28 and inforce=1954-04-22},
   pagination = {article},
   volume = {189},
   journaltitle = {UNTS},
-  pages = {137},
-  entrysubtype = {piltreaty}}
+  pages = {137}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4801,12 +4856,12 @@ Hansard, HC vol.\@ 357, cols.\@ 234–45 (13 Apr.\@ 1965)
 \begin{Verbatim}
 %</n|y>
 @legal{hc357,
+  entrysubtype = {parliamentary},
   title = {Hansard},
   type = {HC},
   volume = {357},
   pages = {234-245},
   date = {1965-04-13},
-  entrysubtype = {parliamentary},
   bookpagination = {column}}
 %<*n|y>
 \end{Verbatim}
@@ -4822,12 +4877,12 @@ Parl.\@ Deb.\@ (series 4) vol.\@ 24, col.\@ 234 (24 Mar.\@ 1895)
 \begin{Verbatim}
 %</n|y>
 @legal{pd4/24,
+  entrysubtype = {parliamentary},
   title = {Parl. Deb.},
   series = {4},
   volume = {24},
   pages = {234},
   date = {1895-03-24},
-  entrysubtype = {parliamentary},
   bookpagination = {column}}
 %<*n|y>
 \end{Verbatim}
@@ -4850,13 +4905,13 @@ Reports of Parliamentary select committees and the Law Commission should be ente
 \begin{Verbatim}
 %</n|y>
 @report{lc2009icl,
+  entrysubtype = {legal},
   author = {{Law Commission}},
   title = {Intoxication and Criminal Liability},
   number = {Law Comm No 314, Cm 7526},
   date = {2009},
   pages = {1.15},
-  bookpagination = {paragraph},
-  entrysubtype = {legal}}
+  bookpagination = {paragraph}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -5992,17 +6047,30 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }{}{}
 %    \end{macrocode}
 %
-% We provide a way of prefacing dates with a type. This is mainly
+% We provide a way of prefacing dates (and times) with a type. This is mainly
 % intended for online resources.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{datetype}{%
   \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
 }
-\renewbibmacro*{date}{%
+\newtoggle{blx@ox@timefirst}
+\DeclareBibliographyOption{timefirst}[true]{%
+  \settoggle{blx@ox@timefirst}{#1}}
+\DeclareEntryOption{timefirst}[true]{%
+  \settoggle{blx@ox@timefirst}{#1}}
+\newbibmacro*{date+time}{%
   \printfield{datetype}%
   \setunit*{\addspace}%
-  \printdate}
+  \iftoggle{blx@ox@timefirst}{%
+    \printtime
+    \setunit*{\addcomma\space}}{}%
+  \printdate
+  \iftoggle{blx@ox@timefirst}{}{%
+    \setunit*{\addcomma\space}%
+    \printtime}%
+}
+\renewbibmacro*{date}{\usebibmacro{date+time}}
 %    \end{macrocode}
 %
 % \subsection{Other number-like fields}
@@ -7471,7 +7539,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % are written in roman text within quotes.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[online]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[online]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
+  \undef\currentfield}
+
 %    \end{macrocode}
 %
 % We provide an `onlinetype' macro for clarifying the type of online
@@ -7515,10 +7587,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{author/editor+others/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \setunit{\addspace}%
-  \usebibmacro{onlinetype}%
   \newunit
   \usebibmacro{maintitle}
+  \setunit{\addspace}%
+  \usebibmacro{onlinetype}%
   \newunit
   \printlist{language}%
   \newunit\newblock
@@ -7531,15 +7603,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \printfield{note}%
   \newunit\newblock
   \printlist{organization}%
-  \iffieldequalstr{entrysubtype}{tweet}{%
-    \newunit\newblock
-    \usebibmacro{time+date}%
-  }{%
-    \iffieldundef{year}{}{%
-      \setunit{\addspace}\newblock
-      \printtext[parens]{\usebibmacro{date}}%
-    }%
-  }
+  \iffieldundef{year}{}{%
+    \setunit{\addspace}\newblock
+    \printtext[parens]{\usebibmacro{date+time}}%
+  }%
   \newunit\newblock
   \printlist{publisher}%
   \newunit\newblock
@@ -7558,18 +7625,6 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-%    \end{macrocode}
-%
-% We define a new macro for printing both time and date.
-%
-%    \begin{macrocode}
-\newbibmacro*{time+date}{%
-  \printfield{datetype}%
-  \setunit*{\addspace}%
-  \printtime
-  \newunit
-  \printdate
-}
 %    \end{macrocode}
 %
 % \subsection{Audiovisual resources}
@@ -7617,10 +7672,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \printfield{series}%
       \setunit*{\addcomma\space}%
       \printfield{number}%
-      \setunit*{\addcomma\space}%
-      \usebibmacro{date}%
-      \setunit*{\addcomma\space}%
-      \printtime
+      \setunit{\addcomma\space}%
+      \usebibmacro{date+time}%
       \ifboolexpr{
         test {\iffieldundef{eventyear}}
         and
@@ -7629,9 +7682,13 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         \setunit*{\addcomma\space}%
         \printfield{eventtitle}%
         \setunit*{\addspace}%
+        \iftoggle{blx@ox@timefirst}{%
+          \printeventtime
+          \setunit*{\addcomma\space}}{}%
         \printeventdate
-        \setunit*{\addspace}%
-        \printeventtime
+        \iftoggle{blx@ox@timefirst}{}{%
+          \setunit*{\addcomma\space}%
+          \printeventtime}%
       }}}}
 \DeclareFieldFormat[audio,music,movie,video]{eventtitle}{%
   \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
@@ -7665,10 +7722,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   \usebibmacro{author}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
+  \newunit
+  \usebibmacro{maintitle}%
   \setunit{\addspace}
   \usebibmacro{onlinetype}%
-  \newunit
-  \usebibmacro{maintitle}
   \newunit
   \printlist{language}%
   \newunit\newblock
@@ -9737,11 +9794,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
          \printfield{labelyear}%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{%
-    \iffieldundef{month}
-      {}
-      {\printfield{datetype}%
-       \setunit*{\addspace}%
-       \printdate}}%
+    \iffieldundef{month}{}{\usebibmacro{date+time}}}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
       test {\iffieldundef{issue}}
@@ -9847,11 +9900,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       test {\iffieldundef{month}}
       and
       test {\iffieldundef{extrayear}}
-    }
-      {}
-      {\printfield{datetype}%
-       \setunit*{\addspace}%
-       \printdate}}%
+    }{}{\usebibmacro{date+time}}}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
       test {\iffieldundef{issue}}
@@ -9894,10 +9943,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       {\printtext[labeldate]{%
          \printfield{labelyear}%
          \printfield{extrayear}}}}%
-  \renewbibmacro*{date}{%
-    \printfield{datetype}%
-    \setunit*{\addspace}%
-    \printdate}%
+  \renewbibmacro*{date}{\usebibmacro{date+time}}%
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{(
       test {\iffieldundef{volume}}
@@ -10606,6 +10652,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 }{%
   \iffieldundef{month}%
 }{}{}
+%    \end{macrocode}
+%
+% We ensure the label title in citations matches the formatting used for
+% the equivalent information in the bibliography entry.
+%
+%    \begin{macrocode}
 \DeclareFieldFormat[online,image]{citetitle}{\mkbibquote{#1\isdot}}
 \DeclareFieldFormat[manuscript,unpublished]{citetitle}{%
   \def\currentfield{title}%
