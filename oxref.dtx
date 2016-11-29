@@ -706,6 +706,18 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   \end{itemize}
 \end{docKey}
 
+\begin{docKey}{court-plain}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Prints courts of decision without parentheses.
+\end{docKey}
+
+\begin{docKey}{dashed}{=\val{true}|\val{false}}{default \val{true}, initially \val{true}}
+  In the biblography, replaces recurring author\slash editor names with a dash.
+\end{docKey}
+
+\begin{docKey}{isourls}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Surrounds URLs with angle brackets.
+\end{docKey}
+
 \begin{docKey}{issuestyle}{=\val{slash}|\val{colon}|\val{comma}|\val{parens}}{default \val{slash}, initially \val{slash}}
   Affects how journal volumes and numbers are printed.
   \begin{itemize}
@@ -720,6 +732,13 @@ The style has some options additional to the regular \pkg{biblatex} ones:
     sets off the issue number in parentheses, e.g. ‘23 (2)’.
   \end{itemize}
 \end{docKey}
+
+%<*y>
+\begin{docKey}{mergedate}{=\val{maximum}|\val{compact}|\val{basic}|\val{minimum}|\val{year}|\val{false}}{default \val{year}, initially \val{year}}
+  Affects how the date at the start of the references relates to the date in the ‘normal’ position.
+  The standard option values are available but not well tested; I recommend you stick with the \textsf{oxyear} default.
+\end{docKey}
+%</y>
 
 \begin{docKey}{nopublisher}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Removes publisher name from all entries.
@@ -855,9 +874,6 @@ that is, there are no examples of them in this documentation.
     \item inreference
     \item artwork
     \item commentary
-    \item jurisdiction
-    \item legislation
-    \item legal
     \item letter
     \item movie
     \item performance
@@ -3807,7 +3823,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y><NHR \S18.7.3\textdagger>
 {weldon2010did}
 %<n>Fay Weldon, interview with Kirsty Young, \emph{Desert Island Discs Archive} [podcast], BBC Radio 4 (9 May 2010), \url{http://www.bbc.co.uk/podcasts/series/dida05/all}.
-%<y>Fay Weldon (2010), interview with Kirsty Young, \emph{Desert Island Discs Archive} [podcast], BBC Radio 4 (9 May), \url{http://www.bbc.co.uk/podcasts/series/dida05/all}.
+%<y>Weldon, F. (2010), interview with Kirsty Young, \emph{Desert Island Discs Archive} [podcast], BBC Radio 4 (9 May), \url{http://www.bbc.co.uk/podcasts/series/dida05/all}.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3972,7 +3988,7 @@ In theory, the difference should be that parentheses indicate ‘proper’ publi
 %<y><NHR \S18.8.5\textdagger>
 {hooper2013lfs}
 %<n>Richard Hooper, \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov. 2013), \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.
-%<y>Hooper, R. (2013), \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov.} \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.
+%<y>Hooper, R. (2013), \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov.) \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -7889,7 +7905,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \DeclareBibliographyAlias{dataset}{manual}
 %    \end{macrocode}
-%\isdot
+%
 % \subsection{Manuscripts}
 %
 % In the spirit of compatibility, this code is adapted from
