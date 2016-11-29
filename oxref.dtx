@@ -1071,6 +1071,30 @@ Oxford style is to give the attribution in square brackets.
   (usually \code{author} or \code{editor}) with the keyword \code{inferred}.
   You can also annotate names individually within the list, if only some of them should be taken as inferred.}
 
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
+{balfour1768pe}
+%<n>{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).
+%<y>{[Balfour, J.]} (1768), \emph{Philosophical Essays} (Edinburgh).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{balfour1768pe,
+  author = {James Balfour},
+  author+an = {=inferred},
+  title = {Philosophical Essays},
+  location = {Edinburgh},
+  date = {1768}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\tip{You can also use the syntax from \textsf{biblatex-realauthor}.
+  If you do not specify the \code{author}, then \code{realauthor} is treated as an alias for \code{author} annotated with the keyword \code{inferred}.
+  The equivalent is true for \code{realeditor}.
+  Note, however, that \textsf{oxref} does not recognize the \code{userealauthor} and \code{userealeditor} options.}
+
 \subsection{Pseudonyms}
 
 If an author publishes under a pen name, and you want to link the names in the bibliography,
@@ -1107,8 +1131,8 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
 
 \tip{If you do want the second name to be normalized, or you are dealing with a list of names,
   you can use the (non-standard) \code{authoraddon} and \code{editoraddon} fields. The addon
-  name will be printed after the corresponding name in the regular name list, but only if it is different.
-  This method also uses the \code{nameaddon} field format.}
+  name will be printed after the corresponding name in the regular name list, using the
+  \code{nameaddon} field format, but only if it is different.}
 
 \begin{bibexbox}
 %<n><NHR \S18.2.2>
@@ -1128,6 +1152,10 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\tip{Again, you can also use the syntax from \textsf{biblatex-realauthor}.
+  If you specify the \code{author}, then \code{realauthor} is treated as an alias for \code{authoraddon}.
+  The equivalent is true for \code{realeditor}.}
 
 
 \chapter{Articles and periodicals}\label{sec:article}
@@ -1318,8 +1346,7 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
   journaltitle = {VT\nopunct},
   volume = {15},
   date = {1965},
-  pages = {452-467},
-}
+  pages = {452-467}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -1811,19 +1838,18 @@ Lyons, J. (1981\emph{b}), \emph{Language, Meaning and Context} (London: Fontana 
 
 %</n|y>
 %<*n>
-\begin{bibexbox}<OGS \S15.2.1>
-{balfour1768pe}
-{[James Balfour]}, \emph{Philosophical Essays} (Edinburgh, 1768).
+\begin{bibexbox}<NHR \S18.1.3>
+{rogers1986tmp}
+C.~D.~Rogers, \emph{Tracing Missing Persons} (Manchester, 1986).
 \tcblower
 \begin{Verbatim}
 %</n>
 %<*n|bib>
-@book{balfour1768pe,
-  author = {James Balfour},
-  author+an = {=inferred},
-  title = {Philosophical Essays},
-  location = {Edinburgh},
-  date = {1768}}
+@book{rogers1986tmp,
+  author = {C. D. Rogers},
+  title = {Tracing Missing Persons},
+  location = {Manchester},
+  date = {1986}}
 %</n|bib>
 %<*n>
 \end{Verbatim}
@@ -9145,13 +9171,44 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % beginning (if, as is likely, an author is not present).
 %
 %    \begin{macrocode}
-    \map{%
+    \map{
       \pertype{proceedings}
       \pertype{mvproceedings}
-      \step[fieldsource=author]%
-      \step[notfield=author, fieldsource=organization]%
-      \step[fieldset=sortname, origfieldval]%
-    }%
+      \step[fieldsource=author]
+      \step[notfield=author,
+        fieldsource=organization]
+      \step[fieldset=sortname,
+        origfieldval]
+    }
+%    \end{macrocode}
+%
+% \subsubsection{Pseudonyms and inferred authorship}
+%
+% These help ensure compatibility with \textsf{biblatex-realauthor}.
+%
+%    \begin{macrocode}
+    \map[overwrite=false]{
+      \step[fieldsource=realauthor, final]
+      \step[notfield=author,
+        fieldset=author+an,
+        fieldvalue={=inferred}]
+      \step[notfield=author,
+        fieldsource=realauthor,
+        fieldtarget=author]
+      \step[fieldsource=realauthor,
+        fieldtarget=authoraddon]
+    }
+    \map[overwrite=false]{
+      \step[fieldsource=realeditor, final]
+      \step[notfield=editor,
+        fieldset=editor+an,
+        fieldvalue={=inferred}]
+      \step[notfield=editor,
+        fieldsource=realeditor,
+        fieldtarget=editor]
+      \step[fieldsource=realeditor,
+        fieldtarget=editoraddon]
+    }
 %    \end{macrocode}
 %
 % \subsubsection{Legal references}
@@ -9309,6 +9366,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   }%
 }
 %    \end{macrocode}
+%
+% \subsection{Sorting schemes}
 %
 % We adjust the sort order to take into account some other fields that might
 % end up at the front.
