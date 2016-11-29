@@ -3433,9 +3433,9 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \chapter{Audiovisual materials}\label{sec:audiovideo}
 \chapterprecis{audio, image, movie, music, video}
 
-\section{Audio recordings}
+There are typically many contributors to an audiovisual work, and the priority given to each role is fluid. \textsf{Oxref} uses \code{author} for contributors that should go at the head of the reference, and \code{editor} for others. As well as the normal ones you can use the author\slash editor types \code{performer}, \code{director} and \code{reader}.
 
-\textsf{Oxref} provides the additional editor types \code{performer}, \code{director} and \code{reader}.
+\section{Audio recordings}
 
 %<n>\spec{Composer, \emph{Title}, Artist (Series, Number, Year).}
 %<y>\spec{Composer (Year), \emph{Title}, Artist (Series, Number).}
@@ -6900,7 +6900,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \DeclareBibliographyDriver{mvreference}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{author}%
+  \usebibmacro{author/editor+others/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
@@ -7617,7 +7617,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@endeditor}
-\DeclareEntryOption[boolean]{endeditor}[true]{\settoggle{blx@ox@endeditor}{#1}}
+\DeclareEntryOption[boolean]{endeditor}[true]{%
+  \settoggle{blx@ox@endeditor}{#1}}
 \newbibmacro*{pre-byeditor+others}{%
   \iftoggle{blx@ox@endeditor}{}{%
     \usebibmacro{byeditor+others}%
@@ -9391,7 +9392,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % \subsection{Sorting schemes}
 %
 % We adjust the sort order to take into account some other fields that might
-% end up at the front.
+% end up at the front (library, collection, series).
 %
 %    \begin{macrocode}
 \DeclareSortingScheme{nty}{
@@ -9467,7 +9468,12 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \field{series}
   }
 }
-
+%    \end{macrocode}
+%
+% The following entry types never put editors first.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions[proceedings,report,audio,music,movie,video,manuscript,unpublished,review]{useeditor=false}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
