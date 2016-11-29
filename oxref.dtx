@@ -5439,6 +5439,11 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       test {\ifnumequal{\value{listcount}}{\value{maxnames}}}
       or
       test {\ifnumequal{\value{listcount}}{\value{listtotal}}}
+      or (
+        test {\ifnumequal{\value{listcount}}{\value{minnames}}}
+        and
+        test {\ifnumgreater{\value{listtotal}}{\value{maxnames}}}
+      )
     }{\bibclosebracket}{}%
   }{}%
 }
@@ -5523,17 +5528,25 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \savebibmacro{name:andothers}%
     \renewbibmacro*{name:andothers}{}%
     \whileboolexpr{%
-      test {\ifnumcomp{\value{namepairs}}{<}{\value{author}}}
+      test {\ifnumless{\value{namepairs}}{\value{author}}}
       and (
         test {\ifdefvoid{\c@maxnames}}
         or
         test {\ifnumequal{\c@maxnames}{0}}
         or
-        test {\ifnumcomp{\value{namepairs}}{<}{\c@maxnames}}
+        test {\ifnumless{\value{author}}{\c@maxnames}}
+        or
+        test {\ifnumequal{\value{author}}{\c@maxnames}}
+        or
+        test {\ifdefvoid{\c@minnames}}
+        or
+        test {\ifnumequal{\c@minnames}{0}}
+        or
+        test {\ifnumless{\value{namepairs}}{\c@minnames}}
       )
     }{%
       \stepcounter{namepairs}%
-      \ifnumcomp{\value{namepairs}}{>}{1}{%
+      \ifnumgreater{\value{namepairs}}{1}{%
         \ifnumequal{\value{author}}{2}{%
           \setunit*{\addspace\bibstring{and}\addspace}%
         }{%
@@ -5558,14 +5571,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       }%
     }%
     \ifboolexpr{
-      test {\ifnumequal{\value{namepairs}}{\c@maxnames}}
+      test {\ifnumequal{\value{namepairs}}{\c@minnames}}
       and
-      test {\ifnumcomp{\c@maxnames}{<}{\value{author}}}
+      test {\ifnumgreater{\value{author}}{\c@maxnames}}
     }{%
-      \ifnumgreater{\c@maxnames}{1}{%
+      \ifnumgreater{\c@minnames}{1}{%
         \finalandcomma
       }{}%
-    \andothersdelim\bibstring{andothers}%
+      \andothersdelim\bibstring{andothers}%
     }{}%
     \restorebibmacro{name:andothers}%
   }{%
@@ -5582,17 +5595,25 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \savebibmacro{name:andothers}%
     \renewbibmacro*{name:andothers}{}%
     \whileboolexpr{%
-      test {\ifnumcomp{\value{namepairs}}{<}{\value{editor}}}
+      test {\ifnumless{\value{namepairs}}{\value{editor}}}
       and (
         test {\ifdefvoid{\c@maxnames}}
         or
         test {\ifnumequal{\c@maxnames}{0}}
         or
-        test {\ifnumcomp{\value{namepairs}}{<}{\c@maxnames}}
+        test {\ifnumless{\value{editor}}{\c@maxnames}}
+        or
+        test {\ifnumequal{\value{editor}}{\c@maxnames}}
+        or
+        test {\ifdefvoid{\c@minnames}}
+        or
+        test {\ifnumequal{\c@minnames}{0}}
+        or
+        test {\ifnumless{\value{namepairs}}{\c@minnames}}
       )
     }{%
       \stepcounter{namepairs}%
-      \ifnumcomp{\value{namepairs}}{>}{1}{%
+      \ifnumless{\value{namepairs}}{1}{%
         \ifnumequal{\value{editor}}{2}{%
           \setunit*{\addspace\bibstring{and}\addspace}%
         }{%
@@ -5617,14 +5638,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       }%
     }%
     \ifboolexpr{
-      test {\ifnumequal{\value{namepairs}}{\c@maxnames}}
+      test {\ifnumequal{\value{namepairs}}{\c@minnames}}
       and
-      test {\ifnumcomp{\c@maxnames}{<}{\value{editor}}}
+      test {\ifnumgreater{\value{editor}}{\c@maxnames}}
     }{%
-      \ifnumgreater{\c@maxnames}{1}{%
+      \ifnumgreater{\c@minnames}{1}{%
         \finalandcomma
       }{}%
-    \andothersdelim\bibstring{andothers}%
+      \andothersdelim\bibstring{andothers}%
     }{}%
     \restorebibmacro{name:andothers}%
   }{%
@@ -10201,6 +10222,10 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       test {\ifnumequal{\value{listcount}}{\value{maxnames}}}
       or
       test {\ifnumequal{\value{listcount}}{\value{listtotal}}}
+      or (
+        test {\ifnumequal{\value{listcount}}{\value{minnames}}}
+        and
+        test {\ifnumgreater{\value{listtotal}}{\value{maxnames}}} )
     }{\bibclosebracket}{}%
   }{}%
 }
@@ -10310,17 +10335,25 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \savebibmacro{name:andothers}%
     \renewbibmacro*{name:andothers}{}%
     \whileboolexpr{%
-      test {\ifnumcomp{\value{namepairs}}{<}{\value{author}}}
+      test {\ifnumless{\value{namepairs}}{\value{author}}}
       and (
         test {\ifdefvoid{\c@maxnames}}
         or
         test {\ifnumequal{\c@maxnames}{0}}
         or
-        test {\ifnumcomp{\value{namepairs}}{<}{\c@maxnames}}
+        test {\ifnumless{\value{author}}{\c@maxnames}}
+        or
+        test {\ifnumequal{\value{author}}{\c@maxnames}}
+        or
+        test {\ifdefvoid{\c@minnames}}
+        or
+        test {\ifnumequal{\c@minnames}{0}}
+        or
+        test {\ifnumless{\value{namepairs}}{\c@minnames}}
       )
     }{%
       \stepcounter{namepairs}%
-      \ifnumcomp{\value{namepairs}}{>}{1}{%
+      \ifnumgreater{\value{namepairs}}{1}{%
         \ifnumequal{\value{author}}{2}{%
           \setunit*{\addspace\bibstring{and}\addspace}%
         }{%
@@ -10347,11 +10380,11 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       }%
     }%
     \ifboolexpr{
-      test {\ifnumequal{\value{namepairs}}{\c@maxnames}}
+      test {\ifnumequal{\value{namepairs}}{\c@minnames}}
       and
-      test {\ifnumcomp{\c@maxnames}{<}{\value{author}}}
+      test {\ifnumgreater{\value{author}}{\c@maxnames}}
     }{%
-      \ifnumgreater{\c@maxnames}{1}{%
+      \ifnumgreater{\c@minnames}{1}{%
         \finalandcomma
       }{}%
      \andothersdelim\bibstring{andothers}%
