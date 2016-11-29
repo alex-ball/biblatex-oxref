@@ -3587,6 +3587,8 @@ There are typically many contributors to an audiovisual work, and the priority g
 %<n>\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle} \lit{series} (Publisher, Number, Year).}
 %<y>\spec{\enquote{EpisodeTitle} (Year), \emph{SeriesTitle} \lit{series} (Publisher, Number).}
 
+\tip{For an episode in a series, set the \code{entrysubtype} to \code{episode} and put the series name in \code{maintitle}.}
+
 \begin{bibexbox}
 %<n><OGS \S15.14.2>
 %<y><OGS \S15.14.2\textdagger>
@@ -3686,6 +3688,8 @@ There are typically many contributors to an audiovisual work, and the priority g
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{For an online video, set the \code{entrysubtype} to \code{clip}.}
+
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
 %<y><NHR \S18.8.5\textdagger>
@@ -3735,28 +3739,36 @@ There are typically many contributors to an audiovisual work, and the priority g
 
 \section{Broadcasts}
 
-%<n>\spec{\emph{Title}, Channel, Date.}
-%<y>\spec{\emph{Title} (Year), Channel, Day Month.}
+The \emph{Oxford Guide to Style} prints all information about the transmission, including the date, bare. \emph{New Hart's Rules} tends to put the transmittion date in parentheses, perhaps because (\emph{a}) broadcast is a type of publication, (\emph{b}) episodes in some very long-running series are identified by date alone, and (\emph{c}) it may be important to know which broadcast is referenced since the edits might be different. \textsf{Oxref} sides with the latter.
+
+%<n>\spec{\emph{Title}, Channel (Location, Date, Time).}
+%<y>\spec{\emph{Title} (Year), Channel (Location, Day Month, Time).}
+
+\tip{Put the channel in the \code{organization} field.}
 
 \begin{bibexbox}
-%<n><OGS \S15.14.3>
-%<y><OGS \S15.14.3\textdagger>
-{bbc1995sg}
-%<n>\emph{Sunday Grandstand}, BBC2, 17 Sept. 1995.
-%<y>\emph{Sunday Grandstand} (1995), BBC2, 17 Sept.
+%<n><OGS \S15.14.3*>
+%<y><OGS \S15.14.3*\textdagger>
+{canal2001ch}
+%<n>\emph{Un Cœur in Hiver}, Canal+ (Paris, 15 May 2001, 11.40 p.m.).
+%<y>\emph{Un Cœur in Hiver} (2001), Canal+ (Paris, 15 May, 11.40 p.m.).
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@video{bbc1995sg,
-  title = {Sunday Grandstand},
-  organization = {BBC2},
-  date = {1995-09-17}}
+@video{canal2001ch,
+  title = {Un Cœur in Hiver},
+  organization = {Canal+},
+  location = {Paris},
+  date = {2001-05-15T23:40:00+02:00}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
 %<n>\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.}
 %<y>\spec{\enquote{EpisodeTitle} (Year), \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Day Month.}
+
+\tip{If the episode has a true title, the episide descriptor (e.g. ‘Episode 1’) goes in the \code{note} field.
+  If it doesn't, the episode descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to remove the quote marks.}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
@@ -3771,6 +3783,7 @@ There are typically many contributors to an audiovisual work, and the priority g
   entrysubtype = {episode},
   author = {John Berger},
   title = {Episode 1},
+  title+an = {=descriptor},
   maintitle = {Ways of Seeing},
   organization = {BBC},
   date = {1972},
@@ -7569,6 +7582,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \newbibmacro*{publisher+type+series+number+date}{%
   \ifboolexpr{%
+    test {\iflistundef{location}}
+    and
     test {\iflistundef{publisher}}
     and
     test {\iffieldundef{type}}
@@ -7584,8 +7599,15 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     test {\iffieldundef{eventyear}}
     and
     test {\iffieldundef{eventmonth}}
+    and
+    test {\iffieldundef{hour}}
   }{}{%
-    \nopunct\printtext[publication]{%
+    \nopunct
+    \printtext[publication]{%
+      \printlist{location}%
+      \iflistundef{publisher}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addcolon\space}}%
       \printlist{publisher}%
       \setunit*{\addspace}%
       \printfield{type}%
@@ -7597,6 +7619,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
       \printfield{number}%
       \setunit*{\addcomma\space}%
       \usebibmacro{date}%
+      \setunit*{\addcomma\space}%
+      \printtime
       \ifboolexpr{
         test {\iffieldundef{eventyear}}
         and
@@ -7606,6 +7630,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
         \printfield{eventtitle}%
         \setunit*{\addspace}%
         \printeventdate
+        \setunit*{\addspace}%
+        \printeventtime
       }}}}
 \DeclareFieldFormat[audio,music,movie,video]{eventtitle}{%
   \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
@@ -7691,15 +7717,28 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 % `entrysubtype'-based variation.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[video]{title}{%
-  \ifboolexpr{
-    test {\iffieldequalstr{entrysubtype}{episode}}
-    or
-    test {\iffieldequalstr{entrysubtype}{clip}}
-    or
-    test {\iffieldequalstr{entrysubtype}{webcast}}
-  }{\mkbibquote{#1\isdot}}{\mkbibemph{#1}}%
-}
+\DeclareFieldFormat[audio,music]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{%
+    \iffieldequalstr{entrysubtype}{podcast}{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}}}%
+  \undef\currentfield}
+\DeclareFieldFormat[movie,video]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{%
+    \ifboolexpr{
+      test {\iffieldequalstr{entrysubtype}{episode}}
+      or
+      test {\iffieldequalstr{entrysubtype}{clip}}
+      or
+      test {\iffieldequalstr{entrysubtype}{webcast}}
+    }{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}}}%
+  \undef\currentfield}
 
 %    \end{macrocode}
 %
@@ -7793,7 +7832,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \DeclareBibliographyAlias{dataset}{manual}
 %    \end{macrocode}
-%
+%\isdot
 % \subsection{Manuscripts}
 %
 % In the spirit of compatibility, this code is adapted from
@@ -7827,7 +7866,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
 \DeclareFieldFormat[manuscript,unpublished]{title}{%
   \def\currentfield{title}%
-  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1}}%
+  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
   \undef\currentfield}
 \DeclareFieldFormat{columns+layer}{\mkbibparens{#1}}
 \DeclareFieldFormat{columns}{\mkbibparens{#1}}
