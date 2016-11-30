@@ -2964,6 +2964,30 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 \end{Verbatim}
 \end{bibexbox}
 
+\section{Supplementary works in books and collections}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.6*>
+%<y><NHR \S18.2.6*\textdagger>
+{gill1987intro}
+%<n>Roma Gill, introduction in \emph{The Complete Works of Christopher Marlow}, i (Oxford, 1987; repr.\@ 2001).
+%<y>Gill, R. (1987), introduction in \emph{The Complete Works of Christopher Marlow}, i (Oxford; repr.\@ 2001).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@suppbook{gill1987intro,
+  author = {Roma Gill},
+  title = {introduction},
+  booktitle = {The Complete Works of Christopher Marlow},
+  volume = {1},
+  origlocation = {Oxford},
+  origdate = {1987},
+  edition = {reprint},
+  date = {2001}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 
 \chapter{Works presented at meetings}\label{sec:proceedings}
@@ -6513,10 +6537,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % numerals.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[book,bookinbook,inbook,mvbook,%
-collection,incollection,mvcollection,%
-proceedings,inproceedings,mvproceedings,%
-reference,inreference,mvreference]{volume}{\Rn{#1}}
+\DeclareFieldFormat[book,mvbook,bookinbook,inbook,suppbook,%
+collection,mvcollection,incollection,suppcollection,%
+proceedings,mvproceedings,inproceedings,%
+reference,mvreference,inreference]{volume}{\Rn{#1}}
 %    \end{macrocode}
 %
 % Where a multi-volume work is more like a series, the volume number and
@@ -6825,13 +6849,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
+\DeclareFieldFormat[suppbook]{title}{#1\nopunct}
 %    \end{macrocode}
 %
 % We also provide a `bookinbook' driver that handles \code{origdate}
 % differently.
 %
 %    \begin{macrocode}
-\DeclareBibliographyDriver{inbook}{%
+\DeclareBibliographyDriver{bookinbook}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/translator+others}%
@@ -11252,7 +11277,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
   reviewof         = {{review of}{review of}},
   reprintfrom      = {{from}{from}},
-  origpubin        = {{originally published in}{originally pub\adddotspace}},
+  origpubin        = {{originally published in}{originally pub\adddot}},
 %    \end{macrocode}
 %
 % There is also a different abbreviation for `paragraph'.
