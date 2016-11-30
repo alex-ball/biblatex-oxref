@@ -8286,17 +8286,21 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 % \subsubsection{Subitems}
 %
-% This macro provides a non-Biber method of inserting a formatted
-% reference within a review reference. It is deprecated and will
-% be removed in a future release.
+% We provide support for items in items in items. The outer two layers should
+% be taken care of with an `incollection' entry or equivalent. The innermost
+% item should be a `misc' entry. While we're at it, we provide descriptor
+% support for `misc' entries.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[misc]{title}{%
-  \iffieldequalstr{relatedtype}{in}{%
-    \mkbibquote{#1\isdot}%
-  }{%
-    \mkbibemph{#1}%
-  }}
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{%
+    \iffieldequalstr{relatedtype}{in}{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}%
+    }}%
+  \undef\currentfield}
 \newbibmacro*{related:in}[1]{%
   \entrydata*{#1}{%
     \usedriver
