@@ -3790,7 +3790,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>\spec{\enquote{EpisodeTitle} (Year), \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Day Month.}
 
 \tip{If the episode has a true title, the episide descriptor (e.g. ‘Episode 1’) goes in the \code{note} field.
-  If it doesn't, the episode descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to remove the quote marks.}
+  If it doesn't, the episode descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to remove the quote marks. Alternatively, use the (non-standard) \code{descriptor} field, and \textsf{oxref} will take care of this for you.}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
@@ -3830,8 +3830,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 @audio{weldon2010did,
   entrysubtype = {podcast},
   author = {Fay Weldon},
-  title = {interview with {Kirsty Young}},
-  title+an = {=descriptor},
+  descriptor = {interview with {Kirsty Young}},
   maintitle = {Desert Island Discs Archive},
   organization = {BBC Radio 4},
   date = {2010-05-09},
@@ -4182,8 +4181,7 @@ In theory, the difference should be that parentheses indicate ‘proper’ publi
 @online{oup2015tweet,
   author = {{Oxford University Press}},
   shortauthor = {OUP},
-  title = {Twitter post},
-  title+an = {=descriptor},
+  descriptor = {Twitter post},
   date = {2015-11-16T01:07:00},
   url = {https://twitter.com/OxUniPress/status/666180787251843072},
   urldate = {2015-12-25}}
@@ -5077,11 +5075,9 @@ but support is provided anyway for the sake of completeness.
 
 With \textsf{oxref}, you can enter manuscripts in either of two ways. The first uses the \code{unpublished} entry type.
 
-\tip{Use \code{author} and \code{date} as normal. Note that the \code{date} will not be printed if both the \code{author} and \code{title} fields are left blank.}
+\tip{If the manuscript has a descriptor but no title, put the descriptor in the \code{title} field and annotate the field with the term \enquote{\code{descriptor}}. If you want to supply both a title and a descriptor, put the descriptor in the \code{note} field. Alternatively, you can use the (\textsf{oxref}-specific) \code{descriptor} field, and \textsf{oxref} will handle all this for you.}
 
-\tip{If the manuscript has a title, put it in the \code{title} field. If it also has a descriptor, put it in the \code{note} field.}
-
-\tip{If the manuscript has a descriptor but no title, put the descriptor in the \code{title} field and annotate the field with the term \enquote{\code{descriptor}}.}
+\tip{Use \code{author} and \code{date} as normal. Note that the \code{date} will not be printed if both the \code{author} and \code{title}\slash \code{descriptor} fields are left blank.}
 
 \tip{Put the library or archive where the manuscript is kept in the \code{library} field, and the city or place name in the \code{location} field. Note that the \code{library} field is required to switch on the special support for manuscripts.}
 
@@ -5102,8 +5098,7 @@ With \textsf{oxref}, you can enter manuscripts in either of two ways. The first 
 %</n|y>
 @unpublished{smithMS23116,
   author = {Francis Smith},
-  title = {travel diaries},
-  title+an = {=descriptor},
+  descriptor = {travel diaries},
   date = {1912/1917},
   library = {British Library},
   series = {Add. MS},
@@ -5115,7 +5110,7 @@ With \textsf{oxref}, you can enter manuscripts in either of two ways. The first 
 The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex-manuscripts-philology}.
 \textsf{Oxref} does not have all the bells and whistles of that style, but it understands a subset of its data model.
 
-\tip{You can use \code{author}, \code{title}, \code{note} and \code{date} as described above. (This is a departure from \textsf{biblatex-manuscripts-philology}.)}
+\tip{You can use \code{author}, \code{title}\slash \code{note}\slash \code{descriptor} and \code{date} as described above. (This is a departure from \textsf{biblatex-manuscripts-philology}.)}
 
 \tip{Put the library or archive where the manuscript is kept in the \code{library} field, and the city or place name in the \code{location} field}
 
@@ -5160,8 +5155,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \begin{Verbatim}
 %</n|y>
 @manuscript{exchequerE311,
-  title = {exchequer accounts},
-  title+an = {=descriptor},
+  descriptor = {exchequer accounts},
   date = {1798-12},
   library = {Cheshire Record Office},
   shelfmark = {E311}}
@@ -9316,6 +9310,25 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
     }
 %    \end{macrocode}
 %
+% \subsubsection{Descriptors}
+%
+% This map provides a helpful \code{descriptor} field that can simplify the
+% provision of descriptors, being notes that can act as titles.
+%
+%    \begin{macrocode}
+    \map[overwrite=false]{
+      \step[fieldsource=descriptor, final]
+      \step[notfield=title,
+        fieldset=title+an,
+        fieldvalue={=descriptor}]
+      \step[notfield=title,
+        fieldsource=descriptor,
+        fieldtarget=title]
+      \step[fieldsource=descriptor,
+        fieldtarget=note]
+    }
+%    \end{macrocode}
+%
 % \subsubsection{Pseudonyms and inferred authorship}
 %
 % These help ensure compatibility with \textsf{biblatex-realauthor}.
@@ -10877,6 +10890,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=date]{pardate}
+\DeclareDatamodelEntryfields[jurisdiction]{pardate}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
