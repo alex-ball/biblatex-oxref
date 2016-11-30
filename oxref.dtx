@@ -6201,24 +6201,11 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
-% Journal types are also in square brackets. Note that when OGS was
-% published, online journals were a novelty, but since they are now
-% commonplace there is no purpose to pointing them out any more, so NHR
-% doesn't. This complication will be removed.
-%
-%    \begin{macrocode}
-\newbibmacro*{journaltype}{%
-  \iffieldequalstr{entrysubtype}{online journal}%
-  {\nopunct\printfield{entrysubtype}}{}%
-}
-%    \end{macrocode}
-%
 % We patch the `journal+issuetitle' macro so that if a work takes up a
 % whole issue (signified by using `issuetitle' \emph{instead} of
 % `title'), the title and journal title are separated by \enquote{=}
 % instead of the usual punctuation.
-% We also insert the above macro for journal types,
-% and insert a new unit after the journal title regardless of what
+% We insert a new unit after the journal title regardless of what
 % follows.
 %
 %    \begin{macrocode}
@@ -6235,7 +6222,6 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \clearfield{issuetitle}%
     \setunit{\addspace =\addspace}}{}%
   \usebibmacro{journal}%
-  \usebibmacro{journaltype}%
   \newunit
 }{}{}
 \xpatchbibmacro{journal+issuetitle}{%
@@ -6245,19 +6231,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }{}{}
 %    \end{macrocode}
 %
-% Similarly, we patch the `title+issuetitle' macro to insert
-% the `journaltype' macro and insert
+% We patch the `title+issuetitle' macro (for whole periodical issues) to insert
 % a new unit after the journal title regardless of what follows.
 %
 %    \begin{macrocode}
-\xpatchbibmacro{title+issuetitle}{%
-  \usebibmacro{periodical}%
-  \setunit*{\addspace}%
-}{%
-  \usebibmacro{periodical}%
-  \usebibmacro{journaltype}%
-  \newunit
-}{}{}
 \xpatchbibmacro{title+issuetitle}{%
   \newunit\printfield{series}%
 }{%
