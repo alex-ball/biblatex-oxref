@@ -1673,8 +1673,24 @@ or add the book details to a periodical entry.
 
 \section{Accepted journal articles, pre-publication}
 
-%<n>\spec{Author, \enquote{Title} (\lit{to be published in} \emph{JournalTitle}, Year).}
-%<y>\spec{Author (Year), \enquote{Title} (\lit{to be published in} \emph{JournalTitle}).}
+%<n>\spec{Author, \enquote{Title}, \lit{to be published in} \emph{JournalTitle}, Year.}
+%<y>\spec{Author (Year), \enquote{Title}, \lit{to be published in} \emph{JournalTitle}.}
+
+\begin{bibexbox}
+{briscoe2008esp}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@article{briscoe2008esp,
+  author = {Robert Briscoe},
+  title = {Egocentric Spatial Representation in Action and Perception},
+  journaltitle = {Philosophy and Phenomenological Research},
+  url = {http://cogprints.org/5780/1/ECSRAP.F07.pdf},
+  pubstate = {inpress}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 \section{Reviews}
 
@@ -5316,6 +5332,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \end{macrocode}
 %
 % \begin{itemize}
+%   \item publication state;
+% \end{itemize}
+%
+%    \begin{macrocode}
+  inpressin,
+%    \end{macrocode}
+%
+% \begin{itemize}
 %   \item pagination;
 % \end{itemize}
 %
@@ -6178,8 +6202,16 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 %    \begin{macrocode}
 \renewbibmacro*{addendum+pubstate}{%
-  \iffieldundef{pubstate}{}{\nopunct}%
-  \printfield{pubstate}%
+  \ifboolexpr{
+    test {\iffieldundef{pubstate}}
+    or
+    test {\iffieldequalstr{labeldatesource}{pubstate}}
+  }{}{%
+    \nopunct
+    \ifbibstring{\thefield{pubstate}}{%
+      \printtext[pubstate]{\bibstring{\thefield{pubstate}}}%
+    }{%
+      \printfield{pubstate}}}%
   \setunit{\addperiod\addspace}\newblock
   \printfield{addendum}}
 \DeclareFieldFormat{pubstate}{\mkbibparens{#1}}
@@ -6220,7 +6252,16 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   }{%
     \usebibmacro{issue}%
     \clearfield{issuetitle}%
-    \setunit{\addspace =\addspace}}{}%
+    \setunit{\addspace =\addspace}%
+  }{%
+    \ifboolexpr{
+      ( not test {\iffieldundef{pubstate}} )
+      and
+      test {\ifbibxstring{\thefield{pubstate}in}}
+    }{%
+      \printtext{\bibstring{\thefield{pubstate}in}\space}%
+      \clearfield{pubstate}%
+    }{}}%
   \usebibmacro{journal}%
   \newunit
 }{}{}
@@ -9855,11 +9896,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
                 {\thefield{labelyear}}%
                 {\thefield{labelendyear}}}}}%
         \printfield{extrayear}}%
-      \iffieldundef{\thefield{labeldatesource}year}{%
-        \iffieldundef{\thefield{labeldatesource}}{}{%
-          \clearfield{\thefield{labeldatesource}}%
-        }%
-      }{%
+      \iffieldundef{\thefield{labeldatesource}year}{}{%
         \clearfield{\thefield{labeldatesource}year}%
         \clearfield{end\thefield{labeldatesource}year}%
       }%
@@ -10947,6 +10984,14 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
   suppto           = {{supplement to}{supplement to}},
   equals           = {{=}{=}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Publication state
+% \end{itemize}
+%
+%    \begin{macrocode}
+  inpressin        = {{to be published in}{to be published in}},
 %    \end{macrocode}
 %
 % \begin{itemize}
