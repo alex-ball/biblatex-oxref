@@ -2724,20 +2724,18 @@ Smith, P. (forthcoming \emph{a}), \emph{Gender and Famine}, 2 vols. (London).
 \chapter{Works within books}\label{sec:inbook}
 \chapterprecis{inbook, bookinbook, suppbook, incollection, suppcollection, inreference}
 
-\section{Works in books}
+\section{Works in collections of a single author's works}
 
 The \code{inbook} entry type is intended for books that consist of several self-contained works by the same author, for citing one of these works.
-
-\subsection{Works in collections of single author's works}
 
 %<n>\spec{Author, \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in id.}, \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher), Pages.}
 
-\tip{Express this in the database by setting \code{author} $=$ \code{bookauthor} $\neq$ \code{editor}. You will also need to specify the \code{gender} of the author, as the second instance of the name is replaced by \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.}}
+\tip{If you provide \code{bookauthor}, and it is the same as the \code{author}, the second instance of the name will replaced by \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.} Use the \code{gender} field to select which is used.}
 
 \begin{bibexbox}
-%<n><OGS \S15.2.11>
-%<y><OGS \S15.2.11\textdagger>
+%<n><OGS \S15.2.11*>
+%<y><OGS \S15.2.11*\textdagger>
 {kristeller1979thm}
 %<n>Paul Oskar Kristeller, \enquote{The Aristotelian Tradition}, in id., \emph{Renaissance Thought and Its Sources}, ed. Michael Mooney (New York: Columbia University Press, 1979).
 %<y>Kristeller, P. O. (1979), \enquote{The Aristotelian Tradition}, in id., \emph{Renaissance Thought and Its Sources}, ed. M. Mooney (New York: Columbia University Press).
@@ -2761,16 +2759,34 @@ The \code{inbook} entry type is intended for books that consist of several self-
 %<n>\spec{Author, \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in} \emph{BookTitle}, \lit{ed.} Editor(s) (Location: Publisher), Pages.}
 
+\begin{bibexbox}
+%<n><NHR \S18.2.6*>
+%<y><NHR \S18.2.6*\textdagger>
+{ashton1991d}
+%<n>John Ashton, \enquote{Dualism}, in \emph{Understanding the Fourth Gospel} (Oxford, 1991), 205–37.
+%<y>Ashton, J. (1991), \enquote{Dualism}, in \emph{Understanding the Fourth Gospel} (Oxford), 205–37.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@inbook{ashton1991d,
+  author = {John Ashton},
+  title = {Dualism},
+  booktitle = {Understanding the Fourth Gospel},
+  location = {Oxford},
+  date = {1991},
+  pages = {205-237}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 \section{Works in collections}
 
 The \code{incollection} entry type is intended for citing one of a collection of self-contained works by different authors.
 
-\subsection{Work in a mixed collection}
+\subsection{Works in a mixed collection}
 
 %<n>\spec{Author, \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher), Pages.}
-
-\tip{Express this in the database by setting \code{author} $\neq$ \code{editor}, and omitting the \code{bookauthor}.}
 
 %</n|y>
 %<*n>
@@ -2843,12 +2859,12 @@ Jessop, B. (1997), \enquote{The Governance of Complexity and Complexity of Gover
 %</y>
 %<*n|y>
 
-\subsection{Work by the editor in mixed collection}
+\subsection{Works by the editor in a mixed collection}
 
 %<n>\spec{Author, \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in id.} (\lit{ed.}), \emph{BookTitle} (Location: Publisher), Pages.}
 
-\tip{Express this in the database by setting \code{author} $=$ \code{editor} and omitting the \code{bookauthor}. You will also need to specify the \code{gender} of the editor, as the second instance of the name is replaced by \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.}}
+\tip{If you provide the same values for \code{author} and \code{editor}, the editor name will replaced by \enquote{id.}\slash \enquote{ead.}\slash \enquote{eid.}\slash \enquote{eaed.} Use the \code{gender} field to select which is used.}
 
 \begin{bibexbox}
 %<n><OGS \S15.3>
@@ -2877,14 +2893,44 @@ Jessop, B. (1997), \enquote{The Governance of Complexity and Complexity of Gover
 
 \section{Anthologies of independently published works}
 
-Biblatex provides the \code{bookinbook} entry type for citing a part of an anthology that has previously been published as a book in its own right. Oxford style provides two different mechanisms for this, depending on circumstance.
+Biblatex provides the \code{bookinbook} entry type for citing a part of an anthology that has previously been published as a book in its own right. The main difference from \code{inbook} is how the original publication information is handled.
+
+\subsection{Later version more accessible}
+
+%<n>\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).}
+%<y>\spec{Author (Year), \emph{Title} (Location: Publisher) (\lit{originally pub.} Year).}
+
+\tip{Use \code{origdate} to give the date of original publication.}
+
+\begin{bibexbox}
+%<n><OGS \S15.3>
+%<y><OGS \S15.3\textdagger>
+{frege1892osr}
+%<n>G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).
+%<y>Frege, G. (1892), \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@bookinbook{frege1892osr,
+  author = {G. Frege},
+  gender = {sm},
+  title = {On Sense and Reference},
+  bookauthor = {G. Frege},
+  booktitle = {Philosophical Writings},
+  translator = {P. T. Geach and M. Black},
+  editor = {P. T. Geach and M. Black},
+  location = {Oxford},
+  publisher = {Blackwell},
+  date = {1952},
+  origdate = {1892}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 \subsection{Both versions equally accessible}
 
-\spec{Later Reference. From Earlier Reference.}
-
 \tip{Put the key of the original work in \code{related}, and in \code{relatedtype} use the keyword \code{reprintfrom}.}
-\tip{If using Bib\TeX, use \code{addendum} to give \enquote{From} and the reference to the original, but omit \code{author} and \code{title} from the entry for the original work.}
+\tip{If using Bib\TeX, use \code{addendum} to give \enquote{from} and the reference to the original; if using \cs{fullcite}, omit \code{author} and \code{title} from the entry for the original work.}
 
 \begin{bibexbox}
 %<n><OGS \S15.3>
@@ -2918,38 +2964,6 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 \end{Verbatim}
 \end{bibexbox}
 
-
-\subsection{Later version more accessible}
-
-%<n>\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).}
-%<y>\spec{Author (Year), \emph{Title} (Location: Publisher) (\lit{originally pub.} Year).}
-
-\tip{Use \code{pubstate} to give the date of original publication.}
-
-\begin{bibexbox}
-%<n><OGS \S15.3>
-%<y><OGS \S15.3\textdagger>
-{frege1892osr}
-%<n>G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).
-%<y>Frege, G. (1952), \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell) (originally pub. 1892).
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@bookinbook{frege1892osr,
-  author = {G. Frege},
-  gender = {sm},
-  title = {On Sense and Reference},
-  bookauthor = {G. Frege},
-  booktitle = {Philosophical Writings},
-  translator = {P. T. Geach and M. Black},
-  editor = {P. T. Geach and M. Black},
-  location = {Oxford},
-  publisher = {Blackwell},
-  date = {1952},
-  pubstate = {originally pub\adddotspace 1892}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
 
 
 \chapter{Works presented at meetings}\label{sec:proceedings}
@@ -6212,7 +6226,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       \printtext[pubstate]{\bibstring{\thefield{pubstate}}}%
     }{%
       \printfield{pubstate}}}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\addsemicolon\addspace}\newblock
   \printfield{addendum}}
 \DeclareFieldFormat{pubstate}{\mkbibparens{#1}}
 %    \end{macrocode}
@@ -6554,8 +6568,8 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
 \newbibmacro*{edition+publisher+location+date}{%
   \printlist{origlocation}%
   \iflistundef{origpublisher}%
-  {\setunit*{\addcomma\space}}%
-  {\setunit*{\addcolon\space}}%
+    {\setunit*{\addcomma\space}}%
+    {\setunit*{\addcolon\space}}%
   \printlist{origpublisher}%
   \setunit*{\addcomma\space}%
   \printorigdate%
@@ -6801,6 +6815,63 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% We also provide a `bookinbook' driver that handles \code{origdate}
+% differently.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{inbook}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{bybookauthor}%
+  \newunit\newblock
+  \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{series+number+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \iffieldundef{origyear}{}{%
+    \setunit{\addspace}\newblock
+    \printtext[parens]{%
+      \bibstring{origpubin}\space
+      \printorigdate}}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
@@ -11181,6 +11252,7 @@ reference,inreference,mvreference]{volume}{\Rn{#1}}
   reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
   reviewof         = {{review of}{review of}},
   reprintfrom      = {{from}{from}},
+  origpubin        = {{originally published in}{originally pub\adddotspace}},
 %    \end{macrocode}
 %
 % There is also a different abbreviation for `paragraph'.
