@@ -2937,7 +2937,7 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 %<y><OGS \S15.3\textdagger>
 {owen1986pi}
 %<n>G. E. L. Owen, \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press, 1986), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.
-%<y>Owen, G. E. L. (1986) \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983), 1--25.
+%<y>Owen, G. E. L. (1986) \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983): 1--25.
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -2952,10 +2952,12 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
   publisher = {Cornell University Press},
   date = {1986},
   pages = {347-364},
-  related = {osap1983},
+  related = {owen1983pi},
   relatedtype = {reprintfrom}
 }
-@periodical{osap1983,
+@article{owen1983pi,
+  author = {G. E. L. Owen},
+  title = {Philosophical Invective},
   journaltitle = {Oxford Studies in Ancient Philosophy},
   volume = {1},
   date = {1983},
@@ -6315,6 +6317,13 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 %    \begin{macrocode}
 \xpatchbibmacro{title+issuetitle}{%
+  \usebibmacro{periodical}%
+  \setunit*{\addspace}%
+}{
+  \usebibmacro{periodical}%
+  \newunit
+}{}{}
+\xpatchbibmacro{title+issuetitle}{%
   \newunit\printfield{series}%
 }{%
   \printfield{series}%
@@ -8265,36 +8274,30 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
 \renewbibmacro*{related:reprintfrom}[1]{%
-  \entrydata*{#1}{\unspace
-    \iffieldundef{journaltitle}{%
-      \iffieldundef{maintitle}
-      {\printfield[title:hook]{booktitle}}
-      {\printfield[title:hook]{maintitle}}%
-      \newunit\newblock
-      \usebibmacro{byeditor+others}%
-      \newunit\newblock
-      \iffieldundef{volume}{%
+  \entrydata*{#1}{%
+    \nopunct
+    \usedriver{%
+      \ifnameundef{savedauthor}{%
+        \ifnameundef{savededitor}{}{%
+          \ifnamesequal{editor}{savededitor}{%
+            \clearname{editor}%
+          }{}}%
       }{%
-        \printfield{volume}%
-        \printfield{part}%
-      }%
-      \newunit\newblock
-      \printfield{note}%
-      \newunit\newblock
-      \usebibmacro{series+number+edition+publisher+location+date}%
-      \newunit\newblock
-      \usebibmacro{chapter+pages}%
+        \ifnamesequal{author}{savedauthor}{%
+          \clearname{author}%
+        }{}}%
+      \iffieldundef{savedtitle}{}{%
+        \iffieldsequal{savedtitle}{title}{%
+          \clearfield{title}%
+        }{}}%
+      \renewbibmacro*{related:init}{}%
+      \DeclareNameAlias{sortname}{default}%
+      \ifbibmacroundef{date+extrayear}{}{%
+        \renewbibmacro*{date+extrayear}{}%
+        \renewbibmacro*{date}{\printdate}}%
+      \renewbibmacro*{pageref}{}%
     }{%
-      \usebibmacro{journal+issuetitle}%
-      \newunit
-      \usebibmacro{byeditor+others}%
-      \iffieldundef{note}{%
-        \newunit
-      }{%
-        \setunit{\addsemicolon\addspace}%
-      }%
-      \usebibmacro{note+pages}%
-    }}}
+      \thefield{entrytype}}}}
 %    \end{macrocode}
 %
 % \subsubsection{Reviews}
@@ -10001,6 +10004,8 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \renewbibmacro*{issue+date}{%
     \ifboolexpr{
       test {\iffieldundef{issue}}
+      and
+      test {\iffieldundef{year}}
       and
       test {\iffieldundef{month}}
     }
