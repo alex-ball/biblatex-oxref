@@ -6459,20 +6459,17 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \xpatchbibdriver{article}{%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \newunit\newblock
-  \iftoggle{bbx:related}
-    {\usebibmacro{related:init}%
-     \usebibmacro{related}}
-    {}%
 }{%
-  \setunit{\addsemicolon\space\bibsentence}%
-  \iftoggle{bbx:related}
-    {\usebibmacro{related:init}%
-     \usebibmacro{related}}
-    {}%
+  \iffieldequalstr{relatedtype}{suppto}{%
+    \setunit{\addsemicolon\space}%
+    \iftoggle{bbx:related}{%
+      \usebibmacro{related:init}%
+      \usebibmacro{related}%
+      \clearfield{related}%
+    }{}%
+  }{}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
 }{}{}
 %    \end{macrocode}
 %
@@ -6487,25 +6484,6 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \printfield{pages}%
   }%
   \newunit}
-%    \end{macrocode}
-%
-% We provide a macro to support the printing of parent periodicals.
-%
-%    \begin{macrocode}
-\newbibmacro*{related:suppto}[1]{%
-  \entrydata*{#1}{%
-    \usedriver{%
-      \ifbibmacroundef{date+extrayear}{}{%
-        \renewbibmacro*{date+extrayear}{}}%
-    }{%
-      \thefield{entrytype}%
-    }%
-  }%
-  \iffieldundef{bookpagination}%
-    {\setunit{\bibpagespunct}}%
-    {\newunit}%
-  \printfield{pages}%
-}
 %    \end{macrocode}
 %
 % \subsection{Monograph-style entries}
@@ -8298,6 +8276,28 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
       \renewbibmacro*{pageref}{}%
     }{%
       \thefield{entrytype}}}}
+%    \end{macrocode}
+%
+% \subsubsection{Supplements}
+%
+% We provide a macro to support the printing of parent periodicals of
+% supplements.
+%
+%    \begin{macrocode}
+\newbibmacro*{related:suppto}[1]{%
+  \entrydata*{#1}{%
+    \usedriver{%
+      \ifbibmacroundef{date+extrayear}{}{%
+        \renewbibmacro*{date+extrayear}{}}%
+    }{%
+      \thefield{entrytype}%
+    }%
+  }%
+  \iffieldundef{bookpagination}%
+    {\setunit{\bibpagespunct}}%
+    {\newunit}%
+  \printfield{pages}%
+}
 %    \end{macrocode}
 %
 % \subsubsection{Reviews}
@@ -11083,7 +11083,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
-  suppto           = {{supplement to}{supplement to}},
+  suppto           = {{Supplement to}{Supplement to}},
   equals           = {{=}{=}},
 %    \end{macrocode}
 %
