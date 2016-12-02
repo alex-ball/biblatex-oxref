@@ -6271,18 +6271,16 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
-% We patch the `journal+issuetitle' macro so that if a work takes up a
+% We renew the `journal+issuetitle' macro so that if a work takes up a
 % whole issue (signified by using `issuetitle' \emph{instead} of
 % `title'), the title and journal title are separated by \enquote{=}
-% instead of the usual punctuation.
-% We insert a new unit after the journal title regardless of what
-% follows.
+% instead of the usual punctuation. It also inserts an appropriate localization
+% string if the publication status demands it.
+% We insert a comma after the journal title, regardless of what follows.
+% There is also a comma after numeric (but not textual) series.
 %
 %    \begin{macrocode}
-\xpatchbibmacro{journal+issuetitle}{%
-  \usebibmacro{journal}%
-  \setunit*{\addspace}%
-}{
+\renewbibmacro*{journal+issuetitle}{%
   \ifboolexpr{
     test {\iffieldundef{title}}
     and
@@ -6302,47 +6300,41 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     }{}}%
   \usebibmacro{journal}%
   \newunit
-}{}{}
-\xpatchbibmacro{journal+issuetitle}{%
-  \newunit\printfield{series}%
-}{%
-  \printfield{series}%
-}{}{}
+  \iffieldundef{series}{}{%
+    \printfield{series}%
+    \ifbibxstring{\thefield{series}}{%
+      \setunit{\addspace}%
+    }{%
+      \newunit}}%
+  \usebibmacro{volume+number+eid}%
+  \setunit{\addspace}%
+  \usebibmacro{issue+date}%
+  \setunit{\addcolon\space}%
+  \usebibmacro{issue}%
+  \newunit}
 %    \end{macrocode}
 %
-% We patch the `title+issuetitle' macro (for whole periodical issues) to insert
-% a new unit after the journal title regardless of what follows.
+% We renew the `title+issuetitle' macro (for whole periodical issues) to apply
+% the same punctuation changes after the periodical name and series. At the
+% same time, we delegate handling of volume and issue numbers to the appropriate
+% macro so we can customize it.
 %
 %    \begin{macrocode}
-\xpatchbibmacro{title+issuetitle}{%
-  \usebibmacro{periodical}%
-  \setunit*{\addspace}%
-}{
+\renewbibmacro*{title+issuetitle}{%
   \usebibmacro{periodical}%
   \newunit
-}{}{}
-\xpatchbibmacro{title+issuetitle}{%
-  \newunit\printfield{series}%
-}{%
-  \printfield{series}%
-}{}{}
-%    \end{macrocode}
-%
-% On last inspection, \pkg{biblatex} hard-coded the punctuation for volumes
-% and issue numbers into the \texttt{title+issuetitle} macro instead of
-% delegating to the appropriate macro. We expect this to change in
-% future but in the meantime correct this ourselves.
-%
-%    \begin{macrocode}
-\xpatchbibmacro{title+issuetitle}{%
-  \printfield{volume}%
-  \setunit*{\adddot}%
-  \printfield{number}%
-  \setunit{\addcomma\space}%
-  \printfield{eid}%
-}{%
+  \iffieldundef{series}{}{%
+    \printfield{series}%
+    \ifbibxstring{\thefield{series}}{%
+      \setunit{\addspace}%
+    }{%
+      \newunit}}%
   \usebibmacro{volume+number+eid}%
-}{}{}
+  \setunit{\addspace}%
+  \usebibmacro{issue+date}%
+  \setunit{\addcolon\space}%
+  \usebibmacro{issue}%
+  \newunit}
 %    \end{macrocode}
 %
 % OGS and NHR provide plentiful options for formatting volume and issue
