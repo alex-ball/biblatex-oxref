@@ -5302,6 +5302,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % \fi
 % \chapter{Bibliography styles}
 %
+% \settocdepth{subsection}
+%
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %<*o>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -5309,7 +5311,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % \setcounter{FancyVerbLine}{19}
 %
-% \subsection{Preliminaries}
+% \subsection{Loading dependencies, setting up languages, applying options}
 %
 % Dependencies:
 % \begin{itemize}
@@ -5326,13 +5328,6 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \RequirePackage{xpatch}
 \RequirePackage{xstring}
 \RequirePackage{graphicx}
-%    \end{macrocode}
-%
-% Here we set some defaults different to the standard ones. The author
-% can still override them.
-%
-%    \begin{macrocode}
-\ExecuteBibliographyOptions{urldate=comp,pagetracker,timezeros=false,time=12h}
 %    \end{macrocode}
 %
 % Language support may be widened in future, but for now we support the
@@ -5401,7 +5396,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % \end{itemize}
 %
 %    \begin{macrocode}
-  anon, pseudo, pseudobib, urldown,
+  anon, pseudo, urldown,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -5417,13 +5412,16 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % We base our styles on the standard on the principle of least surprise
 % (and to aid with maintenance in the face of new \pkg{biblatex} versions).
+% We set some defaults different to the standard ones, but the author can
+% still override them.
 %
 %    \begin{macrocode}
 \RequireBibliographyStyle{standard}
-\ExecuteBibliographyOptions{isbn=false}
+\ExecuteBibliographyOptions{urldate=comp,pagetracker,timezeros=false,time=12h,isbn=false}
 %    \end{macrocode}
 %
-% Here are the default punctuation conventions:
+% Here are the new default punctuation conventions. The new \cs{relatedtypepunct}
+% is for before the relatedtype localization string.
 %
 %    \begin{macrocode}
 \renewcommand*{\labelnamepunct}{\addcomma\space}
@@ -5432,9 +5430,11 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \renewcommand*{\intitlepunct}{\nopunct\space}
 \renewcommand*{\bibnamedash}{\resizebox{2em}{\height}{\textemdash}\addthinspace}
 \renewcommand*{\revsdnamedelim}{\addcomma}
+\newcommand*{\relatedtypepunct}{\addsemicolon\space}
+\renewcommand*{\relateddelim}{\addsemicolon\space}
 %    \end{macrocode}
 %
-% \subsection{Name handling}
+% \subsection{Names}
 %
 % We declare some new formats so that authors/editors/others who appear
 % mid-reference can be handled differently from those that appear at the
@@ -5544,9 +5544,9 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \ifitemannotation{pseudo}{%
       \addspace\printtext[parens]{%
         \iftoggle{blx@ox@scnames}{%
-          \textsc{\bibstring{pseudobib}}%
+          \textsc{\bibsstring{pseudo}}%
         }{%
-          \bibstring{pseudobib}%
+          \bibsstring{pseudo}%
         }}%
     }{}%
     \iftoggle{blx@ox@scnames}{%
@@ -5559,14 +5559,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   }{%
     \ifgiveninits{%
       \usebibmacro{name:title-given-family}%
-        {\ifitemannotation{pseudo}{\bibstring{pseudo}}{}\namepartfamily}%
+        {\ifitemannotation{pseudo}{\biblstring{pseudo}}{}\namepartfamily}%
         {\namepartgiveni}%
         {\namepartprefix}%
         {\namepartsuffix}%
         {\nameparttitle}%
     }{%
       \usebibmacro{name:title-given-family}%
-        {\ifitemannotation{pseudo}{\bibstring{pseudo}}{}\namepartfamily}%
+        {\ifitemannotation{pseudo}{\biblstring{pseudo}}{}\namepartfamily}%
         {\namepartgiven}%
         {\namepartprefix}%
         {\namepartsuffix}%
@@ -6077,7 +6077,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat{origtitle}{\mkbibparens{\mkbibemph{#1}}}
 %    \end{macrocode}
 %
-% \subsection{Date handling}
+% \subsection{Dates and times}
 %
 % Year ranges are truncated (e.g.~2012–3). Therefore, we provide a
 % command that compares two years, and outputs a full or truncated
@@ -6147,7 +6147,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \renewbibmacro*{date}{\usebibmacro{date+time}}
 %    \end{macrocode}
 %
-% \subsection{Other number-like fields}
+% \subsection{Editions, pages, and other number-like fields}
 %
 % We let `edition' take a language key as well as a number
 %
@@ -6265,7 +6265,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat[misc,unpublished]{howpublished}{#1}
 %    \end{macrocode}
 %
-% \subsection{Periodical-style entries}
+% \subsection{Articles and periodicals}
 %
 % Subtypes for articles and similar are in square brackets.
 %
@@ -6486,7 +6486,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \newunit}
 %    \end{macrocode}
 %
-% \subsection{Monograph-style entries}
+% \subsection{Books and works in books}
 %
 % By default, editors do not appear before the title in book or reference
 % entries.
@@ -7193,7 +7193,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% \subsection{Proceedings}
+% \subsection{Works presented at meetings}
 %
 % By default, editors do not appear before the title in proceedings
 % entries.
@@ -7644,101 +7644,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% \subsection{Intrinsically online resources}
-%
-% The titles of web pages and similar intrinsically online resources
-% are written in roman text within quotes.
-%
-%    \begin{macrocode}
-\DeclareFieldFormat[online]{title}{%
-  \def\currentfield{title}%
-  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
-  \undef\currentfield}
-
-%    \end{macrocode}
-%
-% We provide an `onlinetype' macro for clarifying the type of online
-% material.
-%
-%    \begin{macrocode}
-\newbibmacro*{onlinetype}{%
-  \ifboolexpr{
-    test {\iffieldundef{url}}
-    or
-    test {\iffieldundef{entrysubtype}}
-  }{}{%
-    \ifbibxstring{\thefield{entrysubtype}}{%
-      \printtext[brackets]{\bibstring{\thefield{entrysubtype}}}%
-    }{}}}
-%    \end{macrocode}
-%
-% The changes to the `online' driver compared to the standard style
-% are as follows:
-% \begin{itemize}
-%   \item
-%   We support the use of `maintitle' for, say, the title of the wesbite
-%   in which the web page is located. This comes after `title'.
-%   \item
-%   We support the use of `entrysubtype' to specify the nature of the
-%   online resource (following the practice of 'biblatex-apa' and
-%   others). This comes after `maintitle'.
-%   \item
-%   In most cases, the date is wrapped in parentheses if present.
-%   With Twitter posts, the time and date are printed bare.
-%   \item
-%   We support displaying a publisher after the date.
-%   \item
-%   before `related', there is a full stop instead of a comma.
-% \end{itemize}
-%
-%    \begin{macrocode}
-\DeclareBibliographyDriver{online}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/editor+others/translator+others}%
-  \setunit{\printdelim{nametitledelim}}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \usebibmacro{maintitle}
-  \setunit{\addspace}%
-  \usebibmacro{onlinetype}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor+others}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \printlist{organization}%
-  \iffieldundef{year}{}{%
-    \setunit{\addspace}\newblock
-    \printtext[parens]{\usebibmacro{date+time}}%
-  }%
-  \newunit\newblock
-  \printlist{publisher}%
-  \newunit\newblock
-  \iftoggle{bbx:eprint}
-  {\usebibmacro{eprint}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{url+urldate}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-%    \end{macrocode}
-%
-% \subsection{Audiovisual resources}
+% \subsection{Audiovisual materials}
 %
 % The publication block for audiovisual resources is quite different
 % from the normal, as the `type', `series' and `number' come
@@ -7920,7 +7826,103 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
-% \subsection{Software}
+% \subsection{Digital media}
+%
+% \subsubsection{Website articles and social media}
+%
+% The titles of web pages and similar intrinsically online resources
+% are written in roman text within quotes.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[online]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
+  \undef\currentfield}
+
+%    \end{macrocode}
+%
+% We provide an `onlinetype' macro for clarifying the type of online
+% material.
+%
+%    \begin{macrocode}
+\newbibmacro*{onlinetype}{%
+  \ifboolexpr{
+    test {\iffieldundef{url}}
+    or
+    test {\iffieldundef{entrysubtype}}
+  }{}{%
+    \ifbibxstring{\thefield{entrysubtype}}{%
+      \printtext[brackets]{\bibstring{\thefield{entrysubtype}}}%
+    }{}}}
+%    \end{macrocode}
+%
+% The changes to the `online' driver compared to the standard style
+% are as follows:
+% \begin{itemize}
+%   \item
+%   We support the use of `maintitle' for, say, the title of the wesbite
+%   in which the web page is located. This comes after `title'.
+%   \item
+%   We support the use of `entrysubtype' to specify the nature of the
+%   online resource (following the practice of 'biblatex-apa' and
+%   others). This comes after `maintitle'.
+%   \item
+%   In most cases, the date is wrapped in parentheses if present.
+%   With Twitter posts, the time and date are printed bare.
+%   \item
+%   We support displaying a publisher after the date.
+%   \item
+%   before `related', there is a full stop instead of a comma.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \usebibmacro{maintitle}
+  \setunit{\addspace}%
+  \usebibmacro{onlinetype}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \printlist{organization}%
+  \iffieldundef{year}{}{%
+    \setunit{\addspace}\newblock
+    \printtext[parens]{\usebibmacro{date+time}}%
+  }%
+  \newunit\newblock
+  \printlist{publisher}%
+  \newunit\newblock
+  \iftoggle{bbx:eprint}
+  {\usebibmacro{eprint}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{url+urldate}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\addperiod\addspace}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% \subsubsection{Software}
 %
 % The version for software goes between the \texttt{title} and \texttt{titleaddon}.
 %
@@ -7993,466 +7995,12 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% \subsection{Datasets}
+% \subsubsection{Datasets}
 %
 % Datasets are currently treated like manuals
 %
 %    \begin{macrocode}
 \DeclareBibliographyAlias{dataset}{manual}
-%    \end{macrocode}
-%
-% \subsection{Manuscripts}
-%
-% In the spirit of compatibility, this code is adapted from
-% \textsf{biblatex-manuscripts-philology} by Maïeul Rouquette.
-%
-% Here are the additional punctuation commands.
-%
-%    \begin{macrocode}
-\newcommand{\locationlibrarypunct}{\addcomma\addspace}
-\newcommand{\collectionshelfmarkpunct}{\addspace}
-\newcommand{\datingpagespunct}{\addcomma\addspace}
-\newcommand{\librarycollectionpunct}{\addcomma\addspace}
-\newcommand{\pagetotalpagespunct}{\addcomma\addspace}
-\newcommand{\columnslayerpunct}{\addsemicolon\addspace}%
-%    \end{macrocode}
-%
-% Here are the configurable macros for the two sides of a folio.
-%
-%    \begin{macrocode}
-\def\recto{r}
-\def\verso{v}
-\NumCheckSetup{\def\recto{r}\def\verso{v}}
-\DeclareNumChars*{rv}
-%    \end{macrocode}
-%
-% Here are some special field formats for the `manuscripts' driver.
-% Note that the title is transformed into a descriptor by means of
-% an annotation, rather than using a dedicated field. This greatly
-% simplifies the code used elsewhere.
-%
-%    \begin{macrocode}
-\DeclareFieldFormat[manuscript,unpublished]{title}{%
-  \def\currentfield{title}%
-  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
-  \undef\currentfield}
-\DeclareFieldFormat{columns+layer}{\mkbibparens{#1}}
-\DeclareFieldFormat{columns}{\mkbibparens{#1}}
-\DeclareFieldFormat{layer}{\mkbibparens{#1}}
-\DeclareFieldFormat{dating}{#1\isdot}%
-\DeclareFieldFormat{support}{\ifbibstring{#1}{\bibstring{#1}}{#1}}
-%    \end{macrocode}
-%
-% Here are the unique bibmacros used by the `manuscripts' driver.
-% We hide the date if there is no author or title to prevent it
-% appearing as the first element in the reference. Similarly, we
-% hide the (vague) `dating' field if the (exact) date is displayed.
-%
-%    \begin{macrocode}
-\newbibmacro{manuscript:date}{%
-  \ifboolexpr{
-    test {\ifnameundef{author}}
-    and
-    test {\iffieldundef{title}}
-  }{}{\usebibmacro{date}}}
-\newbibmacro{dating}{%
-  \ifboolexpr{(
-      test {\ifnameundef{author}}
-      and
-      test {\iffieldundef{title}}
-    ) or
-    test {\iffieldundef{year}}
-  }{%
-    \printfield{dating}%
-  }{}}
-%    \end{macrocode}
-%
-% We follow the structure of the \textsf{biblatex-manuscripts-philology}
-% approach to allow special formatting to be applied to the collection
-% and shelfmark, but we do not actually apply any.
-%
-%    \begin{macrocode}
-\newbibmacro{location+library+collection+shelfmark}{%
-  \printfield{library}%
-  \setunit{\locationlibrarypunct}%
-  \printlist{location}%
-  \setunit{\librarycollectionpunct}%
-  \usebibmacro{collection+shelfmark}}
-\newbibmacro{collection+shelfmark}{%
-  \ifboolexpr{
-    test {\iffieldundef{collection}}
-    and
-    test {\iffieldundef{shelfmark}}
-  }{}{%
-    \printtext[collection+shelfmark]{%
-      \printfield{collection}%
-      \setunit*{\collectionshelfmarkpunct}%
-      \printfield{shelfmark}}}}
-%    \end{macrocode}
-%
-% Again, following \textsf{biblatex-manuscripts-philology}, we allow
-% different formatting to be applied to columns and layers according
-% to whether they occur adjacently or not, as they might be separated
-% by a page specification.
-%
-%    \begin{macrocode}
-\newbibmacro{manuscript:pages}{%
-  \printfield{pagetotal}%
-  \setunit{\addspace}%
-  \iffieldundef{pages}{%
-    \usebibmacro{manuscript:columns+layer}%
-  }{%
-    \usebibmacro{manuscript:columns}%
-    \setunit{\pagetotalpagespunct}%
-    \printfield{pages}%
-    \setunit{\addspace}%
-    \usebibmacro{manuscript:layer}}}
-\newbibmacro{manuscript:columns}{%
-  \iffieldundef{columns}{}{%
-    \printtext[columns]{\bibstring{\strfield{columns}column}}}%
-}%
-\newbibmacro{manuscript:layer}{%
-  \iffieldundef{layer}{}{%
-    \printtext[layer]{\bibstring{\strfield{layer}layer}}}%
-}%
-\newbibmacro{manuscript:columns+layer}{%
-  \ifboolexpr{
-    test {\iffieldundef{columns}}
-    or
-    test{\iffieldundef{layer}}
-  }{%
-    \usebibmacro{manuscript:columns}%
-    \usebibmacro{manuscript:layer}%
-  }{%
-    \printtext[columns+layer]{%
-      \bibstring{\strfield{columns}column}%
-      \setunit*{\columnslayerpunct}%
-      \bibstring{\strfield{layer}layer}}}}%
-%    \end{macrocode}
-%
-% Putting it all together, here is the `manuscript' driver.
-%
-%    \begin{macrocode}
-\DeclareBibliographyDriver{manuscript}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author}%
-  \setunit{\printdelim{nametitledelim}}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \printfield{howpublished}%
-  \newunit\newblock
-  \printfield{note}%
-  \newunit\newblock
-  \usebibmacro{manuscript:date}%
-  \newunit\newblock
-  \usebibmacro{location+library+collection+shelfmark}%
-  \newunit
-  \printfield{support}%
-  \newunit
-  \usebibmacro{dating}%
-  \setunit{\datingpagespunct}
-  \usebibmacro{manuscript:pages}
-  \iftoggle{bbx:related}
-    {\newunit\newblock%
-     \usebibmacro{related:init}%
-     \usebibmacro{related}}
-    {}%
-  \newunit\newblock%
-  \iftoggle{bbx:url}%
-    {\usebibmacro{url+urldate}}%
-    {}%
-  \usebibmacro{finentry}}
-%    \end{macrocode}
-%
-% We provide an alternative bibmacro for doing much the same but with
-% the regular \textsf{biblatex} fields.
-%
-%    \begin{macrocode}
-\newbibmacro*{library+location+series+number}{%
-  \printfield{library}%
-  \setunit{\locationlibrarypunct}%
-  \printlist{location}%
-  \setunit{\librarycollectionpunct}%
-  \ifboolexpr{
-    test {\iffieldundef{series}}
-    and
-    test {\iffieldundef{number}}
-  }{}{%
-    \printtext[collection+shelfmark]{%
-      \printfield{series}%
-      \setunit*{\collectionshelfmarkpunct}%
-      \printfield{number}}}}
-%    \end{macrocode}
-%
-% Lastly, we adapt the `unpublished' driver to allow it to do a similar
-% thing but with the regular \textsf{biblatex} fields. The presence of
-% the `library' field is what triggers `manuscript mode'.
-%
-%    \begin{macrocode}
-\newtoggle{blx@ox@ms}
-\DeclareBibliographyDriver{unpublished}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \iffieldundef{library}{\togglefalse{blx@ox@ms}}{\toggletrue{blx@ox@ms}}%
-  \usebibmacro{author}%
-  \setunit{\printdelim{nametitledelim}}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \printfield{howpublished}%
-  \newunit\newblock
-  \printfield{note}%
-  \newunit\newblock
-  \iftoggle{blx@ox@ms}{%
-    \usebibmacro{manuscript:date}%
-    \newunit\newblock
-    \usebibmacro{library+location+series+number}%
-    \newunit
-    \printfield{support}%
-    \newunit
-    \usebibmacro{dating}%
-    \setunit{\datingpagespunct}
-    \usebibmacro{manuscript:pages}
-  }{%
-    \usebibmacro{location+date}%
-  }%
-  \newunit\newblock
-  \iftoggle{bbx:url}
-    {\usebibmacro{url+urldate}}
-    {}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \newunit\newblock
-  \iftoggle{bbx:related}
-    {\usebibmacro{related:init}%
-     \usebibmacro{related}}
-    {}%
-  \usebibmacro{finentry}}
-
-%    \end{macrocode}
-%
-% \subsection{Related entries}
-%
-% \subsubsection{Reprints}
-%
-% We take advantage of the Biber-specific mechanism of relating items
-% in order to handle reprints. The presence or otherwise of the
-% `journaltitle' field is used to determine whether this is a reprint
-% from a book (first block) or a periodical (second block).
-%
-%    \begin{macrocode}
-\renewbibmacro*{related:reprintfrom}[1]{%
-  \entrydata*{#1}{%
-    \nopunct
-    \usedriver{%
-      \ifnameundef{savedauthor}{%
-        \ifnameundef{savededitor}{}{%
-          \ifnamesequal{editor}{savededitor}{%
-            \clearname{editor}%
-          }{}}%
-      }{%
-        \ifnamesequal{author}{savedauthor}{%
-          \clearname{author}%
-        }{}}%
-      \iffieldundef{savedtitle}{}{%
-        \iffieldsequal{savedtitle}{title}{%
-          \clearfield{title}%
-        }{}}%
-      \renewbibmacro*{related:init}{}%
-      \DeclareNameAlias{sortname}{default}%
-      \ifbibmacroundef{date+extrayear}{}{%
-        \renewbibmacro*{date+extrayear}{}%
-        \renewbibmacro*{date}{\printdate}}%
-      \renewbibmacro*{pageref}{}%
-    }{%
-      \thefield{entrytype}}}}
-%    \end{macrocode}
-%
-% \subsubsection{Supplements}
-%
-% We provide a macro to support the printing of parent periodicals of
-% supplements.
-%
-%    \begin{macrocode}
-\newbibmacro*{related:suppto}[1]{%
-  \entrydata*{#1}{%
-    \usedriver{%
-      \ifbibmacroundef{date+extrayear}{}{%
-        \renewbibmacro*{date+extrayear}{}}%
-    }{%
-      \thefield{entrytype}%
-    }%
-  }%
-  \iffieldundef{bookpagination}%
-    {\setunit{\bibpagespunct}}%
-    {\newunit}%
-  \printfield{pages}%
-}
-%    \end{macrocode}
-%
-% \subsubsection{Reviews}
-%
-% We ensure that the field formatting for `review' entries matches that
-% for `article' entries.
-%
-%    \begin{macrocode}
-\DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[review]{volume}{#1}% volume of a journal
-\DeclareFieldFormat[review]{number}{#1}% number of a journal
-\DeclareFieldFormat[review]{series}{% series of a journal
-  \ifinteger{#1}
-  {\mkbibordseries{#1}~\bibstring{jourser}}
-  {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
-%    \end{macrocode}
-%
-% This macro provides a non-Biber method of inserting a formatted
-% reference within a review reference. It is deprecated and will
-% be removed in a future release.
-%
-%    \begin{macrocode}
-\newbibmacro*{reviewof}{}
-\DeclareBibliographyCategory{reviewed}
-\DeclareEntryOption{reviewof}{%
-  \renewbibmacro*{reviewof}{%
-    \bibstring{reviewof}%
-    \setunit{\addspace}%
-    \printtext{{\settoggle{blx@bibliography}{false}\fullcite{#1}}}%
-  }%
-  \addtocategory{reviewed}{#1}%
-}
-%    \end{macrocode}
-%
-% We take advantage of the Biber-specific mechanism of relating items
-% in order to handle reviews. Compared to the default code, this is
-% simpler in that we don't check for repeated authors\slash editors (it
-% would be a rather biased review!), we directly set the author format,
-% and we don't convert \textsf{oxyear} format back to \textsf{oxnotes}.
-%
-%    \begin{macrocode}
-\newbibmacro*{related:reviewof}[1]{%
-  \entrydata*{#1}{%
-    \usedriver{%
-      \renewbibmacro*{related:init}{}%
-      \DeclareNameAlias{author}{given-family}%
-      \renewbibmacro*{pageref}{}%
-    }{\thefield{entrytype}}%
-  }%
-}
-%    \end{macrocode}
-%
-% Since a review is a special kind of journal article, the `review'
-% driver is based on the `article' one, the difference being that the
-% `related' macro comes just before `journal+issuetitle'. Oxford style
-% links the two with \enquote{in}.
-%
-%    \begin{macrocode}
-\DeclareBibliographyDriver{review}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/translator+others}%
-  \setunit{\printdelim{nametitledelim}}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{bytranslator+others}%
-  \newunit\newblock
-  \printfield{version}%
-  \newunit\newblock
-  \usebibmacro{reviewof}%
-  \newunit\newblock
-  \iftoggle{bbx:related}{%
-    \usebibmacro{related:init}%
-    \usebibmacro{related}%
-  }{}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \unspace
-  \usebibmacro{journal+issuetitle}%
-  \newunit
-  \usebibmacro{byeditor+others}%
-  \iffieldundef{note}%
-    {\newunit}%
-    {\setunit{\addsemicolon\addspace}}%
-  \usebibmacro{note+pages}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-    {\printfield{issn}}
-    {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
-
-%    \end{macrocode}
-%
-% \subsubsection{Subitems}
-%
-% We provide support for items in items in items. The outer two layers should
-% be taken care of with an `incollection' entry or equivalent. The innermost
-% item should be a `misc' entry. While we're at it, we provide descriptor
-% support for `misc' entries.
-%
-%    \begin{macrocode}
-\DeclareFieldFormat[misc]{title}{%
-  \def\currentfield{title}%
-  \iffieldannotation{descriptor}{#1}{%
-    \iffieldequalstr{relatedtype}{in}{%
-      \mkbibquote{#1\isdot}%
-    }{%
-      \mkbibemph{#1}%
-    }}%
-  \undef\currentfield}
-\newbibmacro*{related:in}[1]{%
-  \entrydata*{#1}{%
-    \usedriver
-      {\ifnameundef{savedauthor}
-         {\ifnameundef{savededitor}
-            {}
-            {\ifnamesequal{editor}{savededitor}
-               {\clearname{editor}}
-               {}}}
-         {\ifnamesequal{author}{savedauthor}
-            {\clearname{author}}
-            {}}%
-       \renewbibmacro*{related:init}{}%
-       \DeclareNameAlias{sortname}{default}%
-       \ifbibmacroundef{date+extrayear}
-         {}
-         {\renewbibmacro*{date+extrayear}{}%
-          \renewbibmacro*{date}{\printdate}}%
-       \renewbibmacro*{pageref}{}}
-      {\thefield{entrytype}}%
-    \ifboolexpr{
-      test {\iffieldundef{pages}}
-      or
-      test {\iffieldundef{savedpages}}
-    }{%
-      \newunit\newblock
-    }{%
-      \setunit{\addspace}%
-      \bibstring{thiscite}%
-      \printunit{\addspace}%
-    }%
-  }%
-  \usebibmacro{chapter+pages}%
-}
-
 %    \end{macrocode}
 %
 % \subsection{Legal references}
@@ -8461,7 +8009,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 % fiddly coding. This entire section is adapted from \textsf{oscola} by
 % Paul Stanley.
 %
-% \subsection{Entry options}
+% \subsubsection{Entry options}
 %
 %    \begin{macrocode}
 \newtoggle{bbx:scotstyle}
@@ -8481,7 +8029,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \settoggle{bbx:altcourt}{#1}}
 %    \end{macrocode}
 %
-% \subsection{Field formats}
+% \subsubsection{Field formats}
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{casenotetitle}{\mkbibquote{\mkbibemph{#1}}}
@@ -8580,7 +8128,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
-% \subsection{Pagination formats}
+% \subsubsection{Pagination formats}
 %
 % We define an alternative to \cs{mkpageprefix} that takes a pagination key
 % directly.
@@ -8616,7 +8164,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
       \mkcomprange[{\mkpageprefix[pagination]}]{#1}}}}
 %    \end{macrocode}
 %
-% \subsection{Shorthands}
+% \subsubsection{Shorthands}
 %
 % With legal references, the introduction of shorthands is less verbose.
 %
@@ -8641,7 +8189,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
-% \subsection{Common macros}
+% \subsubsection{Common macros}
 %
 %    \begin{macrocode}
 \newbibmacro*{issue/volume}{%
@@ -9399,10 +8947,464 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
-% \subsection{Common macros}
+% We don't really deal with commentaries as distinct from books.
 %
 %    \begin{macrocode}
 \DeclareBibliographyAlias{commentary}{book}
+%    \end{macrocode}
+%
+% \subsection{Specialist materials: manuscripts}
+%
+% In the spirit of compatibility, this code is adapted from
+% \textsf{biblatex-manuscripts-philology} by Maïeul Rouquette.
+%
+% Here are the additional punctuation commands.
+%
+%    \begin{macrocode}
+\newcommand{\locationlibrarypunct}{\addcomma\addspace}
+\newcommand{\collectionshelfmarkpunct}{\addspace}
+\newcommand{\datingpagespunct}{\addcomma\addspace}
+\newcommand{\librarycollectionpunct}{\addcomma\addspace}
+\newcommand{\pagetotalpagespunct}{\addcomma\addspace}
+\newcommand{\columnslayerpunct}{\addsemicolon\addspace}%
+%    \end{macrocode}
+%
+% Here are the configurable macros for the two sides of a folio.
+%
+%    \begin{macrocode}
+\def\recto{r}
+\def\verso{v}
+\NumCheckSetup{\def\recto{r}\def\verso{v}}
+\DeclareNumChars*{rv}
+%    \end{macrocode}
+%
+% Here are some special field formats for the `manuscripts' driver.
+% Note that the title is transformed into a descriptor by means of
+% an annotation, rather than using a dedicated field. This greatly
+% simplifies the code used elsewhere.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[manuscript,unpublished]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
+  \undef\currentfield}
+\DeclareFieldFormat{columns+layer}{\mkbibparens{#1}}
+\DeclareFieldFormat{columns}{\mkbibparens{#1}}
+\DeclareFieldFormat{layer}{\mkbibparens{#1}}
+\DeclareFieldFormat{dating}{#1\isdot}%
+\DeclareFieldFormat{support}{\ifbibstring{#1}{\bibstring{#1}}{#1}}
+%    \end{macrocode}
+%
+% Here are the unique bibmacros used by the `manuscripts' driver.
+% We hide the date if there is no author or title to prevent it
+% appearing as the first element in the reference. Similarly, we
+% hide the (vague) `dating' field if the (exact) date is displayed.
+%
+%    \begin{macrocode}
+\newbibmacro{manuscript:date}{%
+  \ifboolexpr{
+    test {\ifnameundef{author}}
+    and
+    test {\iffieldundef{title}}
+  }{}{\usebibmacro{date}}}
+\newbibmacro{dating}{%
+  \ifboolexpr{(
+      test {\ifnameundef{author}}
+      and
+      test {\iffieldundef{title}}
+    ) or
+    test {\iffieldundef{year}}
+  }{%
+    \printfield{dating}%
+  }{}}
+%    \end{macrocode}
+%
+% We follow the structure of the \textsf{biblatex-manuscripts-philology}
+% approach to allow special formatting to be applied to the collection
+% and shelfmark, but we do not actually apply any.
+%
+%    \begin{macrocode}
+\newbibmacro{location+library+collection+shelfmark}{%
+  \printfield{library}%
+  \setunit{\locationlibrarypunct}%
+  \printlist{location}%
+  \setunit{\librarycollectionpunct}%
+  \usebibmacro{collection+shelfmark}}
+\newbibmacro{collection+shelfmark}{%
+  \ifboolexpr{
+    test {\iffieldundef{collection}}
+    and
+    test {\iffieldundef{shelfmark}}
+  }{}{%
+    \printtext[collection+shelfmark]{%
+      \printfield{collection}%
+      \setunit*{\collectionshelfmarkpunct}%
+      \printfield{shelfmark}}}}
+%    \end{macrocode}
+%
+% Again, following \textsf{biblatex-manuscripts-philology}, we allow
+% different formatting to be applied to columns and layers according
+% to whether they occur adjacently or not, as they might be separated
+% by a page specification.
+%
+%    \begin{macrocode}
+\newbibmacro{manuscript:pages}{%
+  \printfield{pagetotal}%
+  \setunit{\addspace}%
+  \iffieldundef{pages}{%
+    \usebibmacro{manuscript:columns+layer}%
+  }{%
+    \usebibmacro{manuscript:columns}%
+    \setunit{\pagetotalpagespunct}%
+    \printfield{pages}%
+    \setunit{\addspace}%
+    \usebibmacro{manuscript:layer}}}
+\newbibmacro{manuscript:columns}{%
+  \iffieldundef{columns}{}{%
+    \printtext[columns]{\bibstring{\strfield{columns}column}}}%
+}%
+\newbibmacro{manuscript:layer}{%
+  \iffieldundef{layer}{}{%
+    \printtext[layer]{\bibstring{\strfield{layer}layer}}}%
+}%
+\newbibmacro{manuscript:columns+layer}{%
+  \ifboolexpr{
+    test {\iffieldundef{columns}}
+    or
+    test{\iffieldundef{layer}}
+  }{%
+    \usebibmacro{manuscript:columns}%
+    \usebibmacro{manuscript:layer}%
+  }{%
+    \printtext[columns+layer]{%
+      \bibstring{\strfield{columns}column}%
+      \setunit*{\columnslayerpunct}%
+      \bibstring{\strfield{layer}layer}}}}%
+%    \end{macrocode}
+%
+% Putting it all together, here is the `manuscript' driver.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{manuscript}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{howpublished}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{manuscript:date}%
+  \newunit\newblock
+  \usebibmacro{location+library+collection+shelfmark}%
+  \newunit
+  \printfield{support}%
+  \newunit
+  \usebibmacro{dating}%
+  \setunit{\datingpagespunct}
+  \usebibmacro{manuscript:pages}
+  \iftoggle{bbx:related}
+    {\newunit\newblock%
+     \usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \newunit\newblock%
+  \iftoggle{bbx:url}%
+    {\usebibmacro{url+urldate}}%
+    {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% We provide an alternative bibmacro for doing much the same but with
+% the regular \textsf{biblatex} fields.
+%
+%    \begin{macrocode}
+\newbibmacro*{library+location+series+number}{%
+  \printfield{library}%
+  \setunit{\locationlibrarypunct}%
+  \printlist{location}%
+  \setunit{\librarycollectionpunct}%
+  \ifboolexpr{
+    test {\iffieldundef{series}}
+    and
+    test {\iffieldundef{number}}
+  }{}{%
+    \printtext[collection+shelfmark]{%
+      \printfield{series}%
+      \setunit*{\collectionshelfmarkpunct}%
+      \printfield{number}}}}
+%    \end{macrocode}
+%
+% Lastly, we adapt the `unpublished' driver to allow it to do a similar
+% thing but with the regular \textsf{biblatex} fields. The presence of
+% the `library' field is what triggers `manuscript mode'.
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@ms}
+\DeclareBibliographyDriver{unpublished}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iffieldundef{library}{\togglefalse{blx@ox@ms}}{\toggletrue{blx@ox@ms}}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{howpublished}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \iftoggle{blx@ox@ms}{%
+    \usebibmacro{manuscript:date}%
+    \newunit\newblock
+    \usebibmacro{library+location+series+number}%
+    \newunit
+    \printfield{support}%
+    \newunit
+    \usebibmacro{dating}%
+    \setunit{\datingpagespunct}
+    \usebibmacro{manuscript:pages}
+  }{%
+    \usebibmacro{location+date}%
+  }%
+  \newunit\newblock
+  \iftoggle{bbx:url}
+    {\usebibmacro{url+urldate}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
+
+%    \end{macrocode}
+%
+% \subsection{Related entries}
+%
+% \subsubsection{Reprints}
+%
+% We take advantage of the Biber-specific mechanism of relating items
+% in order to handle reprints. The presence or otherwise of the
+% `journaltitle' field is used to determine whether this is a reprint
+% from a book (first block) or a periodical (second block).
+%
+%    \begin{macrocode}
+\renewbibmacro*{related:reprintfrom}[1]{%
+  \entrydata*{#1}{%
+    \nopunct
+    \usedriver{%
+      \ifnameundef{savedauthor}{%
+        \ifnameundef{savededitor}{}{%
+          \ifnamesequal{editor}{savededitor}{%
+            \clearname{editor}%
+          }{}}%
+      }{%
+        \ifnamesequal{author}{savedauthor}{%
+          \clearname{author}%
+        }{}}%
+      \iffieldundef{savedtitle}{}{%
+        \iffieldsequal{savedtitle}{title}{%
+          \clearfield{title}%
+        }{}}%
+      \renewbibmacro*{related:init}{}%
+      \DeclareNameAlias{sortname}{default}%
+      \ifbibmacroundef{date+extrayear}{}{%
+        \renewbibmacro*{date+extrayear}{}%
+        \renewbibmacro*{date}{\printdate}}%
+      \renewbibmacro*{pageref}{}%
+    }{%
+      \thefield{entrytype}}}}
+%    \end{macrocode}
+%
+% \subsubsection{Supplements}
+%
+% We provide a macro to support the printing of parent periodicals of
+% supplements.
+%
+%    \begin{macrocode}
+\newbibmacro*{related:suppto}[1]{%
+  \entrydata*{#1}{%
+    \usedriver{%
+      \ifbibmacroundef{date+extrayear}{}{%
+        \renewbibmacro*{date+extrayear}{}}%
+    }{%
+      \thefield{entrytype}%
+    }%
+  }%
+  \iffieldundef{bookpagination}%
+    {\setunit{\bibpagespunct}}%
+    {\newunit}%
+  \printfield{pages}%
+}
+%    \end{macrocode}
+%
+% \subsubsection{Reviews}
+%
+% We ensure that the field formatting for `review' entries matches that
+% for `article' entries.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[review]{volume}{#1}% volume of a journal
+\DeclareFieldFormat[review]{number}{#1}% number of a journal
+\DeclareFieldFormat[review]{series}{% series of a journal
+  \ifinteger{#1}
+  {\mkbibordseries{#1}~\bibstring{jourser}}
+  {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
+%    \end{macrocode}
+%
+% This macro provides a non-Biber method of inserting a formatted
+% reference within a review reference. It is deprecated and will
+% be removed in a future release.
+%
+%    \begin{macrocode}
+\newbibmacro*{reviewof}{}
+\DeclareBibliographyCategory{reviewed}
+\DeclareEntryOption{reviewof}{%
+  \renewbibmacro*{reviewof}{%
+    \bibstring{reviewof}%
+    \setunit{\addspace}%
+    \printtext{{\settoggle{blx@bibliography}{false}\fullcite{#1}}}%
+  }%
+  \addtocategory{reviewed}{#1}%
+}
+%    \end{macrocode}
+%
+% We take advantage of the Biber-specific mechanism of relating items
+% in order to handle reviews. Compared to the default code, this is
+% simpler in that we don't check for repeated authors\slash editors (it
+% would be a rather biased review!), we directly set the author format,
+% and we don't convert \textsf{oxyear} format back to \textsf{oxnotes}.
+%
+%    \begin{macrocode}
+\newbibmacro*{related:reviewof}[1]{%
+  \entrydata*{#1}{%
+    \usedriver{%
+      \renewbibmacro*{related:init}{}%
+      \DeclareNameAlias{author}{given-family}%
+      \renewbibmacro*{pageref}{}%
+    }{\thefield{entrytype}}%
+  }%
+}
+%    \end{macrocode}
+%
+% Since a review is a special kind of journal article, the `review'
+% driver is based on the `article' one, the difference being that the
+% `related' macro comes just before `journal+issuetitle'. Oxford style
+% links the two with \enquote{in}.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{review}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{bytranslator+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit\newblock
+  \usebibmacro{reviewof}%
+  \newunit\newblock
+  \iftoggle{bbx:related}{%
+    \usebibmacro{related:init}%
+    \usebibmacro{related}%
+  }{}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \unspace
+  \usebibmacro{journal+issuetitle}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \iffieldundef{note}%
+    {\newunit}%
+    {\setunit{\addsemicolon\addspace}}%
+  \usebibmacro{note+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+%    \end{macrocode}
+%
+% \subsubsection{Subitems}
+%
+% We provide support for items in items in items. The outer two layers should
+% be taken care of with an `incollection' entry or equivalent. The innermost
+% item should be a `misc' entry. While we're at it, we provide descriptor
+% support for `misc' entries.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[misc]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{%
+    \iffieldequalstr{relatedtype}{in}{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}%
+    }}%
+  \undef\currentfield}
+\newbibmacro*{related:in}[1]{%
+  \entrydata*{#1}{%
+    \usedriver
+      {\ifnameundef{savedauthor}
+         {\ifnameundef{savededitor}
+            {}
+            {\ifnamesequal{editor}{savededitor}
+               {\clearname{editor}}
+               {}}}
+         {\ifnamesequal{author}{savedauthor}
+            {\clearname{author}}
+            {}}%
+       \renewbibmacro*{related:init}{}%
+       \DeclareNameAlias{sortname}{default}%
+       \ifbibmacroundef{date+extrayear}
+         {}
+         {\renewbibmacro*{date+extrayear}{}%
+          \renewbibmacro*{date}{\printdate}}%
+       \renewbibmacro*{pageref}{}}
+      {\thefield{entrytype}}%
+    \ifboolexpr{
+      test {\iffieldundef{pages}}
+      or
+      test {\iffieldundef{savedpages}}
+    }{%
+      \newunit\newblock
+    }{%
+      \setunit{\addspace}%
+      \bibstring{thiscite}%
+      \printunit{\addspace}%
+    }%
+  }%
+  \usebibmacro{chapter+pages}%
+}
+
 %    \end{macrocode}
 %
 % \subsection{Source maps}
@@ -10452,7 +10454,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   }%
   \savefield{hash}{\bbx@ox@lasthash}%
   \ifitemannotation{pseudo}{%
-    \addspace\printtext[parens]{\bibstring{pseudobib}}%
+    \addspace\printtext[parens]{\bibsstring{pseudo}}%
   }{}%
   \ifitemannotation{inferred}{\bibclosebracket}{}%
   \usebibmacro{name:andothers}%
@@ -10874,6 +10876,8 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %
 % \chapter{Citation styles}
 %
+% \settocdepth{section}
+%
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %<*n>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11141,8 +11145,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %
 %    \begin{macrocode}
   anon             = {{Anonymous}{Anon\adddot}},
-  pseudo           = {{Pseudo-}{Pseudo-}},
-  pseudobib        = {{Pseudo-}{Ps\adddot-}},
+  pseudo           = {{Pseudo-}{Ps\adddot-}},
   urldown          = {{downloaded}{downloaded}},
 %    \end{macrocode}
 %
