@@ -6428,9 +6428,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% We patch the `article' driver to remove the \enquote{in} macro, move the
-% related macro forward a bit, and adjust punctuation after editors and page
-% references.
+% We patch the `article' driver to remove the \enquote{in} macro and insert a
+% handler for the suppto relation.
 %
 %    \begin{macrocode}
 \xpatchbibdriver{article}{%
@@ -6440,15 +6439,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \usebibmacro{journal+issuetitle}%
 }{}{}
 \xpatchbibdriver{article}{%
-  \usebibmacro{byeditor+others}%
   \newunit
-}{%
-  \usebibmacro{byeditor+others}%
-  \iffieldundef{note}{\newunit}{\setunit{\addsemicolon\addspace}}
-}{}{}
-\xpatchbibdriver{article}{%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
+  \usebibmacro{note+pages}%
 }{%
   \iffieldequalstr{relatedtype}{suppto}{%
     \setunit{\addsemicolon\space}%
@@ -6458,22 +6450,28 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       \clearfield{related}%
     }{}%
   }{}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
+  \newunit
+  \usebibmacro{note+pages}%
 }{}{}
 %    \end{macrocode}
 %
-% We suppress the printing of the page numbers if the article is in a
-% supplement.
+% We make the punctuation before related items configurable.
 %
 %    \begin{macrocode}
-\renewbibmacro*{note+pages}{%
-  \printfield{note}%
-  \setunit{\bibpagespunct}%
-  \iffieldequalstr{relatedtype}{suppto}{}{%
-    \printfield{pages}%
-  }%
-  \newunit}
+\xpatchbibdriver{article}{%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+}{%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+}{}{}
+\xpatchbibdriver{periodical}{%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+}{%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+}{}{}
 %    \end{macrocode}
 %
 % \subsection{Books and works in books}
@@ -6667,8 +6665,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %   `series' to `date' information is delegated to a separate macro;
 %   \item
 %   support is added for `howpublished' field;
-%   \item
-%   before `related', there is a full stop instead of a comma.
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -6706,7 +6702,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -6726,8 +6722,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %   `note' is processed after `volumes';
 %   \item
 %   `series' to `date' information is delegated to a separate macro;
-%   \item
-%   before `related', there is a full stop instead of a comma.
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -6768,7 +6762,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -6820,7 +6814,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -6878,7 +6872,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -6920,7 +6914,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -6968,7 +6962,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7020,7 +7014,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7067,7 +7061,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7118,7 +7112,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7175,7 +7169,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7264,8 +7258,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %   `note' is moved to before `series';
 %   \item
 %   `series' to `date' information is delegated to a separate macro;
-%   \item
-%   before `related', there is a full stop instead of a comma.
 % \end{itemize}
 %
 % As in the (inherited) standard style, `mvproceedings' is an alias for this
@@ -7312,7 +7304,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7366,7 +7358,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7514,8 +7506,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %   \item
 %   `type' and `number' are moved to just before the publication
 %   information block';
-%   \item
-%   before `related', there is a full stop instead of a comma.
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -7560,7 +7550,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7580,16 +7570,9 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 }{}{}
 %    \end{macrocode}
 %
-% The changes to the `manual' driver compared to the standard style
-% are as follows:
-% \begin{itemize}
-%   \item
-%   `type', `series', `number', `edition' and `organization' are moved
-%   into the publication information block with `publisher', `location'
-%   and `date';
-%   \item
-%   before `related', there is a full stop instead of a comma.
-% \end{itemize}
+% The main change to the `manual' driver compared to the standard style is
+% that `type', `series', `number', `edition' and `organization' are moved into
+% the publication information block with `publisher', `location' and `date';
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{manual}{%
@@ -7626,7 +7609,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7761,7 +7744,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7861,8 +7844,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %   With Twitter posts, the time and date are printed bare.
 %   \item
 %   We support displaying a publisher after the date.
-%   \item
-%   before `related', there is a full stop instead of a comma.
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -7904,7 +7885,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -7977,7 +7958,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \setunit{\addperiod\addspace}\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
@@ -9099,15 +9080,15 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{dating}%
   \setunit{\datingpagespunct}
   \usebibmacro{manuscript:pages}
-  \iftoggle{bbx:related}
-    {\newunit\newblock%
-     \usebibmacro{related:init}%
-     \usebibmacro{related}}
-    {}%
   \newunit\newblock%
-  \iftoggle{bbx:url}%
-    {\usebibmacro{url+urldate}}%
-    {}%
+  \iftoggle{bbx:url}{%
+    \usebibmacro{url+urldate}%
+  }{}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}{%
+    \usebibmacro{related:init}%
+    \usebibmacro{related}%
+  }{}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9174,7 +9155,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
-  \newunit\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9183,7 +9164,74 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
+% We make the punctuation before related items configurable in remaining drivers
+% inherited from the standard style.
+%
+%    \begin{macrocode}
+\xpatchbibdriver{booklet}{%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+}{%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+}{}{}
+\xpatchbibdriver{misc}{%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+}{%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+}{}{}
+\xpatchbibdriver{patent}{%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+}{%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+}{}{}
+%    \end{macrocode}
+%
 % \subsection{Related entries}
+%
+% We provide an option for setting the relatedtype punctuation.
+%
+%    \begin{macrocode}
+\DeclareBibliographyOption{relationpunct}[semicolon]{%
+  \ifcsdef{add#1}{%
+    \ifstrequal{#1}{space}{%
+      \renewcommand*{\relatedtypepunct}{\addspace}%
+    }{%
+      \renewcommand*{\relatedtypepunct}{\csuse{add#1}\space}}%
+  }{%
+    \PackageError{biblatex-oxref}{%
+      Invalid option 'relationpunct=#1'%
+    }{%
+      Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
+      'period', 'exclam', 'question', and 'space'.}}}
+\newtoggle{blx@ox@relpunctset}
+\DeclareEntryOption{relationpunct}[semicolon]{%
+  \ifcsdef{add#1}{%
+    \ifstrequal{#1}{space}{%
+      \renewcommand*{\relatedtypepunct}{\addspace}%
+    }{%
+      \renewcommand*{\relatedtypepunct}{\csuse{add#1}\space}}%
+    \toggletrue{blx@ox@relpunctset}
+  }{%
+    \PackageError{biblatex-oxref}{%
+      Invalid option 'relationpunct=#1'%
+    }{%
+      Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
+      'period', 'exclam', 'question', and 'space'.}}}
+\renewbibmacro*{related:init}{%
+  \iftoggle{blx@ox@relpunctset}{}{%
+    \iffieldequalstr{relatedtype}{in}{%
+      \setunit{\addcomma\space}}{}%
+    \iffieldequalstr{relatedtype}{reprintfrom}{%
+      \setunit{\addperiod\space}}{}%
+  }%
+  \csundef{bbx:relatedloop}}
+
+%    \end{macrocode}
 %
 % \subsubsection{Reprints}
 %
@@ -9220,28 +9268,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
       \thefield{entrytype}}}}
 %    \end{macrocode}
 %
-% \subsubsection{Supplements}
-%
-% We provide a macro to support the printing of parent periodicals of
-% supplements.
-%
-%    \begin{macrocode}
-\newbibmacro*{related:suppto}[1]{%
-  \entrydata*{#1}{%
-    \usedriver{%
-      \ifbibmacroundef{date+extrayear}{}{%
-        \renewbibmacro*{date+extrayear}{}}%
-    }{%
-      \thefield{entrytype}%
-    }%
-  }%
-  \iffieldundef{bookpagination}%
-    {\setunit{\bibpagespunct}}%
-    {\newunit}%
-  \printfield{pages}%
-}
-%    \end{macrocode}
-%
 % \subsubsection{Reviews}
 %
 % We ensure that the field formatting for `review' entries matches that
@@ -9261,7 +9287,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 % in order to handle reviews. Compared to the default code, this is
 % simpler in that we don't check for repeated authors\slash editors (it
 % would be a rather biased review!), we directly set the author format,
-% and we don't convert \textsf{oxyear} format back to \textsf{oxnotes}.
+% and we don't nullify the \code{date+extrayear} macro.
 %
 %    \begin{macrocode}
 \newbibmacro*{related:reviewof}[1]{%
@@ -9302,7 +9328,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   }{}%
   \newunit\newblock
   \usebibmacro{in:}%
-  \unspace
+  \setunit{\addspace}%
   \usebibmacro{journal+issuetitle}%
   \newunit
   \usebibmacro{byeditor+others}%
