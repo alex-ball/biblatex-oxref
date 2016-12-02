@@ -755,9 +755,9 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   This can also be set on a per-type and per-entry basis.
 \end{docKey}
 
-\textsf{Oxref} makes use of Biber-specific techniques to solve some of the challenges
-presented by Oxford style. If you resort to using Bib\TeX\ instead,
-you will have to use some messy workarounds to achieve some of the nuances.
+\textsf{Oxref} makes use of Biber-specific techniques to solve some of the challenges presented by Oxford style.
+It will not stop you from using Bib\TeX\ instead but, if you do, only simple and standard entries will work.
+In particular, manuscripts, legal references and anything involving related entries will be adversely affected.
 
 \section{How to use this document}
 
@@ -1640,7 +1640,6 @@ or add the book details to a periodical entry.
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number; \lit{Supplement to} \emph{MainJournalTitle} Vol/Number: Pages.}
 
 \tip{To get this format, use a separate entry for the parent issue, reference it in the ‘related’ field, and use the key ‘suppto’ as the ‘relatedtype’.}
-\tip{To achieve the same effect with Bib\TeX, use the \code{note} field to write ‘Supplement to’ and a \cs{fullcite} reference to a \texttt{periodical}. You will probably want to assign a category to the periodical entry and exclude it from the bibliography.}%
 
 \begin{bibexbox}
 %<n><OGS \S15.4.1>
@@ -1726,10 +1725,6 @@ or add the book details to a periodical entry.
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{To achieve the same effect with Bib\TeX, set the option \code{reviewof} with the value of the key of reviewed item; the reviewed item is given the category \code{reviewed} so it can be excluded from the bibliography if desired. The following example shows this in action%
-%<y>; note that the result is not quite satisfactory%
-.}
-
 \begin{bibexbox}
 %<n><OGS \S15.4.4>
 %<y><OGS \S15.4.4\textdagger>
@@ -1742,7 +1737,8 @@ or add the book details to a periodical entry.
 @review{jocelyn1989pav,
   author = {H. D. Jocelyn},
   title = {Probus and Virgil},
-  options = {reviewof=delvigo1987tvt},
+  related = {delvigo1987tvt},
+  relatedtype = {reviewof},
   journaltitle = {CR},
   series = {newseries},
   volume = {39},
@@ -2933,7 +2929,6 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 \subsection{Both versions equally accessible}
 
 \tip{Put the key of the original work in \code{related}, and in \code{relatedtype} use the keyword \code{reprintfrom}.}
-\tip{If using Bib\TeX, use \code{addendum} to give \enquote{from} and the reference to the original; if using \cs{fullcite}, omit \code{author} and \code{title} from the entry for the original work.}
 
 \begin{bibexbox}
 %<n><OGS \S15.3>
@@ -9270,23 +9265,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
 %    \end{macrocode}
 %
-% This macro provides a non-Biber method of inserting a formatted
-% reference within a review reference. It is deprecated and will
-% be removed in a future release.
-%
-%    \begin{macrocode}
-\newbibmacro*{reviewof}{}
-\DeclareBibliographyCategory{reviewed}
-\DeclareEntryOption{reviewof}{%
-  \renewbibmacro*{reviewof}{%
-    \bibstring{reviewof}%
-    \setunit{\addspace}%
-    \printtext{{\settoggle{blx@bibliography}{false}\fullcite{#1}}}%
-  }%
-  \addtocategory{reviewed}{#1}%
-}
-%    \end{macrocode}
-%
 % We take advantage of the Biber-specific mechanism of relating items
 % in order to handle reviews. Compared to the default code, this is
 % simpler in that we don't check for repeated authors\slash editors (it
@@ -9325,8 +9303,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{bytranslator+others}%
   \newunit\newblock
   \printfield{version}%
-  \newunit\newblock
-  \usebibmacro{reviewof}%
   \newunit\newblock
   \iftoggle{bbx:related}{%
     \usebibmacro{related:init}%
