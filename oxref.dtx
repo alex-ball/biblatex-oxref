@@ -2596,51 +2596,42 @@ rather than within the publication block%
 
 \subsection{Co-publications\slash co-editions}
 
-%<n>\spec{Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).}
-%<y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; Location: Publisher).}
+%<y>The \emph{Oxford Guide to Style} provides a special format for expressing works that are co-published by several publishers at once. Since it is not suitable for author–year citation styles, no effort is made to make it work for \textsf{oxyear}; you should be aware of this if you are switching from \textsf{oxnotes}.
+%</n|y>
+%<*n>
+If the same book has been co-published by multiple publishers at approximately the same time,
+you can express this by putting multiple sets of details in the publication block.
+You should not do this, however, if you might want to switch to using the \textsf{oxyear} style at some point,
+since it does not really work for author–year styles.
 
-\begin{bibexbox}(hacked)
-%<n><OGS \S15.2.5>{holfordstrevens1988ag-n}
-%<n>L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).
-%<y><OGS \S15.2.5\textdagger>{holfordstrevens1988ag-y}
-%<y>Holford-Strevens, L. A. (1988/1989), \emph{Aulus Gellius} (London: Duckworth; Chapel Hill: University of North Carolina Press).
+\spec{Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).}
+
+\tip{Put each publication in the bib file separately. In the one you plan to cite, put the keys of the others in \code{related} and give \code{copub} as the \code{relatedtype}.}
+
+\begin{bibexbox}
+<OGS \S15.2.5>{holfordstrevens1988ag1}
+L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hill: University of North Carolina Press, 1989).
 \tcblower
 \begin{Verbatim}
-%</n|y>
-%<*n|bib>
-@book{holfordstrevens1988ag-n,
+%</n>
+@book{holfordstrevens1988ag1,
   author = {L. A. Holford-Strevens},
   title = {Aulus Gellius},
-  origlocation = {London},
-  origpublisher = {Duckworth},
-  origdate = {1988},
+  location = {London},
+  publisher = {Duckworth},
+  date = {1988},
+  related = {holfordstrevens1988ag2},
+  relatedtype = {copub}}
+@book{holfordstrevens1988ag2,
   location = {Chapel Hill},
   publisher = {University of North Carolina Press},
   date = {1989}}
-%</n|bib>
-%<*y|bib>
-@book{holfordstrevens1988ag-y,
-  author = {L. A. Holford-Strevens},
-  year = {1988/1989},
-  title = {Aulus Gellius},
-  origlocation = {London},
-  origpublisher = {Duckworth},
-  location = {Chapel Hill},
-  publisher = {University of North Carolina Press}}
-%</y|bib>
-%<*n|y>
+%<*n>
 \end{Verbatim}
 \end{bibexbox}
 
-\hack{There is no explicit support for referencing multiple publishers at once,
-  but if there are two, you can get the right format by using the
-%<n>  \texttt{origlocation}, \texttt{origpublisher}, and \texttt{origdate} fields
-%<y>  \texttt{origlocation} and \texttt{origpublisher} fields
-  for the first publication%
-%<n>  .
-%<y>  \ and putting both dates in the \texttt{year} field.
-}
-
+%</n>
+%<*n|y>
 \section{Works from a series}
 
 %<n>\spec{Author, \emph{Title} (Series; Location: Publisher, Year).}
@@ -6645,7 +6636,10 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \nopunct\printtext[publication]{%
     \usebibmacro{series+number}%
     \setunit{\addsemicolon\addspace}%
-    \usebibmacro{edition+publisher+location+date}}%
+    \usebibmacro{edition+publisher+location+date}%
+    \usebibmacro{copub}%
+  }%
+  \iffieldequalstr{relatedtype}{copub}{\clearfield{related}}%
   \setunit{\addspace}\newblock
   \usebibmacro{origpub}%
 }
@@ -6660,9 +6654,28 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \nopunct\printtext[publication]{%
     \usebibmacro{series+number}%
     \setunit{\addsemicolon\addspace}%
-    \usebibmacro{publisher+location+date}}%
+    \usebibmacro{publisher+location+date}%
+    \usebibmacro{copub}%
+  }%
+  \iffieldequalstr{relatedtype}{copub}{\clearfield{related}}%
   \setunit{\addspace}\newblock
   \usebibmacro{origpub}%
+}
+%    \end{macrocode}
+%
+% The `copub' macro prints co-publication details.
+%
+%    \begin{macrocode}
+\newbibmacro*{copub}{%
+  \ifboolexpr{
+    togl {bbx:related}
+    and
+    test {\iffieldequalstr{relatedtype}{copub}}
+  }{%
+    \setunit{\addsemicolon\space}%
+    \usebibmacro{related:init}%
+    \usebibmacro{related}%
+  }{}%
 }
 %    \end{macrocode}
 %
@@ -9267,12 +9280,22 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 
 %    \end{macrocode}
 %
+% \subsubsection{Co-publications}
+%
+% This relation simply prints what would go in the publication block.
+%
+%    \begin{macrocode}
+\newbibmacro*{related:copub}[1]{%
+  \entrydata*{#1}{%
+    \usebibmacro{publisher+location+date}%
+    \setunit{\relateddelim}}}
+%    \end{macrocode}
+%
 % \subsubsection{Reprints}
 %
 % We take advantage of the Biber-specific mechanism of relating items
-% in order to handle reprints. The presence or otherwise of the
-% `journaltitle' field is used to determine whether this is a reprint
-% from a book (first block) or a periodical (second block).
+% in order to handle reprints. This overrides the standard definition
+% the reprintfrom relation with the standard generic relations.
 %
 %    \begin{macrocode}
 \renewbibmacro*{related:reprintfrom}[1]{%
