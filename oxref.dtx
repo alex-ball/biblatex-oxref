@@ -268,6 +268,7 @@ Copyright (C) 2016 Alex Ball
 %,isbn=false%
 ]{biblatex}
 \addbibresource{oxref.bib}
+\DeclareBibliographyCategory{hidden}
 \makeatletter
 \DeclareCiteCommand{\fullcite}
   {\usebibmacro{prenote}}
@@ -933,7 +934,7 @@ Test\footcite[49-50]{faith1997epg}
   (Bolton)]{knowles.hadcock1953mrh}%
   [186]{kershaw1973bp}[609]{cobban}
 \end{egcite}
-\addtocategory{reviewed}{cobban}
+\addtocategory{hidden}{cobban}
 
 Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} describe an alternative system that uses the abbreviations ‘ibid.\@’, ‘op.\@ cit.\@’, ‘loc.\@ cit.\@’, and ‘id.\@’ and friends, though with underwhelming enthusiasm. If you would like to use these abbreviations, load the \textsf{verbose-trad1} citation scheme instead (and remember to use the \code{gender} field):
 
@@ -2426,8 +2427,6 @@ Where the editor has changed, the following form is used:
 
 \subsection{Both first and later edition}
 
-Where the publisher is common to both, the following form is used:
-
 %<n>\spec{Author, \emph{Title} (Year; nth \lit{edn.}, Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title} (Year; nth \lit{edn.}, Location: Publisher).}
 
@@ -2504,19 +2503,25 @@ Marx, K. (1867), \emph{Capital: A Critique of Political Economy}, i, trans. B. F
 %</y>
 %<*n|y>
 
-Where the publisher has changed, the following form is used:
+\subsection{Republications}
 
-%<n>\spec{Author, \emph{Title} (nth \lit{edn.}, Location: Publisher, Year) (\lit{first pub.} Year).}
-%<y>\spec{Author (Year), \emph{Title} (nth \lit{edn.}, Location: Publisher) (\lit{first pub.} Year).}
+If the publication has not been revised, but has been re-typeset by a different publisher,
+the \emph{Oxford Guide to Style} suggests putting the original date in a note at the end,
+rather than within the publication block%
+%<n>.
+%<y>, but this does not affect the author–date style since the original date is at the head of the reference anyway.
 
-\tip{To get this formatting, use \code{pubstate} for the original publication date}
+%<n>\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{first pub.} Year).}
+%<y>\spec{Author (OrigYear), \emph{Title} (Location: Publisher).}
+
+%<n>\tip{This format is triggered if you specify an original date but do not specify the original publisher or location, nor the edition of the later publication.}
 
 \begin{bibexbox}
 %<n><OGS \S15.2.3>
 %<y><OGS \S15.2.3\textdagger>
 {bettelheim1976uem}
 %<n>Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).
-%<y>Bettelheim, B. (1988), \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books) (first pub. 1976).
+%<y>Bettelheim, B. (1976), \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -2527,12 +2532,12 @@ Where the publisher has changed, the following form is used:
   location = {Harmondsworth},
   publisher = {Penguin Books},
   date = {1988},
-  pubstate = {first pub\adddotspace 1976}}
+  origdate = {1976}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\subsection{Reprint}
+\subsection{Reprints}
 
 %<n>\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).}
 %<y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; \lit{repr.} Location: Publisher).}
@@ -2589,7 +2594,7 @@ Where the publisher has changed, the following form is used:
 \end{Verbatim}
 \end{bibexbox}
 
-\subsection{Multiple publishers}
+\subsection{Co-publications\slash co-editions}
 
 %<n>\spec{Author, \emph{Title} (Location: Publisher, Year; Location: Publisher, Year).}
 %<y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; Location: Publisher).}
@@ -5286,7 +5291,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \end{egcite}
 %</y>
 
-\printbibliography[notcategory=reviewed]
+\printbibliography[notcategory=hidden]
 %</n|y>
 %</doc|bib>
 %<*driver>
@@ -6560,7 +6565,9 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 % When citing both the first and a later edition, the first one comes
 % first, and the later one comes after a semicolon. As per standard
 % \pkg{biblatex}, the elements of a single edition are separated by commas
-% except that the publisher is preceded by a colon.
+% except that the publisher is preceded by a colon. The origdate is only
+% printed here if at least one of the edition, the origlocation or the
+% origpublisher is also specified.
 %
 %    \begin{macrocode}
 \newcounter{locpubpairs}
@@ -6571,7 +6578,14 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
     {\setunit*{\addcolon\space}}%
   \printlist{origpublisher}%
   \setunit*{\addcomma\space}%
-  \printorigdate%
+  \ifboolexpr{
+    test {\iflistundef{origlocation}}
+    and
+    test {\iflistundef{origpublisher}}
+    and
+    test {\iffieldundef{edition}}
+  }{}{%
+    \printorigdate}%
   \setunit*{\addsemicolon\space}%
   \printfield{edition}%
   \setunit*{\addcomma\space}%
@@ -6631,8 +6645,9 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \nopunct\printtext[publication]{%
     \usebibmacro{series+number}%
     \setunit{\addsemicolon\addspace}%
-    \usebibmacro{edition+publisher+location+date}%
-  }%
+    \usebibmacro{edition+publisher+location+date}}%
+  \setunit{\addspace}\newblock
+  \usebibmacro{origpub}%
 }
 %    \end{macrocode}
 %
@@ -6645,8 +6660,27 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \nopunct\printtext[publication]{%
     \usebibmacro{series+number}%
     \setunit{\addsemicolon\addspace}%
-    \usebibmacro{publisher+location+date}%
-  }%
+    \usebibmacro{publisher+location+date}}%
+  \setunit{\addspace}\newblock
+  \usebibmacro{origpub}%
+}
+%    \end{macrocode}
+%
+% The `origpub' macro prints the origdate field if it has not yet cleared.
+%
+%    \begin{macrocode}
+\newbibmacro*{origpub}{%
+  \ifboolexpr{
+    test {\iflistundef{origlocation}}
+    and
+    test {\iflistundef{origpublisher}}
+    and
+    test {\iffieldundef{edition}}
+    and
+    ( not test {\iffieldundef{origyear}} )
+  }{%
+    \printtext[parens]{\bibstring{origpubin}\space\printorigdate}%
+  }{}%
 }
 %    \end{macrocode}
 %
