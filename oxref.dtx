@@ -2542,7 +2542,7 @@ rather than within the publication block%
 %<n>\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).}
 %<y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; \lit{repr.} Location: Publisher).}
 
-\tip{Use localization key \code{reprint} as the edition.}
+\tip{Use localization key \code{reprint} as the edition. For a revised reprint, use \code{revisedreprint}.}
 
 \begin{bibexbox}
 %<n><OGS \S15.2.4>
@@ -2563,6 +2563,27 @@ rather than within the publication block%
   location = {Paris},
   publisher = {J. Vrin, CNRS},
   date = {1964/1976}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.4>
+%<y><OGS \S15.2.4\textdagger>
+{southern1991sap}
+%<n>R. W. Southern, \emph{Saint Anselm: A Portrait in a Landscape} (rev. repr., Cambridge: Cambridge University Press, 1991).
+%<y>Southern, R. W. (1991), \emph{Saint Anselm: A Portrait in a Landscape} (rev. repr., Cambridge: Cambridge University Press).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{southern1991sap,
+  author = {R. W. Southern},
+  title = {Saint Anselm},
+  subtitle = {A Portrait in a Landscape},
+  edition = {revisedreprint},
+  location = {Cambridge},
+  publisher = {Cambridge University Press},
+  date = {1991}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -5357,7 +5378,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % \end{itemize}
 %
 %    \begin{macrocode}
-  facsimile, revised, suppto, equals,
+  facsimile, revised, revisedreprint, suppto, equals,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -11141,6 +11162,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
 %    \begin{macrocode}
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
+  revisedreprint   = {{revised reprint}{rev\adddotspace repr\adddot}},
   suppto           = {{Supplement to}{Supplement to}},
   equals           = {{=}{=}},
 %    \end{macrocode}
