@@ -882,6 +882,12 @@ that is, there are no examples of them in this documentation.
   \end{itemize}
 \end{multicols}
 
+Only in bibliography, display variant names
+
+OGS \S15.17.4
+
+Joukovsky, F. (= Joukovsky-Micha, F.), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance} 29 (1967), 55–92.
+
 
 \chapter{Citations and common formatting}\label{sec:citing}
 
@@ -1179,6 +1185,108 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
 \tip{Again, you can also use the syntax from \textsf{biblatex-realauthor}.
   If you specify the \code{author}, then \code{realauthor} is treated as an alias for \code{authoraddon}.
   The equivalent is true for \code{realeditor}.}
+
+\section{Works in foreign languages}
+
+If you used a foreign language work, you might want to recommend a good translation.
+
+\tip{Add the translation in \code{related}, and set \code{relatedtype} to \code{translationas}.}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.5*>
+%<y><NHR \S18.2.5*\textdagger>
+{tschichold1955tg}
+J. Tschichold, \emph{Typographische Gestaltung} (Basle, 1955); Eng. trans. as \emph{Asymmetric Typography} (London, 1967).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{tschichold1955tg,
+  author = {J. Tschichold},
+  title = {Typographische Gestaltung},
+  location = {Basle},
+  date = {1955},
+  related = {tschichold1967tg},
+  relatedtype = {translationas}}
+@book{tschichold1967tg,
+  title = {Asymmetric Typography},
+  location = {London},
+  date = {1967}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+If you used the translation, you might want to give the original publication as well.
+
+\tip{Add the original in \code{related}, and set \code{relatedtype} to \code{translationof}.}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.5>
+%<y><NHR \S18.2.5\textdagger>
+{metz1938hyb}
+R. Metz, \emph{A Hundred Years of British Philosophy}, ed. J. H. Muirhead, trans. J. W. Harvey (1938) [Ger. orig., \emph{Die philosophischen Strömungen der Gegenwart in Grossbritannien} (1935)]
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{metz1938hyb,
+  author = {R. Metz},
+  title = {A Hundred Years of British Philosophy},
+  editor = {J. H. Muirhead},
+  translator = {J. W. Harvey},
+  date = {1938},
+  related = {metz1935psg},
+  relatedtype = {translationof}}
+@book{metz1935psg,
+  title = {Die philosophischen Strömungen der Gegenwart in Grossbritannien},
+  date = {1935},
+  language = {german}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+It is often helpful to provide a translation of foreign language titles.
+
+\tip{Put the translation in \code{titleaddon}.}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.5>
+%<y><NHR \S18.2.5\textdagger>
+{nissan1965hnm}
+%<n>Nissan Motor Corporation, \emph{Nissan Jidosha 30nen shi} [A 30-year history of Nissan Motors] (1965).
+%<y>Nissan Motor Corporation (1965), \emph{Nissan Jidosha 30nen shi} [A 30-year history of Nissan Motors].
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{nissan1965hnm,
+  author = {{Nissan Motor Corporation}},
+  title = {Nissan Jidosha 30nen shi},
+  titleaddon = {A 30-year history of Nissan Motors},
+  year = {1965}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+
+Conversely, it might be helpful to provide the English original of a translated title.
+
+\begin{bibexbox}
+%<n><OGS \S15.2.1>
+%<y><OGS \S15.2.1\textdagger>
+{milne1938pb}
+%<n>A. A. Milne, \emph{Pu der Bär} [Ger. trans. of \emph{Winnie the Pooh}] (Potsdam: Williams, 1938).
+%<y>Milne, A. A. (1938), \emph{Pu der Bär} [Ger. trans. of \emph{Winnie the Pooh}] (Potsdam: Williams).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{milne1938pb,
+  author = {A. A. Milne},
+  title = {Pu der Bär},
+  titleaddon = {\bibstring{langgerman} \bibstring{translationof} \emph{Winnie the Pooh}},
+  location = {Potsdam},
+  publisher = {Williams},
+  year = {1938}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 
 \chapter{Articles and periodicals}\label{sec:article}
@@ -5378,7 +5486,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % \end{itemize}
 %
 %    \begin{macrocode}
-  facsimile, revised, revisedreprint, suppto, equals,
+  facsimile, revised, revisedreprint, suppto, equals, original,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -6445,20 +6553,31 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% We patch the `article' driver to remove the \enquote{in} macro and insert a
-% handler for the suppto relation.
+% Our `article' driver is like the standard one except
+% \begin{itemize}
+%   \item it has no \enquote{in} macro;
+%   \item there is a handler for the suppto relation;
+%   \item there is no language macro;
+%   \item the punctuation before related items is configurable.
+% \end{itemize}
 %
 %    \begin{macrocode}
-\xpatchbibdriver{article}{%
-  \usebibmacro{in:}%
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{bytranslator+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit\newblock
   \usebibmacro{journal+issuetitle}%
-}{%
-  \usebibmacro{journal+issuetitle}%
-}{}{}
-\xpatchbibdriver{article}{%
   \newunit
-  \usebibmacro{note+pages}%
-}{%
+  \usebibmacro{byeditor+others}%
   \iffieldequalstr{relatedtype}{suppto}{%
     \setunit{\addsemicolon\space}%
     \iftoggle{bbx:related}{%
@@ -6469,26 +6588,53 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   }{}%
   \newunit
   \usebibmacro{note+pages}%
-}{}{}
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% We make the punctuation before related items configurable.
+% Similar changes are made to the periodical driver.
 %
 %    \begin{macrocode}
-\xpatchbibdriver{article}{%
+\DeclareBibliographyDriver{periodical}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{editor}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title+issuetitle}%
   \newunit\newblock
-  \iftoggle{bbx:related}
-}{%
+  \usebibmacro{byeditor}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-}{}{}
-\xpatchbibdriver{periodical}{%
-  \newunit\newblock
-  \iftoggle{bbx:related}
-}{%
-  \setunit{\relatedtypepunct}\newblock
-  \iftoggle{bbx:related}
-}{}{}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
 %    \end{macrocode}
 %
 % \subsection{Books and works in books}
@@ -6742,8 +6888,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/editor+others/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -6804,8 +6948,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   {\printfield{volume}%
     \printfield{part}}
   {}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -6848,8 +6990,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -6901,8 +7041,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -6958,8 +7096,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{editor+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
@@ -7006,8 +7142,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   {\printfield{volume}%
     \printfield{part}}
   {}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
@@ -7050,8 +7184,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -7101,8 +7233,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/editor+others/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \printfield{edition}%
   \newunit
@@ -7152,8 +7282,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   {\printfield{volume}%
     \printfield{part}}
   {}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -7199,8 +7327,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -7268,14 +7394,11 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
     test {\iffieldundef{venue}}
     and
     test {\iffieldundef{eventyear}}
-  }
-  {}
-  {\ifboolexpr{
-      test {\iffieldundef{language}}
-      and
-      test {\iffieldundef{eventtitle}}
-    }{\setunit{\mkbibemph{\addcomma}\space}}%
-    {\newunit}%
+  }{}{%
+    \iffieldundef{eventtitle}{%
+      \setunit{\mkbibemph{\addcomma}\space}%
+    }{%
+      \newunit}%
     \printfield{venue}%
     \newunit%
     \printeventdate}%
@@ -7344,8 +7467,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   {\printfield{volume}%
     \printfield{part}}
   {}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{event+venue+date}%
   \newunit\newblock
@@ -7390,8 +7511,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -7589,8 +7708,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   {\printfield{volume}%
     \printfield{part}}
   {}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -7649,8 +7766,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/editor}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -7784,8 +7899,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{maintitle}%
   \setunit{\addspace}
   \usebibmacro{onlinetype}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -7925,8 +8038,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{maintitle}
   \setunit{\addspace}%
   \usebibmacro{onlinetype}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -8000,8 +8111,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/editor}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title+version}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -9130,8 +9239,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -9193,8 +9300,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -9296,9 +9401,33 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
       \setunit{\addcomma\space}}{}%
     \iffieldequalstr{relatedtype}{reprintfrom}{%
       \setunit{\addperiod\space}}{}%
+    \iffieldequalstr{relatedtype}{translationof}{%
+      \setunit{\addspace}}{}%
   }%
   \csundef{bbx:relatedloop}}
 
+%    \end{macrocode}
+%
+% \subsubsection{Translations}
+%
+% Where related item is the translation, the related string is prefaced with the
+% language.
+%
+%    \begin{macrocode}
+\newbibmacro*{rellanguage}{%
+  \def\do##1{%
+    \entrydata{##1}{%
+      \printlist{language}%
+    }%
+  }%
+  \docsvfield{related}%
+}
+\DeclareFieldFormat{relatedstring:translationof}{%
+  \usebibmacro{rellanguage}\space
+  \bibstring{original}}
+
+\DeclareFieldFormat{related:translationof}{%
+  \mkbibbrackets{#1}}
 %    \end{macrocode}
 %
 % \subsubsection{Co-publications}
@@ -9391,8 +9520,6 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -11165,6 +11292,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   revisedreprint   = {{revised reprint}{rev\adddotspace repr\adddot}},
   suppto           = {{Supplement to}{Supplement to}},
   equals           = {{=}{=}},
+  original         = {{original}{orig\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -11361,6 +11489,7 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
   reviewof         = {{review of}{review of}},
   reprintfrom      = {{from}{from}},
+  translationas    = {{English translation as}{Eng\adddotspace trans\adddotspace as}},
   origpubin        = {{originally published in}{originally pub\adddot}},
 %    \end{macrocode}
 %
@@ -11390,6 +11519,33 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   idempn           = {{eadem}{ead\adddot}},
   idempp           = {{eidem}{eid\adddot}},
   thiscite         = {{at}{at}},
+%    \end{macrocode}
+%
+% Languages are abbreviated.
+%
+%    \begin{macrocode}
+  langamerican     = {{English}{Eng\adddot}},
+  langbrazilian    = {{Brazilian}{Braz\adddot}},
+  langcatalan      = {{Catalan}{Catal\adddot}},
+  langcroatian     = {{Croatian}{Croat\adddot}},
+  langczech        = {{Czech}{Czech}},
+  langdanish       = {{Danish}{Dan\adddot}},
+  langdutch        = {{Dutch}{Dutch}},
+  langenglish      = {{English}{Eng\adddot}},
+  langestonian     = {{Estonian}{Eston\adddot}},
+  langfinnish      = {{Finnish}{Finn\adddot}},
+  langfrench       = {{French}{Fr\adddot}},
+  langgerman       = {{German}{Ger\adddot}},
+  langgreek        = {{Greek}{Gr\adddot}},
+  langitalian      = {{Italian}{It\adddot}},
+  langlatin        = {{Latin}{Lat\adddot}},
+  langnorwegian    = {{Norwegian}{Norw\adddot}},
+  langpolish       = {{Polish}{Pol\adddot}},
+  langportuguese   = {{Portuguese}{Port\adddot}},
+  langrussian      = {{Russian}{Russ\adddot}},
+  langslovene      = {{Slovene}{Slov\adddot}},
+  langspanish      = {{Spanish}{Sp\adddot}},
+  langswedish      = {{Swedish}{Swed\adddot}},
 }
 %    \end{macrocode}
 %
