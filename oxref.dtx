@@ -741,6 +741,11 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \end{docKey}
 %</y>
 
+\begin{docKey}{nolocation}{}{no value, initially unset}
+  Replaces missing locations with ‘n.p.’ or localised equivalent in books, collections, reference works, proceedings (and derived entry types). Once set, this option cannot be overridden.
+  This can also be set on a per-entry basis.
+\end{docKey}
+
 \begin{docKey}{nopublisher}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Removes publisher name from all entries.
 \end{docKey}
@@ -1284,6 +1289,36 @@ Conversely, it might be helpful to provide the English original of a translated 
   location = {Potsdam},
   publisher = {Williams},
   year = {1938}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\section{Missing place of publication}
+
+For periodicals, grey literature, audiovisual and online material, the lack of a place of publication is not surprising; indeed it may be expected. For books, however, it may be remarkable and deserve marking in the bibliography with \enquote{n.p.\@} (for \enquote{no place}).
+
+\tip{To have \textsf{oxref} automatically insert \enquote{n.p.\@} for books, collections, reference works, proceedings and similar entry types, use the \code{nolocation} bibliography option.}
+
+\tip{To have \textsf{oxref} automatically insert \enquote{n.p.\@} for only a specific entry, use the \code{nolocation} entry option.
+  The advantage of doing this over giving \enquote{n.p.\@} as the \code{location} is that,
+  if another style that does not use this convention is presented with the entry, it will not print the location.
+  Note that the entry option uses a different mechanism from the bibliography option.}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.9>
+%<y><NHR \S18.2.9\textdagger>
+{padua1961p}
+%<n>Marchetto of Padua, \emph{Pomerium}, ed. Guiseppe Vecchi (n.p., 1961).
+%<y>Marchetto of Padua (1961), \emph{Pomerium}, ed. G. Vecchi (n.p.).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{padua1961p,
+  author = {{Marchetto of Padua}},
+  title = {Pomerium},
+  editor = {Guiseppe Vecchi},
+  year = {1961},
+  options = {nolocation}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -5515,6 +5550,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \end{macrocode}
 %
 % \begin{itemize}
+%   \item miscellaneous;
+% \end{itemize}
+%
+%    \begin{macrocode}
+  nolocation,
+%    \end{macrocode}
+%
+% \begin{itemize}
 %   \item labels;
 % \end{itemize}
 %
@@ -6315,6 +6358,37 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareBibliographyOption{nopublisher}[true]{%
   \DeclareFieldInputHandler{publisher}{\def\NewValue{}}%
 }
+\DeclareBibliographyOption{nolocation}[true]{%
+  \DeclareStyleSourcemap{
+    \maps[datatype=bibtex]{
+      \map{
+        \pertype{book}
+        \pertype{mvbook}
+        \pertype{bookinbook}
+        \pertype{inbook}
+        \pertype{suppbook}
+        \pertype{collection}
+        \pertype{mvcollection}
+        \pertype{incollection}
+        \pertype{suppcollection}
+        \pertype{reference}
+        \pertype{mvreference}
+        \pertype{inreference}
+        \pertype{proceedings}
+        \pertype{mvproceedings}
+        \pertype{inproceedings}
+        \step[notfield=location, fieldset=location, fieldvalue={\noexpand\bibstring{nolocation}}]
+      }
+    }
+  }%
+}
+\newtoggle{blx@ox@noloc}
+\def\blx@ox@noloc{{\bibstring{nolocation}}}
+\DeclareEntryOption{nolocation}[true]{%
+  \settoggle{blx@ox@noloc}{#1}%
+  \iflistundef{location}{%
+    \iftoggle{blx@ox@noloc}{\restorelist{location}{\blx@ox@noloc}}{}%
+  }{}}
 %    \end{macrocode}
 %
 % \subsection{URLs}
@@ -11341,6 +11415,14 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   clip             = {{video}{video}},
   webcast          = {{webcast}{webcast}},
   poster           = {{poster}{poster}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Miscellaneous
+% \end{itemize}
+%
+%    \begin{macrocode}
+  nolocation       = {{no place}{n\adddot p\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
