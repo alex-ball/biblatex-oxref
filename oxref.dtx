@@ -1265,7 +1265,7 @@ It is often helpful to provide a translation of foreign language titles.
   author = {{Nissan Motor Corporation}},
   title = {Nissan Jidosha 30nen shi},
   titleaddon = {A 30-year history of Nissan Motors},
-  year = {1965}}
+  date = {1965}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -1288,7 +1288,7 @@ Conversely, it might be helpful to provide the English original of a translated 
   titleaddon = {\bibstring{langgerman} \bibstring{translationof} \emph{Winnie the Pooh}},
   location = {Potsdam},
   publisher = {Williams},
-  year = {1938}}
+  date = {1938}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -1317,7 +1317,7 @@ For periodicals, grey literature, audiovisual and online material, the lack of a
   author = {{Marchetto of Padua}},
   title = {Pomerium},
   editor = {Guiseppe Vecchi},
-  year = {1961},
+  date = {1961},
   options = {nolocation}}
 %<*n|y>
 \end{Verbatim}
@@ -1368,7 +1368,7 @@ Hollingsworth, T. H. (1957), \enquote{A Demographic Study of the British Ducal F
 %<*y|bib>
 @article{hollingsworth1957dsb,
   author = {T. H. Hollingsworth},
-  year = {1957},
+  date = {1957},
   title = {A Demographic Study of the British Ducal Families},
   journaltitle = {Population Studies},
   volume = {11},
@@ -1414,7 +1414,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 %<*y|bib>
 @article{unwin1994sce,
   author = {Tim Unwin},
-  year = {1994},
+  date = {1994},
   title = {Structural Change in Estonian Agriculture},
   subtitle = {From Command Economy to Privatisation},
   journaltitle = {Geography},
@@ -1585,7 +1585,7 @@ Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \e
 %<*y|bib>
 @article{hankinson1989gba,
   author = {R. J. Hankinson},
-  year = {1989},
+  date = {1989},
   title = {Galen and the Best of All Possible Worlds},
   journaltitle = {CQ\nopunct},
   series = {newseries},
@@ -1864,7 +1864,7 @@ or add the book details to a periodical entry.
   author = {Philippe Basiron},
   title = {My Early Life},
   location = {Bourges},
-  year = {1994}}
+  date = {1994}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -2141,7 +2141,7 @@ Hankinson, R. J. (1988) (ed.), \emph{Method, Medicine, and Metaphysics} (Edmonto
 %<*y|bib>
 @collection{hankinson1988mmm,
   editor = {R. J. Hankinson},
-  year = {1988},
+  date = {1988},
   title = {Method, Medicine, and Metaphysics},
   location = {Edmonton, Alta.}}
 %</y|bib>
@@ -2247,6 +2247,45 @@ Where the publisher changed between volumes, the following form is used:
   all in \S13.11.1). I am therefore choosing to ignore this unnecessary
   complication.}
 
+%</n|y>
+%<*n>
+\tip{You can alternatively use the standard \textsf{biblatex} relation type \code{multivolume}. Note that this construction is not portable to \textsf{oxyear}.}
+
+\begin{bibexbox}
+<OGS \S15.2.6*>
+{ritter1838hap1-3}
+Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i-iii (Oxford: Talboys, 1838–9), iv (London: Bohn, 1846).
+\tcblower
+\begin{Verbatim}
+%</n>
+%<*n|bib>
+@mvbook{ritter1838hap1-3,
+  author = {Heinrich Ritter},
+  title = {The History of Ancient Philosophy},
+  translator = {Alexander J. W. Morrison},
+  volumes = {4},
+  volume = {1-3},
+  location = {Oxford},
+  publisher = {Talboys},
+  date = {1838/1839},
+  related = {ritter1838hap4},
+  relatedtype = {multivolume}}
+@mvbook{ritter1838hap4,
+  author = {Heinrich Ritter},
+  title = {The History of Ancient Philosophy},
+  translator = {Alexander J. W. Morrison},
+  volumes = {4},
+  volume = {4},
+  location = {London},
+  publisher = {Bohn},
+  date = {1846}}
+%</n|bib>
+%<*n>
+\end{Verbatim}
+\end{bibexbox}
+
+%</n>
+%<*n|y>
 \subsection{One volume from several}
 
 Where the volumes are merely numbered, the following form is used:
@@ -2637,7 +2676,7 @@ Marx, K. (1867), \emph{Capital: A Critique of Political Economy}, i, trans. B. F
   volume = {1},
   translator = {B. Fowkes},
   location = {New York},
-  year = {1977}}
+  date = {1977}}
 %</y|bib>
 %<*y>
 \end{Verbatim}
@@ -2983,7 +3022,7 @@ Magarey, M. E. (1988), \enquote{Examination of the Cervical and Thoracic Spine},
 %<*y|bib>
 @incollection{magarey1988ect,
   author = {M. E. Magarey},
-  year = {1988},
+  date = {1988},
   title = {Examination of the Cervical and Thoracic Spine},
   editor = {R. Grant},
   booktitle = {Physical Therapy of the Cervical and Thoracic Spine},
@@ -3406,7 +3445,7 @@ Mason, J. B., Habicht, J. P., and Tabatabai, H. (1984), \enquote{Notes on Nutrit
 %<*y|bib>
 @unpublished{mason.etal1984nns,
   author = {J. B. Mason, and J. P. Habicht and H. Tabatabai},
-  year = {1984},
+  date = {1984},
   title = {Notes on Nutritional Surveillance},
   howpublished = {paper delivered to the WHO conference}}
 %</y|bib>
@@ -3433,7 +3472,7 @@ Pritchard, E., and Pritchard, J. (1990), \enquote{A Reply to Drèze}, unpub.\ pa
 %<*y|bib>
 @unpublished{pritchard.pritchard1990ard,
   author = {E. Pritchard and J. Pritchard},
-  year = {1990},
+  date = {1990},
   title = {A Reply to Drèze},
   howpublished = {unpub.\ paper}}
 %</y|bib>
@@ -6752,7 +6791,15 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat[book,mvbook,bookinbook,inbook,suppbook,%
 collection,mvcollection,incollection,suppcollection,%
 proceedings,mvproceedings,inproceedings,%
-reference,mvreference,inreference]{volume}{\Rn{#1}}
+reference,mvreference,inreference]{volume}{%
+\IfSubStr{#1}{-}{%
+  \StrCount{#1}{-}[\blx@ox@dashnum]%
+  \StrBefore{#1}{-}[\blx@ox@volnum]%
+  \Rn{\blx@ox@volnum}\bibrangedash
+  \StrBehind[\blx@ox@dashnum]{#1}{-}[\blx@ox@volnum]%
+  \Rn{\blx@ox@volnum}%
+}{%
+  \Rn{#1}}}
 %    \end{macrocode}
 %
 % Where a multi-volume work is more like a series, the volume number and
@@ -7017,17 +7064,17 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \usebibmacro{author/editor+others/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
-  \newunit
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
   \printfield{volumes}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
   \newunit\newblock
   \printfield{note}%
   \newunit\newblock%
@@ -9477,6 +9524,8 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
       \setunit{\addperiod\space}}{}%
     \iffieldequalstr{relatedtype}{translationof}{%
       \setunit{\addspace}}{}%
+    \iffieldequalstr{relatedtype}{multivolume}{%
+      \setunit{\addcomma\space}}{}%
   }%
   \csundef{bbx:relatedloop}}
 
@@ -9626,6 +9675,24 @@ reference,mvreference,inreference]{volume}{\Rn{#1}}
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
   \usebibmacro{finentry}}
+
+%    \end{macrocode}
+%
+% \subsubsection{Multiple volumes}
+%
+% Standard \textsf{biblatex} provides the \code{multivolume} relation for
+% different volumes of the same work that have slightly different publication
+% details, but it doesn't quite work for Oxford style. This works better.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{related:multivolume}{#1}
+\newbibmacro*{related:multivolume}[1]{%
+  \entrydata*{#1}{%
+    \printtext{%
+      \printfield{volume}%
+      \printfield{part}}%
+    \setunit*{\addspace}%
+  \usebibmacro{series+number+edition+publisher+location+date}}}
 
 %    \end{macrocode}
 %
