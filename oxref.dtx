@@ -1188,21 +1188,28 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
 
 Some authors publish under variant names. As distinct from pseudonyms, these are not false names but different real names: perhaps different publishers enforced different conventions regarding middle initials or shortened given names; or perhaps the author's name really did change due to marriage or some other circumstance.
 
-In such cases, both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} put the variant in parentheses, preceded by an equals sign.
+In cases where the surname changes, both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} suggest putting the later form of the name first, followed by parentheses containing an equals sign and the earier form of the name.
 %<n>This is only supposed to to printed in the bibliography, not in notes.
+
+\tip{To trigger this formatting, annotate the relevant name in \code{authoraddon} or \code{editoraddon} with the keyword \code{variant}.}
+
+\begin{egcite}{}
+  \cite{joukovsky1967gdd}
+\end{egcite}
 
 \begin{bibexbox}
 %<n><OGS \S15.17.4>
 %<y><OGS \S15.17.4\textdagger>
 {joukovsky1967gdd}
-%<n>Joukovsky, F. (= Joukovsky-Micha, F.), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance}, 29 (1967), 55–92.
-%<y>Joukovsky, F. (= Joukovsky-Micha, F.) (1967), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance}, 29: 55–92.
+%<n>\toggletrue{blx@bibliography}\textsc{Joukovsky, F.} (= \textsc{Joukovsky-Micha, F.}), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance}, 29 (1967), 55–92.
+%<y>\toggletrue{blx@bibliography}Joukovsky, F. (= Joukovsky-Micha, F.) (1967), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance}, 29: 55–92.
 \tcblower
 \begin{Verbatim}
 %</n|y>
 @article{joukovsky1967gdd,
   author = {F. Joukovsky},
   authoraddon = {F. Joukovsky-Micha},
+  authoraddon+an = {1=variant},
   title = {La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e}
     siècle (1500\textendash 1585)},
   journaltitle = {Bibliothèque d'Humanisme et Renaissance},
@@ -5822,6 +5829,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % and use the title-enhanced name format.
 %
 %    \begin{macrocode}
+\newtoggle{blx@ox@variantname}
 \DeclareNameFormat{given-family}{%
   \ifgiveninits
     {\usebibmacro{name:title-given-family}
@@ -5837,6 +5845,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       {\namepartsuffix}
       {\nameparttitle}}%
   \savefield{hash}{\bbx@ox@lasthash}%
+  \ifitemannotation{variant}{%
+    \global\settoggle{blx@ox@variantname}{true}%
+  }{%
+    \global\settoggle{blx@ox@variantname}{false}}%
   \usebibmacro{name:andothers}}
 %    \end{macrocode}
 %
@@ -5857,6 +5869,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       {\namepartsuffix}
       {\nameparttitle}}%
   \savefield{hash}{\bbx@ox@lasthash}%
+  \ifitemannotation{variant}{%
+    \global\settoggle{blx@ox@variantname}{true}%
+  }{%
+    \global\settoggle{blx@ox@variantname}{false}}%
   \usebibmacro{name:andothers}}
 %    \end{macrocode}
 %
@@ -5878,6 +5894,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{nameaddon}{\mkbibbrackets{#1}}
+\DeclareFieldFormat{namevariant}{\mkbibparens{\bibstring{equals}\space #1}}
 %    \end{macrocode}
 %
 % We provide an alternative method that uses new name fields `authoraddon'
@@ -5936,7 +5953,13 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       \let\bbx@ox@secondhash=\bbx@ox@lasthash
       \unhbox\bbx@ox@namebox
       \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{}{%
-        \addspace\printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}%
+        \addspace
+        \iftoggle{blx@ox@variantname}{%
+          \ifbibliography{%
+            \printtext[namevariant]{\printnames[author][\value{namepairs}-\value{namepairs}]{authoraddon}}%
+          }{}%
+        }{%
+          \printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}}%
       }%
     }%
     \ifboolexpr{
@@ -6003,7 +6026,13 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       \let\bbx@ox@secondhash=\bbx@ox@lasthash
       \unhbox\bbx@ox@namebox
       \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{}{%
-        \addspace\printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}%
+        \addspace
+        \iftoggle{blx@ox@variantname}{%
+          \ifbibliography{%
+            \printtext[namevariant]{\printnames[editor][\value{namepairs}-\value{namepairs}]{editoraddon}}%
+          }{}%
+        }{%
+          \printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}}%
       }%
     }%
     \ifboolexpr{
@@ -10800,7 +10829,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat{shorthandwidth}{#1}
 %    \end{macrocode}
 %
-% We patch the `family-given' name format  to handle the \texttt{pseudo}
+% We enhance the `family-given' name format  to handle the \texttt{pseudo}
 % and \texttt{inferred} annotations, and add a second hash for checking
 % if names (e.g. shortauthor and author) are the same.
 %
@@ -10822,6 +10851,10 @@ reference,mvreference,inreference]{volume}{%
       {\namepartsuffix}%
   }%
   \savefield{hash}{\bbx@ox@lasthash}%
+  \ifitemannotation{variant}{%
+    \global\settoggle{blx@ox@variantname}{true}%
+  }{%
+    \global\settoggle{blx@ox@variantname}{false}}%
   \ifitemannotation{pseudo}{%
     \addspace\printtext[parens]{\bibsstring{pseudo}}%
   }{}%
