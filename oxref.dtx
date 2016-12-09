@@ -1049,7 +1049,7 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
   title = {Liber usualis},
   location = {Tournai},
   publisher = {Desclée},
-  date = {1956}}
+  year = {1956}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -5284,7 +5284,7 @@ If a poem is divided into cantos, the title is set in italics rather than quoted
 {spenser1965fq}%
 [title = {\texttt{\string\fullcite[\string\pno\path{~}ii, canto vi, stanza iii]\{spenser1965fq\}}}]
 %<n>Edmund Spenser, \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent, 1965–6) (originally pub. 1590–6), bk. ii, canto vi, stanza iii.
-%<y>Spenser, E. (1965–6), \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent) (originally pub. 1590–6): bk. ii, canto vi, stanza iii.
+%<y>Spenser, E. (1590–6), \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent, 1965–6): bk. ii, canto vi, stanza iii.
 %<y>
 \tcblower
 \begin{Verbatim}
@@ -5298,7 +5298,7 @@ If a poem is divided into cantos, the title is set in italics rather than quoted
   location = {London},
   publisher = {Dent},
   date = {1965/1966},
-  pubstate = {originally pub\adddotspace 1590--6},
+  origdate = {1590/1596},
   pagination = {book}}
 %<*n|y>
 \end{Verbatim}
@@ -10340,7 +10340,11 @@ reference,mvreference,inreference]{volume}{%
                 {\thefield{labelyear}}%
                 {\thefield{labelendyear}}}}}%
         \printfield{extrayear}}%
-      \iffieldundef{\thefield{labeldatesource}year}{}{%
+      \iffieldundef{\thefield{labeldatesource}year}{%
+        \iffieldundef{\thefield{labeldatesource}}{}{%
+          \iffieldequalstr{labeldatesource}{pubstate}{}{%
+            \clearfield{\thefield{labeldatesource}}}}%
+      }{%
         \clearfield{\thefield{labeldatesource}year}%
         \clearfield{end\thefield{labeldatesource}year}%
       }%
