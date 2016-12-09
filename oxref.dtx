@@ -742,8 +742,8 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 %</y>
 
 \begin{docKey}{nolocation}{}{no value, initially unset}
-  Replaces missing locations with ‘n.p.’ or localised equivalent in books, collections, reference works, proceedings (and derived entry types). Once set, this option cannot be overridden.
-  This can also be set on a per-entry basis.
+  Replaces missing locations with ‘n.p.’ or the localised equivalent in books, collections, reference works, proceedings, and similar entry types. Once set, this option cannot be overridden.
+  Alternatively, it may be set on a per-entry basis.
 \end{docKey}
 
 \begin{docKey}{nopublisher}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
@@ -837,11 +837,11 @@ since the guides provide relatively few for author-year references.
 The stipulations given by the \emph{Oxford Guide to Style} regarding citations and references
 amount not so much to a consistent style as a body of advice for creating one.
 Unlike the style manuals published by the American Psychological Association,
-the Modern Language Association, and the University of Chicago,
-the emphasis of the Oxford guide is to describe good practice rather than prescribe it.
+the Modern Language Association, and the University of Chicago to name but three,
+the emphasis of the Oxford guide is to describe good practice rather than prescribe a particular style.
 This means that when it comes to \textsf{oxref}, there are decisions to be made
 as to which variations to support by default, which to support as options,
-and which to quietly ignore.
+and which to ignore quietly.
 
 The situation is complicated further by the nature of the available versions.
 The 2002 guide remains the most comprehensive in terms of rules, principles and examples.
@@ -849,7 +849,7 @@ The succeeding versions, under the title \emph{New Hart's Rules},
 update the aspects of the 2002 guide that now seem somewhat dated,
 such as its handling of URLs and DOIs,
 and have more of an eye on machine processing of bibliographies.
-They do, however, introduce some more variations with less of a steer on what is preferred,
+They do, however, introduce additional variations with less of a steer on what is preferred,
 and are considerably shorter with fewer examples.
 
 The approach of \textsf{oxref} is to follow the 2014 \emph{New Hart's Rules} as much as possible,
@@ -881,7 +881,6 @@ that is, there are no examples of them in this documentation.
     \item artwork
     \item commentary
     \item letter
-    \item movie
     \item performance
     \item standard
   \end{itemize}
@@ -1297,12 +1296,10 @@ Conversely, it might be helpful to provide the English original of a translated 
 
 For periodicals, grey literature, audiovisual and online material, the lack of a place of publication is not surprising; indeed it may be expected. For books, however, it may be remarkable and deserve marking in the bibliography with \enquote{n.p.\@} (for \enquote{no place}).
 
-\tip{To have \textsf{oxref} automatically insert \enquote{n.p.\@} for books, collections, reference works, proceedings and similar entry types, use the \code{nolocation} bibliography option.}
+\tip{To have \textsf{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for books, collections, reference works, proceedings and similar entry types, use the \code{nolocation} bibliography option.}
 
-\tip{To have \textsf{oxref} automatically insert \enquote{n.p.\@} for only a specific entry, use the \code{nolocation} entry option.
-  The advantage of doing this over giving \enquote{n.p.\@} as the \code{location} is that,
-  if another style that does not use this convention is presented with the entry, it will not print the location.
-  Note that the entry option uses a different mechanism from the bibliography option.}
+\tip{To have \textsf{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for only a specific entry, use the \code{nolocation} entry option instead.
+  This has the feature of hiding the \enquote{n.p.\@} from other styles that do not follow the same convention.}
 
 \begin{bibexbox}
 %<n><NHR \S18.2.9>
