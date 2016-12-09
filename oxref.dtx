@@ -886,12 +886,6 @@ that is, there are no examples of them in this documentation.
   \end{itemize}
 \end{multicols}
 
-Only in bibliography, display variant names
-
-OGS \S15.17.4
-
-Joukovsky, F. (= Joukovsky-Micha, F.), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance} 29 (1967), 55–92.
-
 
 \chapter{Citations and common formatting}\label{sec:citing}
 
@@ -1189,6 +1183,37 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
 \tip{Again, you can also use the syntax from \textsf{biblatex-realauthor}.
   If you specify the \code{author}, then \code{realauthor} is treated as an alias for \code{authoraddon}.
   The equivalent is true for \code{realeditor}.}
+
+\section{Name variants}
+
+Some authors publish under variant names. As distinct from pseudonyms, these are not false names but different real names: perhaps different publishers enforced different conventions regarding middle initials or shortened given names; or perhaps the author's name really did change due to marriage or some other circumstance.
+
+In such cases, both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} put the variant in parentheses, preceded by an equals sign.
+%<n>This is only supposed to to printed in the bibliography, not in notes.
+
+\begin{bibexbox}
+%<n><OGS \S15.17.4>
+%<y><OGS \S15.17.4\textdagger>
+{joukovsky1967gdd}
+%<n>Joukovsky, F. (= Joukovsky-Micha, F.), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance}, 29 (1967), 55–92.
+%<y>Joukovsky, F. (= Joukovsky-Micha, F.) (1967), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance}, 29: 55–92.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@article{joukovsky1967gdd,
+  author = {F. Joukovsky},
+  authoraddon = {F. Joukovsky-Micha},
+  title = {La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e}
+    siècle (1500\textendash 1585)},
+  journaltitle = {Bibliothèque d'Humanisme et Renaissance},
+  volume = {29},
+  date = {1967},
+  langid = {french},
+  pages = {55-92}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 \section{Works in foreign languages}
 
