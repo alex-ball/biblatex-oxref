@@ -1251,6 +1251,35 @@ J. Tschichold, \emph{Typographische Gestaltung} (Basle, 1955); Eng. trans. as \e
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{To specify the translator up front, set the \code{relatedtye} to \code{bytranslator} instead.}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.14>
+%<y><NHR \S18.2.14\textdagger>
+{sarrau1975ta}
+%<n>José Sarrau, \emph{Tapas y aperitivos} (Madrid, 1975); trans. Francesca Piemonte Slesinger as \emph{Tapas and Appetizers} (New York, 1987).
+%<y>Sarrau, J. (1975), \emph{Tapas y aperitivos} (Madrid); trans. F. P. Slesinger as \emph{Tapas and Appetizers} (New York, 1987).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{sarrau1975ta,
+  author = {José Sarrau},
+  title = {Tapas y aperitivos},
+  location = {Madrid},
+  date = {1975},
+  related = {sarrau1987ta},
+  relatedtype = {bytranslator}}
+@book{sarrau1987ta,
+  author = {José Sarrau},
+  translator = {Francesca Piemonte Slesinger},
+  title = {Tapas and Appetizers},
+  location = {New York},
+  date = {1987}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+
 If you used the translation, you might want to give the original publication as well.
 
 \tip{Add the original in \code{related}, and set \code{relatedtype} to \code{translationof}.}
@@ -2283,7 +2312,7 @@ Where the publisher changed between volumes, the following form is used:
 \begin{bibexbox}
 <OGS \S15.2.6*>
 {ritter1838hap1-3}
-Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i-iii (Oxford: Talboys, 1838–9), iv (London: Bohn, 1846).
+Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i–iii (Oxford: Talboys, 1838–9), iv (London: Bohn, 1846).
 \tcblower
 \begin{Verbatim}
 %</n>
@@ -2825,6 +2854,100 @@ rather than within the publication block%
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\subsection{Title changes}
+
+\emph{New Hart's Rules} recommends giving the original publication details first,
+then the new title and its details after a semicolon.
+
+\tip{You can set the \code{relatedtype} to \code{reprintas}.}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.13>
+%<y><NHR \S18.2.13\textdagger>
+{hare1949wwb}
+%<n>Cyril Hare, \emph{When the Wind Blows} (London, 1949); repr. as \emph{The Wind Blows Death} (London, 1987).
+%<y>Hare, C. (1949), \emph{When the Wind Blows} (London); repr. as \emph{The Wind Blows Death} (London, 1987).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{hare1949wwb,
+  author = {Cyril Hare},
+  title = {When the Wind Blows},
+  location = {London},
+  date = {1949},
+  related = {hare1987wbd},
+  relatedtype = {reprintas}}
+@book{hare1987wbd,
+  author = {Cyril Hare},
+  title = {The Wind Blows Death},
+  location = {London},
+  date = {1987}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\tip{To specify the type of edition, and arbitrary editorial roles, set the \code{relatedtype} to \code{editedas}.}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.12*>
+%<y><NHR \S18.2.128\textdagger>
+{berkenhout1769onh}
+%<n>John Berkenhout, \emph{Outlines of the Natural History of Great Britain}, 3 vols. (London, 1769–72); rev. edn., as \emph{A Synopsis of the Natural History of Great Britain}, 2 vols. (London, 1789).
+%<y>Berkenhout, J. (1769–72), \emph{Outlines of the Natural History of Great Britain}, 3 vols. (London); rev. edn., as \emph{A Synopsis of the Natural History of Great Britain}, 2 vols. (London, 1789).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@mvbook{berkenhout1769onh,
+  author = {John Berkenhout},
+  title = {Outlines of the Natural History of Great Britain},
+  volumes = {3},
+  location = {London},
+  date = {1769/1772},
+  related = {berkenhout1789snh},
+  relatedtype = {editedas}}
+@mvbook{berkenhout1789snh,
+  author = {John Berkenhout},
+  title = {A Synopsis of the Natural History of Great Britain},
+  volumes = {2},
+  edition = {revised},
+  location = {London},
+  date = {1789}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+%<n><NHR \S18.2.13>
+%<y><NHR \S18.2.13\textdagger>
+{lower1665dtw}
+%<n>Richard Lower, \emph{Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus Edmundum De Meara Ormoniensem Hibernum M.D.} (London, 1665); facs. edn with introduction, ed. and trans. Kenneth Dewhurst, as \emph{Richard Lower's \enquote{Vindicatio}: A Defence of the Experimental Method} (Oxford, 1983).
+%<y>Lower, R. (1665), \emph{Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus Edmundum De Meara Ormoniensem Hibernum M.D.} (London); facs. edn with introduction, ed. and trans. K. Dewhurst, as \emph{Richard Lower's \enquote{Vindicatio}: A Defence of the Experimental Method} (Oxford, 1983).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{lower1665dtw,
+  author = {Richard Lower},
+  title = {Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus
+    Edmundum De Meara Ormoniensem Hibernum M.D.},
+  location = {London},
+  date = {1665},
+  related = {dewhurst1983rlv},
+  relatedtype = {editedas}}
+@book{dewhurst1983rlv,
+  author = {Richard Lower},
+  introduction = {Kenneth Dewhurst},
+  editor = {Kenneth Dewhurst},
+  translator = {Kenneth Dewhurst},
+  title = {Richard Lower's \enquote{Vindicatio}},
+  subtitle = {A Defence of the Experimental Method},
+  edition = {facsimile},
+  location = {Oxford},
+  date = {1983}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 \subsection{Co-publications\slash co-editions}
 
@@ -9747,6 +9870,34 @@ reference,mvreference,inreference]{volume}{%
 
 %    \end{macrocode}
 %
+% \subsubsection{Related editions}
+%
+% This macro is based on the ‘bytranslator’ one, but more general.
+%
+%    \begin{macrocode}
+\newbibmacro*{related:editedas}[1]{%
+  \entrydata{#1}{%
+    \renewbibmacro*{name:hook}[1]{%
+      \ifnumequal{\value{listcount}}{1}{%
+        \begingroup
+        \mkrelatedstring%
+        \lbx@initnamehook{#1}%
+        \endgroup
+      }{}}%
+    \printfield{edition}%
+    \setunit{\addspace}%
+    \usebibmacro{byeditor+others}%
+    \setunit*{\addcomma\space\bibstring[\mkrelatedstring]{astitle}\space}%
+    \usebibmacro{maintitle+title}%
+    \setunit{\addspace}%
+    \printfield{note}%
+    \newunit\newblock
+    \printfield{volumes}%
+    \newunit
+    \usebibmacro{series+number+publisher+location+date}}}
+
+%    \end{macrocode}
+%
 % \subsubsection{Subitems}
 %
 % We provide support for items in items in items. The outer two layers should
@@ -11591,7 +11742,9 @@ reference,mvreference,inreference]{volume}{%
 % Many of these are guesses extrapolated from what is given.
 %
 % The roles expressed as functions do not need adjusting. The roles
-% expressed as actions do not typically end in `by' when abbreviated.
+% expressed as actions do not typically end in `by' when abbreviated;
+% the ‘with’ parts go first when abbreviated if there is more than one
+% editorial role (at least, that is one way of interpreting the examples).
 %
 %    \begin{macrocode}
   byeditor         = {{edited by}{ed\adddot}},
@@ -11622,35 +11775,35 @@ reference,mvreference,inreference]{volume}{%
   byeditortran     = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated by}%
                       {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
   byeditortrin     = {{edited and translated \lbx@lfromlang, with an introduction, by}%
-                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with introduction}},
+                      {with introduction, ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
   byeditortrfo     = {{edited and translated \lbx@lfromlang, with a foreword, by}%
-                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with foreword}},
+                      {with foreword, ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
   byeditortraf     = {{edited and translated \lbx@lfromlang, with an afterword, by}%
-                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang\ with afterword}},
+                      {with afterword, ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
   byeditorcoin     = {{edited and commented, with an introduction, by}%
-                      {ed\adddotspace and comm\adddotspace with introduction}},
+                      {with introduction, ed\adddotspace and comm\adddot}},
   byeditorcofo     = {{edited and commented, with a foreword, by}%
-                      {ed\adddotspace and comm\adddotspace with foreword}},
+                      {with foreword, ed\adddotspace and comm\adddot}},
   byeditorcoaf     = {{edited and commented, with an afterword, by}%
-                      {ed\adddotspace and comm\adddotspace with afterword}},
+                      {with afterword, ed\adddotspace and comm\adddot}},
   byeditoranin     = {{edited and annotated, with an introduction, by}%
-                      {ed\adddotspace and annot\adddotspace with introduction}},
+                      {with introduction, ed\adddotspace and annot\adddot}},
   byeditoranfo     = {{edited and annotated, with a foreword, by}%
-                      {ed\adddotspace and annot\adddotspace with foreword}},
+                      {with foreword, ed\adddotspace and annot\adddot}},
   byeditoranaf     = {{edited and annotated, with an afterword, by}%
-                      {ed\adddotspace and annot\adddotspace with afterword}},
+                      {with afterword, ed\adddotspace and annot\adddot}},
   byeditortrcoin   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with an introduction, by}%
-                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with introduction}},
+                      {with introduction, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
   byeditortrcofo   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with a foreword, by}%
-                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with foreword}},
+                      {with foreword, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
   byeditortrcoaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with an afterword, by}%
-                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddotspace with afterword}},
+                      {with afterword, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
   byeditortranin   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an introduction, by}%
-                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with introduction}},
+                      {with introduction, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
   byeditortranfo   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with a foreword, by}%
-                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with foreword}},
+                      {with foreword, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
   byeditortranaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an afterword, by}%
-                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddotspace with afterword}},
+                      {with afterword, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
   bytranslatorco   = {{translated \lbx@lfromlang\ and commented by}%
                       {trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
   bytranslatoran   = {{translated \lbx@lfromlang\ and annotated by}%
@@ -11662,17 +11815,17 @@ reference,mvreference,inreference]{volume}{%
   bytranslatoraf   = {{translated \lbx@lfromlang, with an afterword, by}%
                       {trans\adddot\ \lbx@sfromlang\ with afterword}},
   bytranslatorcoin = {{translated \lbx@lfromlang\ and commented, with an introduction, by}%
-                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with introduction}},
+                      {with introduction, trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
   bytranslatorcofo = {{translated \lbx@lfromlang\ and commented, with a foreword, by}%
-                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with foreword}},
+                      {with foreword, trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
   bytranslatorcoaf = {{translated \lbx@lfromlang\ and commented, with an afterword, by}%
-                      {trans\adddot\ \lbx@sfromlang\ and comm\adddotspace with afterword}},
+                      {with afterword, trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
   bytranslatoranin = {{translated \lbx@lfromlang\ and annotated, with an introduction, by}%
-                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with introduction}},
+                      {with introduction, trans\adddot\ \lbx@sfromlang\ and annot\adddot}},
   bytranslatoranfo = {{translated \lbx@lfromlang\ and annotated, with a foreword, by}%
-                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with foreword}},
+                      {with foreword, trans\adddot\ \lbx@sfromlang\ and annot\adddot}},
   bytranslatoranaf = {{translated \lbx@lfromlang\ and annotated, with an afterword, by}%
-                      {trans\adddot\ \lbx@sfromlang\ and annot\adddotspace with afterword}},
+                      {with afterword, trans\adddot\ \lbx@sfromlang\ and annot\adddot}},
 %    \end{macrocode}
 %
 % The roles expressed as objects and terms for supplementary material
@@ -11696,6 +11849,7 @@ reference,mvreference,inreference]{volume}{%
   edition          = {{edition}{edn\adddot}},
   reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
   reviewof         = {{review of}{review of}},
+  reprintas        = {{reprinted as}{repr\adddotspace as}},
   reprintfrom      = {{from}{from}},
   translationas    = {{English translation as}{Eng\adddotspace trans\adddotspace as}},
   origpubin        = {{originally published in}{originally pub\adddot}},
