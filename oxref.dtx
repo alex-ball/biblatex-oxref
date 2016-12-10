@@ -7109,12 +7109,27 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newbibmacro*{series+number+edition+publisher+location+date}{%
-  \nopunct\printtext[publication]{%
+  \ifboolexpr{
+    test {\iffieldundef{series}}
+    and
+    test {\iffieldundef{number}}
+    and
+    test {\iffieldundef{edition}}
+    and
+    test {\iflistundef{publisher}}
+    and
+    test {\iflistundef{location}}
+    and
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+  }{}{%
+    \nopunct
+    \printtext[publication]{%
     \usebibmacro{series+number}%
     \setunit{\addsemicolon\addspace}%
     \usebibmacro{edition+publisher+location+date}%
-    \usebibmacro{copub}%
-  }%
+    \usebibmacro{copub}}}%
   \iffieldequalstr{relatedtype}{copub}{\clearfield{related}}%
   \setunit{\addspace}\newblock
   \usebibmacro{origpub}%
@@ -7127,12 +7142,25 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newbibmacro*{series+number+publisher+location+date}{%
-  \nopunct\printtext[publication]{%
+  \ifboolexpr{
+    test {\iffieldundef{series}}
+    and
+    test {\iffieldundef{number}}
+    and
+    test {\iflistundef{publisher}}
+    and
+    test {\iflistundef{location}}
+    and
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+  }{}{%
+    \nopunct
+    \printtext[publication]{%
     \usebibmacro{series+number}%
     \setunit{\addsemicolon\addspace}%
     \usebibmacro{publisher+location+date}%
-    \usebibmacro{copub}%
-  }%
+    \usebibmacro{copub}}}%
   \iffieldequalstr{relatedtype}{copub}{\clearfield{related}}%
   \setunit{\addspace}\newblock
   \usebibmacro{origpub}%
@@ -7896,24 +7924,38 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \renewbibmacro*{institution+location+date}{%
-  \nopunct\printtext[publication]{%
-    \ifboolexpr{
-      test {\iffieldundef{series}}
-      and
-      test {\iffieldundef{type}}
-    }{%
-      \printfield{number}%
+  \ifboolexpr{
+    test {\iffieldundef{type}}
+    and
+    test {\iffieldundef{series}}
+    and
+    test {\iffieldundef{number}}
+    and
+    test {\iflistundef{institution}}
+    and
+    test {\iflistundef{location}}
+    and
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+  }{}{%
+    \nopunct
+    \printtext[publication]{%
+      \ifboolexpr{
+        test {\iffieldundef{series}}
+        and
+        test {\iffieldundef{type}}
+      }{%
+        \printfield{number}%
+        \setunit*{\addcomma\space}%
+      }{}%
+      \printlist{location}%
+      \iflistundef{institution}%
+      {\setunit*{\addcomma\space}}%
+      {\setunit*{\addcolon\space}}%
+      \printlist{institution}%
       \setunit*{\addcomma\space}%
-    }{}%
-    \printlist{location}%
-    \iflistundef{institution}%
-    {\setunit*{\addcomma\space}}%
-    {\setunit*{\addcolon\space}}%
-    \printlist{institution}%
-    \setunit*{\addcomma\space}%
-    \usebibmacro{date}%
-  }%
-}
+      \usebibmacro{date}}}}
 %    \end{macrocode}
 %
 % We provide a slightly more complicated version with the type included
@@ -7929,19 +7971,28 @@ reference,mvreference,inreference]{volume}{%
 }
 \DeclareBibliographyOption{altthesis}[true]{%
   \renewbibmacro*{type+institution+location+date}{%
-    \nopunct\printtext[publication]{%
-      \printfield{type}%
-      \setunit*{\addcomma\space}%
-      \printlist{location}%
-      \iflistundef{institution}%
-      {\setunit*{\addcomma\space}}%
-      {\setunit*{\addcolon\space}}%
-      \printlist{institution}%
-      \setunit*{\addcomma\space}%
-      \usebibmacro{date}%
-    }%
-  }%
-}
+    \ifboolexpr{
+      test {\iffieldundef{type}}
+      and
+      test {\iflistundef{institution}}
+      and
+      test {\iflistundef{location}}
+      and
+      test {\iffieldundef{year}}
+      and
+      test {\iffieldundef{month}}
+    }{}{%
+      \nopunct
+      \printtext[publication]{%
+        \printfield{type}%
+        \setunit*{\addcomma\space}%
+        \printlist{location}%
+        \iflistundef{institution}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addcolon\space}}%
+        \printlist{institution}%
+        \setunit*{\addcomma\space}%
+        \usebibmacro{date}}}}}
 %    \end{macrocode}
 %
 % We provide an even more convoluted version that also includes `series',
@@ -7953,7 +8004,6 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
-  \nopunct
   \ifboolexpr{
     test {\iffieldundef{type}}
     and
@@ -7973,25 +8023,27 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\iffieldundef{month}}
   }{}{%
+    \nopunct
     \printtext[publication]{%
-        \usebibmacro{series+type+number}%
-        \setunit{\addsemicolon\space}%
-        \printfield{edition}%
-        \setunit*{\addcomma\space}%
-        \iflistundef{publisher}%
-        {}%
-        {\printlist{organization}%
+      \usebibmacro{series+type+number}%
+      \setunit{\addsemicolon\space}%
+      \printfield{edition}%
+      \setunit*{\addcomma\space}%
+      \iflistundef{publisher}{}{%
+        \printlist{organization}%
         \setunit*{\addcomma\space}}%
-        \printlist{location}%
-        \iflistundef{publisher}%
-        {\iflistundef{organization}%
-        {\setunit*{\addcomma\space}}%
-        {\setunit*{\addcolon\space}%
-            \printlist{organization}}}%
-        {\setunit*{\addcolon\space}
+      \printlist{location}%
+      \iflistundef{publisher}{%
+        \iflistundef{organization}{%
+          \setunit*{\addcomma\space}%
+        }{%
+          \setunit*{\addcolon\space}%
+          \printlist{organization}}%
+      }{%
+        \setunit*{\addcolon\space}%
         \printlist{publisher}}%
-        \setunit*{\addcomma\space}%
-        \usebibmacro{date}}}}
+      \setunit*{\addcomma\space}%
+      \usebibmacro{date}}}}
 %    \end{macrocode}
 %
 % The changes to the `report' driver compared to the standard style
