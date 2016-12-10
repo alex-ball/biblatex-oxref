@@ -1009,12 +1009,20 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
 %<n>  Doing this will automatically suppress the printing of the anonymous author in notes.
 }
 
+%<*n>
+\begin{egcite}{}
+\cite{anon1822san}.
+\cite{anon1956lu}.
+\end{egcite}
+
+%</n>
 \begin{bibexbox}
 %<n><OGS \S15.2.1>
 %<y><OGS \S15.2.1\textdagger>
 {anon1822san}
-%<n>\emph{Stories after Nature} (London: Allman, 1822).
-%<y>Anon.\@ (1822), \emph{Stories after Nature} (London: Allman).\makeatletter\toggletrue{blx@bibliography}\makeatother
+%<n>\textsc{Anon.}, \emph{Stories after Nature} (London: Allman, 1822).
+%<y>Anon.\@ (1822), \emph{Stories after Nature} (London: Allman).
+\toggletrue{blx@bibliography}
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1032,8 +1040,9 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
 %<n><OGS \S15.2.1>
 %<y><OGS \S15.2.1\textdagger>
 {anon1956lu}
-%<n>\emph{Liber usualis} (Tournai: Desclée, 1956).
-%<y>Anon.\@ (1956), \emph{Liber usualis} (Tournai: Desclée).\makeatletter\toggletrue{blx@bibliography}\makeatother
+%<n>\textsc{Anon.}, \emph{Liber usualis} (Tournai: Desclée, 1956).
+%<y>Anon.\@ (1956), \emph{Liber usualis} (Tournai: Desclée).
+\toggletrue{blx@bibliography}
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -1047,14 +1056,12 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
 \end{Verbatim}
 \end{bibexbox}
 
-%<n>Compare the above with how these examples appear in the bibliography.
-
 %<*y>
 \begin{egcite}{(Anon.\@ 1822; 1956)}
 \parencite{anon1822san,anon1956lu}
 \end{egcite}
-%</y>
 
+%</y>
 
 \subsection{Pseudepigraphy}
 Some older works are known to have been written pseudepigraphically, that is, falsely attributed to a more famous author. The way of indicating this in Oxford style, if desired, is
@@ -1066,11 +1073,17 @@ to put ‘(Ps.-)’ after the name in the bibliography.
 %<n>(i.e. either a single word, or a whole name wrapped in braces).
 }
 
+%<*n>
+\begin{egcite}{}
+\cite{boethius1976dds}
+\end{egcite}
+
+%</n>
 \begin{bibexbox}
 %<n><OGS \S15.2.1>
 %<y><OGS \S15.2.1\textdagger>
 {boethius1976dds}
-%<n>Pseudo-Boethius, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).
+%<n>\textsc{Boethius (Ps.-)}, \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. Olga Weijers (Leiden, 1976).\toggletrue{blx@bibliography}
 %<y>Boethius (Ps.-) (1976), \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. O.\ Weijers (Leiden).
 \tcblower
 \begin{Verbatim}
@@ -1087,7 +1100,6 @@ to put ‘(Ps.-)’ after the name in the bibliography.
 \end{Verbatim}
 \end{bibexbox}
 
-%<n>Compare the above with how this example appears in the bibliography.
 
 \subsection{Inferred attribution}
 
@@ -1184,11 +1196,9 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
   If you specify the \code{author}, then \code{realauthor} is treated as an alias for \code{authoraddon}.
   The equivalent is true for \code{realeditor}.}
 
-\section{Name variants}
+\subsection{Name variants}
 
-Some authors publish under variant names. As distinct from pseudonyms, these are not false names but different real names: perhaps different publishers enforced different conventions regarding middle initials or shortened given names; or perhaps the author's name really did change due to marriage or some other circumstance.
-
-In cases where the surname changes, both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} suggest putting the later form of the name first, followed by parentheses containing an equals sign and the earier form of the name.
+In cases where an author changes the name under which they publish (e.g.\ due to changes of marital status), both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} suggest putting the later form of the name first, followed by parentheses containing an equals sign and the earier form of the name.
 %<n>This is only supposed to to printed in the bibliography, not in notes.
 
 \tip{To trigger this formatting, annotate the relevant name in \code{authoraddon} or \code{editoraddon} with the keyword \code{variant}.}
@@ -1251,7 +1261,7 @@ J. Tschichold, \emph{Typographische Gestaltung} (Basle, 1955); Eng. trans. as \e
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{To specify the translator up front, set the \code{relatedtye} to \code{bytranslator} instead.}
+\tip{To specify the translator up front, set the \code{relatedtype} to \code{bytranslator} instead.}
 
 \begin{bibexbox}
 %<n><NHR \S18.2.14>
@@ -2860,7 +2870,7 @@ rather than within the publication block%
 \emph{New Hart's Rules} recommends giving the original publication details first,
 then the new title and its details after a semicolon.
 
-\tip{You can set the \code{relatedtype} to \code{reprintas}.}
+\tip{The standard \code{relatedtype} value \code{reprintas} is supported.}
 
 \begin{bibexbox}
 %<n><NHR \S18.2.13>
@@ -2887,7 +2897,9 @@ then the new title and its details after a semicolon.
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{To specify the type of edition, and arbitrary editorial roles, set the \code{relatedtype} to \code{editedas}.}
+\tip{A more generalized version of this relation is available.
+  If you set the \code{relatedtype} to the \textsf{oxref}-specific keyword \code{editedas},
+  the edition and any editorial contributions will be printed in the linking text.}
 
 \begin{bibexbox}
 %<n><NHR \S18.2.12*>
@@ -2921,8 +2933,8 @@ then the new title and its details after a semicolon.
 %<n><NHR \S18.2.13>
 %<y><NHR \S18.2.13\textdagger>
 {lower1665dtw}
-%<n>Richard Lower, \emph{Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus Edmundum De Meara Ormoniensem Hibernum M.D.} (London, 1665); facs. edn with introduction, ed. and trans. Kenneth Dewhurst, as \emph{Richard Lower's \enquote{Vindicatio}: A Defence of the Experimental Method} (Oxford, 1983).
-%<y>Lower, R. (1665), \emph{Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus Edmundum De Meara Ormoniensem Hibernum M.D.} (London); facs. edn with introduction, ed. and trans. K. Dewhurst, as \emph{Richard Lower's \enquote{Vindicatio}: A Defence of the Experimental Method} (Oxford, 1983).
+%<n>Richard Lower, \emph{Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus Edmundum De Meara Ormoniensem Hibernum M.D.} (London, 1665); facs. edn. with introduction, ed. and trans. Kenneth Dewhurst, as \emph{Richard Lower's \enquote{Vindicatio}: A Defence of the Experimental Method} (Oxford, 1983).
+%<y>Lower, R. (1665), \emph{Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus Edmundum De Meara Ormoniensem Hibernum M.D.} (London); facs. edn. with introduction, ed. and trans. K. Dewhurst, as \emph{Richard Lower's \enquote{Vindicatio}: A Defence of the Experimental Method} (Oxford, 1983).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -2969,6 +2981,7 @@ L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hi
 \tcblower
 \begin{Verbatim}
 %</n>
+%<*n|bib>
 @book{holfordstrevens1988ag1,
   author = {L. A. Holford-Strevens},
   title = {Aulus Gellius},
@@ -2981,6 +2994,7 @@ L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hi
   location = {Chapel Hill},
   publisher = {University of North Carolina Press},
   date = {1989}}
+%</n|bib>
 %<*n>
 \end{Verbatim}
 \end{bibexbox}
@@ -9895,6 +9909,25 @@ reference,mvreference,inreference]{volume}{%
     \printfield{volumes}%
     \newunit
     \usebibmacro{series+number+publisher+location+date}}}
+\newbibmacro*{related:bytranslator}[1]{%
+  \entrydata{#1}{%
+    \renewbibmacro*{name:hook}[1]{%
+      \ifnumequal{\value{listcount}}{1}
+        {\begingroup
+         \mkrelatedstring%
+         \lbx@initnamehook{#1}%
+         \endgroup}
+        {}}%
+    \printnames[bytranslator]{translator}%
+    \setunit*{\addspace\bibstring[\mkrelatedstring]{astitle}\space}%
+    \usebibmacro{maintitle+title}%
+    \setunit{\addspace}%
+    \printfield{note}%
+    \newunit\newblock
+    \printfield{volumes}%
+    \newunit
+    \usebibmacro{series+number+publisher+location+date}}}
+
 
 %    \end{macrocode}
 %
