@@ -742,12 +742,20 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 %</y>
 
 \begin{docKey}{nolocation}{}{no value, initially unset}
-  Replaces missing locations with ‘n.p.’ or the localised equivalent in books, collections, reference works, proceedings, and similar entry types. Once set, this option cannot be overridden.
+  Replaces missing locations with ‘n.p.’ or the localized equivalent in books, collections, reference works, proceedings, and similar entry types. Once set, this option cannot be overridden.
   Alternatively, it may be set on a per-entry basis.
 \end{docKey}
 
 \begin{docKey}{nopublisher}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Removes publisher name from all entries.
+\end{docKey}
+
+\begin{docKey}{relationpunct}{=\val{period}|\val{comma}|\val{semicolon}|\val{colon}|\val{space}}{default \val{semicolon}, initially \val{semicolon}}
+  Sets the fallback punctuation that precedes the \code{relatedtype} localization string when it appears near the end of an entry.
+  An additional space is assumed unless the value is \val{space}.
+  This can also be set on a per-type and per-entry basis.
+  The general and per-type settings will be overridden for some values of \code{relatedtype},
+  but the per-entry version will not.
 \end{docKey}
 
 %<*n>
@@ -9766,7 +9774,7 @@ reference,mvreference,inreference]{volume}{%
     }{%
       Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
       'period', 'exclam', 'question', and 'space'.}}}
-\renewbibmacro*{related:init}{%
+\xapptobibmacro{begrelated}{%
   \iftoggle{blx@ox@relpunctset}{}{%
     \iffieldequalstr{relatedtype}{in}{%
       \setunit{\addcomma\space}}{}%
@@ -9776,8 +9784,7 @@ reference,mvreference,inreference]{volume}{%
       \setunit{\addspace}}{}%
     \iffieldequalstr{relatedtype}{multivolume}{%
       \setunit{\addcomma\space}}{}%
-  }%
-  \csundef{bbx:relatedloop}}
+  }}{}{}
 
 %    \end{macrocode}
 %
@@ -9790,14 +9797,12 @@ reference,mvreference,inreference]{volume}{%
 \newbibmacro*{rellanguage}{%
   \def\do##1{%
     \entrydata{##1}{%
-      \printlist{language}%
-    }%
-  }%
+      \printlist{language}}}%
   \docsvfield{related}%
 }
 \DeclareFieldFormat{relatedstring:translationof}{%
   \usebibmacro{rellanguage}\space
-  \bibstring{original}}
+  \bibstring{original}\addcomma\space}
 
 \DeclareFieldFormat{related:translationof}{%
   \mkbibbrackets{#1}}
@@ -9817,8 +9822,9 @@ reference,mvreference,inreference]{volume}{%
 % \subsubsection{Reprints}
 %
 % We take advantage of the Biber-specific mechanism of relating items
-% in order to handle reprints. This overrides the standard definition
-% the reprintfrom relation with the standard generic relations.
+% in order to handle reprints. This reverts the special definition of
+% the reprintfrom relation in the standard stule back to the standard
+% generic relation.
 %
 %    \begin{macrocode}
 \renewbibmacro*{related:reprintfrom}[1]{%
@@ -11175,10 +11181,10 @@ reference,mvreference,inreference]{volume}{%
 % We ensure related entries do not interfere with the hashing.
 %
 %    \begin{macrocode}
-\renewbibmacro*{begrelated}{%
-  \booltrue{bbx@inset}}
-\renewbibmacro*{endrelated}{%
-  \usebibmacro*{bbx:savehash}}
+\xapptobibmacro{begrelated}{%
+  \booltrue{bbx@inset}}{}{}
+\xapptobibmacro{endrelated}{%
+  \usebibmacro*{bbx:savehash}}{}{}
 %    \end{macrocode}
 %
 % We patch the `author' macro so that the date label information appears
