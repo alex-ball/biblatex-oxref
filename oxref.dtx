@@ -1861,13 +1861,12 @@ or add the book details to a periodical entry.
 
 \section{Articles in an issue that is a supplement to another issue}
 
-
 \DeclareNumChars*{S}
 
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year); \lit{Supplement to} \emph{MainJournalTitle} Vol/Number, Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number; \lit{Supplement to} \emph{MainJournalTitle} Vol/Number: Pages.}
 
-\tip{To get this format, use a separate entry for the parent issue, reference it in the ‘related’ field, and use the key ‘suppto’ as the ‘relatedtype’.}
+\tip{To get this format, use a separate entry for the parent issue, reference it in the \code{related} field, and use the key \code{suppto} as the \code{relatedtype}.}
 
 \begin{bibexbox}
 %<n><OGS \S15.4.1>
@@ -1887,8 +1886,7 @@ or add the book details to a periodical entry.
   related = {jha1989},
   relatedtype = {suppto},
   pages = {S61-S72},
-  bookpagination = {page}
-}
+  bookpagination = {page}}
 @periodical{jha1989,
   title = {Journal for the History of Astronomy},
   volume = {20}}
@@ -1897,6 +1895,44 @@ or add the book details to a periodical entry.
 \end{bibexbox}
 
 \tip{Use \code{bookpagination} to force the display of ‘pp.’ (since the number format is odd), and \cs{DeclareNumChars*}\brackets{S} to ensure that \code{S61} is recognized as a number.}%
+
+
+\section{Articles that span multiple issues}
+
+\tip{Use the key \code{serialarticle} as the \code{relatedtype}.}
+
+%</n|y>
+%<*y>
+\begin{bibexbox}<NHR \S 17.3*>
+{stookey1974ssp}
+Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab Republic}, \emph{Middle East Journal}, 28/3: 248–60; 28/4: 409–19.
+\tcblower
+\begin{Verbatim}
+%</y>
+%<*y|bib>
+@article{stookey1974ssp,
+  author = {R. W. Stookey},
+  date = {1974},
+  title = {Social Structure and Politics in the Yemen Arab Republic},
+  journaltitle = {Middle East Journal},
+  volume = {28},
+  number = {3},
+  pages = {248-260},
+  related = {stookey1974ssp2},
+  relatedtype = {serialarticle}}
+@article{stookey1974ssp2,
+  crossref = {stookey1974ssp},
+  options = {dataonly},
+  volume = {28},
+  number = {4},
+  pages = {409-419}}
+%</y|bib>
+%<*y>
+\end{Verbatim}
+\end{bibexbox}
+%</y>
+
+%<*n|y>
 
 \section{Accepted journal articles, pre-publication}
 
@@ -1942,8 +1978,7 @@ or add the book details to a periodical entry.
   journaltitle = {Res facta},
   volume = {17},
   date = {1995},
-  pages = {56-59}
-}
+  pages = {56-59}}
 @book{basiron1994mel,
   author = {Philippe Basiron},
   title = {My Early Life},
@@ -1971,8 +2006,7 @@ or add the book details to a periodical entry.
   series = {newseries},
   volume = {39},
   date = {1989},
-  pages = {27-28}
-}
+  pages = {27-28}}
 @book{delvigo1987tvt,
   author = {Maria Luisa Delvigo},
   title = {Testo virgiliano e tradizione indiretta},
@@ -3332,8 +3366,7 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
   date = {1986},
   pages = {347-364},
   related = {owen1983pi},
-  relatedtype = {reprintfrom}
-}
+  relatedtype = {reprintfrom}}
 @article{owen1983pi,
   author = {G. E. L. Owen},
   title = {Philosophical Invective},
@@ -9854,6 +9887,39 @@ reference,mvreference,inreference]{volume}{%
       \thefield{entrytype}}}}
 %    \end{macrocode}
 %
+% \subsubsection{Articles that span issues}
+%
+% If an article spans several issues of a journal, we print second
+% reference after the first, omitting any information in common.
+%
+%    \begin{macrocode}
+\newbibmacro*{related:serialarticle}[1]{%
+  \entrydata*{#1}{%
+    \iffieldundef{savedjournaltitle}{}{%
+      \iffieldsequal{journaltitle}{savedjournaltitle}{%
+        \clearfield{journaltitle}%
+      }{}}%
+    \iffieldundef{savedjournalsubtitle}{}{%
+      \iffieldsequal{journalsubtitle}{savedjournalsubtitle}{%
+        \clearfield{journalsubtitle}%
+      }{}}%
+    \iffieldundef{savedseries}{}{%
+      \iffieldsequal{series}{savedseries}{%
+        \clearfield{series}%
+      }{}}%
+    \iffieldundef{savedyear}{\clearfield{year}}{
+      \iffieldsequal{year}{savedyear}{%
+        \clearfield{year}%
+      }{}}%
+    \usebibmacro{journal+issuetitle}%
+    \newunit
+    \usebibmacro{note+pages}%
+    \newunit\newblock
+    \usebibmacro{doi+eprint+url}%
+    \newunit\newblock
+    \usebibmacro{addendum+pubstate}}}
+%    \end{macrocode}
+%
 % \subsubsection{Reviews}
 %
 % We ensure that the field formatting for `review' entries matches that
@@ -11969,8 +12035,8 @@ reference,mvreference,inreference]{volume}{%
   urlseen          = {{accessed}{accessed}},
 %    \end{macrocode}
 %
-% Scholarly citation terms are abbreviated. Oxford style is to use
-% `at' to cite a page within a range.
+% Scholarly citation terms are abbreviated. Oxford style is to use `henceforth'
+% for shorthands and `at' to cite a page within a range.
 %
 %    \begin{macrocode}
   idem             = {{idem}{id\adddot}},
