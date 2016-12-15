@@ -286,6 +286,7 @@ Copyright (C) 2016 Alex Ball
 
 \hypersetup{pdfborder={0 0 0},pdfencoding=auto}
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
+\crefname{page}{page}{pages}
 
 \newcommand*{\pkg}[1]{\href{http://www.ctan.org/pkg/#1}{\textsf{#1}}}
 \newcommand*{\lit}[1]{\textsf{#1}}
@@ -335,6 +336,7 @@ Copyright (C) 2016 Alex Ball
       \node[anchor=south east,text=teal] at (frame.south east) {#2};
       }
     }
+  ,phantomlabel={ex:#4}
   ,IfNoValueTF={#5}{}{#5}
   }
 \NewTotalTColorBox{\spec}{m}%
@@ -766,6 +768,12 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 
 \begin{docKey}{timefirst}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Prints the time (if provided) before the date instead of after it.
+  This can also be set on a per-type and per-entry basis.
+\end{docKey}
+
+\begin{docKey}{usenametitles}{=\val{true}|\val{false}}{default \val{true}, initially \val{true}}
+  Controls whether personal titles such as Revd, Dr, Mrs, Sir, and so on are printed.
+  (There is an example of how to supply titles in the \hyperref[ex:lewis1981lww]{Lewis reference} on \cpageref{ex:lewis1981lww}.)
   This can also be set on a per-type and per-entry basis.
 \end{docKey}
 
@@ -4037,7 +4045,7 @@ There are typically many contributors to an audiovisual work, and the priority g
 %<y><OGS \S15.14.1\textdagger>
 {lewis1981lww}
 %<n>C. S. Lewis, \emph{The Lion, the Witch, and the Wardrobe}, read by Sir Michael Hordern (2 audio cassettes, TO1611, 1981).
-%<y>Lewis, C. S. (1981), \emph{The Lion, the Witch, and the Wardrobe}, read by M. Hordern (2 audio cassettes, TO1611).
+%<y>Lewis, C. S. (1981), \emph{The Lion, the Witch, and the Wardrobe}, read by Sir M. Hordern (2 audio cassettes, TO1611).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -5897,15 +5905,27 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% We provide some additional macros for formatting names with titles. We only
-% print the title if \key{giveninits} is \val{false}. Here is the one for
-% natural name order.
+% Oxford style prefers to omit titles but accepts they may need to be
+% included in some circumstances. There are some titles that ark only used
+% with full names and some that may be used with initials, so we provide an
+% option for manually switching them off.
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@nametitle}\toggletrue{blx@ox@nametitle}%
+\DeclareBibliographyOption[boolean]{usenametitles}[true]{%
+  \settoggle{blx@ox@nametitle}{#1}}
+\DeclareEntryOption[boolean]{usenametitles}[true]{%
+  \settoggle{blx@ox@nametitle}{#1}}
+%    \end{macrocode}
+%
+% We provide some additional macros for formatting names with titles.
+% Here is the one for natural name order.
 %
 %    \begin{macrocode}
 \newbibmacro*{name:title-given-family}[5]{%
   \usebibmacro{name:delim}{#2#3#1}%
   \usebibmacro{name:hook}{#2#3#1}%
-  \ifdefvoid{#5}{}{\ifgiveninits{}{\mkbibnametitle{#5}\isdot\bibnamedelimd}}%
+  \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\mkbibnametitle{#5}\isdot\bibnamedelimd}{}}%
   \ifdefvoid{#2}{}{\mkbibnamegiven{#2}\isdot\bibnamedelimd}%
   \ifdefvoid{#3}{}{%
     \mkbibnameprefix{#3}\isdot
@@ -5920,31 +5940,33 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 %    \begin{macrocode}
 \newbibmacro*{name:family-title-given}[5]{%
-  \ifuseprefix
-    {\usebibmacro{name:delim}{#3#1}%
-     \usebibmacro{name:hook}{#3#1}%
-     \ifdefvoid{#3}{}{%
-       \ifcapital
-         {\mkbibnameprefix{\MakeCapital{#3}}\isdot}
-         {\mkbibnameprefix{#3}\isdot}%
-       \ifprefchar{}{\bibnamedelimc}}%
-     \mkbibnamefamily{#1}\isdot
-     \ifdefvoid{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
-     \ifdefvoid{#5}{}{\ifgiveninits{}{\mkbibnametitle{#5}\isdot\bibnamedelimd}}%
-     \ifdefvoid{#2}{}{\revsdnamepunct\bibnamedelimd\mkbibnamegiven{#2}\isdot}}
-    {\usebibmacro{name:delim}{#1}%
-     \usebibmacro{name:hook}{#1}%
-     \mkbibnamefamily{#1}\isdot
-     \ifdefvoid{#4}{}{\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
-     \ifboolexpe{%
-       test {\ifdefvoid{#2}}
-       and
-       test {\ifdefvoid{#3}}}
-       {}
-       {\revsdnamepunct}%
-     \ifdefvoid{#5}{}{\ifgiveninits{}{\mkbibnametitle{#5}\isdot\bibnamedelimd}}%
-     \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
-     \ifdefvoid{#3}{}{\bibnamedelimd\mkbibnameprefix{#3}\isdot}}}
+  \ifuseprefix{%
+    \usebibmacro{name:delim}{#3#1}%
+    \usebibmacro{name:hook}{#3#1}%
+    \ifdefvoid{#3}{}{%
+      \ifcapital{%
+        \mkbibnameprefix{\MakeCapital{#3}}\isdot
+      }{%
+        \mkbibnameprefix{#3}\isdot}%
+      \ifprefchar{}{\bibnamedelimc}}%
+    \mkbibnamefamily{#1}\isdot
+    \ifdefvoid{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
+    \ifdefvoid{#5}{}{\ifgiveninits{}{\mkbibnametitle{#5}\isdot\bibnamedelimd}}%
+    \ifdefvoid{#2}{}{\revsdnamepunct\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
+  }{%
+    \usebibmacro{name:delim}{#1}%
+    \usebibmacro{name:hook}{#1}%
+    \mkbibnamefamily{#1}\isdot
+    \ifdefvoid{#4}{}{\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
+    \ifboolexpe{%
+      test {\ifdefvoid{#2}}
+      and
+      test {\ifdefvoid{#3}}%
+    }{}{%
+      \revsdnamepunct}%
+    \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\mkbibnametitle{#5}\isdot\bibnamedelimd}{}}%
+    \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
+    \ifdefvoid{#3}{}{\bibnamedelimd\mkbibnameprefix{#3}\isdot}}}
 %    \end{macrocode}
 %
 % Oxford style (for the humanities) is to write author names surname first in
@@ -11175,32 +11197,17 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat{shorthandwidth}{#1}
 %    \end{macrocode}
 %
-% We enhance the `family-given' name format  to handle the \texttt{pseudo}
-% and \texttt{inferred} annotations, and add a second hash for checking
-% if names (e.g. shortauthor and author) are the same.
+% We enhance the `family-given' name format to handle the \texttt{pseudo}
+% and \texttt{inferred} annotations.
 %
 %    \begin{macrocode}
-\DeclareNameFormat{family-given}{%
+\xpretonameformat{family-given}{%
   \iffieldannotation{inferred}{\ifnumequal{\value{listcount}}{1}{\bibopenbracket}{}}{}%
   \ifitemannotation{inferred}{\bibopenbracket}{}%
-  \ifgiveninits{%
-    \usebibmacro{name:family-given}
-      {\namepartfamily}
-      {\namepartgiveni}
-      {\namepartprefix}
-      {\namepartsuffix}%
-  }{%
-    \usebibmacro{name:family-given}
-      {\namepartfamily}
-      {\namepartgiven}
-      {\namepartprefix}
-      {\namepartsuffix}%
-  }%
-  \savefield{hash}{\bbx@ox@lasthash}%
-  \ifitemannotation{variant}{%
-    \global\settoggle{blx@ox@variantname}{true}%
-  }{%
-    \global\settoggle{blx@ox@variantname}{false}}%
+}{}{}
+\xpatchnameformat{family-given}{%
+  \usebibmacro{name:andothers}%
+}{%
   \ifitemannotation{pseudo}{%
     \addspace\printtext[parens]{\bibsstring{pseudo}}%
   }{}%
@@ -11217,7 +11224,7 @@ reference,mvreference,inreference]{volume}{%
         test {\ifnumgreater{\value{listtotal}}{\value{maxnames}}} )
     }{\bibclosebracket}{}%
   }{}%
-}
+}{}{}
 \DeclareNameAlias{shortauthor}{family-given}
 \DeclareNameAlias{shorteditor}{family-given}
 %    \end{macrocode}
