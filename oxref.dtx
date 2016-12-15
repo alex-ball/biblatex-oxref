@@ -1334,7 +1334,7 @@ If you used the translation, you might want to give the original publication as 
 \end{Verbatim}
 \end{bibexbox}
 
-It is often helpful to provide a translation of foreign language titles.
+It is often helpful to provide an informative translation of foreign language titles.
 
 \tip{Put the translation in \code{titleaddon}.}
 
@@ -1371,7 +1371,8 @@ Conversely, it might be helpful to provide the English original of a translated 
 @book{milne1938pb,
   author = {A. A. Milne},
   title = {Pu der Bär},
-  titleaddon = {\bibstring{langgerman} \bibstring{translationof} \emph{Winnie the Pooh}},
+  language = {german},
+  origtitle = {Winnie the Pooh},
   location = {Potsdam},
   publisher = {Williams},
   date = {1938}}
@@ -6515,7 +6516,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       \setunit{\subtitlepunct}%
       \printfield[titlecase]{subtitle}}%
     \setunit{\addspace}}%
-  \printfield{origtitle}%
+  \usebibmacro{origtitle}%
   \setunit*{\addspace}%
   \printfield{titleaddon}%
   \iffieldequalstr{relatedtype}{equals}{%
@@ -6529,12 +6530,23 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat{titleaddon}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
-% The `origtitle' field is intended for foreign titles
-% that have been translated (in `title') and are therefore
-% in parentheses and italics.
+% The `origtitle' field is used for translated works. If the cited work is a
+% native language translation of a foreign work, the original title is given
+% in parentheses. If the cited work is foreign translation of a native language
+% work, the original title is printed in square brackets, preceded by the name
+% of the foreign language and `translation of'.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat{origtitle}{\mkbibparens{\mkbibemph{#1}}}
+\DeclareFieldFormat{origtitle}{\mkbibemph{#1}}
+\newbibmacro*{origtitle}{%
+  \iffieldundef{origtitle}{}{%
+    \iflistundef{language}{%
+      \printtext[parens]{\printfield{origtitle}}%
+    }{%
+      \printtext[brackets]{%
+        \printlist{language}\space
+        \bibstring{translationof}\space
+        \printfield{origtitle}}}}}
 %    \end{macrocode}
 %
 % \subsection{Dates and times}
