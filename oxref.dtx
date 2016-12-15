@@ -711,7 +711,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   Prints courts of decision without parentheses.
 \end{docKey}
 
-\begin{docKey}{dashed}{=\val{true}|\val{false}}{default \val{true}, initially \val{true}}
+\begin{docKey}{dashed}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   In the biblography, replaces recurring author\slash editor names with a dash.
 \end{docKey}
 
@@ -6259,14 +6259,12 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \end{macrocode}
 %
 % Traditional Oxford style is to use dashes instead of repeating author
-% names, though NHR recommends abandoning the practice as it interferes
-% with text mining. As per the standard `authortitle' and `authoryear'
-% styles, we implement dashes by default but allow authors to switch
-% this behaviour off with `dashed=false'.
+% names, but NHR recommends abandoning the practice as it interferes
+% with text mining. We therefore turn this feature off by default, but
+% authors to switch it on with `dashed=true'.
 %
 %    \begin{macrocode}
-\newbibmacro*{bbx:savehash}{%
-  \savefield{fullhash}{\bbx@lasthash}}
+\newbibmacro*{bbx:savehash}{}
 \DeclareBibliographyOption{dashed}[true]{%
   \ifstrequal{#1}{true}{%
     \ExecuteBibliographyOptions{pagetracker}%
