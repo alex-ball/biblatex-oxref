@@ -291,9 +291,9 @@ Copyright (C) 2016 Alex Ball
 \newcommand*{\lit}[1]{\textsf{#1}}
 \newcommand*{\code}[1]{\texttt{#1}}
 \newcommand*{\aside}[1]{\textcolor{violet}{[\textsc{tip:} #1]}}
-\newcommand{\tip}[1]{\hangfrom{\faLightbulbO\enskip}#1\par}
-\newcommand{\info}[1]{\hangfrom{\faInfoCircle\enskip}#1\par}
-\newcommand{\hack}[1]{\hangfrom{\faWrench\enskip}#1\par}
+\newcommand{\tip}[1]{\hangfrom{\makebox[2em][c]{\faLightbulbO}}#1\par}
+\newcommand{\info}[1]{\hangfrom{\makebox[2em][c]{\faInfoCircle}}#1\par}
+\newcommand{\hack}[1]{\hangfrom{\makebox[2em][c]{\faWrench}}#1\par}
 
 % For debugging; userd is either ‘todo’, ‘hacked’, ‘manual’
 \makeatletter
@@ -4229,7 +4229,7 @@ There are typically many contributors to an audiovisual work, and the priority g
 \tip{Use the (non-standard) \texttt{datetype} field to clarify the event represented by the main date.
   You can also use \texttt{eventtitle} and \texttt{eventdate} to specify a secondary publication event.}
 
-\section{Broadcasts}
+\section{Broadcasts}\label{sec:broadcasts}
 
 The \emph{Oxford Guide to Style} prints all information about the transmission, including the date, bare. \emph{New Hart's Rules} tends to put the transmittion date in parentheses, perhaps because (\emph{a}) broadcast is a type of publication, (\emph{b}) episodes in some very long-running series are identified by date alone, and (\emph{c}) it may be important to know which broadcast is referenced since the edits might be different. \textsf{Oxref} sides with the latter.
 
@@ -4432,6 +4432,10 @@ In theory, the difference should be that parentheses indicate ‘proper’ publi
 
 \section{Website articles}
 
+Standard \textsf{biblatex} only provides for one title for online resources, which is fine for whole websites but not if you want to cite one page or article within a website.
+
+\tip{If the piece is unsigned, put the site name in the \code{author} field.}
+
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
 %<y><NHR \S18.8.5\textdagger>
@@ -4452,6 +4456,10 @@ In theory, the difference should be that parentheses indicate ‘proper’ publi
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{If the piece is signed, put the site name in the \code{organization} field.
+  The rationale is that \textsf{biblatex} uses this for the organization hosting the site,
+  and it can get a bit blurry between that and the name of the site itself.}
+
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
 %<y><NHR \S18.8.5\textdagger>
@@ -4468,46 +4476,6 @@ In theory, the difference should be that parentheses indicate ‘proper’ publi
   date = {2013-11-14},
   url = {http://www.bbc.co.uk/news/magazine-24735423},
   urldate = {2013-11-14}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-%<n><NHR \S18.8.5>
-%<y><NHR \S18.8.5\textdagger>
-{mcewen2013tte}
-%<n>Stephen McEwen, \enquote{Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}}, \emph{The Spectator} (20 May 2013), \url{http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/}, accessed 9 Nov. 2013.
-%<y>McEwen, S. (2013), \enquote{Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}}, \emph{The Spectator} (20 May), \url{http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/}, accessed 9 Nov. 2013.
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@article{mcewen2013tte,
-  author = {Stephen McEwen},
-  title = {Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}},
-  journaltitle = {The Spectator},
-  date = {2013-05-20},
-  url = {http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/},
-  urldate = {2013-11-09}}
-%<*n|y>
-\end{Verbatim}
-\end{bibexbox}
-
-\begin{bibexbox}
-%<n><NHR \S18.8.5>
-%<y><NHR \S18.8.5\textdagger>
-{allaby2013fll}
-%<n>Michael Allaby, \enquote{Feathers and Lava Lamps}, Oxford Reference (2013), \url{http://www.oxfordreference.com/page/featherslavalamps}, accessed 9 Nov. 2013.
-%<y>Allaby, M. (2013), \enquote{Feathers and Lava Lamps}, Oxford Reference, \url{http://www.oxfordreference.com/page/featherslavalamps}, accessed 9 Nov. 2013.
-\tcblower
-\begin{Verbatim}
-%</n|y>
-@online{allaby2013fll,
-  author = {Michael Allaby},
-  title = {Feathers and Lava Lamps},
-  organization = {Oxford Reference},
-  date = {2013},
-  url = {http://www.oxfordreference.com/page/featherslavalamps},
-  urldate = {2013-11-09}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4533,6 +4501,48 @@ In theory, the difference should be that parentheses indicate ‘proper’ publi
 \end{Verbatim}
 \end{bibexbox}
 
+\begin{bibexbox}
+%<n><NHR \S18.8.5>
+%<y><NHR \S18.8.5\textdagger>
+{allaby2013fll}
+%<n>Michael Allaby, \enquote{Feathers and Lava Lamps}, Oxford Reference (2013), \url{http://www.oxfordreference.com/page/featherslavalamps}, accessed 9 Nov. 2013.
+%<y>Allaby, M. (2013), \enquote{Feathers and Lava Lamps}, Oxford Reference, \url{http://www.oxfordreference.com/page/featherslavalamps}, accessed 9 Nov. 2013.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@online{allaby2013fll,
+  author = {Michael Allaby},
+  title = {Feathers and Lava Lamps},
+  organization = {Oxford Reference},
+  date = {2013},
+  url = {http://www.oxfordreference.com/page/featherslavalamps},
+  urldate = {2013-11-09}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\tip{If the site looks more like a traditional journal (e.g.\@ with an ISSN), use the \code{article} entry type instead of \code{online}.}
+
+\begin{bibexbox}
+%<n><NHR \S18.8.5>
+%<y><NHR \S18.8.5\textdagger>
+{mcewen2013tte}
+%<n>Stephen McEwen, \enquote{Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}}, \emph{The Spectator} (20 May 2013), \url{http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/}, accessed 9 Nov. 2013.
+%<y>McEwen, S. (2013), \enquote{Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}}, \emph{The Spectator} (20 May), \url{http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/}, accessed 9 Nov. 2013.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@article{mcewen2013tte,
+  author = {Stephen McEwen},
+  title = {Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}},
+  journaltitle = {The Spectator},
+  date = {2013-05-20},
+  url = {http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/},
+  urldate = {2013-11-09}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 \section{Online reference article}
 
@@ -4553,6 +4563,14 @@ In theory, the difference should be that parentheses indicate ‘proper’ publi
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\info{It is not made explicit why \emph{Encyclopaedia Britannica} is in italics and \emph{Wikipedia} is not.
+  It might be historical or customary, because \emph{Encyclopaedia Britannica} was established as a print publication and \emph{Wikipedia} has only been online;
+  it might be because \emph{Encyclopaedia Britannica} is a Latin title;
+  it might reflect an opinion on the two resources;
+  or it may just be illustrative of variant practice.}
+
+\tip{Unlike standard \textsf{biblatex}, \textsf{oxref} supports \code{maintitle} for online entries and prints the result in italics. For more portability, you could either hard-code the italics into the \code{organization} field or use the \code{article} entry type.}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
@@ -4640,7 +4658,7 @@ In theory, the difference should be that parentheses indicate ‘proper’ publi
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{If it feels odd putting the entire content of a tweet in your reference, \emph{New Hart's Rules} suggests using a descriptor like ‘Twitter post’ instead of the title. You can achieve this as in the following example.}
+\tip{If it feels odd putting the entire content of a tweet in your reference, \emph{New Hart's Rules} suggests using a descriptor like ‘Twitter post’ instead of the title. As described in \cref{sec:broadcasts}, you can do this either by annotating the title field with the keyword \code{descriptor} or by using the (non-standard) \code{descriptor} field in place of \code{title}.}
 
 \begin{bibexbox}
 {oup2015tweet}
