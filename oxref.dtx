@@ -902,6 +902,11 @@ that is, there are no examples of them in this documentation.
   \end{itemize}
 \end{multicols}
 
+An option is planned to allow editors/translators to be given immediately after the author, and within short-author references:
+
+Kühner, Raphael, rev. Blass, Friedrich, Ausführliche grammatik der griechischen sprache, i: Elementar- und Formenlehre (Hannover : Hahnsche Buchhandlung, 1890-92).
+
+Kühner–Blass.
 
 \chapter{Citations and common formatting}\label{sec:citing}
 
@@ -2762,7 +2767,7 @@ J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Use localization key \code{revised} as the edition to get ‘revised edition’.}
+\tip{Use the localization key \code{revised} as the edition to get ‘revised edition’. Use the localization key \code{revisedenlarged} as the edition to get ‘revised and enlarged edition’}
 
 \begin{bibexbox}<OGS \S15.2.1*>
 {gibbon1686dfs}
@@ -5804,7 +5809,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % \end{itemize}
 %
 %    \begin{macrocode}
-  facsimile, revised, revisedreprint, suppto, equals, original,
+  facsimile, revised, revisedenlarged, revisedreprint, suppto, equals, original,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -11842,6 +11847,7 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
+  revisedenlarged  = {{revised and enlarged edition}{rev\adddotspace ane enl\addotspace edn\adddot}},
   revisedreprint   = {{revised reprint}{rev\adddotspace repr\adddot}},
   suppto           = {{Supplement to}{Supplement to}},
   equals           = {{=}{=}},
