@@ -154,8 +154,8 @@ Copyright (C) 2016 Alex Ball
     [\Version\space Biblatex styles inspired by the Oxford Guide to Style]
 \PassOptionsToPackage{style=oxnotes}{biblatex}
 %</driver>
-%<doc&n>\PassOptionsToPackage{style=oxnotes,scnames,anon}{biblatex}
-%<doc&y>\PassOptionsToPackage{style=oxyear,anon}{biblatex}
+%<doc&n>\PassOptionsToPackage{style=oxnotes,scnames,altmagdate,anon}{biblatex}
+%<doc&y>\PassOptionsToPackage{style=oxyear,altmagdate,anon}{biblatex}
 %<*driver|doc>
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \setlrmarginsandblock{3cm}{3cm}{*}
@@ -688,6 +688,11 @@ The style is self-contained, so you can load it with \pkg{biblatex}:
 
 The style has some options additional to the regular \pkg{biblatex} ones:
 
+\begin{docKey}{altmagdate}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Removes the parentheses around the date of a periodical without a volume number.
+  This can also be set on a per-type and per-entry basis.
+\end{docKey}
+
 \begin{docKey}{altthesis}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Puts the thesis type inside, rather than outside, the parenthetical publication block.
 \end{docKey}
@@ -739,7 +744,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 %<*y>
 \begin{docKey}{mergedate}{=\val{maximum}|\val{compact}|\val{basic}|\val{minimum}|\val{year}|\val{false}}{default \val{year}, initially \val{year}}
   Affects how the date at the start of the references relates to the date in the ‘normal’ position.
-  The standard option values are available but not well tested; I recommend you stick with the \textsf{oxyear} default.
+  The standard option values are available but not well tested; I recommend you stick with the default of \val{year}.
 \end{docKey}
 %</y>
 
@@ -748,8 +753,8 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   Alternatively, it may be set on a per-entry basis.
 \end{docKey}
 
-\begin{docKey}{nopublisher}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
-  Removes publisher name from all entries.
+\begin{docKey}{nopublisher}{}{no value, initially unset}
+  Removes publisher name from all entries. Once set, this option cannot be overridden.
 \end{docKey}
 
 \begin{docKey}{relationpunct}{=\val{period}|\val{comma}|\val{semicolon}|\val{colon}|\val{space}}{default \val{semicolon}, initially \val{semicolon}}
@@ -6915,46 +6920,53 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \ExecuteBibliographyOptions{issuestyle=slash}
 %    \end{macrocode}
 %
-% If an issue has no volume or issue numbers (first block), the season
+% OGS consistently prints dates of newspapers and magazines bare, but those
+% of academic journals in parentheses. NHR seems to favour printing dates in
+% parentheses regardless, but notes that some publishing houses take the OGS
+% approach.
+%
+% We provide an option for switching between the two approaches. If active
+% and an issue has no volume or issue numbers (first block), the season
 % and date are printed bare. Otherwise (second block) they are printed
 % in parentheses just as in the standard version of the macro.
 %
 %    \begin{macrocode}
+\newtoggle{blx@ox@altmagdate}
+\DeclareBibliographyOption[boolean]{altmagdate}[true]{%
+  \settoggle{blx@ox@altmagdate}{#1}}
+\DeclareEntryOption[boolean]{altmagdate}[true]{%
+  \settoggle{blx@ox@altmagdate}{#1}}
 \renewbibmacro*{issue+date}{%
   \ifboolexpr{
-    test {\iffieldundef{volume}}
+    test {\iffieldundef{issue}}
     and
-    test {\iffieldundef{number}}
-  }{%
-    \newunit\printtext{%
-      \iffieldundef{issue}{%
-        \usebibmacro{date}
-      }{%
-        \printfield{issue}%
-        \setunit*{\addspace}%
-        \usebibmacro{date}%
-      }%
-    }%
-  }{%
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+  }{}{%
     \ifboolexpr{
-      test {\iffieldundef{issue}}
-      and (
-        test {\iffieldundef{year}}
-        and
-        test {\iffieldundef{month}}
-      )
-    }{}{%
+      togl {blx@ox@altmagdate}
+      and
+      test {\iffieldundef{volume}}
+      and
+      test {\iffieldundef{number}}
+    }{%
+      \newunit
+      \printtext{%
+        \iffieldundef{issue}{%
+          \usebibmacro{date}
+        }{%
+          \printfield{issue}%
+          \setunit*{\addspace}%
+          \usebibmacro{date}}}%
+    }{%
       \printtext[parens]{%
         \iffieldundef{issue}{%
           \usebibmacro{date}%
         }{%
           \printfield{issue}%
           \setunit*{\addspace}%
-          \usebibmacro{date}%
-        }%
-      }%
-    }%
-  }%
+          \usebibmacro{date}}}}}%
   \newunit
   \printfield{eid}%
 }
@@ -10682,20 +10694,18 @@ reference,mvreference,inreference]{volume}{%
        \clearfield{month}\clearfield{endmonth}%
        \clearfield{day}\clearfield{endday}}}%
   \renewbibmacro*{issue+date}{%
-    \iffieldundef{issue}
-      {}
-      {\ifboolexpr{(
-          test {\iffieldundef{volume}}
-          and
-          test {\iffieldundef{number}}
-          ) and
-          test {\iffieldundef{eid}}
-        }{%
-          \newunit
-          \printfield{issue}%
-        }{%
-          \printtext[parens]{\printfield{issue}}%
-        }}%
+    \iffieldundef{issue}{}{%
+      \ifboolexpr{
+        togl {blx@ox@altmagdate}
+        and
+        test {\iffieldundef{volume}}
+        and
+        test {\iffieldundef{number}}
+      }{%
+        \newunit
+        \printfield{issue}%
+      }{%
+        \printtext[parens]{\printfield{issue}}}}%
     \newunit
     \printfield{eid}}}
 %    \end{macrocode}
@@ -10719,14 +10729,13 @@ reference,mvreference,inreference]{volume}{%
       test {\iffieldundef{issue}}
       and
       test {\iffieldundef{month}}
-    }
-    {}
-    {\ifboolexpr{(
+    }{}{%
+      \ifboolexpr{
+        togl {blx@ox@altmagdate}
+        and
         test {\iffieldundef{volume}}
         and
         test {\iffieldundef{number}}
-        ) and
-        test {\iffieldundef{eid}}
       }{%
         \newunit
         \printfield{issue}%
@@ -10736,8 +10745,7 @@ reference,mvreference,inreference]{volume}{%
         \printtext[parens]{%
           \printfield{issue}%
           \setunit*{\addspace}%
-          \printdate}%
-      }}%
+          \printdate}}}%
     \newunit
     \printfield{eid}}}
 %    \end{macrocode}
@@ -10781,14 +10789,13 @@ reference,mvreference,inreference]{volume}{%
       test {\iffieldundef{year}}
       and
       test {\iffieldundef{month}}
-    }
-    {}
-    {\ifboolexpr{(
+    }{}{%
+      \ifboolexpr{
+        togl {blx@ox@altmagdate}
+        and
         test {\iffieldundef{volume}}
         and
         test {\iffieldundef{number}}
-        ) and
-        test {\iffieldundef{eid}}
       }{%
         \newunit
         \printfield{issue}%
@@ -10798,8 +10805,7 @@ reference,mvreference,inreference]{volume}{%
         \printtext[parens]{%
           \printfield{issue}%
           \setunit*{\addspace}%
-          \printdate}%
-      }}%
+          \printdate}}}%
     \newunit
     \printfield{eid}}}
 %    \end{macrocode}
@@ -10829,14 +10835,13 @@ reference,mvreference,inreference]{volume}{%
       test {\iffieldundef{month}}
       and
       test {\iffieldundef{extrayear}}
-    }
-    {}
-    {\ifboolexpr{(
+    }{}{%
+      \ifboolexpr{
+        togl {blx@ox@altmagdate}
+        and
         test {\iffieldundef{volume}}
         and
         test {\iffieldundef{number}}
-        ) and
-        test {\iffieldundef{eid}}
       }{%
         \newunit
         \printfield{issue}%
@@ -10846,8 +10851,7 @@ reference,mvreference,inreference]{volume}{%
         \printtext[parens]{%
           \printfield{issue}%
           \setunit*{\addspace}%
-          \printdate}%
-      }}%
+          \printdate}}}%
     \newunit
     \printfield{eid}}}
 %    \end{macrocode}
@@ -10866,42 +10870,36 @@ reference,mvreference,inreference]{volume}{%
          \printfield{extrayear}}}}%
   \renewbibmacro*{date}{\usebibmacro{date+time}}%
   \renewbibmacro*{issue+date}{%
-    \ifboolexpr{(
-      test {\iffieldundef{volume}}
+    \ifboolexpr{
+      test {\iffieldundef{issue}}
+      and (
+      test {\iffieldundef{year}}
       and
-      test {\iffieldundef{number}}
-      ) and
-      test {\iffieldundef{eid}}
-    }{%
-      \newunit\printtext{%
-        \iffieldundef{issue}{%
-          \usebibmacro{date}
-        }{%
-          \printfield{issue}%
-          \setunit*{\addspace}%
-          \usebibmacro{date}%
-        }%
-      }%
-    }{%
+      test {\iffieldundef{month}}
+      )
+    }{}{%
       \ifboolexpr{
-        test {\iffieldundef{issue}}
-        and (
-        test {\iffieldundef{year}}
+        togl {blx@ox@altmagdate}
         and
-        test {\iffieldundef{month}}
-        )
-      }{}{%
+        test {\iffieldundef{volume}}
+        and
+        test {\iffieldundef{number}}
+      }{%
+        \newunit\printtext{%
+          \iffieldundef{issue}{%
+            \usebibmacro{date}
+          }{%
+            \printfield{issue}%
+            \setunit*{\addspace}%
+            \usebibmacro{date}}}%
+      }{%
         \printtext[parens]{%
           \iffieldundef{issue}{%
             \usebibmacro{date}%
           }{%
             \printfield{issue}%
             \setunit*{\addspace}%
-            \usebibmacro{date}%
-          }%
-        }%
-      }%
-    }%
+            \usebibmacro{date}}}}}%
   \newunit
   \printfield{eid}}}
 %    \end{macrocode}
