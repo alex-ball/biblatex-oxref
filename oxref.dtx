@@ -3942,7 +3942,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \chapter{Audiovisual materials}\label{sec:audiovideo}
 \chapterprecis{audio, image, movie, music, video}
 
-There are typically many contributors to an audiovisual work, and the priority given to each role is fluid. \textsf{Oxref} uses \code{author} for contributors that should go at the head of the reference, and \code{editor} for others. As well as the normal ones you can use the author\slash editor types \code{performer}, \code{director} and \code{reader}.
+There are typically many contributors to an audiovisual work, and the priority given to each role is fluid. \textsf{Oxref} uses \code{author} for contributors that should go at the head of the reference, and \code{editor} for others. As well as the normal ones you can use the author\slash editor types \code{performer}, \code{conductor}, \code{director} and \code{reader}.
 
 \section{Audio recordings}
 
@@ -4068,6 +4068,42 @@ There are typically many contributors to an audiovisual work, and the priority g
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\subsection{Combination releases}
+
+Sometimes publishers will put several works on a single release without giving it an overall title.
+
+\begin{bibexbox}
+%<n><NHR \S18.7.2*>
+%<y><NHR \S18.7.2*\textdagger>
+{dutilleux1987as}
+%<n>Henri Dutilleux, \emph{L'Arbre des songes}, and Peter Maxwell Davies, \emph{Concerto for Violin and Orchestra}, Royal Philharmonic Orchestra, cond. André Previn, violin Isaac Stern (CBS MK 42449, 1987).
+%<y>
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@audio{dutilleux1987as,
+  author = {Henri Dutilleux},
+  shortauthor = {Dutilleux and {Maxwell Davies}},
+  title = {L'Arbre des songes},
+  related = {maxwelldavies1987},
+  relatedtype = {includes},
+  editor = {Royal Philharmonic Orchestra},
+  editortype = {performer},
+  editora = {André Previn},
+  editoratype = {conductor},
+  editorb = {Isaac Stern},
+  editorbtype = {violin},
+  publisher = {CBS},
+  number = {MK 42449},
+  date = {1987}}
+@audio{maxwelldavies1987,
+  author = {Maxwell Davies, Peter},
+  title = {Concerto for Violin and Orchestra}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 \section{Video recordings}
 
@@ -5796,7 +5832,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 %    \begin{macrocode}
 \NewBibliographyString{%
-  director, performer, reader,
+  director, performer, reader, conductor,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -5804,7 +5840,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % \end{itemize}
 %
 %    \begin{macrocode}
-  byperformer, bydirector, byreader, byserieseditor,
+  bydirector, byperformer, byreader, byconductor, byserieseditor,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -8388,6 +8424,14 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{title}%
   \newunit
   \usebibmacro{maintitle}%
+  \iffieldequalstr{relatedtype}{includes}{%
+    \iftoggle{bbx:related}{%
+      \newunit\newblock
+      \usebibmacro{related:init}%
+      \usebibmacro{related}%
+      \clearfield{related}%
+    }{}%
+  }{}%
   \setunit{\addspace}
   \usebibmacro{onlinetype}%
   \newunit\newblock
@@ -9886,7 +9930,9 @@ reference,mvreference,inreference]{volume}{%
     }{%
       Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
       'period', 'exclam', 'question', and 'space'.}}}
+\newcounter{blx@ox@relitem}
 \xapptobibmacro{begrelated}{%
+  \setcounter{blx@ox@relitem}{0}%
   \iftoggle{blx@ox@relpunctset}{}{%
     \iffieldequalstr{relatedtype}{in}{%
       \setunit{\addcomma\space}}{}%
@@ -10141,7 +10187,21 @@ reference,mvreference,inreference]{volume}{%
     \newunit
     \usebibmacro{series+number+publisher+location+date}}}
 
-
+%    \end{macrocode}
+%
+% \subsubsection{Joint releases}
+%
+% We provide support for CDs (for example) which contain more than one work.
+%
+%    \begin{macrocode}
+\newbibmacro*{related:includes}[1]{%
+  \stepcounter{blx@ox@relitem}%
+  \ifnumequal{\value{blx@ox@relitem}}{\value{bbx:relatedtotal}}%
+    {\bibstring{and}\addspace}{}%
+  \entrydata{#1}{%
+    \usebibmacro{author}%
+    \setunit{\printdelim{nametitledelim}}\newblock
+    \usebibmacro{title}}}
 %    \end{macrocode}
 %
 % \subsubsection{Subitems}
@@ -11837,6 +11897,7 @@ reference,mvreference,inreference]{volume}{%
   director         = {{director}{dir\adddot}},
   performer        = {{}{}},
   reader           = {{reader}{reader}},
+  conductor        = {{conductor}{cond\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -11847,6 +11908,7 @@ reference,mvreference,inreference]{volume}{%
   byperformer      = {{}{}},
   bydirector       = {{directed by}{dir\adddot}},
   byreader         = {{read by}{read by}},
+  byconductor      = {{conducted by}{cond\adddot}},
   byserieseditor   = {{edited by}{ed\adddot}},
 %    \end{macrocode}
 %
