@@ -1577,7 +1577,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 \end{bibexbox}
 
 % Electronic identifier instead of a page range
-\begin{bibexbox}
+\begin{bibexbox}(hacked)
 %<n><NHR \S18.8.5*>
 %<y><NHR \S18.8.5*\textdagger>
 {li.etal2013flh}
@@ -1590,7 +1590,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
   author = {Shu Li and Chungkun Shih and Chen Wang and Hong Pang and Dong Ren},
   title = {Forever Love},
   subtitle = {The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China},
-  journaltitle = {PLoS ONE},
+  journaltitle = {{PLoS ONE}},
   volume = {8},
   number = {11},
   date = {2013},
@@ -1600,9 +1600,11 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 \end{Verbatim}
 \end{bibexbox}
 
+\hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. \textsf{Oxref} will try to detect this; if it gets it wrong, you can suppress the comma by adding \cs{nopunct} to the end of the journal (sub)title, or restore it by adding a pair of braces.}
+
 %</n|y>
 %<*n>
-\begin{bibexbox}(hacked)<OGS \S15.4.1>
+\begin{bibexbox}<OGS \S15.4.1>
 {lindars1965eir}
 B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452--67.
 \tcblower
@@ -1612,7 +1614,7 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
 @article{lindars1965eir,
   author = {B. Lindars},
   title = {Ezechiel and Individual Responsibility},
-  journaltitle = {VT\nopunct},
+  journaltitle = {VT},
   volume = {15},
   date = {1965},
   pages = {452-467}}
@@ -1620,8 +1622,6 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
 %<*n>
 \end{Verbatim}
 \end{bibexbox}
-
-\hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. This can be achieved by adding \cs{nopunct} to the end of the journal title.}
 %</n>
 %<*n|y>
 
@@ -1679,7 +1679,7 @@ J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quart
 
 %</n>
 %<*y>
-\begin{bibexbox}(hacked)<OGS \S15.19.2>
+\begin{bibexbox}<OGS \S15.19.2>
 {hankinson1989gba}
 Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \emph{CQ} \textsc{ns} 39: 43–76.
 \tcblower
@@ -1690,7 +1690,7 @@ Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \e
   author = {R. J. Hankinson},
   date = {1989},
   title = {Galen and the Best of All Possible Worlds},
-  journaltitle = {CQ\nopunct},
+  journaltitle = {CQ},
   series = {newseries},
   volume = {39},
   pages = {43–76}}
@@ -1698,8 +1698,6 @@ Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \e
 %<*y>
 \end{Verbatim}
 \end{bibexbox}
-
-\hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. This can be achieved by adding \cs{nopunct} to the end of the journal title.}
 %</y>
 %<*n|y>
 
@@ -6808,6 +6806,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
+% We provide a command for testing if a title is abbreviated.
+%
+%    \begin{macrocode}
+\newcommand*{\ifabbrev}[3]{%
+  \StrRight{#1}{1}[\blx@ox@lastchar]%
+  \IfSubStr{AÂBCÇDEFGĞHIİÎJKLMNOÖÔPQRSŞTUÜÛVWXYZ.}{\blx@ox@lastchar}{#2}{#3}}
+%    \end{macrocode}
+%
 % We renew the `journal+issuetitle' macro so that if a work takes up a
 % whole issue (signified by using `issuetitle' \emph{instead} of
 % `title'), the title and journal title are separated by \enquote{=}
@@ -6836,7 +6842,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       \clearfield{pubstate}%
     }{}}%
   \usebibmacro{journal}%
-  \newunit
+  \iffieldundef{journalsubtitle}{%
+    \ifabbrev{\thefield{journaltitle}}{\setunit{\addspace}}{\newunit}%
+  }{%
+    \ifabbrev{\thefield{journalsubtitle}}{\setunit{\addspace}}{\newunit}}%
   \iffieldundef{series}{}{%
     \printfield{series}%
     \ifbibxstring{\thefield{series}}{%
@@ -6859,7 +6868,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \begin{macrocode}
 \renewbibmacro*{title+issuetitle}{%
   \usebibmacro{periodical}%
-  \newunit
+  \iffieldundef{subtitle}{%
+    \ifabbrev{\thefield{title}}{\setunit{\addspace}}{\newunit}%
+  }{%
+    \ifabbrev{\thefield{subtitle}}{\setunit{\addspace}}{\newunit}}%
   \iffieldundef{series}{}{%
     \printfield{series}%
     \ifbibxstring{\thefield{series}}{%
