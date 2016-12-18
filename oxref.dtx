@@ -3940,7 +3940,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 
 
 \chapter{Audiovisual materials}\label{sec:audiovideo}
-\chapterprecis{audio, image, movie, music, video}
+\chapterprecis{audio, inaudio, image, movie, music, inmusic, video}
 
 There are typically many contributors to an audiovisual work, and the priority given to each role is fluid. \textsf{Oxref} uses \code{author} for contributors that should go at the head of the reference, and \code{editor} for others. As well as the normal ones you can use the author\slash editor types \code{performer}, \code{conductor}, \code{director} and \code{reader}.
 
@@ -4073,12 +4073,14 @@ There are typically many contributors to an audiovisual work, and the priority g
 
 Sometimes publishers will put several works on a single release without giving it an overall title.
 
+\tip{Put the subsequent composer\slash title combinations in new entries, and relate them with a \code{relatedtype} of \code{includes}.}
+
 \begin{bibexbox}
 %<n><NHR \S18.7.2*>
 %<y><NHR \S18.7.2*\textdagger>
 {dutilleux1987as}
 %<n>Henri Dutilleux, \emph{L'Arbre des songes}, and Peter Maxwell Davies, \emph{Concerto for Violin and Orchestra}, Royal Philharmonic Orchestra, cond. André Previn, violin Isaac Stern (CBS MK 42449, 1987).
-%<y>
+%<y>Dutilleux, H. (1987), \emph{L'Arbre des songes}, and Maxwell Davies, P., \emph{Concerto for Violin and Orchestra}, Royal Philharmonic Orchestra, cond. A. Previn, violin I. Stern (CBS MK 42449).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4088,7 +4090,7 @@ Sometimes publishers will put several works on a single release without giving i
   title = {L'Arbre des songes},
   related = {maxwelldavies1987},
   relatedtype = {includes},
-  editor = {Royal Philharmonic Orchestra},
+  editor = {{Royal Philharmonic Orchestra}},
   editortype = {performer},
   editora = {André Previn},
   editoratype = {conductor},
@@ -4099,7 +4101,35 @@ Sometimes publishers will put several works on a single release without giving i
   date = {1987}}
 @audio{maxwelldavies1987,
   author = {Maxwell Davies, Peter},
-  title = {Concerto for Violin and Orchestra}}
+  title = {Concerto for Violin and Orchestra},
+  date = {1987}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+%<y>\tip{If the work at the head at the reference is not the one of interest, it might make more sense to use the \code{inaudio} entry type (see below).}
+
+
+\subsection{Tracks from an album}
+
+\begin{bibexbox}
+%<n><NHR \S18.7.2*>
+%<y><NHR \S18.7.2*\textdagger>
+{davis1997sw}
+%<n>Miles Davis et al., \enquote{So What}, in \emph{Kind of Blue}, rec. 1959 (Columbia CK 64935, 1997) [CD].
+%<y>Davis, M. et al. (1997), \enquote{So What}, in \emph{Kind of Blue}, rec. 1959 (Columbia CK 64935) [CD].
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@inaudio{davis1997sw,
+  author = {Miles Davis and others},
+  title = {So What},
+  booktitle = {Kind of Blue},
+  note = {rec. 1959},
+  publisher = {Columbia},
+  number = {CK 64935},
+  date = {1997},
+  howpublished = {CD}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -8468,12 +8498,74 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
+% In parallel with book-like entries, we provide an `inaudio' driver for citing
+% tracks from an album.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{inaudio}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{bybookauthor}%
+  \newunit\newblock
+  \usebibmacro{maintitle+booktitle}%
+  \iffieldequalstr{relatedtype}{includes}{%
+    \iftoggle{bbx:related}{%
+      \newunit\newblock
+      \usebibmacro{related:init}%
+      \usebibmacro{related}%
+      \clearfield{related}%
+    }{}%
+  }{}%
+  \setunit{\addspace}
+  \usebibmacro{onlinetype}%
+  \newunit\newblock
+  \usebibmacro{pre-byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \printlist{organization}%
+  \newunit\newblock%
+  \usebibmacro{publisher+type+series+number+date}%
+  \setunit{\addspace}%
+  \printfield{howpublished}%
+  \newunit\newblock
+  \usebibmacro{post-byeditor+others}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
 % The same driver will do very well for `music', `video' and `movie'.
 %
 %    \begin{macrocode}
 \DeclareBibliographyAlias{music}{audio}
 \DeclareBibliographyAlias{movie}{audio}
 \DeclareBibliographyAlias{video}{audio}
+\DeclareBibliographyAlias{inmusic}{inaudio}
+\DeclareBibliographyAlias{inmovie}{inaudio}
+\DeclareBibliographyAlias{invideo}{inaudio}
 %    \end{macrocode}
 %
 % Titles for videos do not have a consistent format, so we define some
@@ -8490,6 +8582,34 @@ reference,mvreference,inreference]{volume}{%
   \undef\currentfield}
 \DeclareFieldFormat[movie,video]{title}{%
   \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{%
+    \ifboolexpr{
+      test {\iffieldequalstr{entrysubtype}{episode}}
+      or
+      test {\iffieldequalstr{entrysubtype}{clip}}
+      or
+      test {\iffieldequalstr{entrysubtype}{webcast}}
+    }{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}}}%
+  \undef\currentfield}
+\DeclareFieldFormat[inaudio,inmusic,inmovie,invideo]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{%
+    \mkbibquote{#1\isdot}%
+  }%
+  \undef\currentfield}
+\DeclareFieldFormat[inaudio,inmusic]{booktitle}{%
+  \def\currentfield{booktitle}%
+  \iffieldannotation{descriptor}{#1}{%
+    \iffieldequalstr{entrysubtype}{podcast}{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}}}%
+  \undef\currentfield}
+\DeclareFieldFormat[inmovie,invideo]{booktitle}{%
+  \def\currentfield{booktitle}%
   \iffieldannotation{descriptor}{#1}{%
     \ifboolexpr{
       test {\iffieldequalstr{entrysubtype}{episode}}
@@ -10199,6 +10319,8 @@ reference,mvreference,inreference]{volume}{%
   \ifnumequal{\value{blx@ox@relitem}}{\value{bbx:relatedtotal}}%
     {\bibstring{and}\addspace}{}%
   \entrydata{#1}{%
+    \ifbibmacroundef{date+extrayear}{}{%
+      \renewbibmacro*{date+extrayear}{}}%
     \usebibmacro{author}%
     \setunit{\printdelim{nametitledelim}}\newblock
     \usebibmacro{title}}}
