@@ -4107,10 +4107,12 @@ Sometimes publishers will put several works on a single release without giving i
 \end{Verbatim}
 \end{bibexbox}
 
-%<y>\tip{If the work at the head at the reference is not the one of interest, it might make more sense to use the \code{inaudio} entry type (see below).}
+%<y>\tip{Albums like these are a problem for author–date styles. You should probably use the \code{inaudio} entry type instead (see below). This will allow you to specify to which work on the album you are referring. Alternatively, you could shift the composers into the title and put the performers in the author position.}
 
 
 \subsection{Tracks from an album}
+
+\tip{Use the non-standard entry types \code{inaudio} or \code{inmusic} to reference a single work within an album.}
 
 \begin{bibexbox}
 %<n><NHR \S18.7.2*>
@@ -7602,11 +7604,6 @@ reference,mvreference,inreference]{volume}{%
   {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
-  \iffieldundef{origyear}{}{%
-    \setunit{\addspace}\newblock
-    \printtext[parens]{%
-      \bibstring{origpubin}\space
-      \printorigdate}}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
