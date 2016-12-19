@@ -898,7 +898,6 @@ that is, there are no examples of them in this documentation.
     \item suppcollection
     \item patent
     \item suppperiodical
-    \item inreference
     \item artwork
     \item commentary
     \item letter
@@ -1624,6 +1623,27 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
 \end{bibexbox}
 %</n>
 %<*n|y>
+
+% Unsigned, with month as issue name
+\begin{bibexbox}
+%<n><OGS \S15.4.1*>
+%<y><OGS \S15.4.1*\textdagger>
+{jsr1990spt}
+%<n>\enquote{Solar Photon Thruster}, \emph{Journal of Spacecraft and Rockets}, 28/4 (July–Aug. 1990), 411–6.
+%<y>\enquote{Solar Photon Thruster} (1990), \emph{Journal of Spacecraft and Rockets}, 28/4 (July–Aug.): 411–6.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@article{jsr1990spt,
+  title = {Solar Photon Thruster},
+  journaltitle = {Journal of Spacecraft and Rockets},
+  volume = {28},
+  number = {4},
+  date = {1990-07/1990-08},
+  pages = {411-416}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
 
 
 \section{Articles in periodicals with series}
@@ -3059,8 +3079,11 @@ then the new title and its details after a semicolon.
 
 \subsection{Co-publications\slash co-editions}
 
-%<y>The \emph{Oxford Guide to Style} provides a special format for expressing works that are co-published by several publishers at once. Since it is not suitable for author–year citation styles, no effort is made to make it work for \textsf{oxyear}; you should be aware of this if you are switching from \textsf{oxnotes}.
 %</n|y>
+%<*y>
+The \emph{Oxford Guide to Style} provides a special format for expressing works that are co-published by several publishers at once. \textsf{Oxnotes} implements it using the \code{relatedtype} keyword \code{copub}. Since it is not suitable for author–year citation styles, no effort is made to make it work for \textsf{oxyear}.
+
+%</y>
 %<*n>
 If the same book has been co-published by multiple publishers at approximately the same time,
 you can express this by putting multiple sets of details in the publication block.
@@ -3097,6 +3120,39 @@ L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hi
 
 %</n>
 %<*n|y>
+If the work is published under two different titles, it is a good idea to
+provide both to make it easier to locate.
+
+\tip{Use a generic relation and specify the country details in the \code{relatedstring}.}
+
+\begin{bibexbox}
+%<n><OGS \S15.2.5>
+%<y><OGS \S15.2.5\textdagger>
+{salinger1953ns}
+%<n>J. D. Salinger, \emph{Nine Stories} (Boston: Little, Brown, 1953), published in the UK as \emph{For Esmé---With Love and Squalor, and Other Stories} (London: Hamish Hamilton, 1953).
+%<y>Salinger, J. D. (1953), \emph{Nine Stories} (Boston: Little, Brown), published in the UK as \emph{For Esmé---With Love and Squalor, and Other Stories} (London: Hamish Hamilton, 1953).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@book{salinger1953ns,
+  author = {J. D. Salinger},
+  title = {Nine Stories},
+  location = {Boston},
+  publisher = {Little, Brown},
+  date = {1953},
+  related = {salinger1953few},
+  relatedstring = {published in the UK as},
+  options = {relationpunct=comma}}
+@book{salinger1953few,
+  title = {For {Esmé}---With Love and Squalor, and Other Stories},
+  location = {London},
+  publisher = {Hamish Hamilton},
+  date = {1953}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+
 \section{Works from a series}
 
 %<n>\spec{Author, \emph{Title} (Series; Location: Publisher, Year).}
@@ -3424,6 +3480,36 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 \end{Verbatim}
 \end{bibexbox}
 
+\section{Articles in yearbooks and works of reference}
+
+Yearbooks may be treated either as collections or periodicals; the distinction boils down to whether you want to print the location and publisher.
+
+The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and encyclopaedias using a postnote like \code{[s.v.\@ `Tawdry']}, but for online works gives a format rather similar to yearbooks, that is, without \enquote{in}.
+
+\tip{To omit the \enquote{in} before the book title, either use the \code{inreference} entry type without specifying an editor, or use the \code{incollection} type with an \code{entrysubtype} of \code{yearbook}.}
+
+\begin{bibexbox}
+%<n><OGS \S15.3>
+%<y><OGS \S15.3\textdagger>
+{dahlhaus1971mmf}
+%<n>Carl Dahlhaus, \enquote{Miszellen zur Musiktheorie des 15.\@ Jahrhunderts}, \emph{Jahrbuch des Staatlichen Instituts für Musikforschung Preußischer Kulturbesitz, 1970} (Berlin, 1971), 21–33.
+%<y>Dahlhaus, C. (1971), \enquote{Miszellen zur Musiktheorie des 15.\@ Jahrhunderts}, \emph{Jahrbuch des Staatlichen Instituts für Musikforschung Preußischer Kulturbesitz, 1970} (Berlin), 21–33.
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@inreference{dahlhaus1971mmf,
+  author = {Carl Dahlhaus},
+  title = {Miszellen zur Musiktheorie des 15.\@ Jahrhunderts},
+  booktitle = {Jahrbuch des Staatlichen Instituts für Musikforschung Preußischer Kulturbesitz,
+    1970},
+  location = {Berlin},
+  date = {1971},
+  pages = {21-33}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+
 \section{Supplementary works in books and collections}
 
 \begin{bibexbox}
@@ -3447,7 +3533,6 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
 
 
 \chapter{Works presented at meetings}\label{sec:proceedings}
@@ -3477,6 +3562,8 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\info{The \code{organization} is automatically converted into an \code{author}.}
 
 %<*n>
 \begin{egcite}{\dots Imperial College Bookstall, 1922), 1.52–3}
@@ -6128,7 +6215,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       \renewcommand*{\mkbibnamegiven}[1]{\textsc{##1}}%
       \renewcommand*{\mkbibnameprefix}[1]{\textsc{##1}}%
       \renewcommand*{\mkbibnamesuffix}[1]{\textsc{##1}}%
-      \renewcommand*{\mkbibnametitle}[1]{\textsc{##1}}%
+      \renewcommand*{\mkbibnametitle}[1]{##1}%
     }{}%
     \ifgiveninits{%
       \usebibmacro{name:family-title-given}%
@@ -6964,7 +7051,6 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     not test {\iffieldundef{issuetitle}}
   }{%
     \usebibmacro{issue}%
-    \clearfield{issuetitle}%
     \setunit{\addspace =\addspace}%
   }{%
     \ifboolexpr{
@@ -6981,6 +7067,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   }{%
     \ifabbrev{\thefield{journalsubtitle}}{\setunit{\addspace}}{\newunit}}%
   \iffieldundef{series}{}{%
+    \newunit\newblock
     \printfield{series}%
     \ifbibxstring{\thefield{series}}{%
       \setunit{\addspace}%
@@ -6989,8 +7076,6 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \usebibmacro{volume+number+eid}%
   \setunit{\addspace}%
   \usebibmacro{issue+date}%
-  \setunit{\addcolon\space}%
-  \usebibmacro{issue}%
   \newunit}
 %    \end{macrocode}
 %
@@ -7007,6 +7092,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   }{%
     \ifabbrev{\thefield{subtitle}}{\setunit{\addspace}}{\newunit}}%
   \iffieldundef{series}{}{%
+    \newunit\newblock
     \printfield{series}%
     \ifbibxstring{\thefield{series}}{%
       \setunit{\addspace}%
@@ -7015,8 +7101,6 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \usebibmacro{volume+number+eid}%
   \setunit{\addspace}%
   \usebibmacro{issue+date}%
-  \setunit{\addcolon\space}%
-  \usebibmacro{issue}%
   \newunit}
 %    \end{macrocode}
 %
@@ -7236,6 +7320,13 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \mkbibquote{#1\isdot}}}
 %    \end{macrocode}
 %
+% Unlike the standard styles, we have a separate driver for `inreference',
+% so we need to change the title style accordingly.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[inreference]{title}{\mkbibquote{#1\isdot}}
+%    \end{macrocode}
+%
 % Volume numbers in monograph-style entries are formatted as roman
 % numerals.
 %
@@ -7272,6 +7363,14 @@ reference,mvreference,inreference]{volume}{%
     \usebibmacro{maintitle}}}
 }
 \DeclareFieldFormat{maintitle+volume}{\mkbibbrackets{#1}}
+%    \end{macrocode}
+%
+% The `in' before the booktitle is suppressed for works in yearbooks.
+%
+%    \begin{macrocode}
+\renewbibmacro*{in:}{%
+  \iffieldequalstr{entrysubtype}{yearbook}{}{%
+    \printtext{\bibstring{in}\intitlepunct}}}
 %    \end{macrocode}
 %
 % Oxford style signifies formal publication by putting the relevant
@@ -7926,9 +8025,10 @@ reference,mvreference,inreference]{volume}{%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{bookeditor}%
-  \newunit\newblock
+  \iffieldundef{editor}{}{%
+    \usebibmacro{in:}%
+    \usebibmacro{bookeditor}%
+    \newunit\newblock}%
   \usebibmacro{maintitle+booktitle}%
   \newunit
   \iffieldundef{maintitle}
