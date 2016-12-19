@@ -2329,14 +2329,24 @@ Where all volumes were published consistently, the following form is used:
 %<n>\spec{Author, \emph{Title}, n \lit{vols.} (Location: Publisher, Year), VolNo. Pages.}
 %<y>\spec{Author (Year), \emph{Title}, n \lit{vols.} (Location: Publisher), VolNo. Pages.}
 
+%<*n>
+\begin{egcite}{\dots(Brussels, 1867--88), ii. 367--8}
+\cite[ii.~\mkcomprange{367-368}]%
+  {straeten1867lmp}
+\end{egcite}
+%</n>
+%<*y>
+\begin{egcite}{}
+\parencite[ii.~\mkcomprange{367-368}]{straeten1867lmp}
+\end{egcite}
+%</y>
+
 \begin{bibexbox}
 %<n><OGS \S15.2.6>
 %<y><OGS \S15.2.6\textdagger>
-[ii.~\mkcomprange{367--368}]
 {straeten1867lmp}%
-[title = {\texttt{\string\fullcite[ii.~\string\mkcomprange\{367--368\}]\{straeten1867lmp\}}}]
-%<n>Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88), ii. 367--8.
-%<y>Vander Straeten, E. (1867--88), \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels): ii. 367--8.
+%<n>Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels, 1867--88).
+%<y>Vander Straeten, E. (1867--88), \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -2432,9 +2442,13 @@ Where the volumes are merely numbered, the following form is used:
 
 %</n|y>
 %<*n>
-\begin{bibexbox}<OGS \S15.2.6>[367--368]
+\begin{egcite}{\dots ii (Brussels, 1867--88), 367--8}
+\cite[367--368]{straeten1867lmp.ii}
+\end{egcite}
+
+\begin{bibexbox}<OGS \S15.2.6>
 {straeten1867lmp.ii}
-Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88), 367--8.
+Edmond Vander Straeten, \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, ii (Brussels, 1867--88).
 \tcblower
 \begin{Verbatim}
 %</n>
@@ -2502,13 +2516,24 @@ the following form is used:
 \end{Verbatim}
 \end{bibexbox}
 
+%<*n>
+\begin{egcite}{\dots (Cambridge: CUP, 1932), 42--56}
+\cite[42-56]{ward.waller1932che}
+\end{egcite}
+%</n>
+%<*y>
+\begin{egcite}{}
+\parencite[42-56]%
+  {ward.waller1932che}
+\end{egcite}
+%</y>
+
 \begin{bibexbox}
 %<n><OGS \S15.2.6>
 %<y><OGS \S15.2.6\textdagger>
-[42-56]
 {ward.waller1932che}
-%<n>A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932), 42--56.
-%<y>Ward, A. W., and Waller, A. E. (1932) (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP): 42--56.
+%<n>A. W. Ward and A. E. Waller (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP, 1932).
+%<y>Ward, A. W., and Waller, A. E. (1932) (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -2654,9 +2679,13 @@ Where the author\slash editor is common to both, the following form is used:
 
 %</n|y>
 %<*n>
-\begin{bibexbox}<OGS \S15.2.3>[419-421]
+\begin{egcite}{\dots (3rd edn., 1990), 419--21}
+\cite[419-421]{baker1990iel}
+\end{egcite}
+
+\begin{bibexbox}<OGS \S15.2.3>
 {baker1990iel}
-J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990), 419--21.
+J. H. Baker, \emph{An Introduction to English Legal History} (3rd edn., 1990).
 \tcblower
 \begin{Verbatim}
 %</n>
@@ -3449,12 +3478,23 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 \end{Verbatim}
 \end{bibexbox}
 
+%<*n>
+\begin{egcite}{\dots Imperial College Bookstall, 1922), 1.52–3}
+\cite[1.52-3]{iau1922tia}
+\end{egcite}
+%</n>
+%<*y>
+\begin{egcite}{}
+\parencite[1.52-3]{iau1922tia}
+\end{egcite}
+%</y>
+
 \begin{bibexbox}
 %<n><OGS \S15.2.13>
 %<y><OGS \S15.2.13\textdagger>
-[1.52-3]{iau1922tia}
-%<n>International Astronomical Union, \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall, 1922), 1.52–3.
-%<y>International Astronomical Union (1922), \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall), 1.52–3.
+{iau1922tia}
+%<n>International Astronomical Union, \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall, 1922).
+%<y>International Astronomical Union (1922), \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -3469,7 +3509,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 \end{Verbatim}
 \end{bibexbox}
 
-\textsc{Extension} – Sometimes the title of the proceedings does not relate to the conference; in which case the following form might be used:
+Sometimes the title of the proceedings does not relate to the conference; in which case the following form might be used:
 
 %<n>\spec{\emph{Title}, EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher, Year).}
 %<y>\spec{\emph{Title} (Year), EventTitle, Venue, ConfDate, \lit{ed.} Editor (Series, Number; Location: Publisher).}
@@ -3481,7 +3521,8 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 \begin{Verbatim}
 %</n|y>
 @proceedings{ecdl2009,
-  editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos Papatheodorou and Giannis Tsakonas},
+  editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos
+    Papatheodorou and Giannis Tsakonas},
   title = {Research and Advanced Technology for Digital Libraries},
   eventtitle = {13th European Conference, ECDL 2009},
   venue = {Corfu, Greece},
@@ -3497,7 +3538,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 
 \section{Multi-volume proceedings}
 
-\textsc{Extension} – Biblatex provides \code{mvproceedings} for multi-volume proceedings.
+\textsf{Biblatex} provides \code{mvproceedings} for multi-volume proceedings.
 The examples here are a combination of Oxford style for proceedings and multi-volume books.
 
 \subsection{All volumes}
@@ -4891,12 +4932,23 @@ Use the \code{jurisdiction} entry type for citing cases.
 
 \tip{Use the \code{location} field for the location of the court in American, Australian or Canadian cases.}
 
+%<*n>
+\begin{egcite}{\emph{Ridge v Baldwin} [1964] AC 40 at 78–9}
+\cite[78-79]{ridge1964}
+\end{egcite}
+%</n>
+%<*y>
+\begin{egcite}{(\emph{Ridge v Baldwin} 1964: 78–9)}
+\parencite[78-79]{ridge1964}
+\end{egcite}
+%</y>
+
 \begin{bibexbox}
 %<n><NHR \S13.4.1>
 %<y><NHR \S13.4.1\textdagger>
-[78-79]{ridge1964}
-%<n>\emph{Ridge v Baldwin} [1964] AC 40 at 78–9
-%<y>\emph{Ridge v Baldwin} [1964] AC 40: 78–9
+{ridge1964}
+%<n>\emph{Ridge v Baldwin} [1964] AC 40
+%<y>\emph{Ridge v Baldwin} [1964] AC 40
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4909,14 +4961,6 @@ Use the \code{jurisdiction} entry type for citing cases.
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%<*y>
-The actual in-text citation would look like this:
-
-\begin{egcite}{(\emph{Ridge v Baldwin} 1964: 78–9)}
-\parencite[78-79]{ridge1964}
-\end{egcite}
-%</y>
 
 \tip{Use the \key{year-essential} Boolean entry option to specify whether the year is essential for locating the report, in cases where automatic detection (based on the presence or otherwise of a volume number) fails.
   There is a similar \key{paryear-essential} option for the parallel year.}
@@ -4983,9 +5027,14 @@ The actual in-text citation would look like this:
 
 %<*n>
 \begin{egcite}{}
-  Test\footcite[13]{rvg2004}
+Test\footcite[13]{rvg2004}
 \end{egcite}
 %</n>
+%<*y>
+\begin{egcite}{}
+\parencite[13]{rvg2004}
+\end{egcite}
+%</y>
 
 \tip{If a report is published a long time after the decision, you can put the decision date in \code{origdate} to clarify the situation.}
 
@@ -5307,20 +5356,28 @@ you can provide an even sparser reference for primary European legislation.
 
 %<*n>
 \begin{egcite}{EC Treaty (Treaty of Rome, as amended), art.\@ 3b}
-  \cite[\pno~3b]{ECT:Rome}
+\cite[\pno~3b]{ECT:Rome}
 \end{egcite}
-
 %</n>
+%<*y>
+\begin{egcite}{}
+\parencite[\pno~3b]{ECT:Rome}
+\end{egcite}
+%</y>
+
 \begin{bibexbox}
 %<n><OGS \S13.2.7*>
+%<y><OGS \S13.2.7*\textdagger>
 {ECT:Rome}%
 EC Treaty
 \tcblower
 \begin{Verbatim}
 %</n|y>
 @legislation{ECT:Rome,
+  entrysubtype = {eu-treaty},
   title = {EC Treaty},
-  shorthand = {Treaty of Rome, as amended},
+  shorthandintro = {Treaty of Rome, as amended},
+  shorthand = {EC Treaty},
   pagination = {article},
   keywords = {eu}}
 %<*n|y>
@@ -5597,14 +5654,23 @@ If a poem is divided into cantos, the title is set in italics rather than quoted
   \code{book}, \code{canto}, and \code{stanza} (\code{line} is already defined),
   though in reality you are probably better off doing it by hand.}
 
+%<*n>
+\begin{egcite}{\dots 1590–6), bk. ii, canto vi, stanza iii}
+\cite[\pno~ii, canto vi, stanza iii]{spenser1965fq}
+\end{egcite}
+%</n>
+%<*y>
+\begin{egcite}{}
+\parencite[\pno~ii, canto vi, stanza iii]{spenser1965fq}
+\end{egcite}
+%</y>
+
 \begin{bibexbox}
 %<n><OGS \S15.8*>
 %<y><OGS \S15.8*\textdagger>
-[\pno~ii, canto vi, stanza iii]
 {spenser1965fq}%
-[title = {\texttt{\string\fullcite[\string\pno\path{~}ii, canto vi, stanza iii]\{spenser1965fq\}}}]
-%<n>Edmund Spenser, \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent, 1965–6) (originally pub. 1590–6), bk. ii, canto vi, stanza iii.
-%<y>Spenser, E. (1590–6), \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent, 1965–6): bk. ii, canto vi, stanza iii.
+%<n>Edmund Spenser, \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent, 1965–6) (originally pub. 1590–6).
+%<y>Spenser, E. (1590–6), \emph{The Faerie Queene} (Everyman's Library, 443–4; London: Dent, 1965–6).
 %<y>
 \tcblower
 \begin{Verbatim}
@@ -7935,36 +8001,6 @@ reference,mvreference,inreference]{volume}{%
   \newunit}
 %    \end{macrocode}
 %
-% We provide an `organization+author+others' macro which allows the organization to
-% take the author position in proceedings (but only if the author is not
-% already given).
-%
-%    \begin{macrocode}
-\DeclareListFormat{authorlike}{%
-  \usebibmacro{list:delim}{#1}%
-  \ifboolexpr{
-    togl {blx@bibliography}
-    and
-    togl {blx@ox@scnames}
-  }{\textsc{#1}}{#1}\isdot
-  \usebibmacro{list:andothers}}
-\newbibmacro*{organization+author+others}{%
-  \ifnameundef{author}{%
-    \iflistundef{organization}{%
-      \usebibmacro{editor+others}%
-    }{%
-      \usebibmacro{bbx:dashcheck}{%
-        \bibnamedash
-      }{%
-        \edef\bbx@lasthash{\thefield{organization}}%
-        \usebibmacro{bbx:savehash}%
-        \printlist[authorlike]{organization}%
-        \clearlist{organization}}}%
-  }{%
-    \usebibmacro{author}%
-  }}
-%    \end{macrocode}
-%
 % The changes to the `proceedings' driver compared to the standard style
 % are as follows:
 % \begin{itemize}
@@ -7989,7 +8025,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareBibliographyDriver{proceedings}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{organization+author+others}%
+  \usebibmacro{author}%
   \newunit
   \usebibmacro{maintitle+title}%
   \newunit
@@ -10388,18 +10424,16 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Sort order}
 %
-% `proceedings' and `mvproceedings' entries print the organization at the
-% beginning (if, as is likely, an author is not present).
+% `proceedings' and `mvproceedings' entries allow an organization to be printed
+% in the author position.
 %
 %    \begin{macrocode}
     \map{
       \pertype{proceedings}
       \pertype{mvproceedings}
-      \step[fieldsource=author]
       \step[notfield=author,
-        fieldsource=organization]
-      \step[fieldset=sortname,
-        origfieldval]
+        fieldsource=organization,
+        fieldtarget=author]
     }
 %    \end{macrocode}
 %
@@ -11679,19 +11713,6 @@ reference,mvreference,inreference]{volume}{%
 }{}{}%
 %    \end{macrocode}
 %
-% We apply one more patch of this nature, this time to the
-% `organization+author+others' macro used by the proceedings driver.
-%
-%    \begin{macrocode}
-\xpatchbibmacro{organization+author+others}{%
-  \printlist[authorlike]{organization}%
-}{%
-  \printlist{organization}%
-  \setunit{\addspace}%
-  \usebibmacro{date+extrayear}%
-}{}{}
-%    \end{macrocode}
-%
 % The `labeltitle' macro differs from the one from `authoryear' in that
 % it also includes the subtitle. We record the fact that we have cleared
 % the title.
@@ -11758,6 +11779,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[online,image]{citetitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[legislation,legal]{citetitle}{#1}
 \DeclareFieldFormat[manuscript,unpublished]{citetitle}{%
   \def\currentfield{title}%
   \ifboolexpr{
