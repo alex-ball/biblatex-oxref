@@ -268,6 +268,9 @@ Copyright (C) 2016 Alex Ball
 %,isbn=false%
 ]{biblatex}
 \addbibresource{oxref.bib}
+\setcounter{biburllcpenalty}{900}
+\setcounter{biburlucpenalty}{800}
+\setcounter{biburlnumpenalty}{700}
 \DeclareBibliographyCategory{hidden}
 \makeatletter
 \DeclareCiteCommand{\fullcite}
@@ -7048,6 +7051,53 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     {\DeclareFieldFormat{url}{\url{##1}}}%
 }
 \ExecuteBibliographyOptions{isourls=false}
+%    \end{macrocode}
+%
+% NHR specifies that URLs should be broken across lines after slashes
+% and percents, and before other punctuation. They should never break
+% after hyphens.
+%
+%    \begin{macrocode}
+\renewcommand*{\biburlsetup}{%
+  \Urlmuskip=0mu plus 2mu\relax
+  \mathchardef\UrlBigBreakPenalty=100\relax
+  \mathchardef\UrlBreakPenalty=200\relax
+  \def\UrlBigBreaks{\do\/\do\:}%
+  \def\UrlNoBreaks{\do\(\do\[\do\{\do\<}%
+  \def\UrlBreaks{%
+    \do\>\do\}\do\]\do\)\do\\\do\|%
+    \do\'\do\$\do\*\do\^\do\"}%
+  \appto\UrlSpecials{%
+    \do\!{\mathbin{}\mskip-\Urlmuskip\mathchar`\!\mskip\Urlmuskip}%
+    \do\&{\mathbin{}\mskip-\Urlmuskip\mathchar`\&\mskip\Urlmuskip}%
+    \do\+{\mathbin{}\mskip-\Urlmuskip\mathchar`\+\mskip\Urlmuskip}%
+    \do\,{\mathbin{}\mskip-\Urlmuskip\mathchar`\,\mskip\Urlmuskip}%
+    \do\-{\mathbin{}\mskip-\Urlmuskip\mathchar`\-\mskip\Urlmuskip}%
+    \do\.{\mathbin{}\mskip-\Urlmuskip\mathchar`\.\mskip\Urlmuskip}%
+    \do\;{\mathbin{}\mskip-\Urlmuskip\mathchar`\;\mskip\Urlmuskip}%
+    \do\={\mathbin{}\mskip-\Urlmuskip\mathchar`\=\mskip\Urlmuskip}%
+    \do\?{\mathbin{}\mskip-\Urlmuskip\mathchar`\?\mskip\Urlmuskip}%
+    \do\_{\mathbin{}\mskip-\Urlmuskip\_\mskip\Urlmuskip}%
+    \do\@{\mathbin{}\mskip-\Urlmuskip\@\mskip\Urlmuskip}%
+    \do\#{\mathbin{}\mskip-\Urlmuskip\#\mskip\Urlmuskip}%
+  }%
+  \ifnumgreater{\value{biburlnumpenalty}}{0}
+    {\def\do##1{\appto\UrlSpecials{\do##1{\mathchar`##1 \penalty\value{biburlnumpenalty}}}}%
+     \do\1\do\2\do\3\do\4\do\5\do\6\do\7\do\8\do\9\do\0}
+    {}%
+  \ifnumgreater{\value{biburlucpenalty}}{0}
+    {\def\do##1{\appto\UrlSpecials{\do##1{\mathchar`##1 \penalty\value{biburlucpenalty}}}}%
+     \do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J
+     \do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T
+     \do\U\do\V\do\W\do\X\do\Y\do\Z}
+    {}%
+  \ifnumgreater{\value{biburllcpenalty}}{0}
+    {\def\do##1{\appto\UrlSpecials{\do##1{\mathchar`##1 \penalty\value{biburllcpenalty}}}}%
+     \do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j
+     \do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t
+     \do\u\do\v\do\w\do\x\do\y\do\z}
+    {}%
+  \let\do=\noexpand}
 %    \end{macrocode}
 %
 % URL dates are set off with a comma rather than parentheses.
