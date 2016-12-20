@@ -4074,33 +4074,64 @@ There are typically many contributors to an audiovisual work, and the priority g
 
 \section{Audio recordings}
 
-%<n>\spec{Composer, \emph{Title}, Artist (Series, Number, Year).}
-%<y>\spec{Composer (Year), \emph{Title}, Artist (Series, Number).}
+The basic structure of audio recording entries is as follows:
+
+%<n>\spec{Composer, \emph{Title}, Artist, RecordingDate (RecordingCompany Type Number, PublicationDate) [Medium].}
+%<y>\spec{Composer (Year), \emph{Title}, Artist, RecordingDate (RecordingCompany Type Number, PublicationDate) [Medium].}
+
+If the composer's name is not of interest, it may be omitted or replaced by the artist's name.
+%<y>In the absence of examples to the contrary, \textsf{oxyear} uses the year of recording at the head of the reference if available, otherwise it uses the year of publication.
+
+\tip{Use \code{origdate} to specify the date of recording. If you want it to be introduced by something other than the localized string \enquote{recorded}, use the (non-standard) \code{origdatetype} field.}
+
+The \emph{Oxford Guide to Style} offers several ways of expressing the recording company:
+
+\begin{itemize}
+\item
+  a simple label name – e.g.\@ \enquote{Columbia}, \enquote{Hyperion}, \enquote{Archiv} – followed immediately by the type or number
+\item
+  a label name separated from the number by a comma, e.g.\@ \enquote{Valois,}
+  \enquote{EMI Electrola,} \enquote{EMI Blues Series,}
+\item
+  a compiling organization, semicolon, publishing company, no comma, e.g.\@ \enquote{Smithsonian Institution; Columbia}
+\item
+  a publishing company, colon, label name, comma, e.g.\@ \enquote{Decca Record Company, Ltd.: Éditions de l'Oiseau-lyre,}
+\item
+  a publishing company, comma, location, comma, e.g.\@ \enquote{Christophorus-Verlag Herder, Freiburg im Breisgau,}
+\end{itemize}
+
+\emph{New Hart's Rules} sticks firmly with the first of these, so \textsf{oxref} makes this the easiest choice but provides workarounds to allow you to achieve most of the others if you really need to.
+
+\tip{To get the normal format, put the label name in \code{publisher}, the type of release (e.g.\@ compact disc, audio cassette) in \code{type}, and the catalogue number in \code{number}. In the examples from \emph{New Hart's Rules}, the type is uniformly omitted.}
+
+\tip{To put a comma between the label and the type\slash number, put the label name in \code{series} instead.}
+
+\tip{If you provide both a \code{publisher} and a \code{series}, they will be separated by \cs{recordseriespunct}, which is initially set to \cs{addcomma}. You could set it to \cs{addcolon} instead to match the example.}
+
+\tip{If the compiling organization is distinct from the publisher, put the former in \code{origpublisher}; it will be separated from the publisher by a semicolon.}
+
+\tip{Contrary to the OGS example, but in common with other entry types, the location if provided will be printed before the publisher, separated from it by a colon. (This is why a comma is the default for \cs{recordseriespunct}.) In the absence of a publisher it will be followed by a comma.}
 
 \begin{bibexbox}
-%<n><OGS \S15.14.1>
-%<y><OGS \S15.14.1\textdagger>
-{couperin1970pdc}
-%<n>Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).
-%<y>Couperin, F. (1970), \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, H. Dreyfus (Valois, MB 797).
+%<n><NHR \S18.7.2*>
+%<y><NHR \S18.7.2*\textdagger>
+{carter1991fsq}
+%<n>Elliott Carter, \emph{The Four String Quartets}, Juilliard String Quartet (Sony S2K 47229, 1991).
+%<y>Carter, E. (1991) \emph{The Four String Quartets}, Juilliard String Quartet (Sony S2K 47229).
 \tcblower
 \begin{Verbatim}
 %</n|y>
-@music{couperin1970pdc,
-  author = {Francois Couperin},
-  title = {Pièces de clavecin},
-  subtitle = {Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres},
-  editor = {Huguette Dreyfus},
+@music{carter1991fsq,
+  author = {Elliott Carter},
+  title = {The Four String Quartets},
+  editor = {{Juilliard String Quartet}},
   editortype = {performer},
-  series = {Valois},
-  number = {MB 797},
-  date = {1970}}
+  publisher = {Sony},
+  number = {S2K 47229},
+  date = {1991}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%<n>\spec{Composer, \emph{Title}, Ensemble, \lit{dir.} Director; Credit (Publisher Type Number, Year).}
-%<y>\spec{Composer (Year), \emph{Title}, Ensemble, \lit{dir.} Director; Credit (Publisher Type Number).}
 
 \begin{bibexbox}
 %<n><OGS \S15.14.1>
@@ -4118,6 +4149,29 @@ There are typically many contributors to an audiovisual work, and the priority g
   type = {compact disc},
   number = {ECM 1368},
   date = {1989}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+%<n><OGS \S15.14.1>
+%<y><OGS \S15.14.1\textdagger>
+{couperin1970pdc}
+%<n>Francois Couperin, \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, Huguette Dreyfus (Valois, MB 797, 1970).
+%<y>Couperin, F. (1970), \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, H. Dreyfus (Valois, MB 797).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@music{couperin1970pdc,
+  author = {Francois Couperin},
+  title = {Pièces de clavecin},
+  subtitle = {Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième
+    ordres},
+  editor = {Huguette Dreyfus},
+  editortype = {performer},
+  series = {Valois},
+  number = {MB 797},
+  date = {1970}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4145,10 +4199,6 @@ There are typically many contributors to an audiovisual work, and the priority g
 \end{Verbatim}
 \end{bibexbox}
 
-
-%<n>\spec{Composer, \emph{Title}, Artist (Publisher Series, Number, Year) [Medium].}
-%<y>\spec{Composer (Year), \emph{Title}, Artist (Publisher Series, Number) [Medium].}
-
 \tip{To describe the medium in a separate note, use the \texttt{howpublished} field.}
 
 \begin{bibexbox}
@@ -4163,16 +4213,12 @@ There are typically many contributors to an audiovisual work, and the priority g
 @music{hopkinsNDcar,
   author = {{Lightnin’ Hopkins}},
   title = {The Complete Aladdin Recordings},
-  publisher = {EMI},
-  series = {Blues Series},
+  series = {EMI Blues Series},
   number = {CDP-7-96843-2},
   howpublished = {2-vol.\@ CD set}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%<n>\spec{Author, \emph{Title}, \lit{read by} Reader (Medium, Number, Year).}
-%<y>\spec{Author (Year), \emph{Title}, \lit{read by} Reader (Medium, Number).}
 
 \tip{To describe the medium as part of the publication statement, use the \texttt{type} field.}
 
@@ -4247,7 +4293,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<y><NHR \S18.7.2*\textdagger>
 {davis1997sw}
 %<n>Miles Davis et al., \enquote{So What}, in \emph{Kind of Blue}, rec. 1959 (Columbia CK 64935, 1997) [CD].
-%<y>Davis, M. et al. (1997), \enquote{So What}, in \emph{Kind of Blue}, rec. 1959 (Columbia CK 64935) [CD].
+%<y>Davis, M. et al. (1959), \enquote{So What}, in \emph{Kind of Blue} (Columbia CK 64935, 1997) [CD].
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4255,7 +4301,8 @@ Sometimes publishers will put several works on a single release without giving i
   author = {Miles Davis and others},
   title = {So What},
   booktitle = {Kind of Blue},
-  note = {rec. 1959},
+  origdate = {1959},
+  origdatetype = {rec\adddot},
   publisher = {Columbia},
   number = {CK 64935},
   date = {1997},
@@ -4263,6 +4310,8 @@ Sometimes publishers will put several works on a single release without giving i
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\info{Note the use of \code{origdate} for the date of recording in this example.}
 
 
 \section{Video recordings}
@@ -4429,18 +4478,16 @@ Sometimes publishers will put several works on a single release without giving i
   author = {Arthur Rubinstein},
   title = {Rachmaninoff Piano Concerto No. 2, Op. 18, I Moderato, Allegro (Fritz Reiner)},
   organization = {YouTube},
-  date = {1956-01-09},
-  datetype = {recorded},
-  eventdate = {2011-11-08},
-  eventtitle = {uploaded},
+  origdate = {1956-01-09},
+  date = {2011-11-08},
+  datetype = {uploaded},
   url = {http://www.youtube.com/watch?v=0Vv0Sy9FJrc&list=PLDB11C4F39E09047F},
   urldate = {2013-11-09}}
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Use the (non-standard) \texttt{datetype} field to clarify the event represented by the main date.
-  You can also use \texttt{eventtitle} and \texttt{eventdate} to specify a secondary publication event.}
+\tip{Use \texttt{origdate} and, if necessary, the (non-standard) \texttt{origdatetype} field to specify the date of recording or original broadcast. Use the (non-standard) \texttt{datetype} field to clarify the event represented by the publication date.}
 
 \section{Broadcasts}\label{sec:broadcasts}
 
@@ -6066,7 +6113,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % \end{itemize}
 %
 %    \begin{macrocode}
-  nolocation,
+  nolocation, recorded, uploaded,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -6108,6 +6155,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \renewcommand*{\intitlepunct}{\nopunct\space}
 \renewcommand*{\bibnamedash}{\resizebox{2em}{\height}{\textemdash}\addthinspace}
 \renewcommand*{\revsdnamedelim}{\addcomma}
+\newcommand*{\recordseriespunct}{\addcomma\space}
 \newcommand*{\relatedtypepunct}{\addsemicolon\space}
 \renewcommand*{\relateddelim}{\addsemicolon\space}
 %    \end{macrocode}
@@ -6857,7 +6905,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareEntryOption{timefirst}[true]{%
   \settoggle{blx@ox@timefirst}{#1}}
 \newbibmacro*{date+time}{%
-  \printfield{datetype}%
+  \ifboolexpr{
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+    and
+    test {\iffieldundef{hour}}
+  }{}{%
+    \printfield{datetype}}%
   \setunit*{\addspace}%
   \iftoggle{blx@ox@timefirst}{%
     \printtime
@@ -6868,6 +6923,38 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \printtime}%
 }
 \renewbibmacro*{date}{\usebibmacro{date+time}}
+%    \end{macrocode}
+%
+% We provide an equivalent for origdate. This is mainly intended for
+% audiovisual resources (for the date of recording).
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{origdatetype}{%
+  \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
+}
+\newbibmacro*{origdate+time}[1][]{%
+  \ifboolexpr{
+    test {\iffieldundef{origyear}}
+    and
+    test {\iffieldundef{origmonth}}
+    and
+    test {\iffieldundef{orighour}}
+  }{}{%
+    \ifstrempty{#1}{%
+      \printfield{origdatetype}%
+    }{%
+      \iffieldundef{origdatetype}%
+        {\bibstring{#1}}%
+        {\printfield{origdatetype}}}}%
+  \setunit*{\addspace}%
+  \iftoggle{blx@ox@timefirst}{%
+    \printorigtime
+    \setunit*{\addcomma\space}}{}%
+  \printorigdate
+  \iftoggle{blx@ox@timefirst}{}{%
+    \setunit*{\addcomma\space}%
+    \printorigtime}%
+}
 %    \end{macrocode}
 %
 % \subsection{Editions, pages, and other number-like fields}
@@ -8499,7 +8586,13 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newbibmacro*{publisher+type+series+number+date}{%
+  \iffieldundef{number}{}{%
+    \setunit{\addcomma\space}%
+    \usebibmacro{origdate+time}[recorded]%
+  }%
   \ifboolexpr{%
+    test {\iflistundef{origpublisher}}
+    and
     test {\iflistundef{location}}
     and
     test {\iflistundef{publisher}}
@@ -8522,40 +8615,27 @@ reference,mvreference,inreference]{volume}{%
   }{}{%
     \nopunct
     \printtext[publication]{%
+      \printlist{origpublisher}%
+      \setunit*{\addsemicolon\space}%
       \printlist{location}%
       \iflistundef{publisher}%
         {\setunit*{\addcomma\space}}%
         {\setunit*{\addcolon\space}}%
       \printlist{publisher}%
-      \setunit*{\addspace}%
-      \printfield{type}%
-      \iflistundef{publisher}%
-        {\setunit*{\addcomma\space}}%
+      \iffieldundef{series}%
         {\setunit*{\addspace}}%
+        {\setunit*{\recordseriespunct}}%
       \printfield{series}%
       \setunit*{\addcomma\space}%
+      \printfield{type}%
+      \setunit*{\addspace}%
       \printfield{number}%
+      \iffieldundef{number}{%
+        \setunit{\addcomma\space}%
+        \usebibmacro{origdate+time}[recorded]%
+      }{}%
       \setunit{\addcomma\space}%
-      \usebibmacro{date+time}%
-      \ifboolexpr{
-        test {\iffieldundef{eventyear}}
-        and
-        test {\iffieldundef{eventmonth}}
-      }{}{%
-        \setunit*{\addcomma\space}%
-        \printfield{eventtitle}%
-        \setunit*{\addspace}%
-        \iftoggle{blx@ox@timefirst}{%
-          \printeventtime
-          \setunit*{\addcomma\space}}{}%
-        \printeventdate
-        \iftoggle{blx@ox@timefirst}{}{%
-          \setunit*{\addcomma\space}%
-          \printeventtime}%
-      }}}}
-\DeclareFieldFormat[audio,music,movie,video]{eventtitle}{%
-  \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
-}
+      \usebibmacro{date+time}}}}
 %    \end{macrocode}
 %
 % We provide the \texttt{endeditor} option to determine if credits should be
@@ -12040,11 +12120,11 @@ reference,mvreference,inreference]{volume}{%
 \DeclareDatamodelConstant[type=list]{nameparts}{prefix,family,suffix,given,title}
 %    \end{macrocode}
 %
-% The `datetype' field is used for prefixing the date with a
-% description.
+% The `datetype' and `origdatetype' fields are used for prefixing the date with
+% a description.
 %
 %    \begin{macrocode}
-\DeclareDatamodelFields[type=field,datatype=literal]{datetype}
+\DeclareDatamodelFields[type=field,datatype=literal]{datetype,origdatetype}
 %    \end{macrocode}
 %
 % The `authoraddon' and `editoraddon' fields are used for handling
@@ -12067,7 +12147,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{rawauthor}
-\DeclareDatamodelEntryfields{datetype,authoraddon,editoraddon,serieseditor,rawauthor}
+\DeclareDatamodelEntryfields{datetype,origdatetype,authoraddon,editoraddon,serieseditor,rawauthor}
 %    \end{macrocode}
 %
 % This data model is borrowed from \textsf{biblatex-manuscripts-philology}.
@@ -12221,6 +12301,8 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
   nolocation       = {{no place}{n\adddot p\adddot}},
+  recorded         = {{recorded}{recorded}},
+  uploaded         = {{uploaded}{uploaded}},
 %    \end{macrocode}
 %
 % \begin{itemize}
