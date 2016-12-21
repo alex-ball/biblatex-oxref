@@ -12205,6 +12205,11 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \RequireCitationStyle{authoryear-comp}
+\xpatchbibmacro{cite:labelyear+extrayear}{%
+  \printfield{labelendyear}%
+}{%
+  \blx@ox@compyear{\thefield{labelyear}}{\thefield{labelendyear}}
+}{}{}
 %    \end{macrocode}
 %
 % We insert anonymous author handling into `cite'.
