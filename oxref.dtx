@@ -7849,20 +7849,32 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/editor+others/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
+  \newunit
+  \ifboolexpr{
+    test {\iffieldequalstr{relatedtype}{multivolume}}
+    or
+    ( not test {\iffieldundef{maintitle}} )
+  }{}{%
+    \printfield{volume}%
+    \printfield{part}}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
   \printfield{volumes}%
-  \newunit
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
   \newunit\newblock
   \printfield{note}%
-  \newunit\newblock%
+  \newunit\newblock
+  \ifboolexpr{
+    test {\iffieldequalstr{relatedtype}{multivolume}}
+    and
+    test {\iffieldundef{maintitle}}
+  }{%
+    \printfield{volume}%
+    \printfield{part}%
+  }{}%
+  \newunit\newblock
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -8039,17 +8051,29 @@ reference,mvreference,inreference]{volume}{%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+  \ifboolexpr{
+    test {\iffieldequalstr{relatedtype}{multivolume}}
+    or
+    ( not test {\iffieldundef{maintitle}} )
+  }{}{%
+    \printfield{volume}%
+    \printfield{part}}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
   \printfield{note}%
-  \newunit\newblock%
+  \newunit\newblock
+  \ifboolexpr{
+    test {\iffieldequalstr{relatedtype}{multivolume}}
+    and
+    test {\iffieldundef{maintitle}}
+  }{%
+    \printfield{volume}%
+    \printfield{part}%
+  }{}%
+  \newunit\newblock
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -8179,10 +8203,13 @@ reference,mvreference,inreference]{volume}{%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{maintitle+title}%
   \newunit
-  \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+  \ifboolexpr{
+    test {\iffieldequalstr{relatedtype}{multivolume}}
+    or
+    ( not test {\iffieldundef{maintitle}} )
+  }{}{%
+    \printfield{volume}%
+    \printfield{part}}%
   \newunit\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -8193,6 +8220,15 @@ reference,mvreference,inreference]{volume}{%
   \printfield{volumes}%
   \newunit\newblock
   \printfield{note}%
+  \newunit\newblock
+  \ifboolexpr{
+    test {\iffieldequalstr{relatedtype}{multivolume}}
+    and
+    test {\iffieldundef{maintitle}}
+  }{%
+    \printfield{volume}%
+    \printfield{part}%
+  }{}%
   \newunit\newblock
   \usebibmacro{series+number+publisher+location+date}%
   \newunit\newblock
