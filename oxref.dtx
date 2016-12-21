@@ -362,6 +362,13 @@ Copyright (C) 2016 Alex Ball
   ,IfNoValueTF={#2}{}{title = #2}
   ,before lower = {\raggedright\ifblank{#3}{}{\hangfrom{\booksym\space}#3\par}\hangfrom{\cogsym\space}}
   ,IfNoValueTF={#4}{}{#4}}
+% egcite* uses upper and lower portions
+\NewTCBListing{egcite*}{D(){ok}omo}%
+  {colframe = #1
+  ,colback = #1!5!white
+  ,IfNoValueTF={#2}{}{title = #2}
+  ,before lower = {\raggedright\ifblank{#3}{}{\hangfrom{\booksym\space}#3\par}\hangfrom{\cogsym\space}}
+  ,IfNoValueTF={#4}{}{#4}}
 
 \frenchspacing
 %</driver|doc>
@@ -909,11 +916,6 @@ that is, there are no examples of them in this documentation.
   \end{itemize}
 \end{multicols}
 
-An option is planned to allow editors/translators to be given immediately after the author, and within short-author references:
-
-Kühner, Raphael, rev. Blass, Friedrich, Ausführliche grammatik der griechischen sprache, i: Elementar- und Formenlehre (Hannover : Hahnsche Buchhandlung, 1890-92).
-
-Kühner–Blass.
 
 \chapter{Citations and common formatting}\label{sec:citing}
 
@@ -1230,16 +1232,23 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
   If you specify the \code{author}, then \code{realauthor} is treated as an alias for \code{authoraddon}.
   The equivalent is true for \code{realeditor}.}
 
-\subsection{Name variants}
+\section{Name variants}
 
 In cases where an author changes the name under which they publish (e.g.\ due to changes of marital status), both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} suggest putting the later form of the name first, followed by parentheses containing an equals sign and the earier form of the name.
 %<n>This is only supposed to to printed in the bibliography, not in notes.
 
 \tip{To trigger this formatting, annotate the relevant name in \code{authoraddon} or \code{editoraddon} with the keyword \code{variant}.}
 
+%<*n>
+\begin{egcite*}{}
+\cite{joukovsky1967gdd}
+\end{egcite*}
+%</n>
+%<*y>
 \begin{egcite}{}
-  \cite{joukovsky1967gdd}
+\parencite{joukovsky1967gdd}
 \end{egcite}
+%</y>
 
 \begin{bibexbox}
 %<n><OGS \S15.17.4>
@@ -1264,6 +1273,58 @@ In cases where an author changes the name under which they publish (e.g.\ due to
 %<*n|y>
 \end{Verbatim}
 \end{bibexbox}
+
+
+\subsection{Author-translators and author-revisers}
+
+If the contribution of the translators or revisers is so great they could be joint authors, Oxford style is to print them immediately after the actual author. The motivation comes from textbooks like this one:
+
+%<*n>
+\begin{egcite*}{}
+\cite{kuehner.blass1890ef}
+\end{egcite*}
+%</n>
+%<*y>
+\begin{egcite}{}
+\parencite{kuehner.blass1890ef}
+\end{egcite}
+%</y>
+
+\begin{bibexbox}
+{kuehner.blass1890ef}
+%<n>\textsc{Kühner, Raphael}, rev. \textsc{Blass, Friedrich}, \emph{Ausführliche grammatik der griechischen sprache}, i: \emph{Elementar- und Formenlehre} (Hannover: Hahnsche Buchhandlung, 1890-2).\toggletrue{blx@bibliography}
+%<y>Kühner, R., rev. Blass, F. (1890-2), \emph{Ausführliche grammatik der griechischen sprache}, i: \emph{Elementar- und Formenlehre} (Hannover: Hahnsche Buchhandlung).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@mvbook{kuehner.blass1890ef,
+  author = {Raphael Kühner},
+  editor = {Friedrich Blass},
+  editor+an = {=jointauthor},
+  editortype = {reviser},
+  shortauthor = {Kühner--Blass},
+  title = {Elementar- und Formenlehre},
+  maintitle = {Ausführliche grammatik der griechischen sprache},
+  volume = {1},
+  location = {Hannover},
+  publisher = {Hahnsche Buchhandlung},
+  date = {1890/1892}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\tip{Annotate the \code{editor} or \code{translator} field with the keyword \code{jointauthor} to promote the name to the joint author position. There are limitations to this you should be aware of:
+\begin{itemize}
+\item
+  You cannot use this technique if you are already using the \code{authoraddon} field, since the implementation relies on it being undefined. For the same reason, you cannot do this for both a reviser \emph{and} a translator.
+\item
+  This only works for editors with type \code{reviser}.
+  It does not work for \code{editora} and similar.
+  You could make it work for other types by patching the \code{author+altauthor} macro.
+\item
+  You have to supply a suitable \code{shortauthor} value yourself; \textsf{oxref} does not calculate it for you.
+\end{itemize}
+}
 
 
 \section{Works in foreign languages}
@@ -6414,76 +6475,92 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \newsavebox{\bbx@ox@namebox}
 \newsavebox{\bbx@ox@altnamebox}
 \newbibmacro*{author+altauthor}{%
-  \ifboolexpr{%
-    ( not test {\ifnameundef{authoraddon}} )
-    and
-    test {\ifnumequal{\value{authoraddon}}{\value{author}}}
-  }{%
-    \setcounter{namepairs}{0}%
-    \savebibmacro{name:andothers}%
-    \renewbibmacro*{name:andothers}{}%
-    \whileboolexpr{%
-      test {\ifnumless{\value{namepairs}}{\value{author}}}
-      and (
-        test {\ifdefvoid{\c@maxnames}}
-        or
-        test {\ifnumequal{\c@maxnames}{0}}
-        or
-        test {\ifnumless{\value{author}}{\c@maxnames}}
-        or
-        test {\ifnumequal{\value{author}}{\c@maxnames}}
-        or
-        test {\ifdefvoid{\c@minnames}}
-        or
-        test {\ifnumequal{\c@minnames}{0}}
-        or
-        test {\ifnumless{\value{namepairs}}{\c@minnames}}
-      )
-    }{%
-      \stepcounter{namepairs}%
-      \ifnumgreater{\value{namepairs}}{1}{%
-        \ifnumequal{\value{author}}{2}{%
-          \setunit*{\addspace\bibstring{and}\addspace}%
-        }{%
-          \ifnumequal{\value{namepairs}}{\value{author}}{%
-            \setunit*{\addcomma\space\bibstring{and}\addspace}%
-          }{%
-            \setunit*{\addcomma\space}%
-          }%
-        }%
-      }{}%
-      \savebox{\bbx@ox@namebox}{%
-        \printnames[author][\value{namepairs}-\value{namepairs}]{author}%
-      }%
-      \let\bbx@ox@firsthash=\bbx@ox@lasthash
-      \savebox{\bbx@ox@altnamebox}{%
-        \printnames[byauthor][\value{namepairs}-\value{namepairs}]{authoraddon}%
-      }%
-      \let\bbx@ox@secondhash=\bbx@ox@lasthash
-      \unhbox\bbx@ox@namebox
-      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{}{%
-        \addspace
-        \iftoggle{blx@ox@variantname}{%
-          \ifbibliography{%
-            \printtext[namevariant]{\printnames[author][\value{namepairs}-\value{namepairs}]{authoraddon}}%
-          }{}%
-        }{%
-          \printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}}%
-      }%
-    }%
-    \ifboolexpr{
-      test {\ifnumequal{\value{namepairs}}{\c@minnames}}
-      and
-      test {\ifnumgreater{\value{author}}{\c@maxnames}}
-    }{%
-      \ifnumgreater{\c@minnames}{1}{%
-        \finalandcomma
-      }{}%
-      \andothersdelim\bibstring{andothers}%
-    }{}%
-    \restorebibmacro{name:andothers}%
-  }{%
+  \ifnameundef{authoraddon}{%
     \printnames{author}%
+  }{%
+    \bgroup
+      \def\currentname{authoraddon}%
+      \renewcommand*{\do}[1]{%
+        \iffieldannotation{##1}{\gdef\blx@ox@roleaddon{##1}}{}}%
+      \docsvlist{reviser,translator}%
+      \undef\currentname
+    \egroup
+    \ifnumequal{\value{authoraddon}}{\value{author}}{%
+      \setcounter{namepairs}{0}%
+      \savebibmacro{name:andothers}%
+      \renewbibmacro*{name:andothers}{}%
+      \whileboolexpr{%
+        test {\ifnumless{\value{namepairs}}{\value{author}}}
+        and (
+          test {\ifdefvoid{\c@maxnames}}
+          or
+          test {\ifnumequal{\c@maxnames}{0}}
+          or
+          test {\ifnumless{\value{author}}{\c@maxnames}}
+          or
+          test {\ifnumequal{\value{author}}{\c@maxnames}}
+          or
+          test {\ifdefvoid{\c@minnames}}
+          or
+          test {\ifnumequal{\c@minnames}{0}}
+          or
+          test {\ifnumless{\value{namepairs}}{\c@minnames}}
+        )
+      }{%
+        \stepcounter{namepairs}%
+        \ifnumgreater{\value{namepairs}}{1}{%
+          \ifnumequal{\value{author}}{2}{%
+            \setunit*{\addspace\bibstring{and}\addspace}%
+          }{%
+            \ifnumequal{\value{namepairs}}{\value{author}}{%
+              \setunit*{\addcomma\space\bibstring{and}\addspace}%
+            }{%
+              \setunit*{\addcomma\space}%
+            }%
+          }%
+        }{}%
+        \savebox{\bbx@ox@namebox}{%
+          \printnames[author][\value{namepairs}-\value{namepairs}]{author}%
+        }%
+        \let\bbx@ox@firsthash=\bbx@ox@lasthash
+        \unhbox\bbx@ox@namebox
+        \ifundef{\blx@ox@roleaddon}{%
+          \savebox{\bbx@ox@altnamebox}{%
+            \printnames[byauthor][\value{namepairs}-\value{namepairs}]{authoraddon}%
+          }%
+          \let\bbx@ox@secondhash=\bbx@ox@lasthash
+          \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{}{%
+            \addspace
+            \iftoggle{blx@ox@variantname}{%
+              \ifbibliography{%
+                \printtext[namevariant]{\printnames[author][\value{namepairs}-\value{namepairs}]{authoraddon}}%
+              }{}%
+            }{%
+              \printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}%
+            }%
+          }%
+        }{}%
+      }%
+      \ifboolexpr{
+        test {\ifnumequal{\value{namepairs}}{\c@minnames}}
+        and
+        test {\ifnumgreater{\value{author}}{\c@maxnames}}
+      }{%
+        \ifnumgreater{\c@minnames}{1}{%
+          \finalandcomma
+        }{}%
+        \andothersdelim\bibstring{andothers}%
+      }{}%
+      \restorebibmacro{name:andothers}%
+    }{%
+      \printnames{author}%
+    }%
+    \ifundef{\blx@ox@roleaddon}{}{%
+      \setunit{\addcomma\space}%
+      \bibstring{by\blx@ox@roleaddon}\space
+      \printnames[author]{authoraddon}%
+      \global\undef\blx@ox@roleaddon
+    }%
   }%
 }
 \newbibmacro*{editor+alteditor}{%
@@ -10715,6 +10792,39 @@ reference,mvreference,inreference]{volume}{%
     }
 %    \end{macrocode}
 %
+% \subsubsection{Editors as joint authors}
+%
+% This map provides a more portable interface for declaring a translator
+% or revisor to be a joint author.
+%
+%    \begin{macrocode}
+    \map[overwrite=false]{
+      \step[fieldsource=editor+an,
+        match=\regexp{=jointauthor},
+        final]
+      \step[fieldsource=editor,
+        fieldtarget=authoraddon]
+      \step[fieldsource=editortype,
+        match=\regexp{(.+)},
+        replace=\regexp{=$1},
+        fieldtarget=authoraddon+an]
+    }
+    \map[overwrite=false]{
+      \step[fieldsource=null,
+        match=\regexp{(syntaxhighlightfix)},
+        replace=\regexp{$1}]
+    }
+    \map[overwrite=false]{
+      \step[fieldsource=translator+an,
+        match=\regexp{=jointauthor},
+        final]
+      \step[fieldsource=translator,
+        fieldtarget=authoraddon]
+      \step[fieldset=authoraddon+an
+        fieldvalue={=translator}]
+    }
+%    \end{macrocode}
+%
 % \subsubsection{Legal references}
 %
 % These help ensure compatibility with \textsf{oscola}.
@@ -11769,7 +11879,8 @@ reference,mvreference,inreference]{volume}{%
 %
 % We patch it further so that, where an author name has a corresponding
 % (different) short author name, the short name is given first and the long
-% name given in parentheses.
+% name given in parentheses. Note that this only affects cases where
+% \code{authoraddon} has not been provided.
 %
 %    \begin{macrocode}
 \xpatchbibmacro{author+altauthor}{%
