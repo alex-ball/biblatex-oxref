@@ -748,6 +748,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
     separates the two with a comma and space, e.g. ‘23, 2’.
   \item\docValue{parens}
     sets off the issue number in parentheses, e.g. ‘23 (2)’.
+%<n>    It is intended for use with \textsf{oxyear} and not recommended for this style.
   \end{itemize}
 \end{docKey}
 
@@ -768,11 +769,11 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \end{docKey}
 
 \begin{docKey}{relationpunct}{=\val{period}|\val{comma}|\val{semicolon}|\val{colon}|\val{space}}{default \val{semicolon}, initially \val{semicolon}}
-  Sets the fallback punctuation that precedes the \code{relatedtype} localization string when it appears near the end of an entry.
+  Sets the punctuation that precedes the \code{relatedtype} localization string.
   An additional space is assumed unless the value is \val{space}.
   This can also be set on a per-type and per-entry basis.
-  The general and per-type settings will be overridden for some values of \code{relatedtype},
-  but the per-entry version will not.
+  Note that the general and per-type settings are ignored for some values of \code{relatedtype},
+  but the per-entry setting is always effective.
 \end{docKey}
 
 %<*n>
@@ -1275,7 +1276,7 @@ In cases where an author changes the name under which they publish (e.g.\ due to
 \end{bibexbox}
 
 
-\subsection{Author-translators and author-revisers}
+\section{Author-translators and author-revisers}
 
 If the contribution of the translators or revisers is so great they could be joint authors, Oxford style is to print them immediately after the actual author. The motivation comes from textbooks like this one:
 
@@ -1319,8 +1320,8 @@ If the contribution of the translators or revisers is so great they could be joi
   You cannot use this technique if you are already using the \code{authoraddon} field, since the implementation relies on it being undefined. For the same reason, you cannot do this for both a reviser \emph{and} a translator.
 \item
   This only works for editors with type \code{reviser}.
-  It does not work for \code{editora} and similar.
   You could make it work for other types by patching the \code{author+altauthor} macro.
+  It does not work for \code{editora} and similar.
 \item
   You have to supply a suitable \code{shortauthor} value yourself; \textsf{oxref} does not calculate it for you.
 \end{itemize}
@@ -1763,9 +1764,9 @@ J. Barnes, \enquote{Homonymy in Aristotle and Speusippus}, \emph{Classical Quart
 
 %</n>
 %<*y>
-\begin{bibexbox}<OGS \S15.19.2>
+\begin{bibexbox}<OGS \S15.19.2*>
 {hankinson1989gba}
-Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \emph{CQ} \textsc{ns} 39: 43–76.
+Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \emph{CQ}, \textsc{ns} 39: 43–76.
 \tcblower
 \begin{Verbatim}
 %</y>
@@ -2740,15 +2741,6 @@ Translators are credited as follows:
 \end{Verbatim}
 \end{bibexbox}
 
-Where a work has been lightly revised, the following form is used:
-
-%<n>\spec{Author, \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher, Year).}
-%<y>\spec{Author (Year), \emph{Title}, \lit{rev.} Reviser(s) (Location: Publisher).}%
-
-Where a work has been extensively revised, the following form is used:
-
-%<n>\spec{Author, \lit{rev.} Reviser, \emph{Title}, (Location: Publisher, Year).}
-%<y>\spec{Author (Year), \lit{rev.} Reviser, \emph{Title}, (Location: Publisher).}
 
 \section{Editions}
 
