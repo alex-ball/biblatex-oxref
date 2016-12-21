@@ -8193,7 +8193,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % Similarly, `mvreference' is just like `mvbook' except that `edition'
-% is given between `byauthor' and `byeditor+others'.
+% is given directly after the title.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{mvreference}{%
@@ -8211,10 +8211,10 @@ reference,mvreference,inreference]{volume}{%
     \printfield{volume}%
     \printfield{part}}%
   \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
   \printfield{edition}%
   \newunit
+  \usebibmacro{byauthor}%
+  \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
   \printfield{volumes}%
