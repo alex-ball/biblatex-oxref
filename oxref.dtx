@@ -1314,18 +1314,7 @@ If the contribution of the translators or revisers is so great they could be joi
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Annotate the \code{editor} or \code{translator} field with the keyword \code{jointauthor} to promote the name to the joint author position. There are limitations to this you should be aware of:
-\begin{itemize}
-\item
-  You cannot use this technique if you are already using the \code{authoraddon} field, since the implementation relies on it being undefined. For the same reason, you cannot do this for both a reviser \emph{and} a translator.
-\item
-  This only works for editors with type \code{reviser}.
-  You could make it work for other types by patching the \code{author+altauthor} macro.
-  It does not work for \code{editora} and similar.
-\item
-  You have to supply a suitable \code{shortauthor} value yourself; \textsf{oxref} does not calculate it for you.
-\end{itemize}
-}
+\tip{Annotate \emph{either} the \code{editor} \emph{or} \code{translator} field with the keyword \code{jointauthor} to promote the name to the joint author position (you cannot do it for both). Note that you have to supply a suitable \code{shortauthor} value yourself; \textsf{oxref} does not calculate it for you.}
 
 
 \section{Works in foreign languages}
@@ -6460,172 +6449,161 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \end{macrocode}
 %
 % We provide an alternative method that uses new name fields `authoraddon'
-% and `editoraddon'. This technique uses saveboxes to extract the hashes.
+% and `editoraddon'. We reimplement the loopcode logic, but we use saveboxes
+% to extract the hashes, and use that conditionally print the alternative
+% name. The same technique is used by \textsf{oxyear} to pair up names
+% with the short form used in references.
 %
 %    \begin{macrocode}
 \newcounter{namepairs}
 \newsavebox{\bbx@ox@namebox}
 \newsavebox{\bbx@ox@altnamebox}
+\newbibmacro*{namepairs}[2]{%
+  \setcounter{namepairs}{0}%
+  \savebibmacro{name:andothers}%
+  \renewbibmacro*{name:andothers}{}%
+  \whileboolexpr{%
+    test {\ifnumless{\value{namepairs}}{\value{#1}}}
+    and (
+      test {\ifdefvoid{\c@maxnames}}
+      or
+      test {\ifnumequal{\c@maxnames}{0}}
+      or
+      test {\ifnumless{\value{#1}}{\c@maxnames}}
+      or
+      test {\ifnumequal{\value{#1}}{\c@maxnames}}
+      or
+      test {\ifdefvoid{\c@minnames}}
+      or
+      test {\ifnumequal{\c@minnames}{0}}
+      or
+      test {\ifnumless{\value{namepairs}}{\c@minnames}}
+    )
+  }{%
+    \stepcounter{namepairs}%
+    \ifnumgreater{\value{namepairs}}{1}{%
+      \ifnumequal{\value{#1}}{2}{%
+        \setunit*{\addspace\bibstring{and}\addspace}%
+      }{%
+        \ifnumequal{\value{namepairs}}{\value{#1}}{%
+          \setunit*{\addcomma\space\bibstring{and}\addspace}%
+        }{%
+          \setunit*{\addcomma\space}%
+        }%
+      }%
+    }{}%
+    \savebox{\bbx@ox@namebox}{%
+      \printnames[#1][\value{namepairs}-\value{namepairs}]{#1}%
+    }%
+    \let\bbx@ox@firsthash=\bbx@ox@lasthash
+%    \end{macrocode}
+%
+% This is the part intended for `authoraddon' and `editoraddon'.
+%
+%    \begin{macrocode}
+    \IfEndWith{#2}{addon}{%
+      \savebox{\bbx@ox@altnamebox}{%
+        \printnames[by#1][\value{namepairs}-\value{namepairs}]{#2}%
+      }%
+      \let\bbx@ox@secondhash=\bbx@ox@lasthash
+      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
+        \unhbox\bbx@ox@namebox
+      }{%
+        \unhbox\bbx@ox@namebox\addspace
+        \iftoggle{blx@ox@variantname}{%
+          \ifbibliography{%
+            \printtext[namevariant]{\printnames[#1][\value{namepairs}-\value{namepairs}]{#2}}%
+          }{}%
+        }{%
+          \printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}%
+        }%
+      }%
+%    \end{macrocode}
+%
+% This is the part intended for `shortauthor' and `shorteditor'.
+%
+%    \begin{macrocode}
+    }{%
+      \savebox{\bbx@ox@altnamebox}{%
+        \printnames[#1][\value{namepairs}-\value{namepairs}]{#2}%
+      }%
+      \let\bbx@ox@secondhash=\bbx@ox@lasthash
+      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
+        \unhbox\bbx@ox@namebox
+      }{%
+        \unhbox\bbx@ox@altnamebox
+        \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
+      }%
+    }%
+  }%
+%    \end{macrocode}
+%
+% Now we return to common code.
+%
+%    \begin{macrocode}
+  \ifboolexpr{
+    test {\ifnumequal{\value{namepairs}}{\c@minnames}}
+    and
+    test {\ifnumgreater{\value{#1}}{\c@maxnames}}
+  }{%
+    \ifnumgreater{\c@minnames}{1}{%
+      \finalandcomma
+    }{}%
+    \andothersdelim\bibstring{andothers}%
+  }{}%
+  \restorebibmacro{name:andothers}%
+}
+%    \end{macrocode}
+%
+% We use this now for authors. We provide additional handling to support
+% printing editors or translators promoted to joint authorship status.
+%
+%    \begin{macrocode}
 \newbibmacro*{author+altauthor}{%
-  \ifnameundef{authoraddon}{%
+  \ifboolexpr{
+    test {\ifnameundef{authoraddon}}
+    and
+    test {\ifnameundef{jointauthor}}
+  }{%
     \printnames{author}%
   }{%
-    \bgroup
-      \def\currentname{authoraddon}%
-      \renewcommand*{\do}[1]{%
-        \iffieldannotation{##1}{\gdef\blx@ox@roleaddon{##1}}{}}%
-      \docsvlist{reviser,translator}%
-      \undef\currentname
-    \egroup
     \ifnumequal{\value{authoraddon}}{\value{author}}{%
-      \setcounter{namepairs}{0}%
-      \savebibmacro{name:andothers}%
-      \renewbibmacro*{name:andothers}{}%
-      \whileboolexpr{%
-        test {\ifnumless{\value{namepairs}}{\value{author}}}
-        and (
-          test {\ifdefvoid{\c@maxnames}}
-          or
-          test {\ifnumequal{\c@maxnames}{0}}
-          or
-          test {\ifnumless{\value{author}}{\c@maxnames}}
-          or
-          test {\ifnumequal{\value{author}}{\c@maxnames}}
-          or
-          test {\ifdefvoid{\c@minnames}}
-          or
-          test {\ifnumequal{\c@minnames}{0}}
-          or
-          test {\ifnumless{\value{namepairs}}{\c@minnames}}
-        )
-      }{%
-        \stepcounter{namepairs}%
-        \ifnumgreater{\value{namepairs}}{1}{%
-          \ifnumequal{\value{author}}{2}{%
-            \setunit*{\addspace\bibstring{and}\addspace}%
-          }{%
-            \ifnumequal{\value{namepairs}}{\value{author}}{%
-              \setunit*{\addcomma\space\bibstring{and}\addspace}%
-            }{%
-              \setunit*{\addcomma\space}%
-            }%
-          }%
-        }{}%
-        \savebox{\bbx@ox@namebox}{%
-          \printnames[author][\value{namepairs}-\value{namepairs}]{author}%
-        }%
-        \let\bbx@ox@firsthash=\bbx@ox@lasthash
-        \unhbox\bbx@ox@namebox
-        \ifundef{\blx@ox@roleaddon}{%
-          \savebox{\bbx@ox@altnamebox}{%
-            \printnames[byauthor][\value{namepairs}-\value{namepairs}]{authoraddon}%
-          }%
-          \let\bbx@ox@secondhash=\bbx@ox@lasthash
-          \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{}{%
-            \addspace
-            \iftoggle{blx@ox@variantname}{%
-              \ifbibliography{%
-                \printtext[namevariant]{\printnames[author][\value{namepairs}-\value{namepairs}]{authoraddon}}%
-              }{}%
-            }{%
-              \printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}%
-            }%
-          }%
-        }{}%
-      }%
-      \ifboolexpr{
-        test {\ifnumequal{\value{namepairs}}{\c@minnames}}
-        and
-        test {\ifnumgreater{\value{author}}{\c@maxnames}}
-      }{%
-        \ifnumgreater{\c@minnames}{1}{%
-          \finalandcomma
-        }{}%
-        \andothersdelim\bibstring{andothers}%
-      }{}%
-      \restorebibmacro{name:andothers}%
+      \usebibmacro{namepairs}{author}{authoraddon}%
     }{%
       \printnames{author}%
+      \ifnameundef{authoraddon}{}{%
+        \setunit*{\addspace}%
+        \printtext[nameaddon]{\printnames[byauthor]{authoraddon}}}%
     }%
-    \ifundef{\blx@ox@roleaddon}{}{%
+    \ifnameundef{jointauthor}{}{%
       \setunit{\addcomma\space}%
-      \bibstring{by\blx@ox@roleaddon}\space
-      \printnames[author]{authoraddon}%
-      \global\undef\blx@ox@roleaddon
+      \iffieldundef{jointauthortype}{%
+        \bibstring{byeditor}%
+      }{%
+        \printfield{jointauthortype}}%
+      \setunit{\addspace}%
+      \printnames[author]{jointauthor}%
     }%
   }%
 }
+\DeclareFieldFormat{jointauthortype}{%
+  \ifbibstring{by#1}{\bibstring{by#1}}{#1}}
+%    \end{macrocode}
+%
+% This is the (simpler) implementation for editors.
+%
+%    \begin{macrocode}
 \newbibmacro*{editor+alteditor}{%
-  \ifboolexpr{%
-    ( not test {\ifnameundef{editoraddon}} )
-    and
-    test {\ifnumequal{\value{editoraddon}}{\value{editor}}}
-  }{%
-    \setcounter{namepairs}{0}%
-    \savebibmacro{name:andothers}%
-    \renewbibmacro*{name:andothers}{}%
-    \whileboolexpr{%
-      test {\ifnumless{\value{namepairs}}{\value{editor}}}
-      and (
-        test {\ifdefvoid{\c@maxnames}}
-        or
-        test {\ifnumequal{\c@maxnames}{0}}
-        or
-        test {\ifnumless{\value{editor}}{\c@maxnames}}
-        or
-        test {\ifnumequal{\value{editor}}{\c@maxnames}}
-        or
-        test {\ifdefvoid{\c@minnames}}
-        or
-        test {\ifnumequal{\c@minnames}{0}}
-        or
-        test {\ifnumless{\value{namepairs}}{\c@minnames}}
-      )
-    }{%
-      \stepcounter{namepairs}%
-      \ifnumless{\value{namepairs}}{1}{%
-        \ifnumequal{\value{editor}}{2}{%
-          \setunit*{\addspace\bibstring{and}\addspace}%
-        }{%
-          \ifnumequal{\value{namepairs}}{\value{editor}}{%
-            \setunit*{\addcomma\space\bibstring{and}\addspace}%
-          }{%
-            \setunit*{\addcomma\space}%
-          }%
-        }%
-      }{}%
-      \savebox{\bbx@ox@namebox}{%
-        \printnames[editor][\value{namepairs}-\value{namepairs}]{editor}%
-      }%
-      \let\bbx@ox@firsthash=\bbx@ox@lasthash
-      \savebox{\bbx@ox@altnamebox}{%
-        \printnames[byeditor][\value{namepairs}-\value{namepairs}]{editoraddon}%
-      }%
-      \let\bbx@ox@secondhash=\bbx@ox@lasthash
-      \unhbox\bbx@ox@namebox
-      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{}{%
-        \addspace
-        \iftoggle{blx@ox@variantname}{%
-          \ifbibliography{%
-            \printtext[namevariant]{\printnames[editor][\value{namepairs}-\value{namepairs}]{editoraddon}}%
-          }{}%
-        }{%
-          \printtext[nameaddon]{\unhbox\bbx@ox@altnamebox}}%
-      }%
-    }%
-    \ifboolexpr{
-      test {\ifnumequal{\value{namepairs}}{\c@minnames}}
-      and
-      test {\ifnumgreater{\value{editor}}{\c@maxnames}}
-    }{%
-      \ifnumgreater{\c@minnames}{1}{%
-        \finalandcomma
-      }{}%
-      \andothersdelim\bibstring{andothers}%
-    }{}%
-    \restorebibmacro{name:andothers}%
-  }{%
+  \ifnameundef{editoraddon}{%
     \printnames{editor}%
+  }{
+    \ifnumequal{\value{editoraddon}}{\value{editor}}{%
+      \usebibmacro{namepairs}{editor}{editoraddon}%
+    }{%
+      \printnames{editor}%
+      \setunit*{\addspace}%
+      \printtext[nameaddon]{\printnames[byeditor]{editoraddon}}%
+    }%
   }%
 }
 %    \end{macrocode}
@@ -10831,24 +10809,17 @@ reference,mvreference,inreference]{volume}{%
         match=\regexp{=jointauthor},
         final]
       \step[fieldsource=editor,
-        fieldtarget=authoraddon]
+        fieldtarget=jointauthor]
       \step[fieldsource=editortype,
-        match=\regexp{(.+)},
-        replace=\regexp{=$1},
-        fieldtarget=authoraddon+an]
-    }
-    \map[overwrite=false]{
-      \step[fieldsource=null,
-        match=\regexp{(syntaxhighlightfix)},
-        replace=\regexp{$1}]
+        fieldtarget=jointauthortype]
     }
     \map[overwrite=false]{
       \step[fieldsource=translator+an,
         match=\regexp{=jointauthor},
         final]
       \step[fieldsource=translator,
-        fieldtarget=authoraddon]
-      \step[fieldset=authoraddon+an
+        fieldtarget=jointauthor]
+      \step[fieldset=jointauthortype,
         fieldvalue={=translator}]
     }
 %    \end{macrocode}
@@ -11911,10 +11882,10 @@ reference,mvreference,inreference]{volume}{%
 % \code{authoraddon} has not been provided.
 %
 %    \begin{macrocode}
-\xpatchbibmacro{author+altauthor}{%
-  \printnames[byauthor]%
+\xpatchbibmacro{namepairs}{%
+  \printnames[by#1]%
 }{%
-  \printnames[author]%
+  \printnames[#1]%
 }{}{}
 \xpatchbibmacro{author+altauthor}{%
   \printnames{author}%
@@ -11924,65 +11895,7 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\ifnumequal{\value{shortauthor}}{\value{author}}}
   }{%
-    \setcounter{namepairs}{0}%
-    \savebibmacro{name:andothers}%
-    \renewbibmacro*{name:andothers}{}%
-    \whileboolexpr{%
-      test {\ifnumless{\value{namepairs}}{\value{author}}}
-      and (
-        test {\ifdefvoid{\c@maxnames}}
-        or
-        test {\ifnumequal{\c@maxnames}{0}}
-        or
-        test {\ifnumless{\value{author}}{\c@maxnames}}
-        or
-        test {\ifnumequal{\value{author}}{\c@maxnames}}
-        or
-        test {\ifdefvoid{\c@minnames}}
-        or
-        test {\ifnumequal{\c@minnames}{0}}
-        or
-        test {\ifnumless{\value{namepairs}}{\c@minnames}}
-      )
-    }{%
-      \stepcounter{namepairs}%
-      \ifnumgreater{\value{namepairs}}{1}{%
-        \ifnumequal{\value{author}}{2}{%
-          \setunit*{\addspace\bibstring{and}\addspace}%
-        }{%
-          \ifnumequal{\value{namepairs}}{\value{author}}{%
-            \setunit*{\addcomma\space\bibstring{and}\addspace}%
-          }{%
-            \setunit*{\addcomma\space}%
-          }%
-        }%
-      }{}%
-      \savebox{\bbx@ox@altnamebox}{%
-        \printnames[author][\value{namepairs}-\value{namepairs}]{shortauthor}%
-      }%
-      \let\bbx@ox@firsthash=\bbx@ox@lasthash
-      \savebox{\bbx@ox@namebox}{%
-        \printnames[author][\value{namepairs}-\value{namepairs}]{author}%
-      }%
-      \let\bbx@ox@secondhash=\bbx@ox@lasthash
-      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
-        \unhbox\bbx@ox@namebox
-      }{%
-        \unhbox\bbx@ox@altnamebox
-        \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
-      }%
-    }%
-    \ifboolexpr{
-      test {\ifnumequal{\value{namepairs}}{\c@minnames}}
-      and
-      test {\ifnumgreater{\value{author}}{\c@maxnames}}
-    }{%
-      \ifnumgreater{\c@minnames}{1}{%
-        \finalandcomma
-      }{}%
-     \andothersdelim\bibstring{andothers}%
-    }{}%
-    \restorebibmacro{name:andothers}%
+    \usebibmacro{namepairs}{author}{shortauthor}%
   }{%
     \printnames{author}%
   }%
@@ -12021,40 +11934,7 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\ifnumequal{\value{shorteditor}}{\value{editor}}}
   }{%
-    \setcounter{namepairs}{0}%
-    \savebibmacro{name:andothers}%
-    \renewbibmacro*{name:andothers}{}%
-    \whileboolexpr{%
-      test {\ifnumcomp{\value{namepairs}}{<}{\value{editor}}}
-    }{%
-      \stepcounter{namepairs}%
-      \ifnumcomp{\value{namepairs}}{>}{1}{%
-        \ifnumequal{\value{editor}}{2}{%
-          \setunit*{\addspace\bibstring{and}\addspace}%
-        }{%
-          \ifnumequal{\value{namepairs}}{\value{editor}}{%
-            \setunit*{\addcomma\space\bibstring{and}\addspace}%
-          }{%
-            \setunit*{\addcomma\space}%
-          }%
-        }%
-      }{}%
-      \savebox{\bbx@ox@altnamebox}{%
-        \printnames[editor][\value{namepairs}-\value{namepairs}]{shorteditor}%
-      }%
-      \let\bbx@ox@firsthash=\bbx@ox@lasthash
-      \savebox{\bbx@ox@namebox}{%
-        \printnames[editor][\value{namepairs}-\value{namepairs}]{editor}%
-      }%
-      \let\bbx@ox@secondhash=\bbx@ox@lasthash
-      \ifdefstrequal{\bbx@ox@firsthash}{\bbx@ox@secondhash}{%
-        \unhbox\bbx@ox@namebox
-      }{%
-        \unhbox\bbx@ox@altnamebox
-        \addspace\mkbibparens{\unhbox\bbx@ox@namebox}%
-      }%
-    }%
-    \restorebibmacro{name:andothers}%
+    \usebibmacro{namepairs}{editor}{shorteditor}%
   }{%
     \printnames{editor}%
   }%
@@ -12322,18 +12202,19 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % The `authoraddon' and `editoraddon' fields are used for handling
-% pseudonyms.
-%
-%    \begin{macrocode}
-\DeclareDatamodelFields[type=list,datatype=name]{authoraddon}
-\DeclareDatamodelFields[type=list,datatype=name]{editoraddon}
-%    \end{macrocode}
-%
-% The `serieseditor' field is used for the editor of a book series,
+% pseudonyms. The `serieseditor' field is used for the editor of a book series,
 % as opposed to the editor of the particular cited work.
 %
 %    \begin{macrocode}
-\DeclareDatamodelFields[type=list,datatype=name]{serieseditor}
+\DeclareDatamodelFields[type=list,datatype=name]{authoraddon,editoraddon,serieseditor}
+%    \end{macrocode}
+%
+% The `jointauthor' and `jointauthortype' fields are used for internally for
+% handling editors/translators who can be considered joint authors.
+%
+%    \begin{macrocode}
+\DeclareDatamodelFields[type=list,datatype=name]{jointauthor}
+\DeclareDatamodelFields[type=field,datatype=literal]{jointauthortype}
 %    \end{macrocode}
 %
 % The `rawauthor' field is used internally for checking whether an
@@ -12341,17 +12222,22 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{rawauthor}
-\DeclareDatamodelEntryfields{datetype,origdatetype,authoraddon,editoraddon,serieseditor,rawauthor}
+\DeclareDatamodelEntryfields{datetype,origdatetype,authoraddon,editoraddon,%
+  serieseditor,jointauthor,jointauthortype,rawauthor}
 %    \end{macrocode}
 %
 % This data model is borrowed from \textsf{biblatex-manuscripts-philology}.
 %
 %    \begin{macrocode}
 \DeclareDatamodelEntrytypes{manuscript}
-\DeclareDatamodelFields[type=field,datatype=literal]{catalog,dating,shortlibrary,columns, collection,shortcollection,usualtitle,shelfmark,sortshelfmark,support,columns,layer}
+\DeclareDatamodelFields[type=field,datatype=literal]{catalog,dating,%
+  shortlibrary,columns, collection,shortcollection,usualtitle,shelfmark,%
+  sortshelfmark,support,columns,layer}
 \DeclareDatamodelFields[type=list,datatype=name]{scribe,owner}
 \DeclareDatamodelFields[type=list,datatype=literal]{origin}
-\DeclareDatamodelEntryfields[manuscript]{catalog,dating,shortlibrary,shortcollection,columns,languages, collection,usualtitle,shelfmark,sortshelfmark,support,columns,origin,scribe,owner}
+\DeclareDatamodelEntryfields[manuscript]{catalog,dating,shortlibrary,%
+  shortcollection,columns,languages, collection,usualtitle,shelfmark,%
+  sortshelfmark,support,columns,origin,scribe,owner}
 %    \end{macrocode}
 %
 % This data model helps with legal citations.
