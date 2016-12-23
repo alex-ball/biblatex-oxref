@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2015/05/25 v0.1}
+\def\Version{2016/12/23 v0.9}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -199,7 +199,7 @@ Copyright (C) 2016 Alex Ball
 }
 \makeatother
 
-\usepackage{xpatch,csquotes,xcolor,xparse,multicol}
+\usepackage{xcolor,xparse}
 \definecolor{Green}{rgb}{0,.5,0}
 \colorlet{ok}{Green}
 \colorlet{todo}{red}
@@ -261,6 +261,8 @@ Copyright (C) 2016 Alex Ball
 \RecustomVerbatimEnvironment
   {Verbatim}{Verbatim}
   {commentchar=\%}
+
+\usepackage{xpatch,csquotes,multicol}
 
 \usepackage
 [backend=biber%
@@ -371,7 +373,13 @@ Copyright (C) 2016 Alex Ball
   ,IfNoValueTF={#4}{}{#4}}
 
 \frenchspacing
+
+\usepackage[british]{isodate}
 %</driver|doc>
+%<*doc>
+\usepackage{readprov}
+\GetFileInfo{\jobname.tex}
+%</doc>
 %<*driver>
 \usepackage[tightLists=false]{markdown}
 \markdownSetup{rendererPrototypes={%
@@ -380,6 +388,7 @@ Copyright (C) 2016 Alex Ball
 
 % For typesetting the implementation
 \makeatletter
+\let\docdate\@undefined
 \let\theglossary\@undefined
 \let\endtheglossary\@undefined
 \makeatother
@@ -517,12 +526,14 @@ Copyright (C) 2016 Alex Ball
 }
 \makeatother
 
+\GetFileInfo{\jobname.dtx}
 \title{OXREF -- Biblatex styles inspired by the \emph{Oxford Guide to Style}}
 %</driver>
 %<doc&n>\title{OXNOTES -- A notes-based style for Biblatex}
 %<doc&y>\title{OXYEAR -- An author–year style for Biblatex}
 %<*driver|doc>
 \author{Alex Ball}
+\date{\printdateTeX{\filedate}}
 \begin{document}
 \thispagestyle{empty}
 \begin{adjustwidth}{.2\textwidth}{0pt}
@@ -536,7 +547,10 @@ Copyright (C) 2016 Alex Ball
   \Large\theauthor
 
   \bigskip
-  \Large\ifx\undefined\thedate\today\else\thedate\fi
+  \Large\thedate
+
+  \bigskip
+  \Large\fileversion
 \end{adjustwidth}
 
 \vspace{\stretch{3}}
@@ -6450,7 +6464,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % We provide an alternative method that uses new name fields `authoraddon'
 % and `editoraddon'. We reimplement the loopcode logic, but we use saveboxes
-% to extract the hashes, and use that conditionally print the alternative
+% to extract the hashes, and use that to print conditionally the alternative
 % name. The same technique is used by \textsf{oxyear} to pair up names
 % with the short form used in references.
 %
@@ -11421,7 +11435,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % \begin{itemize}
-%   \item `false' suppresses any merging).
+%   \item `false' suppresses any merging.
 % \end{itemize}
 %
 %    \begin{macrocode}

@@ -1,4 +1,5 @@
 NAME  = oxref
+PFX   = biblatex-
 STY1  = oxnotes
 STY2  = oxyear
 SHELL = bash
@@ -35,31 +36,31 @@ distclean: clean
 	rm -f $(NAME).{bbx,bib,ins,pdf} {$(STY1),$(STY2)}.{b,c,d}bx {american,british,english}-$(NAME).lbx $(STY1)-doc.{tex,pdf} $(STY2)-doc.{tex,pdf}
 
 inst: all
-	mkdir -p $(UTREE)/{tex,source,doc}/latex/biblatex-$(NAME)
-	cp $(NAME).{dtx,ins} $(UTREE)/source/latex/biblatex-$(NAME)
-	cp $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx {american,british,english}-$(NAME).lbx $(UTREE)/tex/latex/biblatex-$(NAME)
-	cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(UTREE)/doc/latex/biblatex-$(NAME)
+	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(PFX)$(NAME)
+	cp $(NAME).{dtx,ins} $(UTREE)/source/latex/$(PFX)$(NAME)
+	cp $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx {american,british,english}-$(NAME).lbx $(UTREE)/tex/latex/$(PFX)$(NAME)
+	cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(UTREE)/doc/latex/$(PFX)$(NAME)
 	mktexlsr
 uninst:
-	rm -r $(UTREE)/{tex,source,doc}/latex/biblatex-$(NAME)
+	rm -r $(UTREE)/{tex,source,doc}/latex/$(PFX)$(NAME)
 	mktexlsr
 
 
 install: all
-	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/biblatex-$(NAME)
-	sudo $(NAME).{dtx,ins} $(LOCAL)/source/latex/biblatex-$(NAME)
-	sudo $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx {american,british,english}-$(NAME).lbx $(LOCAL)/tex/latex/biblatex-$(NAME)
-	sudo cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(LOCAL)/doc/latex/biblatex-$(NAME)
+	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(PFX)$(NAME)
+	sudo $(NAME).{dtx,ins} $(LOCAL)/source/latex/$(PFX)$(NAME)
+	sudo $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx {american,british,english}-$(NAME).lbx $(LOCAL)/tex/latex/$(PFX)$(NAME)
+	sudo cp $(NAME).{bib,pdf} {$(STY1),$(STY2)}-doc.{tex,pdf} $(LOCAL)/doc/latex/$(PFX)$(NAME)
 	mktexlsr
 uninstall:
-	sudo rm -r $(LOCAL)/{tex,source,doc}/latex/biblatex-$(NAME)
+	sudo rm -r $(LOCAL)/{tex,source,doc}/latex/$(PFX)$(NAME)
 	mktexlsr
 
 zip: all
 	mkdir $(TDIR)
 	cp $(NAME).{dtx,pdf} $(STY1)-doc.pdf $(STY2)-doc.pdf README.md Makefile $(NAME).bbx {$(STY1),$(STY2)}.{b,c,d}bx {american,british,english}-$(NAME).lbx $(TDIR)
-	cd $(TEMP); zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)
+	cd $(TEMP); zip -Drq $(PWD)/$(PFX)$(NAME)-$(VERS).zip $(NAME)
 ctan: all
 	mkdir $(TDIR)
 	cp $(NAME).{dtx,pdf} $(STY1)-doc.pdf $(STY2)-doc.pdf README.md Makefile $(TDIR)
-	cd $(TEMP); zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)
+	cd $(TEMP); zip -Drq $(PWD)/$(PFX)$(NAME)-$(VERS).zip $(NAME)
