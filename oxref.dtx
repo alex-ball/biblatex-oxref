@@ -154,8 +154,8 @@ Copyright (C) 2016 Alex Ball
     [\Version\space Biblatex styles inspired by the Oxford Guide to Style]
 \PassOptionsToPackage{style=oxnotes}{biblatex}
 %</driver>
-%<doc&n>\PassOptionsToPackage{style=oxnotes,scnames,altmagdate,anon}{biblatex}
-%<doc&y>\PassOptionsToPackage{style=oxyear,altmagdate,anon}{biblatex}
+%<doc&n>\PassOptionsToPackage{style=oxnotes,scnames,varissuedate,anon}{biblatex}
+%<doc&y>\PassOptionsToPackage{style=oxyear,varissuedate,anon}{biblatex}
 %<*driver|doc>
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \setlrmarginsandblock{3cm}{3cm}{*}
@@ -698,11 +698,6 @@ The style is self-contained, so you can load it with \pkg{biblatex}:
 
 The style has some options additional to the regular \pkg{biblatex} ones:
 
-\begin{docKey}{altmagdate}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
-  Removes the parentheses around the date of a periodical without a volume number.
-  This can also be set on a per-type and per-entry basis.
-\end{docKey}
-
 \begin{docKey}{altthesis}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Puts the thesis type inside, rather than outside, the parenthetical publication block.
 \end{docKey}
@@ -790,6 +785,11 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \begin{docKey}{usenametitles}{=\val{true}|\val{false}}{default \val{true}, initially \val{true}}
   Controls whether personal titles such as Revd, Dr, Mrs, Sir, and so on are printed.
   (There is an example of how to supply titles in the \hyperref[ex:lewis1981lww]{Lewis reference} on \cpageref{ex:lewis1981lww}.)
+  This can also be set on a per-type and per-entry basis.
+\end{docKey}
+
+\begin{docKey}{varissuedate}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Removes the parentheses around the date of a periodical without a volume number.
   This can also be set on a per-type and per-entry basis.
 \end{docKey}
 
@@ -7345,11 +7345,11 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % in parentheses just as in the standard version of the macro.
 %
 %    \begin{macrocode}
-\newtoggle{blx@ox@altmagdate}
-\DeclareBibliographyOption[boolean]{altmagdate}[true]{%
-  \settoggle{blx@ox@altmagdate}{#1}}
-\DeclareEntryOption[boolean]{altmagdate}[true]{%
-  \settoggle{blx@ox@altmagdate}{#1}}
+\newtoggle{blx@ox@varissuedate}
+\DeclareBibliographyOption[boolean]{varissuedate}[true]{%
+  \settoggle{blx@ox@varissuedate}{#1}}
+\DeclareEntryOption[boolean]{varissuedate}[true]{%
+  \settoggle{blx@ox@varissuedate}{#1}}
 \renewbibmacro*{issue+date}{%
   \ifboolexpr{
     test {\iffieldundef{issue}}
@@ -7359,7 +7359,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     test {\iffieldundef{month}}
   }{}{%
     \ifboolexpr{
-      togl {blx@ox@altmagdate}
+      togl {blx@ox@varissuedate}
       and
       test {\iffieldundef{volume}}
       and
@@ -11260,7 +11260,7 @@ reference,mvreference,inreference]{volume}{%
   \renewbibmacro*{issue+date}{%
     \iffieldundef{issue}{}{%
       \ifboolexpr{
-        togl {blx@ox@altmagdate}
+        togl {blx@ox@varissuedate}
         and
         test {\iffieldundef{volume}}
         and
@@ -11295,7 +11295,7 @@ reference,mvreference,inreference]{volume}{%
       test {\iffieldundef{month}}
     }{}{%
       \ifboolexpr{
-        togl {blx@ox@altmagdate}
+        togl {blx@ox@varissuedate}
         and
         test {\iffieldundef{volume}}
         and
@@ -11355,7 +11355,7 @@ reference,mvreference,inreference]{volume}{%
       test {\iffieldundef{month}}
     }{}{%
       \ifboolexpr{
-        togl {blx@ox@altmagdate}
+        togl {blx@ox@varissuedate}
         and
         test {\iffieldundef{volume}}
         and
@@ -11401,7 +11401,7 @@ reference,mvreference,inreference]{volume}{%
       test {\iffieldundef{extrayear}}
     }{}{%
       \ifboolexpr{
-        togl {blx@ox@altmagdate}
+        togl {blx@ox@varissuedate}
         and
         test {\iffieldundef{volume}}
         and
@@ -11443,7 +11443,7 @@ reference,mvreference,inreference]{volume}{%
       )
     }{}{%
       \ifboolexpr{
-        togl {blx@ox@altmagdate}
+        togl {blx@ox@varissuedate}
         and
         test {\iffieldundef{volume}}
         and
