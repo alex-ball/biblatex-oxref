@@ -4165,7 +4165,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
 
 \tip{To put a comma between the label and the type\slash number, put the label name in \code{series} instead.}
 
-\tip{If you provide both a \code{publisher} and a \code{series}, they will be separated by \cs{recordseriespunct}, which is initially set to \cs{addcomma}. You could set it to \cs{addcolon} instead to match the example.}
+\tip{If you provide both a \code{publisher} and a \code{series}, they will be separated by \cs{recordseriespunct}, which is initially set to \cs{addcomma}\cs{space}. You could set it to \cs{addcolon}\cs{space} instead to match the example.}
 
 \tip{If the compiling organization is distinct from the publisher, put the former in \code{origpublisher}; it will be separated from the publisher by a semicolon.}
 
@@ -4607,6 +4607,8 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 
 \section{Podcasts, video podcasts and webcasts}
 
+\tip{Set the \code{entrysubtype} to \code{podcast} for a podcast.}
+
 \begin{bibexbox}
 %<n><NHR \S18.7.3>
 %<y><NHR \S18.7.3\textdagger>
@@ -4652,6 +4654,8 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 
 \info{I am not sure why \emph{New Hart's Rules} places the channel after the date in the above case; it is probably a mistake or an odd variation, so I have adjusted it for consistency.}
 
+\tip{As for other online videos, set the \code{entrysubtype} to \code{clip} for a video podcast.}
+
 \begin{bibexbox}
 %<n><NHR \S18.8.5*>
 %<y><NHR \S18.8.5*\textdagger>
@@ -4678,6 +4682,8 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 
 \tip{Perhaps a better way of achieiving consistency in this case would be to treat it like an article, and clarify the medium (i.e.\@ video, erroneously) using the \texttt{titleaddon} field.}
 
+\tip{Set the \code{entrysubtype} to \code{webcast} for a webcast.}
+
 \begin{bibexbox}
 %<n><NHR \S18.8.5*>
 %<y><NHR \S18.8.5*\textdagger>
@@ -4702,6 +4708,8 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 
 
 \section{Images}
+
+\tip{If desired, use \code{titleaddon} to specify the type of image.}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
