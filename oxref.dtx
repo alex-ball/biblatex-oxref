@@ -4319,7 +4319,6 @@ Sometimes publishers will put several works on a single release without giving i
 %</n|y>
 @audio{dutilleux1987as,
   author = {Henri Dutilleux},
-  shortauthor = {Dutilleux and {Maxwell Davies}},
   title = {L'Arbre des songes},
   related = {maxwelldavies1987},
   relatedtype = {includes},
@@ -4340,7 +4339,12 @@ Sometimes publishers will put several works on a single release without giving i
 \end{Verbatim}
 \end{bibexbox}
 
-%<y>\tip{Albums like these are a problem for author–date styles. You should probably use the \code{inaudio} entry type instead (see below). This will allow you to specify to which work on the album you are referring. Alternatively, you could shift the composers into the title and put the performers in the author position.}
+\hack{Only the primary work will show up in citations; the subsequent ones will not.
+  If this is not what you want, you will need to use \code{shortauthor}\slash\code{shorttitle} or \code{shorthand}, or build up the citation manually with \cs{citeauthor} and the like.}
+
+\info{Depending on the thrust of your document, you could remove the complication by shifting the composers into the title and putting the performers in the author position.}
+
+\info{If you are only interested in one of the works in the release, you might be better off using the \code{inaudio} entry type instead (see below).}
 
 
 \subsection{Tracks from an album}
