@@ -4349,7 +4349,7 @@ Sometimes publishers will put several works on a single release without giving i
 
 \subsection{Tracks from an album}
 
-\tip{Use the non-standard entry types \code{inaudio} or \code{inmusic} to reference a single work within an album.}
+\tip{Use the non-standard entry types \code{inaudio} or \code{inmusic} to reference a single work within an album. Use \code{booktitle} (somewhat loosely) for the album title.}
 
 \begin{bibexbox}
 %<n><NHR \S18.7.2*>
@@ -8870,6 +8870,14 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
+% The same driver will do very well for `music', `video' and `movie'.
+%
+%    \begin{macrocode}
+\DeclareBibliographyAlias{music}{audio}
+\DeclareBibliographyAlias{movie}{audio}
+\DeclareBibliographyAlias{video}{audio}
+%    \end{macrocode}
+%
 % In parallel with book-like entries, we provide an `inaudio' driver for citing
 % tracks from an album.
 %
@@ -8929,15 +8937,26 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% The same driver will do very well for `music', `video' and `movie'.
+% The same driver will do very well for `inmusic', `invideo' and `inmovie'.
 %
 %    \begin{macrocode}
-\DeclareBibliographyAlias{music}{audio}
-\DeclareBibliographyAlias{movie}{audio}
-\DeclareBibliographyAlias{video}{audio}
 \DeclareBibliographyAlias{inmusic}{inaudio}
 \DeclareBibliographyAlias{inmovie}{inaudio}
 \DeclareBibliographyAlias{invideo}{inaudio}
+%    \end{macrocode}
+%
+% We set up appropriate inheritance rules.
+%
+%    \begin{macrocode}
+\DeclareDataInheritance{audio,music,movie,video}{inaudio,inmusic,inmovie,invideo}{%
+  \inherit{title}{booktitle}
+  \inherit{subtitle}{booksubtitle}
+  \inherit{titleaddon}{booktitleaddon}
+  \noinherit{shorttitle}
+  \noinherit{sorttitle}
+  \noinherit{indextitle}
+  \noinherit{indexsorttitle}
+}
 %    \end{macrocode}
 %
 % Titles for videos do not have a consistent format, so we define some
