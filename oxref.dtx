@@ -2377,7 +2377,13 @@ Hankinson, R. J. (1988) (ed.), \emph{Method, Medicine, and Metaphysics} (Edmonto
 
 \section{Reference works}
 
-Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board whose membership might change between successive editions. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead). The \emph{Oxford Guide to Style} considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first, but \emph{New Hart's Rules} doesn't. \textsf{Oxref} takes the former approach, but you can switch to the latter by setting the \texttt{useeditor} option back to true for this type.
+Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board whose membership might change between successive editions. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead).
+
+\tip{The \emph{Oxford Guide to Style} considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first, but \emph{New Hart's Rules} doesn't. \textsf{Oxref} takes the former approach, but you can switch to the latter by setting the \texttt{useeditor} option back to true for this type.}
+
+\begin{tcblisting}{listing only}
+\ExecuteBibliographyOptions[reference,mvreference]{useeditor=true}
+\end{tcblisting}
 
 %<n>\spec{\emph{Title}, \lit{ed.} Editor(s) (Location: Publisher, Year).}
 %<y>\spec{\emph{Title} (Year), \lit{ed.} Editor(s) (Location: Publisher).}
@@ -3140,7 +3146,7 @@ then the new title and its details after a semicolon.
 
 %</n|y>
 %<*y>
-The \emph{Oxford Guide to Style} provides a special format for expressing works that are co-published by several publishers at once. \textsf{Oxnotes} implements it using the \code{relatedtype} keyword \code{copub}. Since it is not suitable for author–year citation styles, no effort is made to make it work for \textsf{oxyear}.
+The \emph{Oxford Guide to Style} provides a special format for expressing works that are co-published by several publishers at once. \textsf{Oxnotes} implements it using the \code{relatedtype} keyword \code{copub}. Since it is not suitable for author–year citation styles, no effort is made to make it work for \textsf{oxyear}; you should cite the edition you used, and either ignore the other or mention it in an \code{addendum}.
 
 %</y>
 %<*n>
@@ -3472,9 +3478,6 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 
 \subsection{Later version more accessible}
 
-%<n>\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).}
-%<y>\spec{Author (Year), \emph{Title} (Location: Publisher) (\lit{originally pub.} Year).}
-
 \tip{Use \code{origdate} to give the date of original publication.}
 
 \begin{bibexbox}
@@ -3609,7 +3612,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 %<y><OGS \S15.2.12\textdagger>
 {icp1975pic}
 %<n>\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (London, 1975).
-%<y>\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (1975), (London).
+%<y>\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (1975) (London).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4141,7 +4144,9 @@ The basic structure of audio recording entries is as follows:
 If the composer's name is not of interest, it may be omitted or replaced by the artist's name.
 %<y>In the absence of examples to the contrary, \textsf{oxyear} uses the year of recording at the head of the reference if available, otherwise it uses the year of publication.
 
-\tip{Use \code{origdate} to specify the date of recording. If you want it to be introduced by something other than the localized string \enquote{recorded}, use the (non-standard) \code{origdatetype} field.}
+\tip{Use \code{origdate} to specify the date of recording. If you want it to be introduced by something other than the localized string \enquote{recorded}, use the (non-standard) \code{origdatetype} field%
+%<y>, though this will be suppressed if only the year is given%
+.}
 
 The \emph{Oxford Guide to Style} offers several ways of expressing the recording company:
 
@@ -4176,7 +4181,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
 %<y><NHR \S18.7.2*\textdagger>
 {carter1991fsq}
 %<n>Elliott Carter, \emph{The Four String Quartets}, Juilliard String Quartet (Sony S2K 47229, 1991).
-%<y>Carter, E. (1991) \emph{The Four String Quartets}, Juilliard String Quartet (Sony S2K 47229).
+%<y>Carter, E. (1991), \emph{The Four String Quartets}, Juilliard String Quartet (Sony S2K 47229).
 \tcblower
 \begin{Verbatim}
 %</n|y>
@@ -4583,7 +4588,8 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>\spec{\enquote{EpisodeTitle} (Year), \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Day Month.}
 
 \tip{If the episode has a true title, the episide descriptor (e.g. ‘Episode 1’) goes in the \code{note} field.
-  If it doesn't, the episode descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to remove the quote marks. Alternatively, use the (non-standard) \code{descriptor} field, and \textsf{oxref} will take care of this for you.}
+  If it doesn't, the episode descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to remove the quote marks.
+  Alternatively, use the (non-standard) \code{descriptor} field for the episode descriptor in all cases, and \textsf{oxref} will take care of this for you.}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
@@ -8787,7 +8793,9 @@ reference,mvreference,inreference]{volume}{%
       \printfield{series}%
       \setunit*{\addcomma\space}%
       \printfield{type}%
-      \setunit*{\addspace}%
+      \iflistundef{publisher}%
+        {\setunit*{\addcomma\space}}%
+        {\setunit*{\addspace}}%
       \printfield{number}%
       \iffieldundef{number}{%
         \setunit{\addcomma\space}%
