@@ -48,8 +48,8 @@ UNIX-like systems:
 
   * Running `make clean` removes auxiliary files from the working directory.
 
-  * Running `make distclean` removes the generated from the working directory
-    files as well.
+  * Running `make distclean` removes the generated files from the working
+    directory as well.
 
 ### Manual way
 
