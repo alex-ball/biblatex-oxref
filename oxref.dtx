@@ -741,6 +741,18 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   In the biblography, replaces recurring author\slash editor names with a dash.
 \end{docKey}
 
+\begin{docKey}{ecli}{=\val{yes}|\val{only}|\val{no}}{default \val{yes}, initially \val{yes}}
+  Determines when ECLI numbers for EU legal cases are printed (if provided).
+  \begin{itemize}
+  \item\docValue{yes}
+    prints the ECLI number in addition to the official report.
+  \item\docValue{only}
+    prints the ECLI number instead of the official report.
+  \item\docValue{no}
+    only prints the ECLI number if the case is otherwise unreported.
+  \end{itemize}
+\end{docKey}
+
 \begin{docKey}{isourls}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Surrounds URLs with angle brackets.
 \end{docKey}
@@ -9229,6 +9241,17 @@ reference,mvreference,inreference]{volume}{%
   \settoggle{bbx:altcourt}{#1}}
 \DeclareEntryOption{court-plain}[true]{%
   \settoggle{bbx:altcourt}{#1}}
+\newtoggle{bbx@ecliuse}
+\newtoggle{bbx@eclionly}
+\DeclareBibliographyOption{ecli}[yes]{%
+  \ifstrequal{#1}{no}{%
+    \global\togglefalse{bbx@ecliuse}%
+    \global\togglefalse{bbx@eclionly}%
+  }{%
+    \global\toggletrue{bbx@ecliuse}%
+    \ifstrequal{#1}{only}{%
+      \global\toggletrue{bbx@eclionly}%
+    }{}}}
 %    \end{macrocode}
 %
 % \subsubsection{Field formats}
@@ -9241,6 +9264,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat{romanvol}{\RN{#1}}
 \DeclareListFormat[jurisdiction]{listb}{}
 \DeclareFieldFormat{usseries}{\ifinteger{#1}{\mkusbibordinal{#1}}{#1}}
+\DeclareFieldFormat{verba}{#1}
 
 \DeclareListFormat{echrinst}{%
   \ifboolexpr{%
@@ -9456,28 +9480,32 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \usebibmacro{title}}}
 \newbibmacro*{unreported}[1][default]{%
-  \ifboolexpr{
-    test {\iflistundef{institution}}
-    and
-    test {\iffieldundef{date}}
-    and
-    test {\iffieldundef{year}}
-  }{}{%
+  \iffieldundef{verba}{%
     \ifboolexpr{
+      test {\iflistundef{institution}}
+      and
       test {\iffieldundef{date}}
       and
       test {\iffieldundef{year}}
-    }{%
-      \mkbibparens{\printlist[jurisdiction]{institution}}%
-    }{%
-      \toggletrue{blx@ox@nopostnotedelim}%
-      \iflistundef{institution}{%
-        \mkbibparens{\usebibmacro{date}}%
+    }{}{%
+      \ifboolexpr{
+        test {\iffieldundef{date}}
+        and
+        test {\iffieldundef{year}}
       }{%
-        \printtext[parens]{%
-          \printlist[#1]{institution}%
-          \setunit{\addcomma\space}
-          \usebibmacro{date}}}}}}
+        \mkbibparens{\printlist[jurisdiction]{institution}}%
+      }{%
+        \toggletrue{blx@ox@nopostnotedelim}%
+        \iflistundef{institution}{%
+          \mkbibparens{\usebibmacro{date}}%
+        }{%
+          \printtext[parens]{%
+            \printlist[#1]{institution}%
+            \setunit{\addcomma\space}
+            \usebibmacro{date}}}}}%
+  }{%
+    \iftoggle{bbx@ecliuse}{}{%
+      \printfield{verba}}}}
 \newbibmacro{court-note}{%
   \iffieldundef{note}%
     {}%
@@ -9553,23 +9581,17 @@ reference,mvreference,inreference]{volume}{%
      \usebibmacro{related}}
     {}%
   \usebibmacro{finentry}}
-\newbibmacro*{juriscitation}{%
-  \ifkeyword{eu}{%
-    \usebibmacro{eujuriscitation}%
-  }{%
-    \ifkeyword{echr}{%
-      \usebibmacro{echrjuriscitation}%
-    }{%
-      \ifkeyword{int}{%
-        \usebibmacro{intjuriscitation}%
-      }{%
-        \ifkeyword{ca}{%
-          \usebibmacro{canjuriscitation}%
-        }{%
-          \ifkeyword{us}{%
-            \usebibmacro{usjuriscitation}%
-          }{%
-            \usebibmacro{enjuriscitation}}}}}}}%
+\newtoggle{bbx@juriscitedone}
+\newbibmacro{juriscitation}{%
+  \togglefalse{bbx@juriscitedone}%
+  \renewcommand{\do}[1]{%
+    \ifkeyword{##1}{%
+      \toggletrue{bbx@juriscitedone}\usebibmacro{##1juriscitation}%
+      \listbreak
+    }{}}%
+  \docsvlist{eu,echr,int,ca,us}%
+  \iftoggle{bbx@juriscitedone}{}{\usebibmacro{enjuriscitation}}%
+}
 %    \end{macrocode}
 %
 % Here is the format for EU cases.
@@ -9618,9 +9640,23 @@ reference,mvreference,inreference]{volume}{%
       \setunit{\addspace\printfield{type}\addspace}}%
     \printfield{number}}}
 \newbibmacro*{eu:reportinfo}{%
-  \iffieldundef{journaltitle}%
-    {\usebibmacro{unreported}}%
-    {\usebibmacro{eu:year+vol+report}}}
+  \iftoggle{bbx@eclionly}{%
+    \iffieldundef{verba}{%
+      \usebibmacro{eu:osreport}
+    }{%
+      \printfield{verba}}%
+  }{%
+    \usebibmacro{eu:osreport}}}
+\newbibmacro*{eu:osreport}{%
+  \iftoggle{bbx@ecliuse}{%
+    \iffieldundef{verba}{}{%
+      \printfield{verba}%
+      \setunit{\addcomma\space}}%
+    }{}%
+  \iffieldundef{journaltitle}{%
+    \usebibmacro{unreported}%
+  }{%
+    \usebibmacro{eu:year+vol+report}}}
 \newcommand*\officialjournaltitle{OJ}
 \newcommand*\ecrreporttitle{ECR}
 \newbibmacro*{eu:year+vol+report}{%
@@ -10898,7 +10934,9 @@ reference,mvreference,inreference]{volume}{%
             fieldtarget=institution]
       \step[fieldsource=additionalreports,
             fieldtarget=listb]
-    }%
+      \step[fieldsource=ecli,
+            fieldtarget=verba]
+     }%
     \map[overwrite=false]{
       \pertype{legal}
       \step[fieldsource=reporter,
