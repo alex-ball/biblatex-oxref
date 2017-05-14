@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2016/12/23 v0.9}
+\def\Version{2016/05/14 v0.9.1}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -717,8 +717,8 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \end{docKey}
 
 \begin{docKey}{anon}{=\val{literal}|\val{long}|\val{short}}{default \val{short}, initially \val{literal}}
-  Affects how the author name ‘Anonymous’ is handled.
-  Renew the command \cs{oxrefanon} to check for a different word instead of ‘Anonymous’.
+  Affects what happens if the author name matches the value of \cs{oxrefanon}.
+  By default, this is ‘Anonymous’, but you could change it a different word (such as ‘Anonimo’) instead.
   \begin{itemize}
   \item\docValue{literal}
     means no special handling is used.
@@ -923,10 +923,25 @@ Where it is practical to do so,
 ways and means of achieving the variations defined by the two guides are provided,
 but by no means all of them will be supported.
 
+\section{Technical documentation}
+
+For information on installing the styles, and for the documented source code,
+see the separate documentation file \href{./oxref.pdf}{\texttt{oxref.pdf}}
+
 \section{To do}
 
-The following entry types are currently untested;
-that is, there are no examples of them in this documentation.
+The \textsf{oxref} family of styles is currently at \fileversion.
+As mentioned above, what the styles \emph{should} be doing is open to some
+interpretation, so at the moment I am open to the idea of changing how the
+styles handle cases not covered by the two style manuals. Please leave your
+thoughts on the GitHub issue tracker.\footnote{\url{https://github.com/alex-ball/biblatex-oxref/issues}}
+At some point version 1.0 will be released, after which the default (expected)
+behaviour of the styles will be fixed, though alternative behaviour may be added.
+
+I do not have any examples to work from for the following entry types, so they
+are currently untested. If you have strong feelings about how they should be
+rendered in Oxford style and can provide me with a sample reference or several,
+I would be most glad to hear from you:
 
 \begin{multicols}{3}
   \begin{itemize}\firmlist
@@ -942,6 +957,14 @@ that is, there are no examples of them in this documentation.
     \item standard
   \end{itemize}
 \end{multicols}
+
+It is not possible at the moment to use numeric or alphabetic citation styles
+with \textsf{oxref}, but that might change in the future.
+
+You are of course encouraged to report any bugs you discover on the
+\href{https://github.com/alex-ball/biblatex-oxref/issues}{GitHub issue tracker}
+as well.
+
 
 
 \chapter{Citations and common formatting}\label{sec:citing}
