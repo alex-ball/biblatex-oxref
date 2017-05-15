@@ -11294,11 +11294,11 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsection{Date merging option}
 %
-% We provide the `mergedate' option from the `authoryear' style. The
-% OGS and NHR consistently use a variant that is between basic and
-% compact, in that the year is always moved but the month and day are
-% never moved; this is implemented as the `year' value. Note that we
-% have the additional complication that `origdate' is also moved.
+% We provide the |mergedate| option from the |authoryear| style. The OGS and
+% NHR consistently use a variant that is between basic and compact, in that the
+% year is always moved but the month and day are never moved; this is
+% implemented as the |year| value. Note that we have the additional complication
+% that |origyear| is moved in preference to |year|.
 %
 %    \begin{macrocode}
 \DeclareBibliographyOption{mergedate}[true]{%
@@ -11311,19 +11311,44 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % The various values affect the definition of the following macro, for
-% which we coin the `labeldate' field format.
+% which we coin the |datelabel| field format.
 %
 %    \begin{macrocode}
 \providebibmacro*{date+extrayear}{}
-\DeclareFieldFormat{labeldate}{\mkbibparens{#1}}
+\DeclareFieldFormat{datelabel}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
-% Here we provide the various possible definitions. Note that, unlike in
-% `authoryear', we need to ensure the `issue+date' macro prints the `eid'
-% field as well.
+% We provide a convenience macro for printing date ranges as the date label.
+%
+%    \begin{macrocode}
+\newbibmacro*{labelyearrange}{%
+  \printfield{labelyear}%
+  \printfield{extrayear}%
+  \iffieldundef{labelendyear}{}{%
+    \iffieldsequal{labelyear}{labelendyear}{}{%
+      \iffieldequalstr{labelendyear}{}{%
+        \mbox{\bibdaterangesep}%
+      }{%
+        \bibdaterangesep
+        \iffieldundef{extrayear}{%
+          \blx@ox@compyear
+            {\thefield{labelyear}}%
+            {\thefield{labelendyear}}%
+        }{%
+          \printfield{labelendyear}}}}}}
+%    \end{macrocode}
+%
+% Here we provide the various possible definitions. The |authoryear|
+% implementation does it by clearing, changing or restoring the normal
+% definitions of the |date| and |issue+date| macros. This is not so great for
+% us as our versions of those macros are quite complex (too much to keep
+% repeating). There are additional complications that arise from us using
+% |origdate| in preference to |date| for the label year, and from our option
+% that requires us to print some dates without years. Conceptually it is more
+% straightforward to clear the data fields instead.
 %
 % \begin{itemize}
-%   \item `true' is the same as `year' (see below).
+%   \item |true| is the same as |year| (see below).
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -11331,125 +11356,27 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % \begin{itemize}
-%   \item `maximum' merges date/issue with date label. Note that we
-%   clear fields rather than the bibmacros as the `authoryear' style does.
+%   \item |maximum| merges the |issue| and the whole |date| with the date label.
+%   Therefore, we clear year, month, and day from the date used for the label,
+%   as well as the |issue| field.
 % \end{itemize}
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@maximum{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{labelyear}
-      {}
-      {\printtext[labeldate]{%
-         \printfield{issue}%
-         \setunit*{\addspace}%
-         \iffieldsequal{year}{labelyear}
-           {\printdateextralabel}%
-           {\printfield{labelyear}%
-            \printfield{extrayear}}}%
-       \clearfield{year}\clearfield{endyear}%
-       \clearfield{month}\clearfield{endmonth}%
-       \clearfield{day}\clearfield{endday}%
-       \clearfield{issue}}}}%
-%    \end{macrocode}
-%
-% \begin{itemize}
-%   \item `compact' merges whole date with date label. Note that we
-%   clear fields rather than the bibmacros as the `authoryear' style does.
-% \end{itemize}
-%
-%    \begin{macrocode}
-\def\bbx@opt@mergedate@compact{%
-  \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{labelyear}
-      {}
-      {\printtext[labeldate]{%
-         \iffieldsequal{year}{labelyear}
-           {\printdateextralabel}%
-           {\printfield{labelyear}%
-            \printfield{extrayear}}}%
-       \clearfield{year}\clearfield{endyear}%
-       \clearfield{month}\clearfield{endmonth}%
-       \clearfield{day}\clearfield{endday}}}%
-  \renewbibmacro*{issue+date}{%
-    \iffieldundef{issue}{}{%
-      \ifboolexpr{
-        togl {blx@ox@varissuedate}
-        and
-        test {\iffieldundef{volume}}
-        and
-        test {\iffieldundef{number}}
-      }{%
-        \newunit
-        \printfield{issue}%
-      }{%
-        \printtext[parens]{\printfield{issue}}}}%
-    \newunit
-    \printfield{eid}}}
-%    \end{macrocode}
-%
-% \begin{itemize}
-%   \item `basic' merges year-only date with date label.
-% \end{itemize}
-%
-%    \begin{macrocode}
-\def\bbx@opt@mergedate@basic{%
-  \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{labelyear}
-      {}
-      {\printtext[labeldate]{%
-         \printfield{labelyear}%
-         \printfield{extrayear}}}}%
-  \renewbibmacro*{date}{%
-    \iffieldundef{month}{}{\usebibmacro{date+time}}}%
-  \renewbibmacro*{issue+date}{%
-    \ifboolexpr{
-      test {\iffieldundef{issue}}
-      and
-      test {\iffieldundef{month}}
-    }{}{%
-      \ifboolexpr{
-        togl {blx@ox@varissuedate}
-        and
-        test {\iffieldundef{volume}}
-        and
-        test {\iffieldundef{number}}
-      }{%
-        \newunit
+    \iffieldundef{labelyear}{}{%
+      \printtext[datelabel]{%
         \printfield{issue}%
         \setunit*{\addspace}%
-        \printdate
-      }{%
-        \printtext[parens]{%
-          \printfield{issue}%
-          \setunit*{\addspace}%
-          \printdate}}}%
-    \newunit
-    \printfield{eid}}}
-%    \end{macrocode}
-%
-% \begin{itemize}
-%   \item `year' merges only the year with date label.
-%   In `date+extrayear' we have to take a bit of trouble
-%   to clear the right date.
-% \end{itemize}
-%
-%    \begin{macrocode}
-\def\bbx@opt@mergedate@year{%
-  \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{labelyear}{}{%
-      \printtext[labeldate]{%
-        \printfield{labelyear}%
-        \iffieldundef{labelendyear}{}{%
-          \iffieldsequal{labelyear}{labelendyear}{}{%
-            \iffieldequalstr{labelendyear}{}{%
-              \mbox{\bibdaterangesep}%
-            }{%
-              \bibdaterangesep
-              \blx@ox@compyear
-                {\thefield{labelyear}}%
-                {\thefield{labelendyear}}}}}%
-        \printfield{extrayear}}%
+        \ifboolexpr{%
+          not test {\iffieldundef{\thefield{labeldatesource}year}}
+          and
+          test {\iffieldsequal{\thefield{labeldatesource}year}{labelyear}}
+        }{%
+          \printlabeldateextra
+        }{%
+          \printfield{labelyear}%
+          \printfield{extrayear}}}%
       \iffieldundef{\thefield{labeldatesource}year}{%
         \iffieldundef{\thefield{labeldatesource}}{}{%
           \iffieldequalstr{labeldatesource}{pubstate}{}{%
@@ -11457,129 +11384,149 @@ reference,mvreference,inreference]{volume}{%
       }{%
         \clearfield{\thefield{labeldatesource}year}%
         \clearfield{end\thefield{labeldatesource}year}%
+        \clearfield{\thefield{labeldatesource}month}%
+        \clearfield{end\thefield{labeldatesource}month}%
+        \clearfield{\thefield{labeldatesource}day}%
+        \clearfield{end\thefield{labeldatesource}day}%
       }%
-    }%
-  }%
-  \renewbibmacro*{issue+date}{%
-    \ifboolexpr{
-      test {\iffieldundef{issue}}
-      and
-      test {\iffieldundef{year}}
-      and
-      test {\iffieldundef{month}}
-    }{}{%
-      \ifboolexpr{
-        togl {blx@ox@varissuedate}
-        and
-        test {\iffieldundef{volume}}
-        and
-        test {\iffieldundef{number}}
-      }{%
-        \newunit
-        \printfield{issue}%
-        \setunit*{\addspace}%
-        \printdate
-      }{%
-        \printtext[parens]{%
-          \printfield{issue}%
-          \setunit*{\addspace}%
-          \printdate}}}%
-    \newunit
-    \printfield{eid}}}
+      \clearfield{issue}}}}%
+    % Restore default issue+date?
 %    \end{macrocode}
 %
 % \begin{itemize}
-%   \item `minimum' merges year-only date with year-only date label.
+%   \item |compact| merges the whole |date| (but not |issue|) with date label.
+%   Therefore, we clear year, month, and day from the date used for the label,
+%   but leave the |issue| field alone.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@compact{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}{}{%
+      \printtext[datelabel]{%
+        \ifboolexpr{%
+          not test {\iffieldundef{\thefield{labeldatesource}year}}
+          and
+          test {\iffieldsequal{\thefield{labeldatesource}year}{labelyear}}
+        }{%
+          \printlabeldateextra
+        }{%
+          \printfield{labelyear}%
+          \printfield{extrayear}}}%
+      \iffieldundef{\thefield{labeldatesource}year}{%
+        \iffieldundef{\thefield{labeldatesource}}{}{%
+          \iffieldequalstr{labeldatesource}{pubstate}{}{%
+            \clearfield{\thefield{labeldatesource}}}}%
+      }{%
+         \clearfield{\thefield{labeldatesource}year}%
+         \clearfield{end\thefield{labeldatesource}year}%
+         \clearfield{\thefield{labeldatesource}month}%
+         \clearfield{end\thefield{labeldatesource}month}%
+         \clearfield{\thefield{labeldatesource}day}%
+         \clearfield{end\thefield{labeldatesource}day}%
+      }}}}
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item |year| always merges the year, and only the year, with the label date.
+%   Other date and time componenents are displayed later in the reference.
+%   Therefore we clear the year from the date used for the label, but leave
+%   the month and day alone.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@year{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}{}{%
+      \printtext[datelabel]{%
+        \usebibmacro{labelyearrange}}%
+      \iffieldundef{\thefield{labeldatesource}year}{%
+        \iffieldundef{\thefield{labeldatesource}}{}{%
+          \iffieldequalstr{labeldatesource}{pubstate}{}{%
+            \clearfield{\thefield{labeldatesource}}}}%
+      }{%
+        \clearfield{\thefield{labeldatesource}year}%
+        \clearfield{end\thefield{labeldatesource}year}%
+      }}}}
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item |basic| will merge a year-only date with the date label, but will
+%   otherwise display the label year at the head of the reference and the full
+%   date later. Therefore we clear the year if and only if there is no month
+%   component \emph{and} (if this is the regular |date|) no |issue|.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\def\bbx@opt@mergedate@basic{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{labelyear}{}{%
+      \printtext[datelabel]{%
+        \usebibmacro{labelyearrange}}%
+      \iffieldundef{\thefield{labeldatesource}year}{%
+        \iffieldundef{\thefield{labeldatesource}}{}{%
+          \iffieldequalstr{labeldatesource}{pubstate}{}{%
+            \clearfield{\thefield{labeldatesource}}}}%
+      }{%
+        \ifboolexpr{
+          test {\iffieldundef{\thefield{labeldatesource}month}}
+          and (
+            test {\iffieldundef{issue}}
+            or
+            not test {\iffieldequalstr{labeldatesource}{}}
+        )}{%
+          \clearfield{\thefield{labeldatesource}year}%
+          \clearfield{end\thefield{labeldatesource}year}%
+        }{}}}}}%
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item |minimum| will only merge the |date| with the label date if the two
+%   are identical, that is, a bare year with no month or disambiguating suffix.
+%   Therefore we clear the year if and only if there is no month component, no
+%   |extrayear|, \emph{and} (if this is the regular |date|) no |issue|.
 % \end{itemize}
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@minimum{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{labelyear}
-      {}
-      {\printtext[labeldate]{%
-         \printfield{labelyear}%
-         \printfield{extrayear}}}}%
-  \renewbibmacro*{date}{%
-    \ifboolexpr{
-      test {\iffieldundef{month}}
-      and
-      test {\iffieldundef{extrayear}}
-    }{}{\usebibmacro{date+time}}}%
-  \renewbibmacro*{issue+date}{%
-    \ifboolexpr{
-      test {\iffieldundef{issue}}
-      and
-      test {\iffieldundef{month}}
-      and
-      test {\iffieldundef{extrayear}}
-    }{}{%
-      \ifboolexpr{
-        togl {blx@ox@varissuedate}
-        and
-        test {\iffieldundef{volume}}
-        and
-        test {\iffieldundef{number}}
+    \iffieldundef{labelyear}{}{%
+      \printtext[datelabel]{%
+        \usebibmacro{labelyearrange}}%
+      \iffieldundef{\thefield{labeldatesource}year}{%
+        \iffieldundef{\thefield{labeldatesource}}{}{%
+          \iffieldequalstr{labeldatesource}{pubstate}{}{%
+            \clearfield{\thefield{labeldatesource}}}}%
       }{%
-        \newunit
-        \printfield{issue}%
-        \setunit*{\addspace}%
-        \printdate
-      }{%
-        \printtext[parens]{%
-          \printfield{issue}%
-          \setunit*{\addspace}%
-          \printdate}}}%
-    \newunit
-    \printfield{eid}}}
+        \ifboolexpr{
+          test {\iffieldundef{\thefield{labeldatesource}month}}
+          and
+          test {\iffieldundef{extrayear}}
+          and (
+            test {\iffieldundef{issue}}
+            or
+            not test {\iffieldequalstr{labeldatesource}{}}
+        )}{%
+          \clearfield{\thefield{labeldatesource}year}%
+          \clearfield{end\thefield{labeldatesource}year}%
+        }{}}}}}%
 %    \end{macrocode}
 %
 % \begin{itemize}
-%   \item `false' suppresses any merging.
+%   \item |false| suppresses any merging. We only clear the label date source
+%   if it is a non-date field other than |pubstate|.
 % \end{itemize}
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@false{%
   \renewbibmacro*{date+extrayear}{%
-    \iffieldundef{labelyear}
-      {}
-      {\printtext[labeldate]{%
-         \printfield{labelyear}%
-         \printfield{extrayear}}}}%
-  \renewbibmacro*{date}{\usebibmacro{date+time}}%
-  \renewbibmacro*{issue+date}{%
-    \ifboolexpr{
-      test {\iffieldundef{issue}}
-      and (
-      test {\iffieldundef{year}}
-      and
-      test {\iffieldundef{month}}
-      )
-    }{}{%
-      \ifboolexpr{
-        togl {blx@ox@varissuedate}
-        and
-        test {\iffieldundef{volume}}
-        and
-        test {\iffieldundef{number}}
-      }{%
-        \newunit\printtext{%
-          \iffieldundef{issue}{%
-            \usebibmacro{date}
-          }{%
-            \printfield{issue}%
-            \setunit*{\addspace}%
-            \usebibmacro{date}}}%
-      }{%
-        \printtext[parens]{%
-          \iffieldundef{issue}{%
-            \usebibmacro{date}%
-          }{%
-            \printfield{issue}%
-            \setunit*{\addspace}%
-            \usebibmacro{date}}}}}%
-  \newunit
-  \printfield{eid}}}
+    \iffieldundef{labelyear}{}{%
+      \printtext[datelabel]{%
+        \usebibmacro{labelyearrange}}}}%
+      \iffieldundef{\thefield{labeldatesource}year}{%
+        \iffieldundef{\thefield{labeldatesource}}{}{%
+          \iffieldequalstr{labeldatesource}{pubstate}{}{%
+            \clearfield{\thefield{labeldatesource}}}}}{}}
 %    \end{macrocode}
 %
 % We set the default to be `true'/`year'.
