@@ -11434,7 +11434,6 @@ reference,mvreference,inreference]{volume}{%
         \clearfield{end\thefield{labeldatesource}day}%
       }%
       \clearfield{issue}}}}%
-    % Restore default issue+date?
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -12239,7 +12238,12 @@ reference,mvreference,inreference]{volume}{%
 \xpatchbibmacro{cite:labelyear+extrayear}{%
   \printfield{labelendyear}%
 }{%
-  \blx@ox@compyear{\thefield{labelyear}}{\thefield{labelendyear}}
+  \iffieldundef{extrayear}{%
+    \blx@ox@compyear
+      {\thefield{labelyear}}%
+      {\thefield{labelendyear}}%
+  }{%
+    \printfield{labelendyear}}%
 }{}{}
 %    \end{macrocode}
 %
