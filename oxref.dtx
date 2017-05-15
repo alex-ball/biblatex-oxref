@@ -11594,8 +11594,9 @@ reference,mvreference,inreference]{volume}{%
 %
 % There is a potential problem for the code below, in that if the year
 % and endyear are missing, it cannot tell if they are the same, so if
-% the months are the same but the years are different, the range will
-% be erroneously compressed.
+% the months are the same but the years are different, the range would
+% be erroneously compressed. However, the only reason the year should
+% be missing is that it is in the label, so we test |labelyear| instead.
 %
 %    \begin{macrocode}
 \DeclareRobustCommand*{\mkdaterangetrunc}[2]{%
@@ -11605,7 +11606,11 @@ reference,mvreference,inreference]{volume}{%
       \datecircaprint
       \printtext[#2date]{%
         \iffieldundef{#2season}{%
-          \iffieldsequal{#2month}{#2endmonth}{%
+          \ifboolexpr{
+            test {\iffieldsequal{labelyear}{labelendyear}}
+            and
+            test {\iffieldsequal{#2month}{#2endmonth}}
+          }{%
             \csuse{mkbibdate#1}{}{}{#2day}%
           }{%
             \csuse{mkbibdate#1}{}{#2month}{#2day}}%
