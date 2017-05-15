@@ -687,7 +687,7 @@ under the conditions of the [LaTeX Project Public License (LPPL)][lppl],
 either version 1.3c of this license or (at your option) any later
 version.
 
-This work is `maintained' (as per LPPL maintenance status) by [Alex Ball][me].
+This work is ‘maintained’ (as per LPPL maintenance status) by [Alex Ball][me].
 
 [lppl]: http://www.latex-project.org/lppl.txt "LaTeX Project Public License (LPPL)"
 [me]: https://alexball.me.uk/ "Alex Ball"
@@ -777,6 +777,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \begin{docKey}{mergedate}{=\val{maximum}|\val{compact}|\val{basic}|\val{minimum}|\val{year}|\val{false}}{default \val{year}, initially \val{year}}
   Affects how the date at the start of the references relates to the date in the ‘normal’ position.
   The standard option values are available but not well tested; I recommend you stick with the default of \val{year}.
+  If you do select \val{maximum} or \val{compact}, I recommend you also select \key{labeldate}\texttt{=}\val{comp} to avoid loss of information.
 \end{docKey}
 %</y>
 
@@ -5168,7 +5169,7 @@ Use the \code{jurisdiction} entry type for citing cases.
 
 \tip{Several additional pagination types are defined for use with legal citations:
   \val{article}, \val{clause}, \val{regulation}, and \val{rule} all work as normal.
-  The default is a bare number (\val{none}), indicating a page reference, though EU and ECHR cases default to using the `para' (\val{paragraph}) prefix.
+  The default is a bare number (\val{none}), indicating a page reference, though EU and ECHR cases default to using the ‘para’ (\val{paragraph}) prefix.
   There is also an alternative pagination type for paragraphs, \val{[]}, which prints the number in square brackets instead of giving it a prefix.
 }
 
@@ -5418,7 +5419,7 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \subsection{European cases}
 
 \tip{European cases still get sorted by title, even if the entry begins with the case number.
-  Use \code{sorttitle} if you would rather they were sorted under `Case' or `Joined Cases'.}
+  Use \code{sorttitle} if you would rather they were sorted under ‘Case’ or ‘Joined Cases’.}
 
 \begin{bibexbox}
 <OGS \S13.4.4>
@@ -5440,7 +5441,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Indicate Commission Decisions by putting \code{commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field. Put the case number (including the word `Case' if needed) in either the \code{titleaddon}, \code{parvolume}, or \code{userb} field.}
+\tip{Indicate Commission Decisions by putting \code{commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field. Put the case number (including the word ‘Case’ if needed) in either the \code{titleaddon}, \code{parvolume}, or \code{userb} field.}
 
 \tip{An unfortunate side effect of this is that is not possible to use either the parallel or neutral citation idiom to get a reference to look like the following. In such cases, use the \code{note} field to provide the second citation.}
 
@@ -5722,7 +5723,7 @@ Convention Relating to the Status of Refugees (adopted 28 July 1951, entered int
 \end{bibexbox}
 
 %<*y>
-\tip{Since the lack of a \code{date} field may cause an inaccurate `n.d.' label to be printed, use the \code{shorthand} field to provide a sensible citation label. You could use \cs{citetitle} the first time to ensure the reader can find it in the bibliography.}
+\tip{Since the lack of a \code{date} field may cause an inaccurate ‘n.d.’ label to be printed, use the \code{shorthand} field to provide a sensible citation label. You could use \cs{citetitle} the first time to ensure the reader can find it in the bibliography.}
 
 \begin{egcite}{(Refugee Convention: art.\@ 24)}
   \parencite[24]{refugees}
@@ -6258,7 +6259,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \end{macrocode}
 %
 % Here are the new default punctuation conventions. The new \cs{relatedtypepunct}
-% is for before the relatedtype localization string.
+% is for before the |relatedtype| localization string.
 %
 %    \begin{macrocode}
 \renewcommand*{\labelnamepunct}{\addcomma\space}
@@ -6274,9 +6275,9 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % \subsection{Names}
 %
-% We declare some new formats so that authors/editors/others who appear
+% We declare some new name formats so that authors/editors/others who appear
 % mid-reference can be handled differently from those that appear at the
-% head of the reference
+% head of the reference.
 %
 %    \begin{macrocode}
 \DeclareNameAlias{bookauthor}{default}
@@ -6285,7 +6286,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % Traditionally, Oxford style (for the humanities) prints author names in
 % small capitals in the bibliography, but in normal case in citations. This is
-% falling out of fashion, so we introduce this as an option.
+% falling out of fashion, so we introduce it as an option.
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@scnames}
@@ -6294,8 +6295,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% Oxford style prefers to omit titles but accepts they may need to be
-% included in some circumstances. There are some titles that ark only used
+% The style manuals prefer to omit titles but accept they may need to be
+% included in some circumstances. There are some titles that are only used
 % with full names and some that may be used with initials, so we provide an
 % option for manually switching them off.
 %
@@ -6359,10 +6360,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \end{macrocode}
 %
 % Oxford style (for the humanities) is to write author names surname first in
-% the bibliography, but in natural order in citations. We implement this with
-% the `bib-family-given/cite-given-family' name format. The case changing option
-% only affects this name format. We also add a second hash for checking if names
-% (e.g. author and authoraddon) are the same.
+% the bibliography, but in natural order in citations. We implement this, along
+% with the case changing option, in the following name format. We also add a
+% second hash for checking if names (e.g.\ |author| and |authoraddon|) are the
+% same.
 %
 %    \begin{macrocode}
 \def\blx@ox@lasthash{}
@@ -6443,8 +6444,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% We change the regular `given-family' format to include the altname hash
-% and use the title-enhanced name format.
+% We change the regular |given-family| format to include the alternative-name
+% hash and use the title-enhanced name format. We also add a toggle for
+% triggering special formatting if |authoraddon| or |editoraddon| are annotated
+% with |variant|.
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@variantname}
@@ -6470,7 +6473,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \usebibmacro{name:andothers}}
 %    \end{macrocode}
 %
-% We do likewise for the regular `family-given' format.
+% We do likewise for the regular |family-given| format.
 %
 %    \begin{macrocode}
 \DeclareNameFormat{family-given}{%
@@ -6506,8 +6509,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}{}{}
 %    \end{macrocode}
 %
-% For pseudonyms, Oxford style is to put the other name in parentheses
-% after the main one. \pkg{Biblatex} provides the `nameaddon' field for this
+% Pseudonyms are printed after the main name, enclosed in parentheses (OGS) or
+% brackets (NHR). \pkg{Biblatex} provides the |nameaddon| field for this
 % use case, but it is a literal field (it doesn't format the name provided).
 %
 %    \begin{macrocode}
@@ -6515,11 +6518,16 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat{namevariant}{\mkbibparens{\bibstring{equals}\space #1}}
 %    \end{macrocode}
 %
-% We provide an alternative method that uses new name fields `authoraddon'
-% and `editoraddon'. We reimplement the loopcode logic, but we use saveboxes
-% to extract the hashes, and use that to print conditionally the alternative
-% name. The same technique is used by \textsf{oxyear} to pair up names
-% with the short form used in references.
+% We provide an alternative method that uses new name fields |authoraddon| and
+% |editoraddon|. To do this, we define a bibmacro that reimplements the loopcode
+% logic of \cs{printnames}, but operates on two name lists simultaneously; we use
+% saveboxes to extract the hashes, and only print the alternative name if it has
+% a different hash. The same technique is used by \textsf{oxyear} below to pair
+% up names with the short form used in references, so this bibmacro is written
+% to handle both cases.
+%
+% The |namepairs| bibmacro takes two arguments: the data fields holding the main
+% name and alternative name respectively.
 %
 %    \begin{macrocode}
 \newcounter{namepairs}
@@ -6565,7 +6573,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \let\blx@ox@firsthash=\blx@ox@lasthash
 %    \end{macrocode}
 %
-% This is the part intended for `authoraddon' and `editoraddon'.
+% This is the part intended for |authoraddon| and |editoraddon|. Note that it
+% contains an additional test for the variant name toggle.
 %
 %    \begin{macrocode}
     \IfEndWith{#2}{addon}{%
@@ -6587,7 +6596,9 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       }%
 %    \end{macrocode}
 %
-% This is the part intended for `shortauthor' and `shorteditor'.
+% This is the part intended for |shortauthor| and |shorteditor|. There are
+% differences in the formatting, and the alternative name is actually printed
+% before the main name.
 %
 %    \begin{macrocode}
     }{%
@@ -6677,8 +6688,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % Traditional Oxford style is to use dashes instead of repeating author
 % names, but NHR recommends abandoning the practice as it interferes
-% with text mining. We therefore turn this feature off by default, but
-% authors to switch it on with `dashed=true'.
+% with text mining. We therefore turn this feature off by default, but allow
+% authors to switch it on with |dashed=true|.
 %
 %    \begin{macrocode}
 \newbibmacro*{bbx:savehash}{}
@@ -6707,7 +6718,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% The following is used in the `authortitle' and `authoryear' styles to
+% The following is used in the |authortitle| and |authoryear| styles to
 % switch off the dash check macro for reference sets.
 %
 %    \begin{macrocode}
@@ -6737,7 +6748,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \csdef{blx@ox@opt@anon@short}{\toggletrue{blx@ox@autoanon}\toggletrue{blx@ox@abbranon}}
 %    \end{macrocode}
 %
-% We copy the `author' to `rawauthor' for easier testing.
+% We copy the |author| to |rawauthor| for easier testing.
 %
 %    \begin{macrocode}
 \DeclareStyleSourcemap{
@@ -6750,24 +6761,27 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% The `author' macro is enhanced from the standard version by
+% The |author| macro is enhanced from the standard version by
 % \begin{itemize}
 %   \item
 %   checking if the author name is ‘Anonymous’;
 %   \item
 %   including a dash check, to see if the name(s) should be replaced
-%   with a dash (as in `authortitle' and `authoryear');
+%   with a dash (as in |authortitle| and |authoryear|);
 %   \item
-%   inserting the `nameaddon' field if provided;
+%   inserting the |nameaddon| field if provided;
 %   \item
-%   inserting the author type if provided (as in `authoryear').
+%   inserting the author type if provided (as in |authoryear|).
 % \end{itemize}
 %
 %    \begin{macrocode}
 \newcommand*{\oxrefanon}{Anonymous}
 \newtoggle{blx@ox@isanon}
 \renewbibmacro*{author}{%
-  \iffieldequals{rawauthor}{\oxrefanon}{\toggletrue{blx@ox@isanon}}{\togglefalse{blx@ox@isanon}}%
+  \iffieldequals{rawauthor}{\oxrefanon}{%
+    \toggletrue{blx@ox@isanon}%
+  }{%
+    \togglefalse{blx@ox@isanon}}%
   \ifboolexpr{
     test \ifuseauthor
     and
@@ -6805,8 +6819,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat{authortype}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
-% Following `authortitle' and `authoryear', we redefine the `editor' and
-% `editor+others' macros to use a common `bbx:editor' macro. The macro
+% Following |authortitle| and |authoryear|, we redefine the |editor| and
+% |editor+others| macros to use a common |bbx:editor| macro. The macro
 % we use is the same as the usual one except the editor type is set off
 % using parentheses instead of a comma.
 %
@@ -6832,7 +6846,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat{editortype}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
-% We do the same for `translator' as well.
+% We do the same for |translator| as well.
 %
 %    \begin{macrocode}
 \renewbibmacro*{translator}{%
@@ -6863,7 +6877,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \end{macrocode}
 %
 % When referencing one work from a collection by the same author,
-% Oxford style traditionally puts \enquote{id.} in the `bookauthor'
+% Oxford style traditionally puts \enquote{id.} in the |bookauthor|
 % position (instead of omitting it as in standard \pkg{biblatex}).
 %
 %    \begin{macrocode}
@@ -6875,7 +6889,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % Similarly, with mixed collections, if referencing a work by the editor
 % of the collection, the editor name is replaced with \enquote{id.}. We
-% insert this logic into a copy of the `editor+others' macro, which will
+% insert this logic into a copy of the |editor+others| macro, which will
 % \emph{not} get a year inserted into it by \textsf{oxyear}.
 %
 %    \begin{macrocode}
@@ -6916,7 +6930,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % \subsection{Titles}
 %
 % Title handling is mostly as it is in the standard styles, except
-% that the `titleaddon' is printed in square brackets; it is not
+% that the |titleaddon| is printed in square brackets; it is not
 % preceeded by punctuation.
 %
 %    \begin{macrocode}
@@ -6946,11 +6960,11 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat{titleaddon}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
-% The `origtitle' field is used for translated works. If the cited work is a
+% The |origtitle| field is used for translated works. If the cited work is a
 % native language translation of a foreign work, the original title is given
 % in parentheses. If the cited work is foreign translation of a native language
 % work, the original title is printed in square brackets, preceded by the name
-% of the foreign language and `translation of'.
+% of the foreign language and \enquote{translation of}.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{origtitle}{\mkbibemph{#1}}
@@ -6967,11 +6981,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % \subsection{Dates and times}
 %
-% Year ranges are truncated (e.g.~2012–3). Therefore, we provide a
-% command that compares two years, and outputs a full or truncated
-% version of the second year, depending on how similar it is to the
-% first. It is extracted and adapted from code by Marco Daniel.%
-% \footnote{\url{http://tex.stackexchange.com/questions/23483/}}
+% Year ranges are truncated (e.g.~2012–3). Therefore, we provide a command that
+% compares two years, and outputs a full or truncated version of the second
+% year, depending on how similar it is to the first. It is extracted and adapted
+% from code by Marco Daniel.\footnote{\url{http://tex.stackexchange.com/questions/23483/}}
 %
 %    \begin{macrocode}
 \newcommand{\blx@ox@compyear}[2]{%
@@ -6989,7 +7002,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% We patch the truncated date formats from `biblatex.sty' to use the
+% We patch the truncated date formats from |biblatex.sty| to use the
 % above function.
 %
 %    \begin{macrocode}
@@ -7076,7 +7089,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % \subsection{Editions, pages, and other number-like fields}
 %
-% We let `edition' take a language key as well as a number
+% We let |edition| take a localization key as well as a number.
 %
 %    \begin{macrocode}
 \xpatchfieldformat{edition}{%
@@ -7119,6 +7132,15 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareBibliographyOption{nopublisher}[true]{%
   \DeclareFieldInputHandler{publisher}{\def\NewValue{}}%
 }
+%    \end{macrocode}
+%
+% The style guides are less forgiving about omitting the place of publication.
+% We provide a bibliography option that fills in such gaps with the |nolocation|
+% localization string for selected entry types. It works using a source map,
+% which is a clean solution but cannot easily be switched off again or used on a
+% per-type basis.
+%
+%    \begin{macrocode}
 \DeclareBibliographyOption{nolocation}[true]{%
   \DeclareStyleSourcemap{
     \maps[datatype=bibtex]{
@@ -7143,6 +7165,12 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     }
   }%
 }
+%    \end{macrocode}
+%
+% We also provide an entry option that has the same effect; this works using
+% the \cs{restorelist} mechanism instead.
+%
+%    \begin{macrocode}
 \newtoggle{blx@ox@noloc}
 \def\blx@ox@noloc{{\bibstring{nolocation}}}
 \DeclareEntryOption{nolocation}[true]{%
@@ -7242,7 +7270,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % \subsection{Addenda}
 %
-% Publication state is given in parentheses. Other addenda are added
+% The publication state is given in parentheses. Other addenda are added
 % plain.
 %
 %    \begin{macrocode}
@@ -7286,9 +7314,9 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \IfSubStr{AÂBCÇDEFGĞHIİÎJKLMNOÖÔPQRSŞTUÜÛVWXYZ.}{\blx@ox@lastchar}{#2}{#3}}
 %    \end{macrocode}
 %
-% We renew the `journal+issuetitle' macro so that if a work takes up a
-% whole issue (signified by using `issuetitle' \emph{instead} of
-% `title'), the title and journal title are separated by \enquote{=}
+% We renew the |journal+issuetitle| macro so that if a work takes up a
+% whole issue (signified by using |issuetitle| \emph{instead} of
+% |title|), the title and journal title are separated by \enquote{=}
 % instead of the usual punctuation. It also inserts an appropriate localization
 % string if the publication status demands it.
 % We insert a comma after the journal title, regardless of what follows.
@@ -7330,7 +7358,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \newunit}
 %    \end{macrocode}
 %
-% We renew the `title+issuetitle' macro (for whole periodical issues) to apply
+% We renew the |title+issuetitle| macro (for whole periodical issues) to apply
 % the same punctuation changes after the periodical name and series. At the
 % same time, we delegate handling of volume and issue numbers to the appropriate
 % macro so we can customize it.
@@ -7358,7 +7386,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % OGS and NHR provide plentiful options for formatting volume and issue
 % numbers. We implement four of them here as options. The default is to
 % use a slash between volume and issue number. Note that we prevent the
-% `volume+number+eid' macro from actually printing the eid.
+% |volume+number+eid| macro from actually printing the EID; this is printed
+% by |issue+date| instead (see below).
 %
 %    \begin{macrocode}
 \DeclareBibliographyOption{issuestyle}[slash]{%
@@ -7453,7 +7482,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 }
 %    \end{macrocode}
 %
-% Our `article' driver is like the standard one except
+% Our |article| driver is like the standard one except
 % \begin{itemize}
 %   \item it has no \enquote{in} macro;
 %   \item there is a handler for the suppto relation;
@@ -7506,7 +7535,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Similar changes are made to the periodical driver.
+% Similar changes are made to the |periodical| driver.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{periodical}{%
@@ -7571,7 +7600,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \mkbibquote{#1\isdot}}}
 %    \end{macrocode}
 %
-% Unlike the standard styles, we have a separate driver for `inreference',
+% Unlike the standard styles, we have a separate driver for |inreference|,
 % so we need to change the title style accordingly.
 %
 %    \begin{macrocode}
@@ -7616,7 +7645,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat{maintitle+volume}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
-% The `in' before the booktitle is suppressed for works in yearbooks.
+% The |in| before the booktitle is suppressed for works in yearbooks.
 %
 %    \begin{macrocode}
 \renewbibmacro*{in:}{%
@@ -7674,7 +7703,8 @@ reference,mvreference,inreference]{volume}{%
 %
 % If there are the same number of locations and publishers, and there
 % are more than one pair, we print them pairwaise rather than in two
-% separate lists.
+% separate lists. This uses the same principle as the |namepairs| bibmacro,
+% but does not have the list truncation apparatus.
 %
 %    \begin{macrocode}
   \ifboolexpr{%
@@ -7781,7 +7811,7 @@ reference,mvreference,inreference]{volume}{%
 }
 %    \end{macrocode}
 %
-% The `copub' macro prints co-publication details.
+% The |copub| macro prints co-publication details.
 %
 %    \begin{macrocode}
 \newbibmacro*{copub}{%
@@ -7797,7 +7827,7 @@ reference,mvreference,inreference]{volume}{%
 }
 %    \end{macrocode}
 %
-% The `origpub' macro prints the origdate field if it has not yet cleared.
+% The |origpub| macro prints the origdate field if it has not yet been cleared.
 %
 %    \begin{macrocode}
 \newbibmacro*{origpub}{%
@@ -7815,21 +7845,21 @@ reference,mvreference,inreference]{volume}{%
 }
 %    \end{macrocode}
 %
-% The changes to the `book' driver compared to the standard style are as
+% The changes to the |book| driver compared to the standard style are as
 % follows:
 % \begin{itemize}
 %   \item
-%   `maintitle' is processed with `volume' just before `series', instead
-%   of with `title';
+%   |maintitle| is processed with |volume| just before |series|, instead
+%   of with |title|;
 %   \item
-%   `edition' is processed where the standard style processes `note',
+%   |edition| is processed where the standard style processes |note|,
 %   and vice versa;
 %   \item
-%   `volumes' is omitted;
+%   |volumes| is omitted;
 %   \item
-%   `series' to `date' information is delegated to a separate macro;
+%   |series| to |date| information is delegated to a separate macro;
 %   \item
-%   support is added for `howpublished' field;
+%   support is added for |howpublished| field;
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -7873,18 +7903,18 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Unlike the standard styles, we have a separate driver for `mvbook'
+% Unlike the standard styles, we have a separate driver for |mvbook|
 % which behaves slightly differently. It is in fact closer to the
-% standard `book' driver. The changes are as follows:
+% standard |book| driver. The changes are as follows:
 % \begin{itemize}
 %   \item
-%   `volume'/`part' is processed just after `maintitle+title';
+%   |volume|/|part| is processed just after |maintitle+title|;
 %   \item
-%   `edition' is processed where the standard style processes `note';
+%   |edition| is processed where the standard style processes |note|;
 %   \item
-%   `note' is processed after `volumes';
+%   |note| is processed after |volumes|;
 %   \item
-%   `series' to `date' information is delegated to a separate macro;
+%   |series| to |date| information is delegated to a separate macro;
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -7943,8 +7973,8 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Our `inbook' driver modifies the standard one in just the same way as
-% our `mvbook' driver modifies the standard `book'.
+% Our |inbook| driver modifies the standard one in just the same way as
+% our |mvbook| driver modifies the standard |book|.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{inbook}{%
@@ -7994,7 +8024,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat[suppbook]{title}{#1\nopunct}
 %    \end{macrocode}
 %
-% We also provide a `bookinbook' driver that handles \code{origdate}
+% We also provide a |bookinbook| driver that handles \code{origdate}
 % differently.
 %
 %    \begin{macrocode}
@@ -8044,8 +8074,8 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Our `collection' driver modifies the standard one in just the same way
-% as our `book' driver.
+% Our |collection| driver modifies the standard one in just the same way
+% as our |book| driver.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{collection}{%
@@ -8084,9 +8114,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Our `mvcollection' driver modifies the standard `collection' driver
-% in just the same way as our `mvbook' driver modifies the standard
-% `book'.
+% Our |mvcollection| driver modifies the standard |collection| driver
+% in just the same way as our |mvbook| driver modifies the standard
+% |book|.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{mvcollection}{%
@@ -8142,9 +8172,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Our `incollection' driver modifies the standard one in the same way as
-% our `mvbook' driver modifies the standard `book'. In addition, the
-% `bookeditor' macro precedes `maintitle' instead of `byeditor+others'
+% Our |incollection| driver modifies the standard one in the same way as
+% our |mvbook| driver modifies the standard |book|. In addition, the
+% |bookeditor| macro precedes |maintitle| instead of |byeditor+others|
 % following it.
 %
 %    \begin{macrocode}
@@ -8193,7 +8223,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % Unlike the standard styles, we provide a separate driver for
-% `reference'. It is just like `book' except that `edition' is given
+% |reference|. It is just like |book| except that |edition| is given
 % directly after the title.
 %
 %    \begin{macrocode}
@@ -8237,7 +8267,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Similarly, `mvreference' is just like `mvbook' except that `edition'
+% Similarly, |mvreference| is just like |mvbook| except that |edition|
 % is given directly after the title.
 %
 %    \begin{macrocode}
@@ -8298,9 +8328,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Our `inreference' driver is just like `inbook' except `bookeditor'
-% replaces `bybookauthor' and `edition' is given just before
-% `byeditor+others'.
+% Our |inreference| driver is just like |inbook| except |bookeditor|
+% replaces |bybookauthor| and |edition| is given just before
+% |byeditor+others|.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{inreference}{%
@@ -8363,7 +8393,7 @@ reference,mvreference,inreference]{volume}{%
 \ExecuteBibliographyOptions[proceedings,mvproceedings]{useeditor=false,usetranslator=false}
 %    \end{macrocode}
 %
-% In our version of the `event+venue+date' macro, the venue and date
+% In our version of the |event+venue+date| macro, the venue and date
 % are set off with commas respectively instead of
 % parentheses. A bit of jiggery-pokery is used to make the colon italic
 % if it follows italic text.
@@ -8388,23 +8418,23 @@ reference,mvreference,inreference]{volume}{%
   \newunit}
 %    \end{macrocode}
 %
-% The changes to the `proceedings' driver compared to the standard style
+% The changes to the |proceedings| driver compared to the standard style
 % are as follows:
 % \begin{itemize}
 %   \item
-%   We support the concept of an `author' before the title,
-%   which is usually the `organization';
+%   We support the concept of an |author| before the title,
+%   which is usually the |organization|;
 %   \item
-%   `editor' comes after the title, not before;
+%   |editor| comes after the title, not before;
 %   \item
-%   `volume'/`part' is processed just after `maintitle+title';
+%   |volume|/|part| is processed just after |maintitle+title|;
 %   \item
-%   `note' is moved to before `series';
+%   |note| is moved to before |series|;
 %   \item
-%   `series' to `date' information is delegated to a separate macro;
+%   |series| to |date| information is delegated to a separate macro;
 % \end{itemize}
 %
-% As in the (inherited) standard style, `mvproceedings' is an alias for this
+% As in the (inherited) standard style, |mvproceedings| is an alias for this
 % driver, since it is unlikely that the proceedings of a single meeting will
 % be split into long series of independently published volumes!
 %
@@ -8454,8 +8484,8 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% Our `inproceedings' driver modifies the standard one in the same way
-% as our `proceedings' driver modifies the standard one.
+% Our |inproceedings| driver modifies the standard one in the same way
+% as our |proceedings| driver modifies the standard one.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{inproceedings}{%
@@ -8508,8 +8538,8 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsection{Grey literature}
 %
-% We provide a macro for handling `type+number'. We provide some extra
-% logic to insert `No.' before the number if there is no type.
+% We provide a macro for handling |type+number|. We provide some extra
+% logic to insert \enquote{No.\@} before the number if there is no type.
 %
 %    \begin{macrocode}
 \newbibmacro*{series+type+number}{%
@@ -8533,10 +8563,10 @@ reference,mvreference,inreference]{volume}{%
     \printfield{number}}}
 %    \end{macrocode}
 %
-% Our version of the `institution+location+date' macro is just like the
+% Our version of the |institution+location+date| macro is just like the
 % standard one except it is wrapped in parentheses, and the preceding
 % punctuation is therefore suppressed. This is used by the standard
-% `thesis' driver, which also works well for us, and the `report' driver.
+% |thesis| driver, which also works well for us, and the |report| driver.
 %
 %    \begin{macrocode}
 \renewbibmacro*{institution+location+date}{%
@@ -8575,18 +8605,17 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % We provide a slightly more complicated version with the type included
-% at the beginning. It is used by the `thesis' driver. We provide two
+% at the beginning. It is used by the |thesis| driver. We provide two
 % versions: one with the type outside and one with it inside the
 % parentheses.
 %
 %    \begin{macrocode}
-\newbibmacro*{type+institution+location+date}{%
-  \printfield{type}%
-  \newunit
-  \usebibmacro{institution+location+date}%
+\newtoggle{blx@ox@altthesis}
+\DeclareBibliographyOption[boolean]{altthesis}[true]{%
+  \settoggle{blx@ox@altthesis}{#1}
 }
-\DeclareBibliographyOption{altthesis}[true]{%
-  \renewbibmacro*{type+institution+location+date}{%
+\newbibmacro*{type+institution+location+date}{%
+  \iftoggle{blx@ox@altthesis}{%
     \ifboolexpr{
       test {\iffieldundef{type}}
       and
@@ -8603,20 +8632,25 @@ reference,mvreference,inreference]{volume}{%
         \printfield{type}%
         \setunit*{\addcomma\space}%
         \printlist{location}%
-        \iflistundef{institution}%
-        {\setunit*{\addcomma\space}}%
-        {\setunit*{\addcolon\space}}%
+        \iflistundef{institution}{%
+          \setunit*{\addcomma\space}%
+        }{%
+          \setunit*{\addcolon\space}}%
         \printlist{institution}%
         \setunit*{\addcomma\space}%
-        \usebibmacro{date}}}}}
+        \usebibmacro{date}}}
+  }{%
+    \printfield{type}%
+    \newunit
+    \usebibmacro{institution+location+date}}}
 %    \end{macrocode}
 %
-% We provide an even more convoluted version that also includes `series',
-% `title' and `number', and uses the more common `publisher' in place of
-% `institution'. We also include some logic that means `organization'
-% is used instead of `publisher' if no `publisher' is provided;
-% otherwise it is printed before `location'. This is used by the
-% `manual' driver.
+% We provide an even more convoluted version that also includes |series|,
+% |title| and |number|, and uses the more common |publisher| in place of
+% |institution|. We also include some logic that means |organization|
+% is used instead of |publisher| if no |publisher| is provided;
+% otherwise it is printed before |location|. This is used by the
+% |manual| driver.
 %
 %    \begin{macrocode}
 \newbibmacro*{type+series+number+edition+organization+publisher+location+date}{%
@@ -8662,14 +8696,16 @@ reference,mvreference,inreference]{volume}{%
       \usebibmacro{date}}}}
 %    \end{macrocode}
 %
-% The changes to the `report' driver compared to the standard style
+% The changes to the |report| driver compared to the standard style
 % are as follows:
 % \begin{itemize}
 %   \item
-%   support is added for `volume', `maintitle' and `series';
+%   support is added for |volume|, |maintitle| and |series|;
 %   \item
-%   `type' and `number' are moved to just before the publication
-%   information block';
+%   |type| and |number| are moved to just before the publication
+%   information block;
+%   \item
+%   the punctuation is slightly different for the |legal| entry subtype.
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -8732,9 +8768,9 @@ reference,mvreference,inreference]{volume}{%
 }{}{}
 %    \end{macrocode}
 %
-% The main change to the `manual' driver compared to the standard style is
-% that `type', `series', `number', `edition' and `organization' are moved into
-% the publication information block with `publisher', `location' and `date';
+% The main change to the |manual| driver compared to the standard style is
+% that |type|, |series|, |number|, |edition| and |organization| are moved into
+% the publication information block with |publisher|, |location| and |date|;
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{manual}{%
@@ -8780,9 +8816,11 @@ reference,mvreference,inreference]{volume}{%
 % \subsection{Audiovisual materials}
 %
 % The publication block for audiovisual resources is quite different
-% from the normal, as the `type', `series' and `number' come
-% between the `publisher' and `date'. We do not use `location'.
-% In the absence of `publisher', the `type' is set off with a comma.
+% from the normal, as the |type|, |series| and |number| come
+% between the |publisher| and |date|. The punctuation or otherwise between
+% elements depends on the combination present. The date and time of recording
+% is given before the block if a |number| is provided (indicating a published
+% recording) but within it otherwise.
 %
 %    \begin{macrocode}
 \newbibmacro*{publisher+type+series+number+date}{%
@@ -8857,8 +8895,8 @@ reference,mvreference,inreference]{volume}{%
   }{}}
 %    \end{macrocode}
 %
-% We provide a specialist `audio' driver. It borrows elements from the `book'
-% and `online' drivers, and incorporates the above variations.
+% We provide a specialist |audio| driver. It borrows elements from the |book|
+% and |online| drivers, and incorporates the above variations.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{audio}{%
@@ -8913,7 +8951,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% The same driver will do very well for `music', `video' and `movie'.
+% The same driver will do very well for |music|, |video| and |movie|.
 %
 %    \begin{macrocode}
 \DeclareBibliographyAlias{music}{audio}
@@ -8921,7 +8959,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareBibliographyAlias{video}{audio}
 %    \end{macrocode}
 %
-% In parallel with book-like entries, we provide an `inaudio' driver for citing
+% In parallel with book-like entries, we provide an |inaudio| driver for citing
 % tracks from an album.
 %
 %    \begin{macrocode}
@@ -8980,7 +9018,8 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
-% The same driver will do very well for `inmusic', `invideo' and `inmovie'.
+% The same driver will do very well for |inmusic|, |invideo| and |inmovie|.
+% The latter two are for completeness but probably not useful.
 %
 %    \begin{macrocode}
 \DeclareBibliographyAlias{inmusic}{inaudio}
@@ -9003,7 +9042,10 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % Titles for videos do not have a consistent format, so we define some
-% `entrysubtype'-based variation.
+% |entrysubtype|-based variation. We also allow the use of descriptors;
+% note that the title is transformed into a descriptor by means of
+% an annotation, rather than using a dedicated field. This greatly
+% simplifies the code used elsewhere.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[audio,music]{title}{%
@@ -9060,7 +9102,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % The examples of image references in \emph{New Hart's Rules} are all for online
-% images, and the `online' driver seems to work well for them. The main
+% images, and the |online| driver seems to work well for them. The main
 % difference is that they use a different format for the title.
 %
 %    \begin{macrocode}
@@ -9084,8 +9126,8 @@ reference,mvreference,inreference]{volume}{%
 
 %    \end{macrocode}
 %
-% We provide an `onlinetype' macro for clarifying the type of online
-% material.
+% We provide an |onlinetype| macro for clarifying the type of online
+% material. It is triggered by appropriate values of |entrysubtype|.
 %
 %    \begin{macrocode}
 \newbibmacro*{onlinetype}{%
@@ -9099,21 +9141,19 @@ reference,mvreference,inreference]{volume}{%
     }{}}}
 %    \end{macrocode}
 %
-% The changes to the `online' driver compared to the standard style
+% The changes to the |online| driver compared to the standard style
 % are as follows:
 % \begin{itemize}
 %   \item
-%   We support the use of `maintitle' for, say, the title of the wesbite
-%   in which the web page is located. This comes after `title'.
+%   We support the use of |maintitle| for, say, the title of the wesbite
+%   in which the web page is located. This comes after |title|.
 %   \item
-%   We support the use of `entrysubtype' to specify the nature of the
-%   online resource (following the practice of 'biblatex-apa' and
-%   others). This comes after `maintitle'.
+%   We insert the aforementioned |onlinetype| macro after |maintitle|.
 %   \item
-%   In most cases, the date is wrapped in parentheses if present.
-%   With Twitter posts, the time and date are printed bare.
+%   The date is wrapped in parentheses if present.
 %   \item
-%   We support displaying a publisher after the date.
+%   We support displaying a publisher after the date; this is a legacy feature
+%   based on examples that are now deprecated.
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -9185,7 +9225,8 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat[software]{version}{\mkbibparens{\bibstring{version}~#1}}
 %    \end{macrocode}
 %
-% The url date string is different for software: `downloaded' rather than `accessed'.
+% The url date string is different for software: \enquote{downloaded} rather
+% than \enquote{accessed}.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[software]{urldate}{\bibstring{urldown}\space#1}
@@ -10214,7 +10255,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareBibliographyAlias{commentary}{book}
 %    \end{macrocode}
 %
-% \subsection{Specialist materials: manuscripts}
+% \subsection{Manuscripts}
 %
 % In the spirit of compatibility, this code is adapted from
 % \textsf{biblatex-manuscripts-philology} by Maïeul Rouquette.
@@ -10239,7 +10280,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareNumChars*{rv}
 %    \end{macrocode}
 %
-% Here are some special field formats for the `manuscripts' driver.
+% Here are some special field formats for the |manuscript| driver.
 % Note that the title is transformed into a descriptor by means of
 % an annotation, rather than using a dedicated field. This greatly
 % simplifies the code used elsewhere.
@@ -10256,10 +10297,10 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat{support}{\ifbibstring{#1}{\bibstring{#1}}{#1}}
 %    \end{macrocode}
 %
-% Here are the unique bibmacros used by the `manuscripts' driver.
+% Here are the unique bibmacros used by the |manuscripts| driver.
 % We hide the date if there is no author or title to prevent it
 % appearing as the first element in the reference. Similarly, we
-% hide the (vague) `dating' field if the (exact) date is displayed.
+% hide the (vague) |dating| field if the (exact) |date| is displayed.
 %
 %    \begin{macrocode}
 \newbibmacro{manuscript:date}{%
@@ -10343,7 +10384,7 @@ reference,mvreference,inreference]{volume}{%
       \bibstring{\strfield{layer}layer}}}}%
 %    \end{macrocode}
 %
-% Putting it all together, here is the `manuscript' driver.
+% Putting it all together, here is the |manuscript| driver.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{manuscript}{%
@@ -10400,9 +10441,9 @@ reference,mvreference,inreference]{volume}{%
       \printfield{number}}}}
 %    \end{macrocode}
 %
-% Lastly, we adapt the `unpublished' driver to allow it to do a similar
+% Lastly, we adapt the |unpublished| driver to allow it to do a similar
 % thing but with the regular \textsf{biblatex} fields. The presence of
-% the `library' field is what triggers `manuscript mode'.
+% the |library| field is what triggers `manuscript mode'.
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@ms}
@@ -10450,6 +10491,8 @@ reference,mvreference,inreference]{volume}{%
 
 %    \end{macrocode}
 %
+% \subsection{Related entries}
+%
 % We make the punctuation before related items configurable in remaining drivers
 % inherited from the standard style.
 %
@@ -10476,8 +10519,6 @@ reference,mvreference,inreference]{volume}{%
   \iftoggle{bbx:related}
 }{}{}
 %    \end{macrocode}
-%
-% \subsection{Related entries}
 %
 % We provide an option for setting the relatedtype punctuation.
 %
@@ -10557,10 +10598,9 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Reprints}
 %
-% We take advantage of the Biber-specific mechanism of relating items
-% in order to handle reprints. This reverts the special definition of
-% the reprintfrom relation in the standard stule back to the standard
-% generic relation.
+% The standard styles define a special driver for the |reprintfrom| relation.
+% For \textsf{oxref}, the standard generic driver is sufficient, so this code
+% reverts the specialization.
 %
 %    \begin{macrocode}
 \renewbibmacro*{related:reprintfrom}[1]{%
@@ -10592,7 +10632,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Articles that span issues}
 %
-% If an article spans several issues of a journal, we print second
+% If an article spans several issues of a journal, we print the second
 % reference after the first, omitting any information in common.
 %
 %    \begin{macrocode}
@@ -10625,8 +10665,8 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Reviews}
 %
-% We ensure that the field formatting for `review' entries matches that
-% for `article' entries.
+% We ensure that the field formatting for |review| entries matches that
+% for |article| entries.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[review]{title}{\mkbibquote{#1\isdot}}
@@ -10656,9 +10696,9 @@ reference,mvreference,inreference]{volume}{%
 }
 %    \end{macrocode}
 %
-% Since a review is a special kind of journal article, the `review'
-% driver is based on the `article' one, the difference being that the
-% `related' macro comes just before `journal+issuetitle'. Oxford style
+% Since a review is a special kind of journal article, the |review|
+% driver is based on the |article| one, the difference being that the
+% |related| macro comes just before |journal+issuetitle|. Oxford style
 % links the two with \enquote{in}.
 %
 %    \begin{macrocode}
@@ -10787,9 +10827,9 @@ reference,mvreference,inreference]{volume}{%
 % \subsubsection{Subitems}
 %
 % We provide support for items in items in items. The outer two layers should
-% be taken care of with an `incollection' entry or equivalent. The innermost
-% item should be a `misc' entry. While we're at it, we provide descriptor
-% support for `misc' entries.
+% be taken care of with an |incollection| entry or equivalent. The innermost
+% item should be a |misc| entry. While we're at it, we provide descriptor
+% support for |misc| entries.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[misc]{title}{%
@@ -10849,7 +10889,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Sort order}
 %
-% `proceedings' and `mvproceedings' entries allow an organization to be printed
+% |proceedings| and |mvproceedings| entries allow an organization to be printed
 % in the author position.
 %
 %    \begin{macrocode}
@@ -11178,7 +11218,9 @@ reference,mvreference,inreference]{volume}{%
 % The following entry types never put editors first.
 %
 %    \begin{macrocode}
-\ExecuteBibliographyOptions[proceedings,report,audio,music,movie,video,manuscript,unpublished,review]{useeditor=false}
+\ExecuteBibliographyOptions
+  [proceedings,report,audio,music,movie,video,manuscript,unpublished,review]%
+  {useeditor=false}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11208,7 +11250,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareNameAlias[related:reviewof]{editor}{given-family}
 %    \end{macrocode}
 %
-% We ensure the printing of the `anon' localization string matches.
+% We ensure the printing of the |anon| localization string matches.
 %
 %    \begin{macrocode}
 \xpatchbibmacro{author}{%
@@ -11219,7 +11261,7 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \iftoggle{blx@ox@scnames}{\bibcplstring[\textsc]{anon}}{\bibcplstring{anon}}%
   }%
-}
+}{}{}
 %    \end{macrocode}
 %
 % \subsection{Page ranges in citations}
@@ -11248,6 +11290,9 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % \subsubsection{Sort order}
+%
+% For entry types that print the |maintitle| and |volume| before the |title|,
+% we need to make sure this is reflected in the sort order.
 %
 %    \begin{macrocode}
     \map{
@@ -11297,8 +11342,7 @@ reference,mvreference,inreference]{volume}{%
 % We provide the |mergedate| option from the |authoryear| style. The OGS and
 % NHR consistently use a variant that is between basic and compact, in that the
 % year is always moved but the month and day are never moved; this is
-% implemented as the |year| value. Note that we have the additional complication
-% that |origyear| is moved in preference to |year|.
+% implemented as the |year| value.
 %
 %    \begin{macrocode}
 \DeclareBibliographyOption{mergedate}[true]{%
@@ -11529,16 +11573,16 @@ reference,mvreference,inreference]{volume}{%
             \clearfield{\thefield{labeldatesource}}}}}{}}
 %    \end{macrocode}
 %
-% We set the default to be `true'/`year'.
+% We set the default to be |true|/|year|.
 %
 %    \begin{macrocode}
 \ExecuteBibliographyOptions{mergedate}
 %    \end{macrocode}
 %
-% The above clearfield commands would suppress any further date
-% information being printed, but we need to allow months and days to be
-% printed in the absence of a year. This means adapting the range
-% calculation commands defined in `biblatex.sty' for use by
+% The \cs{clearfield} commands in the |year| option code would suppress any
+% further date information being printed, but we need to allow months and days
+% to be printed in the absence of a year. This means adapting the range
+% calculation commands defined in |biblatex.sty| for use by
 % \cs{printdate} and friends.
 %
 %    \begin{macrocode}
@@ -11667,9 +11711,9 @@ reference,mvreference,inreference]{volume}{%
 
 %    \end{macrocode}
 %
-% The `extra' commands, which print disambiguating labels, should only
+% The |extra| commands, which print disambiguating labels, should only
 % print those labels if the year is present, so the first conditional
-% block is the same as for the non-`extra' commands above.
+% block is the same as for the non-|extra| commands above.
 %
 %    \begin{macrocode}
 \DeclareRobustCommand*{\mkdaterangefullextra}[2]{%
@@ -11795,7 +11839,7 @@ reference,mvreference,inreference]{volume}{%
 
 %    \end{macrocode}
 %
-% The `labelyear' falls back to `pubstate' if provided.
+% The |labelyear| falls back to |pubstate| if provided.
 %
 %    \begin{macrocode}
 \DeclareLabeldate{%
@@ -11808,7 +11852,7 @@ reference,mvreference,inreference]{volume}{%
 }
 %    \end{macrocode}
 %
-% The `extrayear' string should be printed bare.
+% The |extrayear| string should be printed bare.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{extrayear}{%
@@ -11830,7 +11874,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat{shorthandwidth}{#1}
 %    \end{macrocode}
 %
-% We enhance the `family-given' name format to handle the \texttt{pseudo}
+% We enhance the |family-given| name format to handle the \texttt{pseudo}
 % and \texttt{inferred} annotations.
 %
 %    \begin{macrocode}
@@ -11872,7 +11916,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareNameAlias{translator}{family-given}
 %    \end{macrocode}
 %
-% The bibliography formatting is just like `authoryear' except we do not
+% The bibliography formatting is just like |authoryear| except we do not
 % eliminate item separation by default.
 %
 %    \begin{macrocode}
@@ -11887,7 +11931,7 @@ reference,mvreference,inreference]{volume}{%
   {\item}
 %    \end{macrocode}
 %
-% The shorthand formatting is just like `authoryear'.
+% The shorthand formatting is just like |authoryear|.
 %
 %    \begin{macrocode}
 \defbibenvironment{shorthand}
@@ -11906,7 +11950,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsection{Name and date formatting}
 %
-% We set up hashing just as in `authoryear'.
+% We set up hashing just as in |authoryear|.
 %
 %    \begin{macrocode}
 \InitializeBibliographyStyle{\global\undef\bbx@lasthash}
@@ -11921,8 +11965,8 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro*{bbx:savehash}}{}{}
 %    \end{macrocode}
 %
-% We patch the `author' macro so that the date label information appears
-% at the end (as in `authoryear').
+% We patch the |author| macro so that the date label information appears
+% at the end (as in |authoryear|).
 %
 %    \begin{macrocode}
 \xpatchbibmacro{author}{%
@@ -11968,7 +12012,7 @@ reference,mvreference,inreference]{volume}{%
 }{}{}%
 %    \end{macrocode}
 %
-% We apply the same patches to `bbx:editor', but also move the editor
+% We apply the same patches to |bbx:editor|, but also move the editor
 % string to after the date label.
 %
 %    \begin{macrocode}
@@ -12007,8 +12051,8 @@ reference,mvreference,inreference]{volume}{%
 }{}{}%
 %    \end{macrocode}
 %
-% We apply the same patches to `bbx:translator' as we do for
-% `bbx:editor', except for the shortening one.
+% We apply the same patches to |bbx:translator| as we do for
+% |bbx:editor|, except for the shortening one.
 %
 %    \begin{macrocode}
 \xpatchbibmacro{bbx:translator}{%
@@ -12028,7 +12072,7 @@ reference,mvreference,inreference]{volume}{%
 }{}{}%
 %    \end{macrocode}
 %
-% The `labeltitle' macro differs from the one from `authoryear' in that
+% The |labeltitle| macro differs from the one from |authoryear| in that
 % it also includes the subtitle. We record the fact that we have cleared
 % the title.
 %
@@ -12077,7 +12121,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat[mvbook,mvcollection,mvreference,proceedings,mvproceedings]{maintitle+volume}{#1}
 %    \end{macrocode}
 %
-% The date of `online' entries is printed in parentheses; as the year
+% The date of |online| entries is printed in parentheses; as the year
 % is moved after the author, this can lead to empty parentheses unless
 % a month is printed, so we change the test accordingly.
 %
@@ -12136,13 +12180,13 @@ reference,mvreference,inreference]{volume}{%
 % As a compromise, we use square brackets.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[manuscript]{labeldate}{\mkbibbrackets{#1}}
-\DeclareFieldFormat[unpublished]{labeldate}{%
+\DeclareFieldFormat[manuscript]{datelabel}{\mkbibbrackets{#1}}
+\DeclareFieldFormat[unpublished]{datelabel}{%
   \iftoggle{blx@ox@ms}{\mkbibbrackets{#1}}{\mkbibparens{#1}}}
 \renewbibmacro*{manuscript:date}{\usebibmacro{date}}
 %    \end{macrocode}
 %
-% We include the `library' field as a fallback title.
+% We include the |library| field as a fallback title.
 %
 %    \begin{macrocode}
 \DeclareLabeltitle{%
@@ -12172,6 +12216,8 @@ reference,mvreference,inreference]{volume}{%
 %
 % \setcounter{FancyVerbLine}{19}
 %
+% The standard |verbose| style works without further adjustment.
+%
 %    \begin{macrocode}
 \RequireCitationStyle{verbose}
 %    \end{macrocode}
@@ -12185,6 +12231,9 @@ reference,mvreference,inreference]{volume}{%
 %
 % \setcounter{FancyVerbLine}{19}
 %
+% The standard |authoryear-comp| style is a close match for what we need.
+% We patch it with our version of year range compression.
+%
 %    \begin{macrocode}
 \RequireCitationStyle{authoryear-comp}
 \xpatchbibmacro{cite:labelyear+extrayear}{%
@@ -12194,7 +12243,7 @@ reference,mvreference,inreference]{volume}{%
 }{}{}
 %    \end{macrocode}
 %
-% We insert anonymous author handling into `cite'.
+% We insert anonymous author handling into |cite|.
 %
 %    \begin{macrocode}
 \xpatchbibmacro{cite}{%
@@ -12215,7 +12264,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % The name and year are usually separated by a space, but if the date is
-% replaced by a word (e.g. `forthcoming', `n.d.'), they are separated by
+% replaced by a word (e.g. ‘forthcoming’, ‘n.d.’), they are separated by
 % a comma.
 %
 %    \begin{macrocode}
@@ -12260,22 +12309,22 @@ reference,mvreference,inreference]{volume}{%
 \DeclareDatamodelConstant[type=list]{nameparts}{prefix,family,suffix,given,title}
 %    \end{macrocode}
 %
-% The `datetype' and `origdatetype' fields are used for prefixing the date with
+% The |datetype| and |origdatetype| fields are used for prefixing the date with
 % a description.
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{datetype,origdatetype}
 %    \end{macrocode}
 %
-% The `authoraddon' and `editoraddon' fields are used for handling
-% pseudonyms. The `serieseditor' field is used for the editor of a book series,
+% The |authoraddon| and |editoraddon| fields are used for handling
+% pseudonyms. The |serieseditor| field is used for the editor of a book series,
 % as opposed to the editor of the particular cited work.
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=list,datatype=name]{authoraddon,editoraddon,serieseditor}
 %    \end{macrocode}
 %
-% The `jointauthor' and `jointauthortype' fields are used for internally for
+% The |jointauthor| and |jointauthortype| fields are used for internally for
 % handling editors/translators who can be considered joint authors.
 %
 %    \begin{macrocode}
@@ -12283,8 +12332,8 @@ reference,mvreference,inreference]{volume}{%
 \DeclareDatamodelFields[type=field,datatype=literal]{jointauthortype}
 %    \end{macrocode}
 %
-% The `rawauthor' field is used internally for checking whether an
-% the name given in the `author' field is a keyword meaning `anonymous'.
+% The |rawauthor| field is used internally for checking whether an
+% the name given in the |author| field is a keyword meaning ‘anonymous’.
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{rawauthor}
@@ -12491,7 +12540,7 @@ reference,mvreference,inreference]{volume}{%
 % Many of these are guesses extrapolated from what is given.
 %
 % The roles expressed as functions do not need adjusting. The roles
-% expressed as actions do not typically end in `by' when abbreviated;
+% expressed as actions do not typically end in ‘by’ when abbreviated;
 % the ‘with’ parts go first when abbreviated if there is more than one
 % editorial role (at least, that is one way of interpreting the examples).
 %
@@ -12604,21 +12653,21 @@ reference,mvreference,inreference]{volume}{%
   origpubin        = {{originally published in}{originally pub\adddot}},
 %    \end{macrocode}
 %
-% There is also a different abbreviation for `paragraph'.
+% There is also a different abbreviation for ‘paragraph’.
 %
 %    \begin{macrocode}
   paragraph        = {{paragraph}{para\adddot}},
   paragraphs       = {{paragraphs}{paras\adddot}},
 %    \end{macrocode}
 %
-% \emph{New Hart's Rules} uses `accessed' for URL dates.
+% \emph{New Hart's Rules} uses ‘accessed’ for URL dates.
 %
 %    \begin{macrocode}
   urlseen          = {{accessed}{accessed}},
 %    \end{macrocode}
 %
-% Scholarly citation terms are abbreviated. Oxford style is to use `henceforth'
-% for shorthands and `at' to cite a page within a range.
+% Scholarly citation terms are abbreviated. Oxford style is to use ‘henceforth’
+% for shorthands and ‘at’ to cite a page within a range.
 %
 %    \begin{macrocode}
   idem             = {{idem}{id\adddot}},
