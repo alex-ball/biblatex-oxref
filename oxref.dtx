@@ -6167,7 +6167,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % following:
 %
 %    \begin{macrocode}
-\DeclareLanguageMapping{english}{british-oxref}
+\DeclareLanguageMapping{english}{english-oxref}
 \DeclareLanguageMapping{british}{british-oxref}
 \DeclareLanguageMapping{american}{american-oxref}
 %    \end{macrocode}
@@ -10754,7 +10754,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{related:multivolume}{#1}
-\newbibmacro*{related:multivolume}[1]{%
+\renewbibmacro*{related:multivolume}[1]{%
   \entrydata*{#1}{%
     \printtext{%
       \printfield{volume}%
@@ -10789,7 +10789,7 @@ reference,mvreference,inreference]{volume}{%
     \printfield{volumes}%
     \newunit
     \usebibmacro{series+number+publisher+location+date}}}
-\newbibmacro*{related:bytranslator}[1]{%
+\renewbibmacro*{related:bytranslator}[1]{%
   \entrydata{#1}{%
     \renewbibmacro*{name:hook}[1]{%
       \ifnumequal{\value{listcount}}{1}
@@ -11337,7 +11337,7 @@ reference,mvreference,inreference]{volume}{%
 % can still override them.
 %
 %    \begin{macrocode}
-\ExecuteBibliographyOptions{uniquename=init,giveninits,labeldateparts,sorting=nyt,pagetracker,maxcitenames=2}
+\ExecuteBibliographyOptions{giveninits,labeldateparts,sorting=nyt,pagetracker,maxcitenames=2}
 %    \end{macrocode}
 %
 % \subsection{Date merging option}
@@ -12234,10 +12234,23 @@ reference,mvreference,inreference]{volume}{%
 % \setcounter{FancyVerbLine}{19}
 %
 % The standard |authoryear-comp| style is a close match for what we need.
-% We patch it with our version of year range compression.
 %
 %    \begin{macrocode}
 \RequireCitationStyle{authoryear-comp}
+%    \end{macrocode}
+%
+% This sets \key{uniquename} to \val{full}, but that conflicts with
+% \key{giveninits} set by the bibliography style, so we set it to \val{init}
+% instead. If left alone, \pkg{biblatex} would do this anyway, if we do it
+% explicitly, we avoid the warning message.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions{uniquename=init}
+%    \end{macrocode}
+%
+% We patch it with our version of year range compression.
+%
+%    \begin{macrocode}
 \xpatchbibmacro{cite:labelyear+extrayear}{%
   \printfield{labelendyear}%
 }{%
