@@ -293,7 +293,11 @@ Copyright (C) 2016 Alex Ball
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
 \crefname{page}{page}{pages}
 
-\newcommand*{\pkg}[1]{\href{http://www.ctan.org/pkg/#1}{\textsf{#1}}}
+\NewDocumentCommand{\pkg}{om}{%
+  \IfNoValueTF{#1}
+    {\href{http://www.ctan.org/pkg/#2}{\textsf{#2}}}
+    {\href{http://www.ctan.org/pkg/#1-#2}{\textsf{#2}}}%
+}
 \newcommand*{\lit}[1]{\textsf{#1}}
 \newcommand*{\code}[1]{\texttt{#1}}
 \newcommand*{\aside}[1]{\textcolor{violet}{[\textsc{tip:} #1]}}
@@ -564,7 +568,7 @@ Copyright (C) 2016 Alex Ball
 %<*driver>
 \chapter{Introduction}
 
-This document provides the documented sources for the \textsf{oxref}
+This document provides the documented sources for the \pkg[biblatex]{oxref}
 biblography styles:
 \begin{itemize}
   \item
@@ -884,7 +888,7 @@ Where a source is provided, it refers to a section from one of the reference wor
 \end{description}
 
 Where the source is starred (*), this indicates the example is not quite how it appears in the book,
-usually because the original is demonstrating an option that is not the \textsf{oxref} default.
+usually because the original is demonstrating an option that is not the \pkg[biblatex]{oxref} default.
 %<*y>
 Where the source is marked with a dagger (\textdagger),
 this indicates that the example has been coverted from an \textsf{oxnotes}-style one,
@@ -898,7 +902,7 @@ amount not so much to a consistent style as a body of advice for creating one.
 Unlike the style manuals published by the American Psychological Association,
 the Modern Language Association, and the University of Chicago to name but three,
 the emphasis of the Oxford guide is to describe good practice rather than prescribe a particular style.
-This means that when it comes to \textsf{oxref}, there are decisions to be made
+This means that when it comes to \pkg[biblatex]{oxref}, there are decisions to be made
 as to which variations to support by default, which to support as options,
 and which to ignore quietly.
 
@@ -911,13 +915,13 @@ and have more of an eye on machine processing of bibliographies.
 They do, however, introduce additional variations with less of a steer on what is preferred,
 and are considerably shorter with fewer examples.
 
-The approach of \textsf{oxref} is to follow the 2014 \emph{New Hart's Rules} as much as possible,
+The approach of \pkg[biblatex]{oxref} is to follow the 2014 \emph{New Hart's Rules} as much as possible,
 but where variations are given without strong preference, or where guidance is lacking,
 to follow the preferences of the 2002 guide.
 Where the practices of the humanities and the sciences are contrasted,
 the former are followed for \textsf{oxnotes} and the latter for \textsf{oxyear}.
 Where neither version gives explicit guidance on citing a resource supported by \textsf{biblatex},
-\textsf{oxref} extrapolates from what is provided, guided by standard \textsf{biblatex}
+\pkg[biblatex]{oxref} extrapolates from what is provided, guided by standard \textsf{biblatex}
 and other major referencing styles.
 
 Where it is practical to do so,
@@ -931,7 +935,7 @@ see the separate documentation file \href{./oxref.pdf}{\texttt{oxref.pdf}}
 
 \section{To do}
 
-The \textsf{oxref} family of styles is currently at \fileversion.
+The \pkg[biblatex]{oxref} family of styles is currently at \fileversion.
 As mentioned above, what the styles \emph{should} be doing is open to some
 interpretation, so at the moment I am open to the idea of changing how the
 styles handle cases not covered by the two style manuals. Please leave your
@@ -960,7 +964,7 @@ I would be most glad to hear from you:
 \end{multicols}
 
 It is not possible at the moment to use numeric or alphabetic citation styles
-with \textsf{oxref}, but that might change in the future.
+with \pkg[biblatex]{oxref}, but that might change in the future.
 
 You are of course encouraged to report any bugs you discover on the
 \href{https://github.com/alex-ball/biblatex-oxref/issues}{GitHub issue tracker}
@@ -1149,7 +1153,7 @@ Some older works are known to have been written pseudepigraphically, that is, fa
 %<n>to add the prefix ‘Pseudo-’ before the name in notes, and
 to put ‘(Ps.-)’ after the name in the bibliography.
 
-\tip{With \textsf{oxref}, you can achieve this by annotating the name with the keyword \code{pseudo}.
+\tip{With \pkg[biblatex]{oxref}, you can achieve this by annotating the name with the keyword \code{pseudo}.
 %<n>Since this mechanism is aimed at ancient texts, it has only been designed to work with single-part names
 %<n>(i.e. either a single word, or a whole name wrapped in braces).
 }
@@ -1193,7 +1197,7 @@ to put ‘(Ps.-)’ after the name in the bibliography.
 If the attribution is missing from the work but may be inferred from other sources,
 Oxford style is to give the attribution in square brackets.
 
-\tip{With \textsf{oxref}, you can achieve this by annotating the whole name field
+\tip{With \pkg[biblatex]{oxref}, you can achieve this by annotating the whole name field
   (usually \code{author} or \code{editor}) with the keyword \code{inferred}.
   You can also annotate names individually within the list, if only some of them should be taken as inferred.}
 
@@ -1219,7 +1223,7 @@ Oxford style is to give the attribution in square brackets.
 \tip{You can also use the syntax from \textsf{biblatex-realauthor}.
   If you do not specify the \code{author}, then \code{realauthor} is treated as an alias for \code{author} annotated with the keyword \code{inferred}.
   The equivalent is true for \code{realeditor}.
-  Note, however, that \textsf{oxref} does not recognize the \code{userealauthor} and \code{userealeditor} options.}
+  Note, however, that \pkg[biblatex]{oxref} does not recognize the \code{userealauthor} and \code{userealeditor} options.}
 
 \subsection{Pseudonyms}
 
@@ -1364,7 +1368,7 @@ If the contribution of the translators or revisers is so great they could be joi
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Annotate \emph{either} the \code{editor} \emph{or} \code{translator} field with the keyword \code{jointauthor} to promote the name to the joint author position (you cannot do it for both). Note that you have to supply a suitable \code{shortauthor} value yourself; \textsf{oxref} does not calculate it for you.}
+\tip{Annotate \emph{either} the \code{editor} \emph{or} \code{translator} field with the keyword \code{jointauthor} to promote the name to the joint author position (you cannot do it for both). Note that you have to supply a suitable \code{shortauthor} value yourself; \pkg[biblatex]{oxref} does not calculate it for you.}
 
 
 \section{Works in foreign languages}
@@ -1505,9 +1509,9 @@ Conversely, it might be helpful to provide the English original of a translated 
 
 For periodicals, grey literature, audiovisual and online material, the lack of a place of publication is not surprising; indeed it may be expected. For books, however, it may be remarkable and deserve marking in the bibliography with \enquote{n.p.\@} (for \enquote{no place}).
 
-\tip{To have \textsf{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for books, collections, reference works, proceedings and similar entry types, use the \code{nolocation} bibliography option.}
+\tip{To have \pkg[biblatex]{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for books, collections, reference works, proceedings and similar entry types, use the \code{nolocation} bibliography option.}
 
-\tip{To have \textsf{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for only a specific entry, use the \code{nolocation} entry option instead.
+\tip{To have \pkg[biblatex]{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for only a specific entry, use the \code{nolocation} entry option instead.
   This has the feature of hiding the \enquote{n.p.\@} from other styles that do not follow the same convention.}
 
 \begin{bibexbox}
@@ -3115,7 +3119,7 @@ then the new title and its details after a semicolon.
 \end{bibexbox}
 
 \tip{A more generalized version of this relation is available.
-  If you set the \code{relatedtype} to the \textsf{oxref}-specific keyword \code{editedas},
+  If you set the \code{relatedtype} to the \pkg[biblatex]{oxref}-specific keyword \code{editedas},
   the edition and any editorial contributions will be printed in the linking text.}
 
 \begin{bibexbox}
@@ -4200,7 +4204,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
   a publishing company, comma, location, comma, e.g.\@ \enquote{Christophorus-Verlag Herder, Freiburg im Breisgau,}
 \end{itemize}
 
-\emph{New Hart's Rules} sticks firmly with the first of these, so \textsf{oxref} makes this the easiest choice but provides workarounds to allow you to achieve most of the others if you really need to.
+\emph{New Hart's Rules} sticks firmly with the first of these, so \pkg[biblatex]{oxref} makes this the easiest choice but provides workarounds to allow you to achieve most of the others if you really need to.
 
 \tip{To get the normal format, put the label name in \code{publisher}, the type of release (e.g.\@ compact disc, audio cassette) in \code{type}, and the catalogue number in \code{number}. In the examples from \emph{New Hart's Rules}, the type is uniformly omitted.}
 
@@ -4625,7 +4629,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 
 \tip{If the episode has a true title, the episide descriptor (e.g. ‘Episode 1’) goes in the \code{note} field.
   If it doesn't, the episode descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to remove the quote marks.
-  Alternatively, use the (non-standard) \code{descriptor} field for the episode descriptor in all cases, and \textsf{oxref} will take care of this for you.}
+  Alternatively, use the (non-standard) \code{descriptor} field for the episode descriptor in all cases, and \pkg[biblatex]{oxref} will take care of this for you.}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
@@ -4943,7 +4947,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   it might reflect an opinion on the two resources;
   or it may just be illustrative of variant practice.}
 
-\tip{Unlike standard \textsf{biblatex}, \textsf{oxref} supports \code{maintitle} for online entries and prints the result in italics. For more portability, you could either hard-code the italics into the \code{organization} field or use the \code{article} entry type.}
+\tip{Unlike standard \textsf{biblatex}, \pkg[biblatex]{oxref} supports \code{maintitle} for online entries and prints the result in italics. For more portability, you could either hard-code the italics into the \code{organization} field or use the \code{article} entry type.}
 
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
@@ -5124,7 +5128,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 \textsf{Oxref} provides only a basic level of support for legal references, in case you need to use some in a mainly non-legal text.
 For a more thorough and robust treatment, intended for a specialist readership, I recommend you use the \href{http://www.ctan.org/pkg/oscola}{\textsf{oscola}} style instead.
 
-Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules} and the \emph{Oxford Standard for the Citation of Legal Authorities}, \textsf{oxref} largely mimics \textsf{oscola} and its data model, though there are some small formatting differences. What you should \emph{not} expect from \textsf{oxref} are facilities for compiling specialist indices of sources, or anything special regarding the handling of postnotes.
+Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules} and the \emph{Oxford Standard for the Citation of Legal Authorities}, \pkg[biblatex]{oxref} largely mimics \textsf{oscola} and its data model, though there are some small formatting differences. What you should \emph{not} expect from \pkg[biblatex]{oxref} are facilities for compiling specialist indices of sources, or anything special regarding the handling of postnotes.
 
 %<y>Since legal references are usually cited using footnotes, how \textsf{oxyear} should behave is not well defined. As a result, I have not configured it to do anything fancy: the full reference will be formatted just the same as with \textsf{oxnotes}, and citations will typically be title–year using parentheses in the usual way. I am open to suggestions for how to handle things better.
 
@@ -5304,7 +5308,7 @@ Test\footcite[13]{rvg2004}
 \end{Verbatim}
 \end{bibexbox}
 
-Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsistent on whether the court of decision should be printed plain or in parentheses at the end of a reference to a reported case. The default chosen by \textsf{oxref} is to use parentheses as per the \emph{Oxford Standard for the Citation of Legal Authorities}.
+Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsistent on whether the court of decision should be printed plain or in parentheses at the end of a reference to a reported case. The default chosen by \pkg[biblatex]{oxref} is to use parentheses as per the \emph{Oxford Standard for the Citation of Legal Authorities}.
 
 \tip{To print the court of decision plain, you can use the \key{court-plain} option. You can set this globally at the style level or on a per-entry basis.}
 
@@ -5676,7 +5680,7 @@ Council Regulation (EEC) 1017/68 applying rules of competition to transport [196
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Add amendment notices to the \code{note} field; \textsf{oxref} does not, sadly, provide a clever way of constructing these from their component parts so you have to write them verbatim.}
+\tip{Add amendment notices to the \code{note} field; \pkg[biblatex]{oxref} does not, sadly, provide a clever way of constructing these from their component parts so you have to write them verbatim.}
 
 \begin{bibexbox}
 <NHR \S13.5.2>
@@ -5900,7 +5904,7 @@ If a poem is divided into cantos, the title is set in italics rather than quoted
 \tip{To achieve this, use the entry type \code{book} if the poem is published on its own,
   and \code{bookinbook} with entry subtype \code{poem} if the poem is published in an anthology.}
 
-\tip{To assist with quoting passages, \textsf{oxref} provides the additional pagination types
+\tip{To assist with quoting passages, \pkg[biblatex]{oxref} provides the additional pagination types
   \code{book}, \code{canto}, and \code{stanza} (\code{line} is already defined),
   though in reality you are probably better off doing it by hand.}
 
@@ -5948,7 +5952,7 @@ Play titles, like those of epic poems, are set in italics rather than quoted.
 \tip{To achieve this, use the entry type \code{book} if the play is published on its own,
   and \code{bookinbook} with entry subtype \code{play} if the play is published in an anthology.}
 
-\tip{To assist with quoting passages, \textsf{oxref} provides the additional pagination types
+\tip{To assist with quoting passages, \pkg[biblatex]{oxref} provides the additional pagination types
   \code{act} and \code{scene} (\code{line} is already defined),
   though in reality you are probably better off doing it by hand.}
 
@@ -5962,9 +5966,9 @@ but support is provided anyway for the sake of completeness.
 %<n>\spec{Author, Title/Descriptor, Date, Archive, Location, Collection Series, Shelfmark, Folios.}
 %<y>\spec{Author, Title/Descriptor, Date, Archive, Location, Collection Series, Shelfmark, Folios.}
 
-With \textsf{oxref}, you can enter manuscripts in either of two ways. The first uses the \code{unpublished} entry type.
+With \pkg[biblatex]{oxref}, you can enter manuscripts in either of two ways. The first uses the \code{unpublished} entry type.
 
-\tip{If the manuscript has a descriptor but no title, put the descriptor in the \code{title} field and annotate the field with the term \enquote{\code{descriptor}}. If you want to supply both a title and a descriptor, put the descriptor in the \code{note} field. Alternatively, you can use the (\textsf{oxref}-specific) \code{descriptor} field, and \textsf{oxref} will handle all this for you.}
+\tip{If the manuscript has a descriptor but no title, put the descriptor in the \code{title} field and annotate the field with the term \enquote{\code{descriptor}}. If you want to supply both a title and a descriptor, put the descriptor in the \code{note} field. Alternatively, you can use the (\pkg[biblatex]{oxref}-specific) \code{descriptor} field, and \pkg[biblatex]{oxref} will handle all this for you.}
 
 \tip{Use \code{author} and \code{date} as normal. Note that the \code{date} will not be printed if both the \code{author} and \code{title}\slash \code{descriptor} fields are left blank.}
 
@@ -10602,7 +10606,7 @@ reference,mvreference,inreference]{volume}{%
 % \subsubsection{Reprints}
 %
 % The standard styles define a special driver for the |reprintfrom| relation.
-% For \textsf{oxref}, the standard generic driver is sufficient, so this code
+% For \pkg[biblatex]{oxref}, the standard generic driver is sufficient, so this code
 % reverts the specialization.
 %
 %    \begin{macrocode}
@@ -11237,7 +11241,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsection{Preliminaries}
 %
-% First we load the common \textsf{oxref} features.
+% First we load the common \pkg[biblatex]{oxref} features.
 %
 %    \begin{macrocode}
 \RequireBibliographyStyle{oxref}
@@ -11327,7 +11331,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsection{Preliminaries}
 %
-% First we load the common \textsf{oxref} features.
+% First we load the common \pkg[biblatex]{oxref} features.
 %
 %    \begin{macrocode}
 \RequireBibliographyStyle{oxref}
@@ -12423,7 +12427,7 @@ reference,mvreference,inreference]{volume}{%
   inherit          = {english},
 %    \end{macrocode}
 %
-% These are new strings defined by \textsf{oxref}:
+% These are new strings defined by \pkg[biblatex]{oxref}:
 %
 % \begin{itemize}
 %   \item Roles expressed as functions
