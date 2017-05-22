@@ -15,10 +15,8 @@ UTREE = $(shell kpsewhich --var-value TEXMFHOME)
 all:	$(NAME).pdf $(STY1)-doc.pdf $(STY2)-doc.pdf clean
 	@exit 0
 
-source: $(NAME).dtx
+source $(NAME).bbx american-$(NAME).lbx british-$(NAME).lbx english-$(NAME).lbx $(STY1)-doc.tex $(STY1).bbx $(STY1).cbx $(STY1).dbx $(STY2)-doc.tex $(STY2).bbx $(STY2).cbx $(STY1).dbx: $(NAME).dtx
 	luatex -interaction=nonstopmode $(NAME).dtx >/dev/null
-
-$(NAME).bbx american-$(NAME).lbx british-$(NAME).lbx english-$(NAME).lbx $(STY1)-doc.tex $(STY1).bbx $(STY1).cbx $(STY1).dbx $(STY2)-doc.tex $(STY2).bbx $(STY2).cbx $(STY1).dbx: source
 
 $(NAME).pdf: $(NAME).dtx $(NAME).bbx $(STY1).bbx $(STY1).cbx american-$(NAME).lbx british-$(NAME).lbx english-$(NAME).lbx
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $(NAME).dtx >/dev/null
@@ -45,7 +43,6 @@ inst: all
 uninst:
 	rm -r $(UTREE)/{tex,source,doc}/latex/$(PFX)$(NAME)
 	mktexlsr
-
 
 install: all
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(PFX)$(NAME)
