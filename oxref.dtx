@@ -814,8 +814,8 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \end{docKey}
 
 \begin{docKey}{usenametitles}{=\val{true}|\val{false}}{default \val{true}, initially \val{true}}
-  Controls whether personal titles such as Revd, Dr, Mrs, Sir, and so on are printed.
-  (There is an example of how to supply titles in the \hyperref[ex:lewis1981lww]{Lewis reference} on \cpageref{ex:lewis1981lww}.)
+  Controls whether titular prefixes such as Revd, Dr, Mrs, Sir, and so on are printed.
+  (See \cref{sec:nametitles} for how to supply titles as part of a name.)
   This can also be set on a per-type and per-entry basis.
 \end{docKey}
 
@@ -1370,6 +1370,33 @@ If the contribution of the translators or revisers is so great they could be joi
 
 \tip{Annotate \emph{either} the \code{editor} \emph{or} \code{translator} field with the keyword \code{jointauthor} to promote the name to the joint author position (you cannot do it for both). Note that you have to supply a suitable \code{shortauthor} value yourself; \pkg[biblatex]{oxref} does not calculate it for you.}
 
+\section{Titular prefixes}\label{sec:nametitles}
+
+Generally speaking, using titular prefixes like Revd, Dr, Mrs, Sir, and so on as part of an author's name is unnecessary,
+but there are occasions when removing them causes ambiguity, so with \textsf{oxref} you can supply them if you need to.
+I have not added special rules for recognizing such titles, so if you want to include one you have to label each part of the name explicitly, as in the following example (the keyword for the titular prefix is \code{title}).
+
+\begin{bibexbox}
+%<n><NHR \S18.2.2*>
+%<y><NHR \S18.2.2*\textdagger>
+{wood1861el}
+%<n>Mrs Henry Wood, \emph{East Lynne}, 3 vols. (London, 1861).
+%<y>Wood, Mrs H. (1861), \emph{East Lynne}, 3 vols. (London).
+\tcblower
+\begin{Verbatim}
+%</n|y>
+@mvbook{wood1861el,
+  author = {title=Mrs, given=Henry, family=Wood},
+  title = {East Lynne},
+  volumes = {3},
+  location = {London},
+  date = {1861}}
+%<*n|y>
+\end{Verbatim}
+\end{bibexbox}
+
+You can switch the display of titular prefixes on or off using the \key{usenametitles} option.
+This can be set globally or on a per-type or per-entry basis.
 
 \section{Works in foreign languages}
 
@@ -6349,20 +6376,28 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       \ifprefchar{}{\bibnamedelimc}}%
     \mkbibnamefamily{#1}\isdot
     \ifdefvoid{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
-    \ifdefvoid{#5}{}{\ifgiveninits{}{\mkbibnametitle{#5}\isdot\bibnamedelimd}}%
-    \ifdefvoid{#2}{}{\revsdnamepunct\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
+    \ifboolexpe{%
+      (test {\ifdefvoid{#5}} or not togl {blx@ox@nametitle})
+      and
+      test {\ifdefvoid{#2}}%
+    }{}{%
+      \revsdnamepunct}%
+    \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\bibnamedelimd\mkbibnametitle{#5}\isdot}{}}%
+    \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
   }{%
     \usebibmacro{name:delim}{#1}%
     \usebibmacro{name:hook}{#1}%
     \mkbibnamefamily{#1}\isdot
     \ifdefvoid{#4}{}{\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
     \ifboolexpe{%
+      (test {\ifdefvoid{#5}} or not togl {blx@ox@nametitle})
+      and
       test {\ifdefvoid{#2}}
       and
       test {\ifdefvoid{#3}}%
     }{}{%
       \revsdnamepunct}%
-    \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\mkbibnametitle{#5}\isdot\bibnamedelimd}{}}%
+    \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\bibnamedelimd\mkbibnametitle{#5}\isdot}{}}%
     \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
     \ifdefvoid{#3}{}{\bibnamedelimd\mkbibnameprefix{#3}\isdot}}}
 %    \end{macrocode}
