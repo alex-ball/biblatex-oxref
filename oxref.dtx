@@ -295,8 +295,8 @@ Copyright (C) 2016 Alex Ball
 
 \NewDocumentCommand{\pkg}{om}{%
   \IfNoValueTF{#1}
-    {\href{http://www.ctan.org/pkg/#2}{\textsf{#2}}}
-    {\href{http://www.ctan.org/pkg/#1-#2}{\textsf{#2}}}%
+    {\lowercase{\href{http://www.ctan.org/pkg/#2}}{\textsf{#2}}}
+    {\lowercase{\href{http://www.ctan.org/pkg/#1-#2}}{\textsf{#2}}}%
 }
 \newcommand*{\lit}[1]{\textsf{#1}}
 \newcommand*{\code}[1]{\texttt{#1}}
@@ -824,7 +824,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   This can also be set on a per-type and per-entry basis.
 \end{docKey}
 
-\textsf{Oxref} makes use of Biber-specific techniques to solve some of the challenges presented by Oxford style.
+\pkg[biblatex]{Oxref} makes use of Biber-specific techniques to solve some of the challenges presented by Oxford style.
 It will not stop you from using Bib\TeX\ instead but, if you do, only simple and standard entries will work.
 In particular, manuscripts, legal references and anything involving related entries will be adversely affected.
 
@@ -1090,7 +1090,7 @@ Where works have no attribution, both the \emph{Oxford Guide to Style} and \emph
 The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’ in place of the author name, while \emph{New Hart's Rules} suggests using ‘Anon.\@’ or a short title.
 %</y>
 
-\tip{\textsf{Oxref} will not automatically generate anonymous labels for you, but if you use the \key{anon} option (see \cref{sec:loading}), you can transform an author name of ‘Anonymous’ (or whatever \cs{oxrefanon} is set to) in your .bib file to either the long or short localization string \code{anon}.
+\tip{\pkg[biblatex]{Oxref} will not automatically generate anonymous labels for you, but if you use the \key{anon} option (see \cref{sec:loading}), you can transform an author name of ‘Anonymous’ (or whatever \cs{oxrefanon} is set to) in your .bib file to either the long or short localization string \code{anon}.
 %<n>  Doing this will automatically suppress the printing of the anonymous author in notes.
 }
 
@@ -1373,7 +1373,7 @@ If the contribution of the translators or revisers is so great they could be joi
 \section{Titular prefixes}\label{sec:nametitles}
 
 Generally speaking, using titular prefixes like Revd, Dr, Mrs, Sir, and so on as part of an author's name is unnecessary,
-but there are occasions when removing them causes ambiguity, so with \textsf{oxref} you can supply them if you need to.
+but there are occasions when removing them can cause problems, so with \pkg[biblatex]{oxref} you can supply them if you need to.
 I have not added special rules for recognizing such titles, so if you want to include one you have to label each part of the name explicitly, as in the following example (the keyword for the titular prefix is \code{title}).
 
 \begin{bibexbox}
@@ -1734,7 +1734,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 \end{Verbatim}
 \end{bibexbox}
 
-\hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. \textsf{Oxref} will try to detect this; if it gets it wrong, you can suppress the comma by adding \cs{nopunct} to the end of the journal (sub)title, or restore it by adding a pair of braces.}
+\hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. \pkg[biblatex]{Oxref} will try to detect this; if it gets it wrong, you can suppress the comma by adding \cs{nopunct} to the end of the journal (sub)title, or restore it by adding a pair of braces.}
 
 %</n|y>
 %<*n>
@@ -2446,7 +2446,7 @@ Hankinson, R. J. (1988) (ed.), \emph{Method, Medicine, and Metaphysics} (Edmonto
 
 Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board whose membership might change between successive editions. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead).
 
-\tip{The \emph{Oxford Guide to Style} considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first, but \emph{New Hart's Rules} doesn't. \textsf{Oxref} takes the former approach, but you can switch to the latter by setting the \texttt{useeditor} option back to true for this type.}
+\tip{The \emph{Oxford Guide to Style} considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first, but \emph{New Hart's Rules} doesn't. \pkg[biblatex]{Oxref} takes the former approach, but you can switch to the latter by setting the \texttt{useeditor} option back to true for this type.}
 
 \begin{tcblisting}{listing only}
 \ExecuteBibliographyOptions[reference,mvreference]{useeditor=true}
@@ -4200,7 +4200,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 \chapter{Audiovisual materials}\label{sec:audiovideo}
 \chapterprecis{audio, inaudio, image, movie, music, inmusic, video}
 
-There are typically many contributors to an audiovisual work, and the priority given to each role is fluid. \textsf{Oxref} uses \code{author} for contributors that should go at the head of the reference, and \code{editor} for others. As well as the normal ones you can use the author\slash editor types \code{performer}, \code{conductor}, \code{director} and \code{reader}.
+There are typically many contributors to an audiovisual work, and the priority given to each role is fluid. \pkg[biblatex]{Oxref} uses \code{author} for contributors that should go at the head of the reference, and \code{editor} for others. As well as the normal ones you can use the author\slash editor types \code{performer}, \code{conductor}, \code{director} and \code{reader}.
 
 \section{Audio recordings}
 
@@ -4627,7 +4627,7 @@ Sometimes publishers will put several works on a single release without giving i
 
 \section{Broadcasts}\label{sec:broadcasts}
 
-The \emph{Oxford Guide to Style} prints all information about the transmission, including the date, bare. \emph{New Hart's Rules} tends to put the transmittion date in parentheses, perhaps because (\emph{a}) broadcast is a type of publication, (\emph{b}) episodes in some very long-running series are identified by date alone, and (\emph{c}) it may be important to know which broadcast is referenced since the edits might be different. \textsf{Oxref} sides with the latter.
+The \emph{Oxford Guide to Style} prints all information about the transmission, including the date, bare. \emph{New Hart's Rules} tends to put the transmittion date in parentheses, perhaps because (\emph{a}) broadcast is a type of publication, (\emph{b}) episodes in some very long-running series are identified by date alone, and (\emph{c}) it may be important to know which broadcast is referenced since the edits might be different. \pkg[biblatex]{Oxref} sides with the latter.
 
 %<n>\spec{\emph{Title}, Channel (Location, Date, Time).}
 %<y>\spec{\emph{Title} (Year), Channel (Location, Day Month, Time).}
@@ -5153,7 +5153,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 \chapter{Legal references}\label{sec:legal}
 \chapterprecis{commentary, jurisdiction, legal, legislation}
 
-\textsf{Oxref} provides only a basic level of support for legal references, in case you need to use some in a mainly non-legal text.
+\pkg[biblatex]{Oxref} provides only a basic level of support for legal references, in case you need to use some in a mainly non-legal text.
 For a more thorough and robust treatment, intended for a specialist readership, I recommend you use the \href{http://www.ctan.org/pkg/oscola}{\textsf{oscola}} style instead.
 
 Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules} and the \emph{Oxford Standard for the Citation of Legal Authorities}, \pkg[biblatex]{oxref} largely mimics \textsf{oscola} and its data model, though there are some small formatting differences. What you should \emph{not} expect from \pkg[biblatex]{oxref} are facilities for compiling specialist indices of sources, or anything special regarding the handling of postnotes.
@@ -5845,7 +5845,7 @@ Reports of Parliamentary select committees and the Law Commission should be ente
 
 \section{Commentaries}
 
-\textsf{Oxref} does not provide any special formatting for legal commentaries;
+\pkg[biblatex]{Oxref} does not provide any special formatting for legal commentaries;
 it provides the \code{commentary} entry type simply as an alias for \code{book}.
 
 
@@ -6029,7 +6029,7 @@ With \pkg[biblatex]{oxref}, you can enter manuscripts in either of two ways. The
 \end{bibexbox}
 
 The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex-manuscripts-philology}.
-\textsf{Oxref} does not have all the bells and whistles of that style, but it understands a subset of its data model.
+\pkg[biblatex]{Oxref} does not have all the bells and whistles of that style, but it understands a subset of its data model.
 
 \tip{You can use \code{author}, \code{title}\slash \code{note}\slash \code{descriptor} and \code{date} as described above. (This is a departure from \textsf{biblatex-manuscripts-philology}.)}
 
@@ -12281,7 +12281,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % This sets \key{uniquename} to \val{full}, but that conflicts with
 % \key{giveninits} set by the bibliography style, so we set it to \val{init}
-% instead. If left alone, \pkg{biblatex} would do this anyway, if we do it
+% instead. If left alone, \pkg{biblatex} would do this anyway, but if we do it
 % explicitly, we avoid the warning message.
 %
 %    \begin{macrocode}
