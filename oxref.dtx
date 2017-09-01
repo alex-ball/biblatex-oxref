@@ -20,6 +20,10 @@
 \ProvidesFile{oxyear.bbx}
     [\Version\space Author-year bibliography style inspired by the Oxford Guide to Style]
 %</bbx&y>
+%<*bbx&m>
+\ProvidesFile{oxnum.bbx}
+    [\Version\space Numeric bibliography style inspired by the Oxford Guide to Style]
+%</bbx&m>
 %<*cbx&n>
 \ProvidesFile{oxnotes.cbx}
     [\Version\space Footnote-based citation style inspired by the Oxford Guide to Style]
@@ -28,9 +32,14 @@
 \ProvidesFile{oxyear.cbx}
     [\Version\space Author-year citation style inspired by the Oxford Guide to Style]
 %</cbx&y>
+%<*cbx&m>
+\ProvidesFile{oxnum.cbx}
+    [\Version\space Numeric citation style inspired by the Oxford Guide to Style]
+%</cbx&m>
 %<*dbx>
 %<n>\ProvidesFile{oxnotes.dbx}
 %<y>\ProvidesFile{oxyear.dbx}
+%<m>\ProvidesFile{oxnum.dbx}
     [\Version\space Data model for the Oxref family of styles]
 %</dbx>
 %<*lbx&en>
@@ -53,10 +62,14 @@
 \ProvidesFile{oxyear-doc.tex}
     [\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]
 %</doc&y>
+%<*doc&m>
+\ProvidesFile{oxnum-doc.tex}
+    [\Version\space Numeric biblatex style inspired by the Oxford Guide to Style]
+%</doc&m>
 %<*readme>
 # biblatex-oxref: Biblatex styles inspired by the *Oxford Guide to Style*
 
-This bundle provides two [biblatex] styles that implement (some of) the
+This bundle provides three [biblatex] styles that implement (some of) the
 stipulations and examples provided by the 2014 *New Hart's Rules* and the 2002
 *Oxford Guide to Style*:
 
@@ -64,8 +77,10 @@ stipulations and examples provided by the 2014 *New Hart's Rules* and the 2002
     intended for use with footnotes;
   * `oxyear` is a style similar to the standard `authoryear`,
     intended for use with parenthetical in-text citations.
+  * `oxnum` is a style similar to the standard `numeric`,
+    intended for use with numeric in-text citations.
 
-Both styles should be considered experimental. In particular, the ways in which
+These styles should be considered experimental. In particular, the ways in which
 the styles handle certain tricky references are subject to change.
 
 [biblatex]: http://ctan.org/pkg/biblatex
@@ -126,15 +141,19 @@ Copyright (C) 2016 Alex Ball
   \file{\jobname.bbx}{\from{\jobname.dtx}{bbx,o}}
   \file{oxnotes.bbx}{\from{\jobname.dtx}{bbx,n}}
   \file{oxyear.bbx}{\from{\jobname.dtx}{bbx,y}}
+  \file{oxnum.bbx}{\from{\jobname.dtx}{bbx,m}}
   \file{oxnotes.cbx}{\from{\jobname.dtx}{cbx,n}}
   \file{oxyear.cbx}{\from{\jobname.dtx}{cbx,y}}
+  \file{oxnum.cbx}{\from{\jobname.dtx}{cbx,m}}
   \file{oxnotes.dbx}{\from{\jobname.dtx}{dbx,n}}
   \file{oxyear.dbx}{\from{\jobname.dtx}{dbx,y}}
+  \file{oxnum.dbx}{\from{\jobname.dtx}{dbx,m}}
   \file{american-\jobname.lbx}{\from{\jobname.dtx}{lbx,us}}
   \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx,gb}}
   \file{english-\jobname.lbx}{\from{\jobname.dtx}{lbx,en}}
   \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc,n}}
   \file{oxyear-doc.tex}{\from{\jobname.dtx}{doc,y}}
+  \file{oxnum-doc.tex}{\from{\jobname.dtx}{doc,m}}
 }
 %</install>
 %<install>\endbatchfile
@@ -156,6 +175,7 @@ Copyright (C) 2016 Alex Ball
 %</driver>
 %<doc&n>\PassOptionsToPackage{style=oxnotes,scnames,varissuedate,anon}{biblatex}
 %<doc&y>\PassOptionsToPackage{style=oxyear,varissuedate,anon}{biblatex}
+%<doc&m>\PassOptionsToPackage{style=oxnum,varissuedate,anon}{biblatex}
 %<*driver|doc>
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \setlrmarginsandblock{3cm}{3cm}{*}
@@ -535,6 +555,7 @@ Copyright (C) 2016 Alex Ball
 %</driver>
 %<doc&n>\title{OXNOTES -- A notes-based style for Biblatex}
 %<doc&y>\title{OXYEAR -- An author–year style for Biblatex}
+%<doc&m>\title{OXNUM -- A numeric style for Biblatex}
 %<*driver|doc>
 \author{Alex Ball}
 \date{\printdateTeX{\filedate}}
@@ -575,6 +596,8 @@ biblography styles:
   \textsf{oxnotes}: a style similar to the standard \textsf{verbose}, intended for use with footnotes;
   \item
   \textsf{oxyear}: a style similar to the standard \textsf{authoryear}, intended for use with parenthetical in-text citations.
+  \item
+  \textsf{oxnum}: a style similar to the standard \textsf{numeric}, intended for use with numeric in-text citations;
 \end{itemize}
 
 \section{Quick start}
@@ -594,7 +617,9 @@ The styles are self-contained, so you can load them with \pkg{biblatex}:
 
 For further information, including some additional options you can set,
 please refer to the separate documentation files
-\href{./oxnotes-doc.pdf}{\texttt{oxnotes-doc.pdf}} and \href{./oxyear-doc.pdf}{\texttt{oxyear-doc.pdf}} respectively.
+\href{./oxnotes-doc.pdf}{\texttt{oxnotes-doc.pdf}},
+\href{./oxyear-doc.pdf}{\texttt{oxyear-doc.pdf}}, and
+\href{./oxnum-doc.pdf}{\texttt{oxnum-doc.pdf}} respectively.
 
 \begin{markdown*}{hybrid=true}
 %</driver>
@@ -615,16 +640,16 @@ UNIX-like systems:
 
   * Running `make source` generates the derived files
       - README.md
-      - oxref.bbx, oxnotes.bbx, oxyear.bbx
-      - oxnotes.cbx, oxyear.cbx
+      - oxref.bbx, oxnotes.bbx, oxyear.bbx, oxnum.bbx
+      - oxnotes.cbx, oxyear.cbx, oxnum.cbx
       - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx
-      - oxnotes.dbx, oxyear.dbx
+      - oxnotes.dbx, oxyear.dbx, oxnum.dbx
       - oxref.bib
       - oxref.ins
-      - oxnotes-doc.tex, oxyear-doc.tex
+      - oxnotes-doc.tex, oxyear-doc.tex, oxnum-doc.tex
 
   * Running `make` generates the above files and also oxref.pdf,
-    oxnotes-doc.pdf, and oxyear-doc.pdf.
+    oxnotes-doc.pdf, oxyear-doc.pdf and oxnum-doc.pdf.
 
   * Running `make inst` installs the files in the user's TeX tree.
     You can undo this with `make uninst`.
@@ -646,9 +671,9 @@ first two steps.
  1. Run `luatex oxref.dtx` to generate the source files. (You can safely skip
     this step if you are confident about step 2.)
 
- 2. Compile oxref.dtx, oxnotes-doc.tex and oxyear-doc.tex with LuaLaTeX and
-    Biber to generate the documentation. You will need to enable shell escape
-    so that [minted] can typeset the listings.
+ 2. Compile oxref.dtx, oxnotes-doc.tex, oxyear-doc.tex, and oxnum-doc.tex with
+    LuaLaTeX and Biber to generate the documentation. You will need to enable
+    shell escape so that [minted] can typeset the listings.
 
  3. Move the files to your TeX tree as follows:
       - `source/latex/biblatex-oxref`:
@@ -661,6 +686,9 @@ first two steps.
         oxnotes.bbx,
         oxnotes.cbx,
         oxnotes.dbx,
+        oxnum.bbx,
+        oxnum.cbx,
+        oxnum.dbx,
         oxref.bbx,
         oxyear.bbx,
         oxyear.cbx,
@@ -669,6 +697,8 @@ first two steps.
         README.md,
         oxnotes-doc.pdf,
         oxnotes-doc.tex,
+        oxnum-doc.pdf,
+        oxnum-doc.tex,
         oxref.bib,
         oxref.pdf,
         oxyear-doc.pdf,
@@ -703,7 +733,7 @@ This work is ‘maintained’ (as per LPPL maintenance status) by [Alex Ball][me
 \iffalse % syntax highlighting \fix
 %</driver>
 %<*doc|bib>
-%<*n|y>
+%<*n|y|m>
 \chapter{Introduction}
 
 \section{Loading the style}\label{sec:loading}
@@ -729,10 +759,12 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   \item\docValue{long}
     will print the unabbreviated localization string \code{anon} (‘Anonymous’) instead of the author name
 %<y>    in citations and the bibliography.
+%<m>    in the bibliography.
 %<n>    in the bibliography, but neither are printed in citations.
   \item\docValue{short}
     will print the abbreviated localization string \code{anon} (‘Anon.\@’) instead of the author name
 %<y>    in citations and the bibliography.
+%<m>    in the bibliography.
 %<n>    in the bibliography, but neither are printed in citations.
   \end{itemize}
 \end{docKey}
@@ -773,7 +805,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
     separates the two with a comma and space, e.g. ‘23, 2’.
   \item\docValue{parens}
     sets off the issue number in parentheses, e.g. ‘23 (2)’.
-%<n>    It is intended for use with \textsf{oxyear} and not recommended for this style.
+%<n|m>    It is intended for use with \textsf{oxyear} and not recommended for this style.
   \end{itemize}
 \end{docKey}
 
@@ -802,11 +834,11 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   but the per-entry setting is always effective.
 \end{docKey}
 
-%<*n>
+%<*n|m>
 \begin{docKey}{scnames}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Prints initial author or editor names in bibliography entries in small capitals.
 \end{docKey}
-%</n>
+%</n|m>
 
 \begin{docKey}{timefirst}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Prints the time (if provided) before the date instead of after it.
@@ -963,7 +995,7 @@ I would be most glad to hear from you:
   \end{itemize}
 \end{multicols}
 
-It is not possible at the moment to use numeric or alphabetic citation styles
+It is not possible at the moment to use an alphabetic citation style
 with \pkg[biblatex]{oxref}, but that might change in the future.
 
 You are of course encouraged to report any bugs you discover on the
@@ -976,13 +1008,13 @@ as well.
 
 %<*n>
 The \textsf{oxnotes} bibliography style is intended for use with a footnote or endnote citation style,
-and indeed loads a generic \textsf{biblatex} one.
+and indeed loads a standard \textsf{biblatex} one.
 While the note text generated by the style is very similar to that which appears in the bibliography,
 there is a difference in how author names are printed.
 %</n>
 %<*y>
 The \textsf{oxyear} bibliography style is intended for use with an author–year citation style,
-and indeed loads a tweaked version of a generic \textsf{biblatex} one.
+and indeed loads a tweaked version of a standard \textsf{biblatex} one.
 %</y>
 
 \section{Test citations}
@@ -991,7 +1023,7 @@ and indeed loads a tweaked version of a generic \textsf{biblatex} one.
 Following the advice of \emph{New Hart's Rules}, \textsf{oxnotes} loads by default the standard \textsf{verbose} citation style, in which repeated citations are abbreviated to the author surname and a short title.
 
 %</n>
-%</n|y>
+%</n|y|m>
 %<*bib>
 @book{faith1997epg,
   author = {R. J. Faith},
@@ -11268,7 +11300,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</o>
-%<*n>
+%<*n|m>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Notes style: oxnotes.bbx}
@@ -11324,6 +11356,11 @@ reference,mvreference,inreference]{volume}{%
       \printtext{\addspace\bibstring{thiscite}\space}%
       \printfield{postnote}}}}
 %    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</n|m>
+%<*n>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \subsection{Source maps}
 %
@@ -12353,13 +12390,28 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</y>
+%<*m>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Notes style: oxnum.cbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% The standard |numeric| style works without further adjustment.
+%
+%    \begin{macrocode}
+\RequireCitationStyle{numeric}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</m>
 %</cbx>
 %<*dbx>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \chapter{Data model adjustments}
 %
-% \section{oxnotes.dbx and oxyear.dbx}
+% \section{oxnotes.dbx, oxyear.dbx, and oxnum.dbx}
 %
 % \setcounter{FancyVerbLine}{19}
 %
