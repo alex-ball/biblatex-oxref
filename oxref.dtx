@@ -16,30 +16,39 @@
 \ProvidesFile{oxnotes.bbx}
     [\Version\space Footnote-based bibliography style inspired by the Oxford Guide to Style]
 %</bbx&n>
-%<*bbx&y>
-\ProvidesFile{oxyear.bbx}
-    [\Version\space Author-year bibliography style inspired by the Oxford Guide to Style]
-%</bbx&y>
 %<*bbx&m>
 \ProvidesFile{oxnum.bbx}
     [\Version\space Numeric bibliography style inspired by the Oxford Guide to Style]
 %</bbx&m>
+%<*bbx&a>
+\ProvidesFile{oxalph.bbx}
+    [\Version\space Alphabetic bibliography style inspired by the Oxford Guide to Style]
+%</bbx&a>
+%<*bbx&y>
+\ProvidesFile{oxyear.bbx}
+    [\Version\space Author-year bibliography style inspired by the Oxford Guide to Style]
+%</bbx&y>
 %<*cbx&n>
 \ProvidesFile{oxnotes.cbx}
     [\Version\space Footnote-based citation style inspired by the Oxford Guide to Style]
 %</cbx&n>
-%<*cbx&y>
-\ProvidesFile{oxyear.cbx}
-    [\Version\space Author-year citation style inspired by the Oxford Guide to Style]
-%</cbx&y>
 %<*cbx&m>
 \ProvidesFile{oxnum.cbx}
     [\Version\space Numeric citation style inspired by the Oxford Guide to Style]
 %</cbx&m>
+%<*cbx&a>
+\ProvidesFile{oxalph.cbx}
+    [\Version\space Alphabetic citation style inspired by the Oxford Guide to Style]
+%</cbx&a>
+%<*cbx&y>
+\ProvidesFile{oxyear.cbx}
+    [\Version\space Author-year citation style inspired by the Oxford Guide to Style]
+%</cbx&y>
 %<*dbx>
 %<n>\ProvidesFile{oxnotes.dbx}
-%<y>\ProvidesFile{oxyear.dbx}
 %<m>\ProvidesFile{oxnum.dbx}
+%<a>\ProvidesFile{oxalph.dbx}
+%<y>\ProvidesFile{oxyear.dbx}
     [\Version\space Data model for the Oxref family of styles]
 %</dbx>
 %<*lbx&en>
@@ -58,27 +67,33 @@
 \ProvidesFile{oxnotes-doc.tex}
     [\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]
 %</doc&n>
-%<*doc&y>
-\ProvidesFile{oxyear-doc.tex}
-    [\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]
-%</doc&y>
 %<*doc&m>
 \ProvidesFile{oxnum-doc.tex}
     [\Version\space Numeric biblatex style inspired by the Oxford Guide to Style]
 %</doc&m>
+%<*doc&a>
+\ProvidesFile{oxalph-doc.tex}
+    [\Version\space Alphabetic biblatex style inspired by the Oxford Guide to Style]
+%</doc&a>
+%<*doc&y>
+\ProvidesFile{oxyear-doc.tex}
+    [\Version\space Author-year biblatex style inspired by the Oxford Guide to Style]
+%</doc&y>
 %<*readme>
 # biblatex-oxref: Biblatex styles inspired by the *Oxford Guide to Style*
 
-This bundle provides three [biblatex] styles that implement (some of) the
+This bundle provides four [biblatex] styles that implement (some of) the
 stipulations and examples provided by the 2014 *New Hart's Rules* and the 2002
 *Oxford Guide to Style*:
 
   * `oxnotes` is a style similar to the standard `verbose`,
     intended for use with footnotes;
-  * `oxyear` is a style similar to the standard `authoryear`,
-    intended for use with parenthetical in-text citations.
   * `oxnum` is a style similar to the standard `numeric`,
     intended for use with numeric in-text citations.
+  * `oxalph` is a style similar to the standard `numeric`,
+    intended for use with alphabetic in-text citations.
+  * `oxyear` is a style similar to the standard `authoryear`,
+    intended for use with parenthetical in-text citations.
 
 These styles should be considered experimental. In particular, the ways in which
 the styles handle certain tricky references are subject to change.
@@ -140,20 +155,24 @@ Copyright (C) 2016 Alex Ball
 \generate{
   \file{\jobname.bbx}{\from{\jobname.dtx}{bbx,o}}
   \file{oxnotes.bbx}{\from{\jobname.dtx}{bbx,n}}
-  \file{oxyear.bbx}{\from{\jobname.dtx}{bbx,y}}
   \file{oxnum.bbx}{\from{\jobname.dtx}{bbx,m}}
+  \file{oxalph.bbx}{\from{\jobname.dtx}{bbx,a}}
+  \file{oxyear.bbx}{\from{\jobname.dtx}{bbx,y}}
   \file{oxnotes.cbx}{\from{\jobname.dtx}{cbx,n}}
-  \file{oxyear.cbx}{\from{\jobname.dtx}{cbx,y}}
   \file{oxnum.cbx}{\from{\jobname.dtx}{cbx,m}}
+  \file{oxalph.cbx}{\from{\jobname.dtx}{cbx,a}}
+  \file{oxyear.cbx}{\from{\jobname.dtx}{cbx,y}}
   \file{oxnotes.dbx}{\from{\jobname.dtx}{dbx,n}}
-  \file{oxyear.dbx}{\from{\jobname.dtx}{dbx,y}}
   \file{oxnum.dbx}{\from{\jobname.dtx}{dbx,m}}
+  \file{oxalph.dbx}{\from{\jobname.dtx}{dbx,a}}
+  \file{oxyear.dbx}{\from{\jobname.dtx}{dbx,y}}
   \file{american-\jobname.lbx}{\from{\jobname.dtx}{lbx,us}}
   \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx,gb}}
   \file{english-\jobname.lbx}{\from{\jobname.dtx}{lbx,en}}
   \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc,n}}
-  \file{oxyear-doc.tex}{\from{\jobname.dtx}{doc,y}}
   \file{oxnum-doc.tex}{\from{\jobname.dtx}{doc,m}}
+  \file{oxalph-doc.tex}{\from{\jobname.dtx}{doc,a}}
+  \file{oxyear-doc.tex}{\from{\jobname.dtx}{doc,y}}
 }
 %</install>
 %<install>\endbatchfile
@@ -174,8 +193,9 @@ Copyright (C) 2016 Alex Ball
 \PassOptionsToPackage{style=oxnotes}{biblatex}
 %</driver>
 %<doc&n>\PassOptionsToPackage{style=oxnotes,scnames,varissuedate,anon}{biblatex}
-%<doc&y>\PassOptionsToPackage{style=oxyear,varissuedate,anon}{biblatex}
 %<doc&m>\PassOptionsToPackage{style=oxnum,varissuedate,anon}{biblatex}
+%<doc&a>\PassOptionsToPackage{style=oxalph,varissuedate,anon}{biblatex}
+%<doc&y>\PassOptionsToPackage{style=oxyear,varissuedate,anon}{biblatex}
 %<*driver|doc>
 \documentclass[extrafontsizes,11pt,a4paper,oneside]{memoir}
 \setlrmarginsandblock{3cm}{3cm}{*}
@@ -554,8 +574,9 @@ Copyright (C) 2016 Alex Ball
 \title{OXREF -- Biblatex styles inspired by the \emph{Oxford Guide to Style}}
 %</driver>
 %<doc&n>\title{OXNOTES -- A notes-based style for Biblatex}
-%<doc&y>\title{OXYEAR -- An author–year style for Biblatex}
 %<doc&m>\title{OXNUM -- A numeric style for Biblatex}
+%<doc&a>\title{OXALPH -- A numeric style for Biblatex}
+%<doc&y>\title{OXYEAR -- An author–year style for Biblatex}
 %<*driver|doc>
 \author{Alex Ball}
 \date{\printdateTeX{\filedate}}
@@ -640,16 +661,16 @@ UNIX-like systems:
 
   * Running `make source` generates the derived files
       - README.md
-      - oxref.bbx, oxnotes.bbx, oxyear.bbx, oxnum.bbx
-      - oxnotes.cbx, oxyear.cbx, oxnum.cbx
+      - oxref.bbx, oxnotes.bbx, oxyear.bbx, oxnum.bbx, oxalph.bbx
+      - oxnotes.cbx, oxyear.cbx, oxnum.cbx, oxalph.cbx
       - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx
-      - oxnotes.dbx, oxyear.dbx, oxnum.dbx
+      - oxnotes.dbx, oxyear.dbx, oxnum.dbx, oxalph.dbx
       - oxref.bib
       - oxref.ins
-      - oxnotes-doc.tex, oxyear-doc.tex, oxnum-doc.tex
+      - oxnotes-doc.tex, oxyear-doc.tex, oxnum-doc.tex, oxalph-doc.tex
 
   * Running `make` generates the above files and also oxref.pdf,
-    oxnotes-doc.pdf, oxyear-doc.pdf and oxnum-doc.pdf.
+    oxnotes-doc.pdf, oxyear-doc.pdf, oxnum-doc.pdf and oxalph-doc.pdf.
 
   * Running `make inst` installs the files in the user's TeX tree.
     You can undo this with `make uninst`.
@@ -683,6 +704,9 @@ first two steps.
         american-oxref.lbx,
         british-oxref.lbx,
         english-oxref.lbx,
+        oxalph.bbx,
+        oxalph.cbx,
+        oxalph.dbx,
         oxnotes.bbx,
         oxnotes.cbx,
         oxnotes.dbx,
@@ -695,6 +719,8 @@ first two steps.
         oxyear.dbx
       - `doc/latex/biblatex-oxref`:
         README.md,
+        oxalph-doc.pdf,
+        oxalph-doc.tex,
         oxnotes-doc.pdf,
         oxnotes-doc.tex,
         oxnum-doc.pdf,
@@ -733,7 +759,7 @@ This work is ‘maintained’ (as per LPPL maintenance status) by [Alex Ball][me
 \iffalse % syntax highlighting \fix
 %</driver>
 %<*doc|bib>
-%<*n|y|m>
+%<*n|m|a|y>
 \chapter{Introduction}
 
 \section{Loading the style}\label{sec:loading}
@@ -741,6 +767,8 @@ This work is ‘maintained’ (as per LPPL maintenance status) by [Alex Ball][me
 The style is self-contained, so you can load it with \pkg{biblatex}:
 \begin{tcblisting}{listing only}
 %<n>\usepackage[style=oxnotes]{biblatex}
+%<m>\usepackage[style=oxnum]{biblatex}
+%<a>\usepackage[style=oxalph]{biblatex}
 %<y>\usepackage[style=oxyear]{biblatex}
 \end{tcblisting}
 
@@ -759,12 +787,12 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   \item\docValue{long}
     will print the unabbreviated localization string \code{anon} (‘Anonymous’) instead of the author name
 %<y>    in citations and the bibliography.
-%<m>    in the bibliography.
+%<m|a>    in the bibliography.
 %<n>    in the bibliography, but neither are printed in citations.
   \item\docValue{short}
     will print the abbreviated localization string \code{anon} (‘Anon.\@’) instead of the author name
 %<y>    in citations and the bibliography.
-%<m>    in the bibliography.
+%<m|a>    in the bibliography.
 %<n>    in the bibliography, but neither are printed in citations.
   \end{itemize}
 \end{docKey}
@@ -800,7 +828,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
     separates the two with a solidus, e.g. ‘23/2’.
   \item\docValue{colon}
     separates the two with a colon and space, e.g. ‘23: 2’.
-%<y>    It is intended for use with \textsf{oxnotes} and not recommended for this style.
+%<a|y>    It is intended for use with \textsf{oxnotes} and not recommended for this style.
   \item\docValue{comma}
     separates the two with a comma and space, e.g. ‘23, 2’.
   \item\docValue{parens}
@@ -809,13 +837,13 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   \end{itemize}
 \end{docKey}
 
-%<*y>
+%<*a|y>
 \begin{docKey}{mergedate}{=\val{maximum}|\val{compact}|\val{basic}|\val{minimum}|\val{year}|\val{false}}{default \val{year}, initially \val{year}}
   Affects how the date at the start of the references relates to the date in the ‘normal’ position.
   The standard option values are available but not well tested; I recommend you stick with the default of \val{year}.
   If you do select \val{maximum} or \val{compact}, I recommend you also select \key{labeldate}\texttt{=}\val{comp} to avoid loss of information.
 \end{docKey}
-%</y>
+%</a|y>
 
 \begin{docKey}{nolocation}{}{no value, initially unset}
   Replaces missing locations with ‘n.p.’ or the localized equivalent in books, collections, reference works, proceedings, and similar entry types. Once set, this option cannot be overridden.
@@ -921,11 +949,11 @@ Where a source is provided, it refers to a section from one of the reference wor
 
 Where the source is starred (*), this indicates the example is not quite how it appears in the book,
 usually because the original is demonstrating an option that is not the \pkg[biblatex]{oxref} default.
-%<*y>
+%<*a|y>
 Where the source is marked with a dagger (\textdagger),
 this indicates that the example has been coverted from an \textsf{oxnotes}-style one,
 since the guides provide relatively few for author-year references.
-%</y>
+%</a|y>
 
 \section{Design philosophy}
 
@@ -1012,6 +1040,14 @@ and indeed loads a standard \textsf{biblatex} one.
 While the note text generated by the style is very similar to that which appears in the bibliography,
 there is a difference in how author names are printed.
 %</n>
+%<*m>
+The \textsf{oxnum} bibliography style is intended for use with a numeric citation style,
+and indeed loads a tweaked version of a standard \textsf{biblatex} one.
+%</m>
+%<*a>
+The \textsf{oxalph} bibliography style is intended for use with an alphabetic citation style,
+and indeed loads a tweaked version of a standard \textsf{biblatex} one.
+%</a>
 %<*y>
 The \textsf{oxyear} bibliography style is intended for use with an author–year citation style,
 and indeed loads a tweaked version of a standard \textsf{biblatex} one.
@@ -1023,7 +1059,7 @@ and indeed loads a tweaked version of a standard \textsf{biblatex} one.
 Following the advice of \emph{New Hart's Rules}, \textsf{oxnotes} loads by default the standard \textsf{verbose} citation style, in which repeated citations are abbreviated to the author surname and a short title.
 
 %</n>
-%</n|y|m>
+%</n|m|a|y>
 %<*bib>
 @book{faith1997epg,
   author = {R. J. Faith},
@@ -1043,7 +1079,7 @@ Following the advice of \emph{New Hart's Rules}, \textsf{oxnotes} loads by defau
   author = {Cobban},
   title = {Colleges and halls}}
 %</bib>
-%<*n|y>
+%<*n|m|a|y>
 %<*n>
 \begin{egcite}{}
 Test\footcite{faith1997epg}
@@ -1084,7 +1120,7 @@ If different authors have the same surname, they are distiguished by their initi
 If there is no date, the replacement text is separated from the name by a comma.
 
 %</y>
-%</n|y>
+%</n|m|a|y>
 %<*bib>
 @inbook{smithFCct,
   author = {P. Smith},
@@ -1096,7 +1132,7 @@ If there is no date, the replacement text is separated from the name by a comma.
   location = {London},
   pubstate = {forthcoming}}
 %</bib>
-%<*n|y>
+%<*n|m|a|y>
 %<*y>
 \nocite{smithFCct}
 \begin{egcite}{(P. Smith, forthcoming \emph{a}; T. Smith 1988)}
@@ -1142,14 +1178,14 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
 \toggletrue{blx@bibliography}
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{anon1822san,
   author = {Anonymous},
   title = {Stories after Nature},
   location = {London},
   publisher = {Allman},
   date = {1822}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1162,14 +1198,14 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
 \toggletrue{blx@bibliography}
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{anon1956lu,
   author = {Anonymous},
   title = {Liber usualis},
   location = {Tournai},
   publisher = {Desclée},
   year = {1956}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1210,7 +1246,7 @@ to put ‘(Ps.-)’ after the name in the bibliography.
 %<y>Boethius (Ps.-) (1976), \emph{De disciplina scolarium: Édition critique, introduction et notes}, ed. O.\ Weijers (Leiden).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{boethius1976dds,
   author = {Boethius},
   author+an = {1=pseudo},
@@ -1219,7 +1255,7 @@ to put ‘(Ps.-)’ after the name in the bibliography.
   editor = {Olga Weijers},
   location = {Leiden},
   date = {1976}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1241,14 +1277,14 @@ Oxford style is to give the attribution in square brackets.
 %<y>{[Balfour, J.]} (1768), \emph{Philosophical Essays} (Edinburgh).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{balfour1768pe,
   author = {James Balfour},
   author+an = {=inferred},
   title = {Philosophical Essays},
   location = {Edinburgh},
   date = {1768}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1274,14 +1310,14 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
 %<y>Dodgson, C. L. [Lewis Carroll] (1896), \emph{Symbolic Logic} (Oxford).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{dodgson1896sl,
   author = {C. L. Dodgson},
   nameaddon = {Lewis Carroll},
   title = {Symbolic Logic},
   location = {Oxford},
   date = {1896}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1304,14 +1340,14 @@ in parentheses (\emph{Oxford Guide to Style}) or brackets (\emph{New Hart's Rule
 %<y>Lauder, A. [Morrison, A.] (1965), \emph{Let Stalk Strine} (Sydney).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{lauder1965lss,
   author = {Afferbeck Lauder},
   authoraddon = {Alistair Morrison},
   title = {Let Stalk Strine},
   location = {Sydney},
   date = {1965}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1345,7 +1381,7 @@ In cases where an author changes the name under which they publish (e.g.\ due to
 %<y>\toggletrue{blx@bibliography}Joukovsky, F. (= Joukovsky-Micha, F.) (1967), \enquote{La Guerre des dieux et des géants chez les poètes francais du XVI\textsuperscript{e} siècle (1500–1585)}, \emph{Bibliothèque d'Humanisme et Renaissance}, 29: 55–92.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{joukovsky1967gdd,
   author = {F. Joukovsky},
   authoraddon = {F. Joukovsky-Micha},
@@ -1357,7 +1393,7 @@ In cases where an author changes the name under which they publish (e.g.\ due to
   date = {1967},
   langid = {french},
   pages = {55-92}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1383,7 +1419,7 @@ If the contribution of the translators or revisers is so great they could be joi
 %<y>Kühner, R., rev. Blass, F. (1890-2), \emph{Ausführliche grammatik der griechischen sprache}, i: \emph{Elementar- und Formenlehre} (Hannover: Hahnsche Buchhandlung).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvbook{kuehner.blass1890ef,
   author = {Raphael Kühner},
   editor = {Friedrich Blass},
@@ -1396,7 +1432,7 @@ If the contribution of the translators or revisers is so great they could be joi
   location = {Hannover},
   publisher = {Hahnsche Buchhandlung},
   date = {1890/1892}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1416,14 +1452,14 @@ I have not added special rules for recognizing such titles, so if you want to in
 %<y>Wood, Mrs H. (1861), \emph{East Lynne}, 3 vols. (London).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvbook{wood1861el,
   author = {title=Mrs, given=Henry, family=Wood},
   title = {East Lynne},
   volumes = {3},
   location = {London},
   date = {1861}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1444,7 +1480,7 @@ If you used a foreign language work, you might want to recommend a good translat
 %<y>Tschichold, J. (1955), \emph{Typographische Gestaltung} (Basle); Eng. trans. as \emph{Asymmetric Typography} (London, 1967).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{tschichold1955tg,
   author = {J. Tschichold},
   title = {Typographische Gestaltung},
@@ -1456,7 +1492,7 @@ If you used a foreign language work, you might want to recommend a good translat
   title = {Asymmetric Typography},
   location = {London},
   date = {1967}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1470,7 +1506,7 @@ If you used a foreign language work, you might want to recommend a good translat
 %<y>Sarrau, J. (1975), \emph{Tapas y aperitivos} (Madrid); trans. F. P. Slesinger as \emph{Tapas and Appetizers} (New York, 1987).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{sarrau1975ta,
   author = {José Sarrau},
   title = {Tapas y aperitivos},
@@ -1484,7 +1520,7 @@ If you used a foreign language work, you might want to recommend a good translat
   title = {Tapas and Appetizers},
   location = {New York},
   date = {1987}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1501,7 +1537,7 @@ If you used the translation, you might want to give the original publication as 
 %<y>Metz, R. (1938), \emph{A Hundred Years of British Philosophy}, ed. J. H. Muirhead, trans. J. W. Harvey [Ger. orig., \emph{Die philosophischen Strömungen der Gegenwart in Grossbritannien} (1935)]
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{metz1938hyb,
   author = {R. Metz},
   title = {A Hundred Years of British Philosophy},
@@ -1514,7 +1550,7 @@ If you used the translation, you might want to give the original publication as 
   title = {Die philosophischen Strömungen der Gegenwart in Grossbritannien},
   date = {1935},
   language = {german}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1530,13 +1566,13 @@ It is often helpful to provide an informative translation of foreign language ti
 %<y>Nissan Motor Corporation (1965), \emph{Nissan Jidosha 30nen shi} [A 30-year history of Nissan Motors].
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{nissan1965hnm,
   author = {{Nissan Motor Corporation}},
   title = {Nissan Jidosha 30nen shi},
   titleaddon = {A 30-year history of Nissan Motors},
   date = {1965}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1551,7 +1587,7 @@ Conversely, it might be helpful to provide the English original of a translated 
 %<y>Milne, A. A. (1938), \emph{Pu der Bär} [Ger. trans. of \emph{Winnie the Pooh}] (Potsdam: Williams).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{milne1938pb,
   author = {A. A. Milne},
   title = {Pu der Bär},
@@ -1560,7 +1596,7 @@ Conversely, it might be helpful to provide the English original of a translated 
   location = {Potsdam},
   publisher = {Williams},
   date = {1938}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1581,14 +1617,14 @@ For periodicals, grey literature, audiovisual and online material, the lack of a
 %<y>Marchetto of Padua (1961), \emph{Pomerium}, ed. G. Vecchi (n.p.).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{padua1961p,
   author = {{Marchetto of Padua}},
   title = {Pomerium},
   editor = {Guiseppe Vecchi},
   date = {1961},
   options = {nolocation}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1604,7 +1640,7 @@ The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.4.1>
 {goldblatt1973dmm}
@@ -1695,7 +1731,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 \end{Verbatim}
 \end{bibexbox}
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 % Many authors, 'von' part, no number
 \begin{bibexbox}
@@ -1706,7 +1742,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 %<y>Vaucouleurs, G. de, et al. (1975), \enquote{The New Martian Nomenclature of the International Astronomical Union}, \emph{Icarus}, 26: 85--98.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{vaucouleurs1975nmn,
   author = {Gerald de Vaucouleurs and J. Blunck and M. Davies and A. Dollfus and I. Koval and
     G. Kuiper and H. Masursky and S. Miyamoto and V Moroz and Carl Sagan},
@@ -1715,7 +1751,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
   volume = {26},
   date = {1975},
   pages = {85-98}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1728,7 +1764,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 %<y>Druin, A. (2002), \enquote{The Role of Children in the Design of New Technology}, \emph{Behaviour \& Information Technology}, 21/1: 1–25. doi: \path{10.1080/01449290110108659}
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{druin2002rcd,
   author = {A. Druin},
   title = {The Role of Children in the Design of New Technology},
@@ -1738,7 +1774,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
   date = {2002},
   pages = {1-25},
   doi = {10.1080/01449290110108659}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1751,7 +1787,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 %<y>Li, S. et al. (2013), \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11, e78188. doi: \path{10.1371/journal.pone.0078188}
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{li.etal2013flh,
   author = {Shu Li and Chungkun Shih and Chen Wang and Hong Pang and Dong Ren},
   title = {Forever Love},
@@ -1762,13 +1798,13 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
   date = {2013},
   eid = {e78188},
   doi = {10.1371/journal.pone.0078188}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
 \hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. \pkg[biblatex]{Oxref} will try to detect this; if it gets it wrong, you can suppress the comma by adding \cs{nopunct} to the end of the journal (sub)title, or restore it by adding a pair of braces.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.4.1>
 {lindars1965eir}
@@ -1789,7 +1825,7 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
 \end{Verbatim}
 \end{bibexbox}
 %</n>
-%<*n|y>
+%<*n|m|a|y>
 
 % Unsigned, with month as issue name
 \begin{bibexbox}
@@ -1800,7 +1836,7 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
 %<y>\enquote{Solar Photon Thruster} (1990), \emph{Journal of Spacecraft and Rockets}, 28/4 (July–Aug.): 411–6.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{jsr1990spt,
   title = {Solar Photon Thruster},
   journaltitle = {Journal of Spacecraft and Rockets},
@@ -1808,7 +1844,7 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
   number = {4},
   date = {1990-07/1990-08},
   pages = {411-416}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -1826,7 +1862,7 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
 %<y>Moody, T. W. (1953), \enquote{Michael Davitt and the British Labour Movement, 1882–1906}, \emph{Transactions of the Royal Historical Society}, 5th ser., 3: 53--76.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{moody1953mdb,
   author = {T. W. Moody},
   title = {Michael Davitt and the British Labour Movement, 1882–1906},
@@ -1835,14 +1871,14 @@ B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965
   volume = {3},
   date = {1953},
   pages = {53-76}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number (Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, \textsc{ns} Vol/Number, Pages.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.4.3>
 {barnes1971has}
@@ -1886,7 +1922,7 @@ Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \e
 \end{Verbatim}
 \end{bibexbox}
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 
 \section{Articles in issues identified by date alone}
@@ -1894,7 +1930,7 @@ Hankinson, R. J. (1989), \enquote{Galen and the Best of All Possible Worlds}, \e
 %<n>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Day Month Year, Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Day Month: Pages.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 % No author
 \begin{bibexbox}<OGS \S15.4.1>
@@ -1976,7 +2012,7 @@ WHO (World Health Organization) (1983), \enquote{Nutrition: Sex Bias of Nutritio
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 % Year as volume number
 \begin{bibexbox}
@@ -1987,14 +2023,14 @@ WHO (World Health Organization) (1983), \enquote{Nutrition: Sex Bias of Nutritio
 %<y>Boyce, M. (1957), \enquote{The Parthian \emph{Gsn} and Iranian Minstrel Tradition}, \emph{Journal of the Royal Asiatic Society}: 10--45.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{boyce1957pgi,
   author = {M. Boyce},
   title = {The Parthian \emph{Gsn} and Iranian Minstrel Tradition},
   journaltitle = {Journal of the Royal Asiatic Society},
   date = {1957},
   pages = {10-45}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2018,7 +2054,7 @@ or add the book details to a periodical entry.
 %<y>Bec, C. (1976) (ed.), \emph{Italie 1500--1550: Une situation de crise?} = \emph{Annales de l'Université Jean Moulin}, 1975/2 (Langues étrangères, 2; Lyon), 99--109.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @collection{bec1976isc,
   editor = {C. Bec},
   title = {Italie 1500--1550},
@@ -2034,7 +2070,7 @@ or add the book details to a periodical entry.
   title = {Annales de l'Université Jean Moulin},
   volume = {1975},
   number = {2}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2051,14 +2087,14 @@ or add the book details to a periodical entry.
 %<y>Trisoglio, F. (1973), \emph{Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)} = \emph{Rivista Iasalliana}, 40.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{trisoglio1973gnq,
   author = {F. Trisoglio},
   issuetitle = {Gregorio di Nazianzo in un quarentennio di recherche (1925--1965)},
   journaltitle = {Rivista Iasalliana},
   volume = {40},
   date = {1973}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2080,7 +2116,7 @@ or add the book details to a periodical entry.
 %<y>Zhentao, X., Yau, K. K. C., and Stephenson, F. R. (1989) \enquote{Astronomical Records on the Shang Dynasty Oracle Bones}, \emph{Archaeoastronomy}, 14; Supplement to \emph{Journal for the History of Astronomy}, 20, pp. S61--S72.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{zhentao.etal1989ars,
   author = {X. Zhentao and K. K. C. Yau and F. R. Stephenson},
   title = {Astronomical Records on the Shang Dynasty Oracle Bones},
@@ -2094,7 +2130,7 @@ or add the book details to a periodical entry.
 @periodical{jha1989,
   title = {Journal for the History of Astronomy},
   volume = {20}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2105,7 +2141,7 @@ or add the book details to a periodical entry.
 
 \tip{Use the key \code{serialarticle} as the \code{relatedtype}.}
 
-%</n|y>
+%</n|m|a|y>
 %<*y>
 \begin{bibexbox}<NHR \S 17.3*>
 {stookey1974ssp}
@@ -2136,7 +2172,7 @@ Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab 
 \end{bibexbox}
 %</y>
 
-%<*n|y>
+%<*n|m|a|y>
 
 \section{Accepted journal articles, pre-publication}
 
@@ -2148,14 +2184,14 @@ Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab 
 (not in book)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{briscoe2008esp,
   author = {Robert Briscoe},
   title = {Egocentric Spatial Representation in Action and Perception},
   journaltitle = {Philosophy and Phenomenological Research},
   url = {http://cogprints.org/5780/1/ECSRAP.F07.pdf},
   pubstate = {inpress}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2174,7 +2210,7 @@ Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab 
 %<y>Dean, J. (1995), review of P. Basiron (1994), \emph{My Early Life} (Bourges), in \emph{Res facta}, 17: 56--9.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @review{dean1995rpb,
   author = {J. Dean},
   related = {basiron1994mel},
@@ -2188,7 +2224,7 @@ Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab 
   title = {My Early Life},
   location = {Bourges},
   date = {1994}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2200,7 +2236,7 @@ Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab 
 %<y>Jocelyn, H. D. (1989), \enquote{Probus and Virgil}, review of M. L. Delvigo (1987), \emph{Testo virgiliano e tradizione indiretta} (Pisa), in \emph{CR}, \textsc{ns} 39: 27--8.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @review{jocelyn1989pav,
   author = {H. D. Jocelyn},
   title = {Probus and Virgil},
@@ -2216,7 +2252,7 @@ Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab 
   title = {Testo virgiliano e tradizione indiretta},
   location = {Pisa},
   date = {1987}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2233,7 +2269,7 @@ Biblatex defines \code{book} as a monograph, written either by a single author, 
 %<n>\spec{Author, \emph{Title} (Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title} (Location: Publisher).}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.2.1>
 {eliot1977m}
@@ -2329,14 +2365,14 @@ Lyons, J. (1981\emph{b}), \emph{Language, Meaning and Context} (London: Fontana 
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 \subsection{No publisher}
 
 %<n>\spec{Author, \emph{Title} (Location, Year).}
 %<y>\spec{Author (Year), \emph{Title} (Location).}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<NHR \S18.1.3>
 {rogers1986tmp}
@@ -2375,7 +2411,7 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 \subsection{Edited book}
 
@@ -2393,13 +2429,13 @@ Smith, T. (1988), \emph{Famine and Gender} (New Haven, Conn.).
 %<y>\emph{Distichia Catonis} (1952), ed. M.\ Boas and H.\ J.\ Botschuyver (Amsterdam).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{boas.botschuyver1952dc,
   title = {Distichia Catonis},
   editor = {Marcus Boas and Henricus Johannes Botschuyver},
   location = {Amsterdam},
   date = {1952}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2410,7 +2446,7 @@ Biblatex defines \code{collection} as a book made up of multiple self-contained 
 %<n>\spec{Editor (\lit{ed.}), \emph{Title} (Location: Publisher, Year).}
 %<y>\spec{Editor (Year) (\lit{ed.}), \emph{Title} (Location: Publisher).}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.2.1>
 {stewart.etal1994mb}
@@ -2450,9 +2486,9 @@ Barnes, J., and Griffin, M. T. (1989) (eds.), \emph{Philosophia Togata: Essays o
 \end{bibexbox}
 
 %</y>
-%<*n|y>%
+%<*n|m|a|y>%
 
-%</n|y>
+%</n|m|a|y>
 %<*y>
 \begin{bibexbox}<OGS \S15.19.2>
 {hankinson1988mmm}
@@ -2472,7 +2508,7 @@ Hankinson, R. J. (1988) (ed.), \emph{Method, Medicine, and Metaphysics} (Edmonto
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 \section{Reference works}
 
@@ -2495,7 +2531,7 @@ Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are ty
 %<y>\emph{Theophrastus of Eresus: Sources for his Life, Writings, Thought, and Influence} (1991), ed. W. W. Fortenbaugh et al., 2 vols. (Philosophia Antiqua, 54; Leiden).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvreference{fortenbaugh.etal1991tes,
   title = {{Theophrastus} of {Eresus}},
   subtitle = {Sources for his Life, Writings, Thought, and Influence},
@@ -2506,7 +2542,7 @@ Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are ty
   number = {54},
   location = {Leiden},
   date = {1991}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2543,14 +2579,14 @@ Where all volumes were published consistently, the following form is used:
 %<y>Vander Straeten, E. (1867--88), \emph{La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle}, 8 vols. (Brussels).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvbook{straeten1867lmp,
     author = {Edmond {Vander Straeten}},
     title = {La Musique aux Pays-Bas avant le XIX\textsuperscript{e} siècle},
     volumes = {8},
     location = {Brussels},
     date = {1867/1888}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2567,7 +2603,7 @@ Where the publisher changed between volumes, the following form is used:
 %<y>Ritter, H. (1838--46), \emph{The History of Ancient Philosophy}, trans. A. J. W. Morrison, 4~vols. (Oxford: Talboys and London: Bohn).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvbook{ritter1838hap,
   author = {Heinrich Ritter},
   title = {The History of Ancient Philosophy},
@@ -2576,7 +2612,7 @@ Where the publisher changed between volumes, the following form is used:
   location = {Oxford and London},
   publisher = {Talboys and Bohn},
   date = {1838/1846}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2586,7 +2622,7 @@ Where the publisher changed between volumes, the following form is used:
   all in \S13.11.1). I am therefore choosing to ignore this unnecessary
   complication.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \tip{You can alternatively use the standard \textsf{biblatex} relation type \code{multivolume}. Note that this construction is not portable to \textsf{oxyear}.}
 
@@ -2624,7 +2660,7 @@ Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W
 \end{bibexbox}
 
 %</n>
-%<*n|y>
+%<*n|m|a|y>
 \subsection{One volume from several}
 
 Where the volumes are merely numbered, the following form is used:
@@ -2634,7 +2670,7 @@ Where the volumes are merely numbered, the following form is used:
 
 \tip{To get this format, do not use \code{maintitle}: put the title of the whole work in \code{title}.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{egcite}{\dots ii (Brussels, 1867--88), 367--8}
 \cite[367--368]{straeten1867lmp.ii}
@@ -2677,7 +2713,7 @@ Annas, J. (1983) (ed.), \emph{Oxford Studies in Ancient Philosophy}, i (Oxford).
 \end{Verbatim}
 \end{bibexbox}
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 Where the volumes each have their own (sub)title,
 and they were all published at once (more or less),
@@ -2696,7 +2732,7 @@ the following form is used:
 %<y>Brady, Jr., T. A., Oberman, H. A., and Tracy, J. D. (1994) (eds.), \emph{Handbook of European History, 1400–1600: Late Middle Ages, Renaissance and Reformation}, i: \emph{Structures and Assertions} (Leiden: E. J. Brill).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvcollection{brady.etal1994hehsa,
   editor = {Brady, Jr., Thomas A. and Heiko A. Oberman and James D. Tracy},
   maintitle = {Handbook of European History, 1400–1600},
@@ -2706,7 +2742,7 @@ the following form is used:
   location = {Leiden},
   publisher = {E. J. Brill},
   date = {1994}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2730,7 +2766,7 @@ the following form is used:
 %<y>Ward, A. W., and Waller, A. E. (1932) (eds.), \emph{The Cambridge History of English Literature}, xii: \emph{The Nineteenth Century} (Cambridge: CUP).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvcollection{ward.waller1932che,
   editor = {A. W. Ward and A. E. Waller},
   maintitle = {The Cambridge History of English Literature},
@@ -2739,7 +2775,7 @@ the following form is used:
   location = {Cambridge},
   publisher = {CUP},
   date = {1932}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2760,7 +2796,7 @@ the following form is used:
 %<y>Fischer, D. H. (1989), \emph{Albion’s Seed: Four British Folkways in America}, [vol.\ i of \emph{America: A Cultural History}] (New York: Oxford University Press).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{fischer1989asf,
   author = {David Hackett Fischer},
   title = {Albion’s Seed},
@@ -2771,7 +2807,7 @@ the following form is used:
   location = {New York},
   publisher = {Oxford University Press},
   date = {1989}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2790,7 +2826,7 @@ Where works have significant introductions, forewords, afterwords, illustrations
 %<y>Twain, M. (1971), \emph{A Connecticut Yankee at King Arthur's Court}, with an introduction by J. Kaplan (Harmondsworth: Penguin).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{twain1971cyk,
   author = {Mark Twain},
   title = {A {Connecticut} Yankee at {King} {Arthur's} Court},
@@ -2798,7 +2834,7 @@ Where works have significant introductions, forewords, afterwords, illustrations
   location = {Harmondsworth},
   publisher = {Penguin},
   date = {1971}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2815,7 +2851,7 @@ Translators are credited as follows:
 %<y>Bischoff, B. (1990), \emph{Latin Palaeography: Antiquity and the Middle Ages}, trans. D. Ó Cróinín and D. Ganz (Cambridge).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{bischoff1990lpa,
   author = {Bernhard Bischoff},
   title = {Latin Palaeography},
@@ -2823,7 +2859,7 @@ Translators are credited as follows:
   translator = {Dáibhi Ó Cróinín and David Ganz},
   location = {Cambridge},
   date = {1990}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2838,7 +2874,7 @@ Translators are credited as follows:
 %<y>Martorell, J. (1984), \emph{Tirant lo Blanc}, trans. with foreword D. H. Rosenthal (London).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{martorell1984tlb,
   author = {Joanat Martorell},
   title = {Tirant lo Blanc},
@@ -2846,7 +2882,7 @@ Translators are credited as follows:
   foreword = {David H. Rosenthal},
   location = {London},
   date = {1984}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2862,7 +2898,7 @@ Where the author\slash editor is common to both, the following form is used:
 
 \tip{This is the format used by the entry type \code{book}}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{egcite}{\dots (3rd edn., 1990), 419--21}
 \cite[419-421]{baker1990iel}
@@ -2907,7 +2943,7 @@ Maitland, G. (2001), \emph{Maitland's Vertebral Manipulation} (6th edn., Oxford:
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 \begin{bibexbox}
 %<n><NHR \S18.8.5>
 %<y><NHR \S18.8.5\textdagger>
@@ -2916,7 +2952,7 @@ Maitland, G. (2001), \emph{Maitland's Vertebral Manipulation} (6th edn., Oxford:
 %<y>Beckford, W. (1823), \emph{Vathek} (4th edn., London) [online facsimile], \url{http://beckford.c18.net/wbvathek1823.html}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{beckford1823v,
   author = {William Beckford},
   title = {Vathek},
@@ -2926,7 +2962,7 @@ Maitland, G. (2001), \emph{Maitland's Vertebral Manipulation} (6th edn., Oxford:
   howpublished = {online facsimile},
   url = {http://beckford.c18.net/wbvathek1823.html},
   urldate = {2013-11-05}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2945,14 +2981,14 @@ Where the editor has changed, the following form is used:
 %<y>\emph{The Oxford Dictionary of Quotations} (1999), 5th edn., ed. E. Knowles (Oxford).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @reference{knowles1999odq,
   title = {The {Oxford} Dictionary of Quotations},
   edition = {5},
   editor = {Elizabeth Knowles},
   publisher = {Oxford},
   date = {1999}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -2963,7 +2999,7 @@ Where the editor has changed, the following form is used:
 
 \tip{Use the \code{orig} fields for the earlier edition.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.2.3>
 {denniston1934gp}
@@ -3032,7 +3068,7 @@ Marx, K. (1867), \emph{Capital: A Critique of Political Economy}, i, trans. B. F
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 \subsection{Republications}
 
@@ -3055,7 +3091,7 @@ rather than within the publication block%
 %<y>Bettelheim, B. (1976), \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{bettelheim1976uem,
   author = {Bruno Bettelheim},
   title = {The Uses of Enchantment},
@@ -3064,7 +3100,7 @@ rather than within the publication block%
   publisher = {Penguin Books},
   date = {1988},
   origdate = {1976}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3083,7 +3119,7 @@ rather than within the publication block%
 %<y>Adam, C. and Tannery, D. (1897--1913) (eds.), \emph{Œuvres de Descartes} (Paris: Cerf; repr. Paris: J. Vrin, CNRS, 1964--76).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @collection{adam.tannery1897odd,
   editor = {C. Adam and D. Tannery},
   title = {Œuvres de Descartes},
@@ -3094,7 +3130,7 @@ rather than within the publication block%
   location = {Paris},
   publisher = {J. Vrin, CNRS},
   date = {1964/1976}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3106,7 +3142,7 @@ rather than within the publication block%
 %<y>Southern, R. W. (1991), \emph{Saint Anselm: A Portrait in a Landscape} (rev. repr., Cambridge: Cambridge University Press).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{southern1991sap,
   author = {R. W. Southern},
   title = {Saint Anselm},
@@ -3115,7 +3151,7 @@ rather than within the publication block%
   location = {Cambridge},
   publisher = {Cambridge University Press},
   date = {1991}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3132,7 +3168,7 @@ rather than within the publication block%
 %<y>Allen, E. (1594), \emph{A Knack to Know a Knave} (London; facs. edn., Oxford: Malone Society Reprints, 1963).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{allen1594kkk,
   author = {E. Allen},
   title = {A Knack to Know a Knave},
@@ -3142,7 +3178,7 @@ rather than within the publication block%
   location = {Oxford},
   publisher = {Malone Society Reprints},
   date = {1963}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3161,7 +3197,7 @@ then the new title and its details after a semicolon.
 %<y>Hare, C. (1949), \emph{When the Wind Blows} (London); repr. as \emph{The Wind Blows Death} (London, 1987).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{hare1949wwb,
   author = {Cyril Hare},
   title = {When the Wind Blows},
@@ -3174,7 +3210,7 @@ then the new title and its details after a semicolon.
   title = {The Wind Blows Death},
   location = {London},
   date = {1987}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3190,7 +3226,7 @@ then the new title and its details after a semicolon.
 %<y>Berkenhout, J. (1769–72), \emph{Outlines of the Natural History of Great Britain}, 3 vols. (London); rev. edn., as \emph{A Synopsis of the Natural History of Great Britain}, 2 vols. (London, 1789).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvbook{berkenhout1769onh,
   author = {John Berkenhout},
   title = {Outlines of the Natural History of Great Britain},
@@ -3206,7 +3242,7 @@ then the new title and its details after a semicolon.
   edition = {revised},
   location = {London},
   date = {1789}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3218,7 +3254,7 @@ then the new title and its details after a semicolon.
 %<y>Lower, R. (1665), \emph{Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus Edmundum De Meara Ormoniensem Hibernum M.D.} (London); facs. edn. with introduction, ed. and trans. K. Dewhurst, as \emph{Richard Lower's \enquote{Vindicatio}: A Defence of the Experimental Method} (Oxford, 1983).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{lower1665dtw,
   author = {Richard Lower},
   title = {Diatribæ Thomæ Willisii Doct. Med. \& Profess. Oxon. De febribus Vindicatio adversus
@@ -3237,14 +3273,14 @@ then the new title and its details after a semicolon.
   edition = {facsimile},
   location = {Oxford},
   date = {1983}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
 
 \subsection{Co-publications\slash co-editions}
 
-%</n|y>
+%</n|m|a|y>
 %<*y>
 The \emph{Oxford Guide to Style} provides a special format for expressing works that are co-published by several publishers at once. \textsf{Oxnotes} implements it using the \code{relatedtype} keyword \code{copub}. Since it is not suitable for author–year citation styles, no effort is made to make it work for \textsf{oxyear}; you should cite the edition you used, and either ignore the other or mention it in an \code{addendum}.
 
@@ -3284,7 +3320,7 @@ L. A. Holford-Strevens, \emph{Aulus Gellius} (London: Duckworth, 1988; Chapel Hi
 \end{bibexbox}
 
 %</n>
-%<*n|y>
+%<*n|m|a|y>
 If the work is published under two different titles, it is a good idea to
 provide both to make it easier to locate.
 
@@ -3298,7 +3334,7 @@ provide both to make it easier to locate.
 %<y>Salinger, J. D. (1953), \emph{Nine Stories} (Boston: Little, Brown), published in the UK as \emph{For Esmé---With Love and Squalor, and Other Stories} (London: Hamish Hamilton, 1953).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{salinger1953ns,
   author = {J. D. Salinger},
   title = {Nine Stories},
@@ -3313,7 +3349,7 @@ provide both to make it easier to locate.
   location = {London},
   publisher = {Hamish Hamilton},
   date = {1953}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3325,7 +3361,7 @@ provide both to make it easier to locate.
 %<n>\spec{Author, \emph{Title} (Series, Number; Location: Publisher, Year).}
 %<y>\spec{Author (Year), \emph{Title} (Series, Number; Location: Publisher).}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.2.7>
 {garlandia1972dmm}
@@ -3369,7 +3405,7 @@ Barnes, J. (1982), \emph{Aristotle} (Past Masters; Oxford).
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 %<n>\spec{Author, \emph{Title} (nth \lit{ser.}, Year).}
 %<y>\spec{Author (Year), \emph{Title} (nth \lit{ser.}).}
@@ -3379,7 +3415,7 @@ Barnes, J. (1982), \emph{Aristotle} (Past Masters; Oxford).
 %<n>\spec{Author, \emph{Title} (Location: Publisher, \lit{forthcoming}).}
 %<y>\spec{Author (\lit{forthcoming}), \emph{Title} (Location: Publisher).}
 
-%</n|y>
+%</n|m|a|y>
 %<*y>
 \begin{bibexbox}<OGS \S15.19.2>
 {smithFCgaf}
@@ -3400,7 +3436,7 @@ Smith, P. (forthcoming \emph{a}), \emph{Gender and Famine}, 2 vols. (London).
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 \chapter{Works within books}\label{sec:inbook}
 \chapterprecis{inbook, bookinbook, suppbook, incollection, suppcollection, inreference}
@@ -3422,7 +3458,7 @@ The \code{inbook} entry type is intended for books that consist of several self-
 %<y>Kristeller, P. O. (1979), \enquote{The Aristotelian Tradition}, in id., \emph{Renaissance Thought and Its Sources}, ed. M. Mooney (New York: Columbia University Press).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @inbook{kristeller1979thm,
   author = {Paul Oskar Kristeller},
   gender = {sm},
@@ -3433,7 +3469,7 @@ The \code{inbook} entry type is intended for books that consist of several self-
   location = {New York},
   publisher = {Columbia University Press},
   date = {1979}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3448,7 +3484,7 @@ The \code{inbook} entry type is intended for books that consist of several self-
 %<y>Ashton, J. (1991), \enquote{Dualism}, in \emph{Understanding the Fourth Gospel} (Oxford), 205–37.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @inbook{ashton1991d,
   author = {John Ashton},
   title = {Dualism},
@@ -3456,7 +3492,7 @@ The \code{inbook} entry type is intended for books that consist of several self-
   location = {Oxford},
   date = {1991},
   pages = {205-237}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3469,7 +3505,7 @@ The \code{incollection} entry type is intended for citing one of a collection of
 %<n>\spec{Author, \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher, Year), Pages.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{in} Editors (\lit{eds.}), \emph{BookTitle} (Location: Publisher), Pages.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.3>
 {shearman1993vsf}
@@ -3538,7 +3574,7 @@ Jessop, B. (1997), \enquote{The Governance of Complexity and Complexity of Gover
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 \subsection{Works by the editor in a mixed collection}
 
@@ -3555,7 +3591,7 @@ Jessop, B. (1997), \enquote{The Governance of Complexity and Complexity of Gover
 %<y>Todd, W. B. (1974), \enquote{David Hume: A Preliminary Bibliography}, in id. (ed.), \emph{Hume and the Enlightenment: Essays Presented to Ernest Campbell Mossner} (Edinburgh: Edinburgh University Press).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @incollection{todd1974dhp,
   author = {W. B. Todd},
   gender = {sm},
@@ -3567,7 +3603,7 @@ Jessop, B. (1997), \enquote{The Governance of Complexity and Complexity of Gover
   location = {Edinburgh},
   publisher = {Edinburgh University Press},
   date = {1974}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3588,7 +3624,7 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 %<y>Frege, G. (1892), \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @bookinbook{frege1892osr,
   author = {G. Frege},
   gender = {sm},
@@ -3601,7 +3637,7 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
   publisher = {Blackwell},
   date = {1952},
   origdate = {1892}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3617,7 +3653,7 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 %<y>Owen, G. E. L. (1986) \enquote{Philosophical Invective}, in id., \emph{Logic, Science and Dialectic}, ed. M. Nussbaum (Ithaca, NY: Cornell University Press), 347--64. From \emph{Oxford Studies in Ancient Philosophy}, 1 (1983): 1--25.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @bookinbook{owen1986pi,
   author = {G. E. L. Owen},
   gender = {sm},
@@ -3638,7 +3674,7 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
   volume = {1},
   date = {1983},
   pages = {1-25}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3658,7 +3694,7 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
 %<y>Dahlhaus, C. (1971), \enquote{Miszellen zur Musiktheorie des 15.\@ Jahrhunderts}, \emph{Jahrbuch des Staatlichen Instituts für Musikforschung Preußischer Kulturbesitz, 1970} (Berlin), 21–33.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @inreference{dahlhaus1971mmf,
   author = {Carl Dahlhaus},
   title = {Miszellen zur Musiktheorie des 15.\@ Jahrhunderts},
@@ -3667,7 +3703,7 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
   location = {Berlin},
   date = {1971},
   pages = {21-33}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3682,7 +3718,7 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
 %<y>Gill, R. (1987), introduction in \emph{The Complete Works of Christopher Marlow}, i (Oxford; repr.\@ 2001).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @suppbook{gill1987intro,
   author = {Roma Gill},
   title = {introduction},
@@ -3692,7 +3728,7 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
   origdate = {1987},
   edition = {reprint},
   date = {2001}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3715,13 +3751,13 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 %<y>\emph{Proceedings of the XIV International Congress of Papyrologists: Oxford, 24--31 July 1974} (1975) (London).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @proceedings{icp1975pic,
   title = {Proceedings of the {XIV} {International} {Congress} of {Papyrologists}},
   subtitle = {{Oxford}, 24--31 {July} 1974},
   location = {London},
   date = {1975}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3746,7 +3782,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
 %<y>International Astronomical Union (1922), \emph{Transactions of the International Astronomical Union, Rome}, 12--20 May 1922 (London: Imperial College Bookstall).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @proceedings{iau1922tia,
   organization = {{International Astronomical Union}},
   title = {Transactions of the {International} {Astronomical} {Union}, {Rome}},
@@ -3754,7 +3790,7 @@ The \code{proceedings} entry type is intended for a set of conference papers tha
   location = {London},
   publisher = {Imperial College Bookstall},
   date = {1922}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3768,7 +3804,7 @@ Sometimes the title of the proceedings does not relate to the conference; in whi
 (not in book)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @proceedings{ecdl2009,
   editor = {Maristella Agosti and José Borbinha and Sarantos Kapidakis and Christos
     Papatheodorou and Giannis Tsakonas},
@@ -3781,7 +3817,7 @@ Sometimes the title of the proceedings does not relate to the conference; in whi
   location = {Berlin},
   publisher = {Springer},
   date = {2009}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3800,7 +3836,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 (not in book)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvproceedings{iced2009,
   title = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
   volumes = {10},
@@ -3811,7 +3847,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
   publisher = {Design Society},
   date = {2009},
   isbn = {978-1-904670-12-4}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3825,7 +3861,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
 (not in book)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @mvproceedings{iced2009dik,
   maintitle = {Proceedings of the 17th International Conference on Engineering Design (ICED ’09)},
   title = {Design Information and Knowledge},
@@ -3837,7 +3873,7 @@ The examples here are a combination of Oxford style for proceedings and multi-vo
   publisher = {Design Society},
   date = {2009},
   isbn = {978-1-904670-12-4}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3853,7 +3889,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
 (not in book)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @inproceedings{tonkin.strelnikov2009iem,
   author = {Emma Tonkin and Alexey Strelnikov},
   title = {Information Environment Metadata Schema Registry},
@@ -3870,7 +3906,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
   pages = {487-488},
   isbn = {978-3-642-04345-1},
   issn = {0302-9743}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3882,7 +3918,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
 (not in book)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @inproceedings{ding.etal2009sfc,
   author = {Lian Ding and Alex Ball and Manjula Patel and Jason Matthews and Glen Mullineux},
   title = {Strategies for the Collaborative Use of CAD Product Models},
@@ -3898,7 +3934,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
   pages = {123-134},
   isbn = {978-1-904670-12-4},
   url = {http://opus.bath.ac.uk/14285}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3915,7 +3951,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
 %<y>Gombrich, E. H. (1957), \emph{Art and Scholarship}, Inaugural Lecture, University College London, 14 Feb. 1957 (London: H. K. Lewis).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @proceedings{gombrich1957as,
   author = {E. H. Gombrich},
   title = {Art and Scholarship},
@@ -3925,7 +3961,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
   location = {London},
   publisher = {H. K. Lewis},
   date = {1957}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -3936,7 +3972,7 @@ The \code{inproceedings} entry type is intended for a conference paper published
 %<n>\spec{Author, \enquote{Title}, \lit{paper given at the} ConfTitle, Venue, EventDate.}
 %<y>\spec{Author (Year), \enquote{Title}, \lit{paper given at the} ConfTitle, Venue, EventDate.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.6>
 {holfordstrevens1999hlm}
@@ -3976,14 +4012,14 @@ Mason, J. B., Habicht, J. P., and Tabatabai, H. (1984), \enquote{Notes on Nutrit
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 \section{Unpublished orations, addresses, lectures, and speeches}
 
 %<n>\spec{Author, \enquote{Title}, Description.}
 %<y>\spec{Author (Year), \enquote{Title}, Description.}
 
-%</n|y>
+%</n|m|a|y>
 %<*y>
 \begin{bibexbox}<OGS \S15.19.2>
 {pritchard.pritchard1990ard}
@@ -4003,7 +4039,7 @@ Pritchard, E., and Pritchard, J. (1990), \enquote{A Reply to Drèze}, unpub.\ pa
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 
 \chapter{Grey literature}\label{sec:report}
@@ -4022,14 +4058,14 @@ Pritchard, E., and Pritchard, J. (1990), \enquote{A Reply to Drèze}, unpub.\ pa
 %<y>Government of Botswana (1980), \emph{A Human Drought Relief Programme for Botswana} (Gabarone: Ministry of Local Government and Lands).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @report{botswana1980hdr,
   author = {{Government of Botswana}},
   title = {A Human Drought Relief Programme for Botswana},
   location = {Gabarone},
   institution = {Ministry of Local Government and Lands},
   date = {1980}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4037,7 +4073,7 @@ Pritchard, E., and Pritchard, J. (1990), \enquote{A Reply to Drèze}, unpub.\ pa
   Some examples in the \emph{Oxford Guide to Style} repeat the institution in the publisher slot
   (i.e.\@ the \texttt{institution} field) and some do not.}
 
-%</n|y>
+%</n|m|a|y>
 %<*n>
 \begin{bibexbox}<OGS \S15.2.13>
 {pac1988upt}
@@ -4122,14 +4158,14 @@ CNNR/GMH (Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria
 \end{bibexbox}
 
 %</y>
-%<*n|y>
+%<*n|m|a|y>
 
 \section{Reports with a type or series}
 
 %<n>\spec{Author, \emph{Title}, Series, Number (Location: Institution, Year).}
 %<y>\spec{Author (Year), \emph{Title}, Series, Number (Location: Institution).}
 
-%</n|y>
+%</n|m|a|y>
 %<*y>
 \begin{bibexbox}<OGS \S15.19.2>
 {opcs1979amt}
@@ -4195,7 +4231,7 @@ Rosenblatt, J., et al. (1988), \emph{The Common Agricultural Policy of the Europ
 \end{bibexbox}
 
 %</y>
-%<*n|y>%
+%<*n|m|a|y>%
 
 
 \section{Theses}
@@ -4211,14 +4247,14 @@ Rosenblatt, J., et al. (1988), \emph{The Common Agricultural Policy of the Europ
 %<y>Blackburn, B. J. (1970), \enquote{The Lupus Problem}, Ph.D. diss. (University of Chicago).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @thesis{blackburn1970tlp,
   author = {Bonnie J. Blackburn},
   title = {The Lupus Problem},
   type = {Ph.D. diss.},
   institution = {University of Chicago},
   date = {1970}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4284,7 +4320,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
 %<y>Carter, E. (1991), \emph{The Four String Quartets}, Juilliard String Quartet (Sony S2K 47229).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @music{carter1991fsq,
   author = {Elliott Carter},
   title = {The Four String Quartets},
@@ -4293,7 +4329,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
   publisher = {Sony},
   number = {S2K 47229},
   date = {1991}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4305,7 +4341,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
 %<y>Hillier, P. (1989), \emph{Proensa} (ECM Records compact disc ECM 1368).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @music{hillier1989p,
   author = {Paul Hillier},
   title = {Proensa},
@@ -4313,7 +4349,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
   type = {compact disc},
   number = {ECM 1368},
   date = {1989}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4325,7 +4361,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
 %<y>Couperin, F. (1970), \emph{Pièces de clavecin: Huit préludes de L'Art de toucher le clavecin. Livre I. Troisième et quatrième ordres}, H. Dreyfus (Valois, MB 797).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @music{couperin1970pdc,
   author = {Francois Couperin},
   title = {Pièces de clavecin},
@@ -4336,7 +4372,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
   series = {Valois},
   number = {MB 797},
   date = {1970}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4348,7 +4384,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
 %<y>\emph{The Mirror of Narcissus: Songs by Guillaume de Machaut} (n.d.), Gothic Voices, dir. C. Page (Hyperion compact disc CDA 66087).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @music{pageNDmn,
   title = {The Mirror of Narcissus},
   subtitle = {Songs by Guillaume do Machaut},
@@ -4359,7 +4395,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
   publisher = {Hyperion},
   type = {compact disc},
   number = {CDA 66087}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4373,14 +4409,14 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
 %<y>Lightnin' Hopkins (n.d.), \emph{The Complete Aladdin Recordings} (EMI Blues Series, CDP-7-96843-2) [2-vol.\@ CD set].
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @music{hopkinsNDcar,
   author = {{Lightnin’ Hopkins}},
   title = {The Complete Aladdin Recordings},
   series = {EMI Blues Series},
   number = {CDP-7-96843-2},
   howpublished = {2-vol.\@ CD set}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4394,7 +4430,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
 %<y>Lewis, C. S. (1981), \emph{The Lion, the Witch, and the Wardrobe}, read by Sir M. Hordern (2 audio cassettes, TO1611).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @audio{lewis1981lww,
   author = {C. S. Lewis},
   title = {The Lion, the Witch, and the Wardrobe},
@@ -4403,7 +4439,7 @@ The \emph{Oxford Guide to Style} offers several ways of expressing the recording
   type = {2 audio cassettes},
   number = {TO1611},
   date = {1981}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4421,7 +4457,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>Dutilleux, H. (1987), \emph{L'Arbre des songes}, and Maxwell Davies, P., \emph{Concerto for Violin and Orchestra}, Royal Philharmonic Orchestra, cond. A. Previn, violin I. Stern (CBS MK 42449).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @audio{dutilleux1987as,
   author = {Henri Dutilleux},
   title = {L'Arbre des songes},
@@ -4440,7 +4476,7 @@ Sometimes publishers will put several works on a single release without giving i
   author = {Maxwell Davies, Peter},
   title = {Concerto for Violin and Orchestra},
   date = {1987}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4464,7 +4500,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>Davis, M. et al. (1959), \enquote{So What}, in \emph{Kind of Blue} (Columbia CK 64935, 1997) [CD].
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @inaudio{davis1997sw,
   author = {Miles Davis and others},
   title = {So What},
@@ -4475,7 +4511,7 @@ Sometimes publishers will put several works on a single release without giving i
   number = {CK 64935},
   date = {1997},
   howpublished = {CD}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4495,14 +4531,14 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>\emph{The Ashes: Victory in Australia} (1987) (BBCV 4040).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @video{bbc1987ava,
   title = {The {Ashes}},
   subtitle = {Victory in {Australia}},
   publisher = {BBCV},
   number = {4040},
   date = {1987}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4519,7 +4555,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>\enquote{Percy and Harold and Other Stories} (1986), \emph{Thomas the Tank Engine and Friends} series (Britt Allcroft 5-014861-100224).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @video{britt1986pho,
   entrysubtype = {episode},
   title = {{Percy} and {Harold} and Other Stories},
@@ -4527,7 +4563,7 @@ Sometimes publishers will put several works on a single release without giving i
   publisher = {Britt Allcroft},
   number = {5-014861-100224},
   date = {1986}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4544,14 +4580,14 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>Chaplin, C. (1936) (dir.), \emph{Modern Times} (United Artists).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @movie{chaplin1936mt,
   author = {Charles Chaplin},
   authortype = {director},
   title = {Modern Times},
   publisher = {United Artists},
   date = {1936}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4568,7 +4604,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>\emph{This is Spinal Tap: A Rockumentary by Marti Di Bergi} (1983), dir.\ R. Reiner (Embassy Pictures).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @movie{reiner1983tst,
   title = {This is {Spinal} {Tap}},
   subtitle = {A Rockumentary by {Marti} {Di} {Bergi}},
@@ -4576,7 +4612,7 @@ Sometimes publishers will put several works on a single release without giving i
   editortype = {director},
   publisher = {Embassy Pictures},
   date = {1983}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4596,7 +4632,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>\emph{Leningrad Cowboys Go America} (1989) (Villealfa Filmproductions), dir.\@ and screenplay by A. Kaurismäki, story by S. Järvenpää, A. Kaurismäki, M. Valtonen.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @movie{kaurismaki1989lcg,
   title = {Leningrad Cowboys Go America},
   publisher = {Villealfa Filmproductions},
@@ -4606,7 +4642,7 @@ Sometimes publishers will put several works on a single release without giving i
   editoratype = {story by},
   editora = {Sakke Järvenpää and Aki Kaurismäki and Mato Valtonen},
   options = {endeditor}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4620,7 +4656,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>BBC News (2013), \enquote{Inside India's Mars Mission HQ} [video] (5 Nov.), \url{http://www.bbc.co.uk/news/world-24826253}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @video{bbc2013iim,
   entrysubtype = {clip},
   author = {{BBC News}},
@@ -4628,7 +4664,7 @@ Sometimes publishers will put several works on a single release without giving i
   date = {2013-11-05},
   url = {http://www.bbc.co.uk/news/world-24826253},
   urldate = {2013-11-05}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4640,7 +4676,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<y>Rubinstein, A. (1956), \enquote{Rachmaninoff Piano Concerto No. 2, Op. 18, I Moderato, Allegro (Fritz Reiner)} [video], YouTube (recorded 9 Jan., uploaded 8 Nov. 2011), \url{http://www.youtube.com/watch?v=0Vv0Sy9FJrc&list=PLDB11C4F39E09047F}, accessed 9 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @video{rubinstein1956rpc,
   entrysubtype = {clip},
   author = {Arthur Rubinstein},
@@ -4651,7 +4687,7 @@ Sometimes publishers will put several works on a single release without giving i
   datetype = {uploaded},
   url = {http://www.youtube.com/watch?v=0Vv0Sy9FJrc&list=PLDB11C4F39E09047F},
   urldate = {2013-11-09}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4674,13 +4710,13 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>\emph{Un Cœur in Hiver} (2001), Canal+ (Paris, 15 May, 11.40 p.m.).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @video{canal2001ch,
   title = {Un Cœur in Hiver},
   organization = {Canal+},
   location = {Paris},
   date = {2001-05-15T23:40:00+02:00}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4699,7 +4735,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>Berger, J. (1972), Episode 1, \emph{Ways of Seeing}, BBC, \url{https://www.youtube.com/watch?v=0pDE4VX_9Kk}, accessed 9 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @video{berger1972ws,
   entrysubtype = {episode},
   author = {John Berger},
@@ -4710,7 +4746,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   date = {1972},
   url = {https://www.youtube.com/watch?v=0pDE4VX_9Kk},
   urldate = {2013-11-09}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4727,7 +4763,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>Weldon, F. (2010), interview with Kirsty Young, \emph{Desert Island Discs Archive} [podcast], BBC Radio 4 (9 May), \url{http://www.bbc.co.uk/podcasts/series/dida05/all}.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @audio{weldon2010did,
   entrysubtype = {podcast},
   author = {Fay Weldon},
@@ -4736,7 +4772,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   organization = {BBC Radio 4},
   date = {2010-05-09},
   url = {http://www.bbc.co.uk/podcasts/series/dida05/all}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4748,7 +4784,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>Perry, G. (2013), \enquote{I Found Myself in the Art World} [podcast], Reith Lecture, BBC Radio 4 (5 Nov.), \url{http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @audio{perry2013ifm,
   entrysubtype = {podcast},
   author = {Grayson Perry},
@@ -4758,7 +4794,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   organization = {BBC Radio 4},
   url = {http://downloads.bbc.co.uk/podcasts/radio4/reith/reith_20131105-0940b.mp3},
   urldate = {2013-11-05}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4774,7 +4810,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>Nicholson, C. (2011), \enquote{A Quirk of Speech May Become a New Vocal Style} [video], \emph{Scientific American} (17 Dec.), \url{http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17}, accessed 4 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @video{nicholson2011qsm,
   entrysubtype = {clip},
   author = {Christie Nicholson},
@@ -4783,7 +4819,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   date = {2011-12-17},
   url = {http://www.scientificamerican.com/podcast/episode.cfm?id=a-quirk-of-speech-may-become-a-new-11-12-17},
   urldate = {2013-11-04}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4802,7 +4838,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>Yousafzai, M. (2013), \enquote{Making a Wish for Action on Global Education: Malala Yousafzai Addresses Youth Assembly at UN on her 16th Birthday, 12 July 2013} [webcast], UN Web TV, (12 July), \url{http://webtv.un.org/search/malala-yousafzai-un-youth-assembly/2542094251001?term=malala}, accessed 15 Feb. 2015.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @video{yousafzai2013mwa,
   entrysubtype = {webcast},
   author = {Malala Yousafzai},
@@ -4812,7 +4848,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   date = {2013-07-12},
   url = {http://webtv.un.org/search/malala-yousafzai-un-youth-assembly/2542094251001?term=malala},
   urldate = {2015-02-15}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4829,7 +4865,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>Clarke, M. (n.d.), \enquote{Exports of Coal to the IFS} [poster], Manchester Art Gallery, \url{http://www.machestergalleries.org/the-collections/search-the-collection/display.php?EMUSESSID=70bd7f1a388d79a82f52ea9aae713ef2&irn=4128}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @image{clarkeNDeci,
   author = {M. Clarke},
   title = {Exports of Coal to the IFS},
@@ -4837,7 +4873,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   organization = {Manchester Art Gallery},
   url = {http://www.machestergalleries.org/the-collections/search-the-collection/display.php?EMUSESSID=70bd7f1a388d79a82f52ea9aae713ef2&irn=4128},
   urldate = {2013-11-05}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4849,14 +4885,14 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<y>\enquote{Christ the Good Shepherd} (n.d.), stained glass window, Church of St Erfyl, Llanerfyl, Powys, Imaging the Bible in Wales Database, \url{http://imagingthebible.llgc.org.uk/object/1884}, accessed 10 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @image{ibwNDcgs,
   title = {Christ the Good Shepherd},
   note = {stained glass window, Church of St Erfyl, Llanerfyl, Powys},
   organization = {Imaging the Bible in Wales Database},
   url = {http://imagingthebible.llgc.org.uk/object/1884},
   urldate = {2013-11-10}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4881,7 +4917,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>BBC News (2013), \enquote{Colchester General Hospital: Police Probe Cancer Treatment} (5 Nov.), \url{http://www.bbc.co.uk/news/uk-england-essex-24819973}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{bbc2013cgh,
   author = {{BBC News}},
   title = {Colchester General Hospital},
@@ -4889,7 +4925,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   date = {2013-11-05},
   url = {http://www.bbc.co.uk/news/uk-england-essex-24819973},
   urldate = {2013-11-05}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4905,7 +4941,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>Hooper, R. (2013), \enquote{Lebanon's Forgotten Space Programme}, BBC News Magazine (14 Nov.) \url{http://www.bbc.co.uk/news/magazine-24735423}, accessed 14 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{hooper2013lfs,
   author = {Richard Hooper},
   title = {Lebanon's Forgotten Space Programme},
@@ -4913,7 +4949,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   date = {2013-11-14},
   url = {http://www.bbc.co.uk/news/magazine-24735423},
   urldate = {2013-11-14}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4925,7 +4961,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>Tan, S.-L. (2013), \enquote{Why does this Baby Cry when her Mother Sings?} [including video], OUPblog (5 Nov.), \url{http://blog.oup.com/2013/11/why-does-this-baby-cry-when-her-mother-sings-viral-video/}, accessed 9 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{tan2013wdt,
   author = {Siu-Lan Tan},
   title = {Why does this Baby Cry when her Mother Sings?},
@@ -4934,7 +4970,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   date = {2013-11-05},
   url = {http://blog.oup.com/2013/11/why-does-this-baby-cry-when-her-mother-sings-viral-video/},
   urldate = {2013-11-09}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4946,7 +4982,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>Allaby, M. (2013), \enquote{Feathers and Lava Lamps}, Oxford Reference, \url{http://www.oxfordreference.com/page/featherslavalamps}, accessed 9 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{allaby2013fll,
   author = {Michael Allaby},
   title = {Feathers and Lava Lamps},
@@ -4954,7 +4990,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   date = {2013},
   url = {http://www.oxfordreference.com/page/featherslavalamps},
   urldate = {2013-11-09}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4968,7 +5004,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>McEwen, S. (2013), \enquote{Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}}, \emph{The Spectator} (20 May), \url{http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/}, accessed 9 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @article{mcewen2013tte,
   author = {Stephen McEwen},
   title = {Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}},
@@ -4976,7 +5012,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   date = {2013-05-20},
   url = {http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/},
   urldate = {2013-11-09}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -4991,13 +5027,13 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>\enquote{Gunpowder Plot} (n.d.), \emph{Encyclopaedia Britannica}, \url{http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{eb2013gp,
   title = {Gunpowder Plot},
   maintitle = {Encyclopaedia Britannica},
   url = {http://www.britannica.com/EBchecked/topic/249505/Gunpowder-Plot},
   urldate = {2013-11-05}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5017,7 +5053,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>\enquote{Oxford University Press} (2013), Wikipedia (last modified 5 Nov.), \url{http://en.wikipedia.org/wiki/Oxford_University_Press}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{wp2013oup,
   title = {Oxford University Press},
   organization = {Wikipedia},
@@ -5025,7 +5061,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   datetype = {last modified},
   url = {http://en.wikipedia.org/wiki/Oxford_University_Press},
   urldate = {2013-11-05}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5042,7 +5078,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>Obama, B. (2013), \enquote{Tomorrow is Veterans Day} [Facebook post] (10 Nov.), \url{https://www.facebook.com/barackobama/photos/a.53081056748.66806.6815841748/10151936988101749/}, accessed 13 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{obama2013tvd,
   entrysubtype = {facebook},
   author = {Barack Obama},
@@ -5050,7 +5086,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   date = {2013-11-10},
   url = {https://www.facebook.com/barackobama/photos/a.53081056748.66806.6815841748/10151936988101749/},
   urldate = {2013-11-13}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5062,7 +5098,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>Harvey, J. (2013), \enquote{\enquote{These are a Few of My Favourite Things}, No.~28} [Facebook post] (13 Nov.), \url{https://www.facebook.com/photo.php?fbid=229786530530896&set=a.108896335953250.15125.100004986510149&type=1&theatre}, accessed 13 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{harvey2013tfm,
   entrysubtype = {facebook},
   author = {John Harvey},
@@ -5070,7 +5106,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   date = {2013-11-13},
   url = {https://www.facebook.com/photo.php?fbid=229786530530896&set=a.108896335953250.15125.100004986510149&type=1&theatre},
   urldate = {2013-11-13}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5082,7 +5118,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>Shakespeare's Globe (2013), \enquote{On this day in 1611 first production of The Tempest was performed by King's Men at Whitehall Palace before James I} [Twitter post] (5.48~a.m., 1~Nov.), \url{https://twitter.com/The_Globe/status/396257422928400385}, accessed 5 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{globe2013otd,
   entrysubtype = {tweet},
   author = {{Shakespeare's Globe}},
@@ -5091,7 +5127,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   options = {timefirst},
   url = {https://twitter.com/The_Globe/status/396257422928400385},
   urldate = {2013-11-05}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5102,7 +5138,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 (not in book)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @online{oup2015tweet,
   author = {{Oxford University Press}},
   shortauthor = {OUP},
@@ -5110,7 +5146,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   date = {2015-11-16T01:07:00},
   url = {https://twitter.com/OxUniPress/status/666180787251843072},
   urldate = {2015-12-25}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5124,14 +5160,14 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>Simoga (n.d.), \emph{Device 6} (version 1.1) [mobile application for iPhone and iPad], downloaded 9 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @software{simoga1.1d6,
   author = {Simoga},
   title = {Device 6},
   version = {1.1},
   titleaddon = {mobile application for iPhone and iPad},
   urldate = {2013-11-09}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5143,7 +5179,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>Eliot, T. S. (2013), \emph{The Waste Land} (version 1.1.1) [mobile application for iPad] (London: Touch Press), downloaded 9 Nov. 2013.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @software{eliot1.1.1twl,
   author = {T. S. Eliot},
   title = {The Waste Land},
@@ -5153,7 +5189,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   publisher = {Touch Press},
   date = {2013},
   urldate = {2013-11-09}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5168,7 +5204,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 %<y>United Nations (2011), \emph{World Population Prospects: The 2010 Revision} [CD-ROM] (New York: United Nations Department of Economic and Social Affairs, Population Division).
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @dataset{un2011wpp,
   author = {{United Nations}},
   title = {World Population Prospects},
@@ -5177,7 +5213,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   location = {New York},
   publisher = {{United Nations Department of Economic and Social Affairs, Population Division}},
   date = {2011}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5262,14 +5298,14 @@ Use the \code{jurisdiction} entry type for citing cases.
 %<y>\emph{Ridge v Baldwin} [1964] AC 40
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{ridge1964,
   title = {Ridge v. Baldwin},
   keywords = {gb},
   date = {1964},
   journaltitle = {A.C.},
   pages = {40}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5282,7 +5318,7 @@ Use the \code{jurisdiction} entry type for citing cases.
 \emph{R v Lambert} [2001] 2 WLR 211 (QBD)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{lambert2001,
   title = {R v Lambert},
   keywords = {gb},
@@ -5292,7 +5328,7 @@ Use the \code{jurisdiction} entry type for citing cases.
   pages = {211},
   institution = {QBD},
   options = {year-essential=true}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5302,7 +5338,7 @@ Use the \code{jurisdiction} entry type for citing cases.
 \emph{Badische v Soda-Fabrics} (1897) 14 RPC 919 (HL)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{badische1897,
   title = {Badische v. Soda-Fabrics},
   date = {1897},
@@ -5310,7 +5346,7 @@ Use the \code{jurisdiction} entry type for citing cases.
   volume = {14},
   pages = {919},
   institution = {HL}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5322,7 +5358,7 @@ Use the \code{jurisdiction} entry type for citing cases.
 \emph{R v G} [2003] UKHL 50, [2004] 1 AC 1034
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{rvg2004,
   title = {R. v. G.},
   number = {[2003] UKHL 50},
@@ -5332,7 +5368,7 @@ Use the \code{jurisdiction} entry type for citing cases.
   pages = {1034},
   options = {year-essential},
   pagination = {[]}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5355,7 +5391,7 @@ Test\footcite[13]{rvg2004}
 \emph{Smith v Jones} [2001] (1948) 2 All ER 431
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{smith2001,
   title = {Smith v Jones},
   date = {2001},
@@ -5364,7 +5400,7 @@ Test\footcite[13]{rvg2004}
   volume = {2},
   pages = {431},
   options = {year-essential}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5378,7 +5414,7 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \emph{Bowman v Fussy} [1978] RPC 545, HL
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{bowman1978,
   title = {Bowman v Fussy},
   keywords = {gb},
@@ -5387,7 +5423,7 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
   pages = {545},
   institution = {HL},
   options = {court-plain}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5397,14 +5433,14 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \emph{Hughes v Stewart}, 1907 SC 791
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{hughes1907,
   title = {Hughes v. Stewart},
   date = {1907},
   reporter = {SC},
   pages = {791},
   keywords = {sc}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5414,14 +5450,14 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \emph{Corcoran v HM Advocate}, 1932 JC 42
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{corcoran1932,
   title = {Corcoran v. H.M. Advocate},
   date = {1932},
   reporter = {JC},
   pages = {42},
   keywords = {sc}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5431,7 +5467,7 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \emph{Michael v Johnson}, 426 US 346 (1976)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{michael1976,
   title = {Michael v. Johnson},
   volume = {426},
@@ -5439,7 +5475,7 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
   pages = {346},
   date = {1976},
   keywords = {us}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5454,13 +5490,13 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \emph{Powick v Malvern Wells Water Co}, The Times, 28 Sept.\@ 1993
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{powick1993,
   entrysubtype = {newspaper},
   title = {Powick v. Malvern Wells Water Co},
   date = {1993-09-28},
   journaltitle = {The Times}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5470,12 +5506,12 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \emph{R v Marianishi, ex p London Borough of Camden} (CA, 13 Apr.\@ 1965)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{marianishi1965,
   title = {R v Marianishi, ex p London Borough of Camden},
   date = {1965-04-13},
   institution = {C.A.}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5494,7 +5530,7 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] ECR I–10889
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{C118/07,
   keywords = {eu},
   title = {Commission of the European Communities v. Finland},
@@ -5504,7 +5540,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
   volume = {I},
   pages = {10889},
   date = {2002}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5518,7 +5554,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 \emph{Alcatel/Telettra} (Case IV/M042) [1991] OJ L122/48, [1991] 4 CLMR 391
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{alcatel,
   keywords = {eu},
   title = {Alcatel/Telettra},
@@ -5530,7 +5566,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
   volume = {122},
   pages = {48},
   note = {[1991] 4 CLMR 391}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5542,7 +5578,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 \emph{Young, James and Webster v UK} (App no 7601/76) (1982) 4 EHRR 38
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{young1982,
   title = {Young, James and Webster v. UK},
   number = {7601/76},
@@ -5551,7 +5587,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
   date = {1982},
   pages = {38},
   keywords = {echr}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5563,7 +5599,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 \emph{Plattform \enquote{Artze für das Leben} v Austria} (App no 10126/82) (1988) Series A no 139
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{plattform1988,
   title = {Plattform \enquote{Artze für das Leben} v. Austria},
   number = {10126/82},
@@ -5571,7 +5607,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
   date = {1988},
   pages = {139},
   keywords = {echr}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5581,7 +5617,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 \emph{Osman v UK} (App no 23452/94) ECHR 1998–VIII 3124
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @jurisdiction{osman1998,
   title = {Osman v UK},
   number = {23452/94},
@@ -5591,7 +5627,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
   pages = {3124},
   institution = {ECtHR},
   keywords = {echr}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5610,7 +5646,7 @@ Use the \code{legislation} entry type for citing Acts, Bills, Orders, Measures, 
 Factory and Workshop Act 1891
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legislation{fwa1891,
   entrysubtype = {primary},
   title = {Factory and Workshop Act},
@@ -5619,7 +5655,7 @@ Factory and Workshop Act 1891
   pagination = {section},
   keywords = {en},
   number = {54 \& 55 Vict, c. 75}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5632,14 +5668,14 @@ Factory and Workshop Act 1891
 Local Authority Precepts Order 1897, SR~\&~O 1897/201
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legislation{lap1897,
   entrysubtype = {secondary},
   title = {Local Authority Precepts Order},
   date = {1897},
   number = {SR~\&~O 1897\slash 201},
   pagination = {rule}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5649,14 +5685,14 @@ Local Authority Precepts Order 1897, SR~\&~O 1897/201
 Community Charge Support Grant (Abolition) Order 1987, SI 1987/466
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legislation{ccsga1987,
   entrysubtype = {secondary},
   title = {Community Charge Support Grant (Abolition) Order},
   date = {1987},
   number = {SI 1987\slash 466},
   pagination = {regulation}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5686,7 +5722,7 @@ you can provide an even sparser reference for primary European legislation.
 EC Treaty
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legislation{ECT:Rome,
   entrysubtype = {eu-treaty},
   title = {EC Treaty},
@@ -5694,7 +5730,7 @@ EC Treaty
   shorthand = {EC Treaty},
   pagination = {article},
   keywords = {eu}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5708,7 +5744,7 @@ Secondary legislation should always have a full reference.
 Council Directive (EC) 97/1 on banking practice [1997] OJ L234/3
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legislation{EC:97/1,
   title = {Council Directive (EC) 97/1 on banking practice},
   date = {1997},
@@ -5718,7 +5754,7 @@ Council Directive (EC) 97/1 on banking practice [1997] OJ L234/3
   pages = {3},
   pagination = {article},
   keywords = {eu}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5728,7 +5764,7 @@ Council Directive (EC) 97/1 on banking practice [1997] OJ L234/3
 Council Regulation (EEC) 1017/68 applying rules of competition to transport [1968] OJ Spec Ed 302
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legislation{EEC:1017/68,
   title = {Council Regulation (EEC) 1017/68 applying rules of competition to transport},
   date = {1968},
@@ -5736,7 +5772,7 @@ Council Regulation (EEC) 1017/68 applying rules of competition to transport [196
   pages = {302},
   pagination = {article},
   keywords = {eu}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5748,7 +5784,7 @@ Council Regulation (EEC) 1017/68 applying rules of competition to transport [196
 Commission Notice on agreements of minor importance [1986] OJ C231/2, as amended [1994] OJ C368/20
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legislation{ECN:1986,
   title = {Commission Notice on agreements of minor importance},
   date = {1986},
@@ -5758,7 +5794,7 @@ Commission Notice on agreements of minor importance [1986] OJ C231/2, as amended
   pages = {2},
   note = {as amended [1994] OJ C368/20},
   keywords = {eu}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5775,7 +5811,7 @@ Treaties use the \code{legal} entry type, with \code{piltreaty} as the \code{ent
 Convention Relating to the Status of Refugees (adopted 28 July 1951, entered into force 22 Apr.\@ 1954) 189 UNTS 137
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legal{refugees,
   entrysubtype = {piltreaty},
   title = {Convention Relating to the Status of Refugees},
@@ -5785,7 +5821,7 @@ Convention Relating to the Status of Refugees (adopted 28 July 1951, entered int
   volume = {189},
   journaltitle = {UNTS},
   pages = {137}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5812,7 +5848,7 @@ References to Hansard use the \code{legal} entry type, with \code{parliamentary}
 Hansard, HC vol.\@ 357, cols.\@ 234–45 (13 Apr.\@ 1965)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legal{hc357,
   entrysubtype = {parliamentary},
   title = {Hansard},
@@ -5821,7 +5857,7 @@ Hansard, HC vol.\@ 357, cols.\@ 234–45 (13 Apr.\@ 1965)
   pages = {234-245},
   date = {1965-04-13},
   bookpagination = {column}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5833,7 +5869,7 @@ Hansard, HC vol.\@ 357, cols.\@ 234–45 (13 Apr.\@ 1965)
 Parl.\@ Deb.\@ (series 4) vol.\@ 24, col.\@ 234 (24 Mar.\@ 1895)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @legal{pd4/24,
   entrysubtype = {parliamentary},
   title = {Parl. Deb.},
@@ -5842,7 +5878,7 @@ Parl.\@ Deb.\@ (series 4) vol.\@ 24, col.\@ 234 (24 Mar.\@ 1895)
   pages = {234},
   date = {1895-03-24},
   bookpagination = {column}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5861,7 +5897,7 @@ Reports of Parliamentary select committees and the Law Commission should be ente
 %<y>Law Commission (2009), \emph{Intoxication and Criminal Liability} (Law Comm No 314, Cm 7526) para 1.15
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @report{lc2009icl,
   entrysubtype = {legal},
   author = {{Law Commission}},
@@ -5870,7 +5906,7 @@ Reports of Parliamentary select committees and the Law Commission should be ente
   date = {2009},
   pages = {1.15},
   bookpagination = {paragraph}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5900,7 +5936,7 @@ it provides the \code{commentary} entry type simply as an alias for \code{book}.
 %<y>Auden, W. H. (n.d.), \enquote{Es regnet auf mir in den Schottische Lände} [\emph{sic}], in \enquote{The German Auden: Six Early Poems}, trans. D. Constantine, in K. Bucknell and N. Jenkins (eds.), \emph{W. H. Auden, \enquote{The Map of All my Youth}: Early Works, Friends, and Influences} (Auden Studies, 1; Oxford, 1990), 1--15 at 6.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @misc{auden1990era,
   author = {W. H. Auden},
   title = {Es regnet auf mir in den Schottische Lände},
@@ -5922,7 +5958,7 @@ it provides the \code{commentary} entry type simply as an alias for \code{book}.
   location = {Oxford},
   date = {1990},
   pages = {1-15}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5935,7 +5971,7 @@ it provides the \code{commentary} entry type simply as an alias for \code{book}.
 %<y>William of Blois (n.d.), \enquote{The Quarrel of the Flea and the Fly} (\emph{Pulicis et musce iurgia}), trans. in Ziolkowski, J. M., \emph{Talking Animals: Medieval Latin Beast Poetry, 750-1150} (Middle Ages Series, ed. E. Peters; Philadelphia: University of Pennsylvania Press, 1993), 274--8.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @misc{blois1993qff,
   author = {{William of Blois}},
   title = {The Quarrel of the Flea and the Fly},
@@ -5953,7 +5989,7 @@ it provides the \code{commentary} entry type simply as an alias for \code{book}.
   location = {Philadelphia},
   publisher = {University of Pennsylvania Press},
   date = {1993}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -5988,7 +6024,7 @@ If a poem is divided into cantos, the title is set in italics rather than quoted
 %<y>
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @book{spenser1965fq,
   author = {Edmund Spenser},
   title = {The Faerie Queene},
@@ -6000,7 +6036,7 @@ If a poem is divided into cantos, the title is set in italics rather than quoted
   date = {1965/1966},
   origdate = {1590/1596},
   pagination = {book}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -6048,7 +6084,7 @@ With \pkg[biblatex]{oxref}, you can enter manuscripts in either of two ways. The
 %<y>Smith, F. [1912–7], travel diaries, British Library, Add. MS 23116.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @unpublished{smithMS23116,
   author = {Francis Smith},
   descriptor = {travel diaries},
@@ -6056,7 +6092,7 @@ With \pkg[biblatex]{oxref}, you can enter manuscripts in either of two ways. The
   library = {British Library},
   series = {Add. MS},
   number = {23116}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -6087,14 +6123,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %<y>Chaundler, T. [n.d.], \enquote{Collocutiones}, Balliol College, Oxford, MS288.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @manuscript{chaundlerMS288,
   author = {Thomas Chaundler},
   title = {Collocutiones},
   library = {Balliol College},
   location = {Oxford},
   shelfmark = {MS288}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -6106,13 +6142,13 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %<y>exchequer accounts [1798], Dec., Cheshire Record Office, E311.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @manuscript{exchequerE311,
   descriptor = {exchequer accounts},
   date = {1798-12},
   library = {Cheshire Record Office},
   shelfmark = {E311}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -6124,14 +6160,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %<y>Bearsden Ladies' Club minutes [1949], 12 June, Bearsden and Milngavie District Libraries, box 19/d.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @manuscript{blcBOX19d,
   title = {Bearsden Ladies' Club minutes},
   title+an = {=descriptor},
   date = {1949-06-12},
   library = {Bearsden and Milngavie District Libraries},
   shelfmark = {box 19/d}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -6143,7 +6179,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %<y>Bodleian Library [n.d.], Oxford, MS Rawlinson D. 520, fo. 7.
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @manuscript{bodMSrawl-d520,
   library = {Bodleian Library},
   location = {Oxford},
@@ -6151,7 +6187,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   shelfmark = {520},
   pages = {7},
   bookpagination = {folio}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -6160,7 +6196,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 (not in book)
 \tcblower
 \begin{Verbatim}
-%</n|y>
+%</n|m|a|y>
 @manuscript{cantabAGM4429,
   library = {University Library},
   location = {Cambridge},
@@ -6173,7 +6209,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   pages = {11\recto-11\verso},
   layer = {inf},
   bookpagination = {folio}}
-%<*n|y>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
@@ -6186,7 +6222,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %</y>
 
 \printbibliography[notcategory=hidden]
-%</n|y>
+%</n|m|a|y>
 %</doc|bib>
 %<*driver>
 \fi
@@ -11395,7 +11431,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</n>
-%<*y>
+%<*a|y>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Author–year style: oxyear.bbx}
@@ -12278,7 +12314,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%</y>
+%</a|y>
 %</bbx>
 %<*cbx>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12405,13 +12441,28 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</m>
+%<*a>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Notes style: oxalph.cbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% The standard |alphabetic| style works without further adjustment.
+%
+%    \begin{macrocode}
+\RequireCitationStyle{alphabetic}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</a>
 %</cbx>
 %<*dbx>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \chapter{Data model adjustments}
 %
-% \section{oxnotes.dbx, oxyear.dbx, and oxnum.dbx}
+% \section{oxnotes.dbx, oxyear.dbx, oxnum.dbx, and oxalph.dbx}
 %
 % \setcounter{FancyVerbLine}{19}
 %

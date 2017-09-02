@@ -1,15 +1,17 @@
 # biblatex-oxref: Biblatex styles inspired by the *Oxford Guide to Style*
 
-This bundle provides three [biblatex] styles that implement (some of) the
+This bundle provides four [biblatex] styles that implement (some of) the
 stipulations and examples provided by the 2014 *New Hart's Rules* and the 2002
 *Oxford Guide to Style*:
 
   * `oxnotes` is a style similar to the standard `verbose`,
     intended for use with footnotes;
-  * `oxyear` is a style similar to the standard `authoryear`,
-    intended for use with parenthetical in-text citations.
   * `oxnum` is a style similar to the standard `numeric`,
     intended for use with numeric in-text citations.
+  * `oxalph` is a style similar to the standard `numeric`,
+    intended for use with alphabetic in-text citations.
+  * `oxyear` is a style similar to the standard `authoryear`,
+    intended for use with parenthetical in-text citations.
 
 These styles should be considered experimental. In particular, the ways in which
 the styles handle certain tricky references are subject to change.
@@ -31,16 +33,16 @@ UNIX-like systems:
 
   * Running `make source` generates the derived files
       - README.md
-      - oxref.bbx, oxnotes.bbx, oxyear.bbx, oxnum.bbx
-      - oxnotes.cbx, oxyear.cbx, oxnum.cbx
+      - oxref.bbx, oxnotes.bbx, oxyear.bbx, oxnum.bbx, oxalph.bbx
+      - oxnotes.cbx, oxyear.cbx, oxnum.cbx, oxalph.cbx
       - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx
-      - oxnotes.dbx, oxyear.dbx, oxnum.dbx
+      - oxnotes.dbx, oxyear.dbx, oxnum.dbx, oxalph.dbx
       - oxref.bib
       - oxref.ins
-      - oxnotes-doc.tex, oxyear-doc.tex, oxnum-doc.tex
+      - oxnotes-doc.tex, oxyear-doc.tex, oxnum-doc.tex, oxalph-doc.tex
 
   * Running `make` generates the above files and also oxref.pdf,
-    oxnotes-doc.pdf, oxyear-doc.pdf and oxnum-doc.pdf.
+    oxnotes-doc.pdf, oxyear-doc.pdf, oxnum-doc.pdf and oxalph-doc.pdf.
 
   * Running `make inst` installs the files in the user's TeX tree.
     You can undo this with `make uninst`.
@@ -74,6 +76,9 @@ first two steps.
         american-oxref.lbx,
         british-oxref.lbx,
         english-oxref.lbx,
+        oxalph.bbx,
+        oxalph.cbx,
+        oxalph.dbx,
         oxnotes.bbx,
         oxnotes.cbx,
         oxnotes.dbx,
@@ -86,6 +91,8 @@ first two steps.
         oxyear.dbx
       - `doc/latex/biblatex-oxref`:
         README.md,
+        oxalph-doc.pdf,
+        oxalph-doc.tex,
         oxnotes-doc.pdf,
         oxnotes-doc.tex,
         oxnum-doc.pdf,
