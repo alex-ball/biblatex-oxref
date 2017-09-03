@@ -11592,6 +11592,8 @@ reference,mvreference,inreference]{volume}{%
 }{}{}
 %    \end{macrocode}
 %
+% \subsection{Label numbers}
+%
 % This next code is extracted from the standard |numeric| style.
 %
 %    \begin{macrocode}
@@ -12547,6 +12549,8 @@ reference,mvreference,inreference]{volume}{%
 \RequireBibliographyStyle{oxyear}
 %    \end{macrocode}
 %
+% \subsection{Label codes: printing}
+%
 % This next code is extracted from the standard |alphabetic| style, and among
 % other things ensures the citation labels are printed in the bibliography.
 %
@@ -12585,6 +12589,8 @@ reference,mvreference,inreference]{volume}{%
   {\endlist}
   {\item}
 %    \end{macrocode}
+%
+% \subsection{Label codes: generating}
 %
 % The standard labels are generated from the |labelname| and |year|. We widen
 % the net a bit, so that if there is no |labelname|, we fall back to the
@@ -12794,9 +12800,10 @@ reference,mvreference,inreference]{volume}{%
 %
 % \setcounter{FancyVerbLine}{0}
 %
-% We need to fix the |textcite| macro so if the \key{anon} option is set to
-% \val{long} or \val{short}, the text printed is the bibstring rather than
-% ‘Anonymous’.
+% This code is appended to all the citation style files.
+%
+% We fix the |textcite| macro so if the \key{anon} option is set to \val{long}
+% or \val{short}, a value of ‘Anonymous’ is replaced by the bibstring.
 %
 %    \begin{macrocode}
 \xpatchbibmacro{textcite}{%
