@@ -328,6 +328,17 @@ Copyright (C) 2016 Alex Ball
 %     \finentrypunct
 %   }{}%
 % }{}{}
+%<*doc&(m|a)>
+% Shorthands useful for oxyear make overlong labels for oxnum/oxalph,
+% so we remove them.
+\DeclareSourcemap{%
+  \maps[datatype=bibtex]{%
+    \map[overwrite=true]{%
+      \step[fieldset=shorthand, null=true]
+    }%
+  }%
+}
+%</doc&(m|a)>
 
 \hypersetup{pdfborder={0 0 0},pdfencoding=auto}
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
@@ -575,7 +586,7 @@ Copyright (C) 2016 Alex Ball
 %</driver>
 %<doc&n>\title{OXNOTES -- A notes-based style for Biblatex}
 %<doc&m>\title{OXNUM -- A numeric style for Biblatex}
-%<doc&a>\title{OXALPH -- A numeric style for Biblatex}
+%<doc&a>\title{OXALPH -- An alphabetic style for Biblatex}
 %<doc&y>\title{OXYEAR -- An author–year style for Biblatex}
 %<*driver|doc>
 \author{Alex Ball}
@@ -11324,6 +11335,46 @@ reference,mvreference,inreference]{volume}{%
     \field{series}
   }
 }
+
+\DeclareSortingScheme{anyt}{
+  \sort{
+    \field{presort}
+  }
+  \sort{
+    \field{labelalpha}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort{
+    \field{sortname}
+    \field{author}
+    \field{editor}
+    \field{translator}
+    \field{sorttitle}
+    \field{title}
+    \field{library}
+  }
+  \sort{
+    \field{sortyear}
+    \field{year}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+  \sort{
+    \field{volume}
+    \literal{0}
+  }
+  \sort{
+    \field{location}
+  }
+  \sort{
+    \field{collection}
+    \field{series}
+  }
+}
 %    \end{macrocode}
 %
 % The following entry types never put editors first.
@@ -11336,7 +11387,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</o>
-%<*n|m>
+%<*n>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Notes style: oxnotes.bbx}
@@ -11393,11 +11444,6 @@ reference,mvreference,inreference]{volume}{%
       \printfield{postnote}}}}
 %    \end{macrocode}
 %
-% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%</n|m>
-%<*n>
-% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 % \subsection{Source maps}
 %
 %    \begin{macrocode}
@@ -11431,7 +11477,106 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</n>
-%<*a|y>
+%<*m>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Numeric style: oxnum.bbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% \subsection{Preliminaries}
+%
+% First we load the common \pkg[biblatex]{oxref} features.
+%
+%    \begin{macrocode}
+\RequireBibliographyStyle{oxref}
+%    \end{macrocode}
+%
+% We apply our special name format to names likely to appear at the start of
+% an entry.
+%
+%    \begin{macrocode}
+\DeclareNameAlias{author}{bib-family-given/cite-given-family}
+\DeclareNameAlias[related:reviewof]{author}{given-family}
+\DeclareNameAlias{editor}{bib-family-given/cite-given-family}
+\DeclareNameAlias[related:reviewof]{editor}{given-family}
+%    \end{macrocode}
+%
+% We ensure the printing of the |anon| localization string matches.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{author}{%
+  \iftoggle{blx@ox@abbranon}{\bibcpsstring{anon}}{\bibcplstring{anon}}%
+}{%
+  \iftoggle{blx@ox@abbranon}{%
+    \iftoggle{blx@ox@scnames}{\bibcpsstring[\textsc]{anon}}{\bibcpsstring{anon}}%
+  }{%
+    \iftoggle{blx@ox@scnames}{\bibcplstring[\textsc]{anon}}{\bibcplstring{anon}}%
+  }%
+}{}{}
+%    \end{macrocode}
+%
+% This next code is verbatim from the standard |numeric| style.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions{labelnumber}
+
+\providebool{bbx:subentry}
+
+\DeclareBibliographyOption[boolean]{subentry}[true]{%
+  \setbool{bbx:subentry}{#1}}
+
+\DeclareNameAlias{author}{default}
+\DeclareNameAlias{editor}{default}
+\DeclareNameAlias{translator}{default}
+
+\DeclareFieldFormat{bibentrysetcount}{\mkbibparens{\mknumalph{#1}}}
+\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+\DeclareFieldFormat{shorthandwidth}{\mkbibbrackets{#1}}
+
+\defbibenvironment{bibliography}
+  {\list
+     {\printtext[labelnumberwidth]{%
+	\printfield{labelprefix}%
+	\printfield{labelnumber}}}
+     {\setlength{\labelwidth}{\labelnumberwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{\hss##1}}
+  {\endlist}
+  {\item}
+
+\defbibenvironment{shorthand}
+  {\list
+     {\printfield[shorthandwidth]{shorthand}}
+     {\setlength{\labelwidth}{\shorthandwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{\hss##1}}}
+  {\endlist}
+  {\item}
+
+\DeclareBibliographyDriver{set}{%
+  \entryset
+    {\ifbool{bbx:subentry}
+       {\printfield[bibentrysetcount]{entrysetcount}%
+	\printunit*{\addnbspace}}
+       {}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{setpageref}%
+  \finentry}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</m>
+%<*y>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Author–year style: oxyear.bbx}
@@ -12314,7 +12459,96 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%</a|y>
+%</y>
+%<*a>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Alphabetic style: oxalph.bbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% \subsection{Preliminaries}
+%
+% This style is based on |oxyear|.
+%
+%    \begin{macrocode}
+\RequireBibliographyStyle{oxyear}
+%    \end{macrocode}
+%
+% This next code is extracted from the standard |alphabetic| style, and among
+% other things ensures the citation labels are printed in the bibliography.
+%
+%    \begin{macrocode}
+\ExecuteBibliographyOptions{labelalpha,sorting=anyt}
+
+\DeclareFieldFormat{labelalphawidth}{\mkbibbrackets{#1}}
+\DeclareFieldFormat{shorthandwidth}{\mkbibbrackets{#1}}
+
+\defbibenvironment{bibliography}
+  {\list
+     {\printtext[labelalphawidth]{%
+        \printfield{labelprefix}%
+	\printfield{labelalpha}%
+        \printfield{extraalpha}}}
+     {\setlength{\labelwidth}{\labelalphawidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}
+  {\endlist}
+  {\item}
+
+\defbibenvironment{shorthand}
+  {\list
+     {\printfield[shorthandwidth]{shorthand}}
+     {\setlength{\labelwidth}{\shorthandwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}}
+  {\endlist}
+  {\item}
+%    \end{macrocode}
+%
+% The standard labels are generated from the |labelname| and |year|. We widen
+% the net a bit, so that if there is no |labelname|, we fall back to the
+% |shortlabeltitle| or |labeltitle|; also we use |labelyear| in place of
+% |year|. The |shortlabeltitle| is generated from all the capital letters in
+% the title and subtitle, with the help of a source map.
+%
+%    \begin{macrocode}
+\DeclareStyleSourcemap{%
+  \maps[datatype=bibtex]{%
+    \map[overwrite=false]{%
+      \step[fieldsource=title, final]
+      \step[fieldset=shortlabeltitle, origfieldval]
+      \step[fieldsource=subtitle]
+      \step[fieldset=shortlabeltitle, origfieldval, append=true]
+      \step[fieldsource=shortlabeltitle,
+            match=\regexp{[^\p{Lu}]},
+            replace=\regexp{}]
+}}}
+\DeclareLabelalphaTemplate{%
+  \labelelement{
+    \field[final]{shorthand}
+    \field{label}
+    \field[strwidth=3,strside=left,ifnames=1]{labelname}
+    \field[strwidth=1,strside=left]{labelname}
+    \field[strwidth=3,strside=left]{shortlabeltitle}
+    \field[strwidth=4,strside=left]{labeltitle}
+  }
+  \labelelement{
+    \field[strwidth=2,strside=right]{labelyear}
+  }
+}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</a>
 %</bbx>
 %<*cbx>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12502,6 +12736,13 @@ reference,mvreference,inreference]{volume}{%
 \DeclareDatamodelFields[type=field,datatype=literal]{rawauthor}
 \DeclareDatamodelEntryfields{datetype,origdatetype,authoraddon,editoraddon,%
   serieseditor,jointauthor,jointauthortype,rawauthor}
+%    \end{macrocode}
+%
+% We provide a |shortlabeltitle| field to contain our custom reduction of the
+% |labeltitle|.
+%
+%    \begin{macrocode}
+\DeclareDatamodelFields[type=field,datatype=literal]{shortlabeltitle}
 %    \end{macrocode}
 %
 % This data model is borrowed from \textsf{biblatex-manuscripts-philology}.
