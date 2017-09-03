@@ -11596,7 +11596,7 @@ reference,mvreference,inreference]{volume}{%
 }{}{}
 %    \end{macrocode}
 %
-% This next code is verbatim from the standard |numeric| style.
+% This next code is extracted from the standard |numeric| style.
 %
 %    \begin{macrocode}
 \ExecuteBibliographyOptions{labelnumber}
@@ -11605,10 +11605,6 @@ reference,mvreference,inreference]{volume}{%
 
 \DeclareBibliographyOption[boolean]{subentry}[true]{%
   \setbool{bbx:subentry}{#1}}
-
-\DeclareNameAlias{author}{default}
-\DeclareNameAlias{editor}{default}
-\DeclareNameAlias{translator}{default}
 
 \DeclareFieldFormat{bibentrysetcount}{\mkbibparens{\mknumalph{#1}}}
 \DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
