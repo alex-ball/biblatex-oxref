@@ -1201,7 +1201,7 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
 %<*n>
 \begin{egcite}{}
 \cite{anon1822san}.
-\cite{anon1956lu}.
+\textcite{anon1956lu}.
 \end{egcite}
 
 %</n>
@@ -1251,8 +1251,9 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
 \end{egcite}
 %</m|a>
 %<*y>
-\begin{egcite}{(Anon.\@ 1822; 1956)}
-\parencite{anon1822san,anon1956lu}
+\begin{egcite}{(Anon.\@ 1822; 1956), Anon.\@ (1956)}
+\parencite{anon1822san,anon1956lu},
+\textcite{anon1956lu}
 \end{egcite}
 %</y>
 %<!n>
@@ -1267,16 +1268,11 @@ to put ‘(Ps.-)’ after the name in the bibliography.
 %<n>(i.e. either a single word, or a whole name wrapped in braces).
 }
 
-%<*n>
-\begin{egcite}{}
-\cite{boethius1976dds}
-\end{egcite}
-%</n>
-%<*m|a>
+%<*n|m|a>
 \begin{egcite}{}
 \textcite{boethius1976dds}
 \end{egcite}
-%</m|a>
+%</n|m|a>
 %<*y>
 \begin{egcite}{}
 \parencite{boethius1976dds}
@@ -12792,6 +12788,35 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</a>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Common citation fixes}
+%
+% \setcounter{FancyVerbLine}{0}
+%
+% We need to fix the |textcite| macro so if the \key{anon} option is set to
+% \val{long} or \val{short}, the text printed is the bibstring rather than
+% ‘Anonymous’.
+%
+%    \begin{macrocode}
+\xpatchbibmacro{textcite}{%
+  \printnames{labelname}%
+}{%
+  \ifboolexpr{
+    test {\iffieldequalstr{labelnamesource}{author}}
+    and
+    togl {blx@ox@autoanon}
+    and
+    test {\iffieldequals{rawauthor}{\oxrefanon}}
+  }{%
+    \iftoggle{blx@ox@abbranon}{\bibcpsstring{anon}}{\bibcplstring{anon}}%
+  }{%
+    \printnames{labelname}%
+  }%
+}{}{}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</cbx>
 %<*dbx>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
