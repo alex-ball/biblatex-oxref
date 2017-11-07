@@ -226,6 +226,8 @@ Copyright (C) 2016 Alex Ball
 \firmlists
 
 \usepackage[british]{babel}
+\usepackage{etoolbox}
+\undef{\latinencoding}% Bug fix - is this still needed?
 \usepackage[mono=false,defaultfeatures={SmallCapsFeatures={Letters=SmallCaps,Renderer=Basic,Ligatures=NoCommon}}]{libertine}
 \usepackage{fontawesome}[2015/07/07]
 \newcommand{\booksym}{\makebox[1em][c]{\faicon{book}}}
