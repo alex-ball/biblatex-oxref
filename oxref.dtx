@@ -6352,13 +6352,11 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \RequirePackage{graphicx}
 %    \end{macrocode}
 %
-% Language support may be widened in future, but for now we support the
-% following:
+% Language support may be widened in future, but for now we support British and
+% American English. Adapted language files have the following suffix.
 %
 %    \begin{macrocode}
-\DeclareLanguageMapping{english}{english-oxref}
-\DeclareLanguageMapping{british}{british-oxref}
-\DeclareLanguageMapping{american}{american-oxref}
+\DeclareLanguageMappingSuffix{-oxref}
 %    \end{macrocode}
 %
 % We provide some additional bibliography strings:
@@ -6451,7 +6449,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \end{macrocode}
 %
 % Here are the new default punctuation conventions. The new \cs{relatedtypepunct}
-% is for before the |relatedtype| localization string.
+% is for before the |relatedtype| localization string, while \cs{recordseriespunct}
+% is used for audiovisual resources.
 %
 %    \begin{macrocode}
 \renewcommand*{\labelnamepunct}{\addcomma\space}
@@ -6459,10 +6458,13 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \renewcommand*{\subtitlepunct}{\addcolon\space}
 \renewcommand*{\intitlepunct}{\nopunct\space}
 \renewcommand*{\bibnamedash}{\resizebox{2em}{\height}{\textemdash}\addthinspace}
-\renewcommand*{\revsdnamedelim}{\addcomma}
 \newcommand*{\recordseriespunct}{\addcomma\space}
 \newcommand*{\relatedtypepunct}{\addsemicolon\space}
 \renewcommand*{\relateddelim}{\addsemicolon\space}
+\DeclareDelimFormat{revsdnamedelim}{\addcomma}
+\DeclareDelimFormat{authortypedelim}{\addspace}
+\DeclareDelimFormat{editortypedelim}{\addspace}
+\DeclareDelimFormat{translatortypedelim}{\addspace}
 %    \end{macrocode}
 %
 % \subsection{Names}
@@ -6827,7 +6829,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \ifnumgreater{\c@minnames}{1}{%
       \finalandcomma
     }{}%
-    \andothersdelim\bibstring{andothers}%
+    \printdelim{andothersdelim}\bibstring{andothers}%
   }{}%
   \restorebibmacro{name:andothers}%
 }
@@ -7010,7 +7012,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
       {}
       {\setunit{\addspace}%
         \printfield{nameaddon}}%
-      \setunit{\addspace}}%
+      \setunit{\printdelim{authortypedelim}}}%
     \iffieldundef{authortype}
     {}
     {\usebibmacro{authorstrg}%
@@ -7021,8 +7023,8 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 % Following |authortitle| and |authoryear|, we redefine the |editor| and
 % |editor+others| macros to use a common |bbx:editor| macro. The macro
-% we use is the same as the usual one except the editor type is set off
-% using parentheses instead of a comma.
+% we use is the similar to the normal one except we delegate printing editor
+% names to |editor+alteditor|, and we don't yet add the year label.
 %
 %    \begin{macrocode}
 \renewbibmacro*{editor}{%
@@ -7038,7 +7040,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   {\usebibmacro{bbx:dashcheck}
     {\bibnamedash}
     {\usebibmacro{editor+alteditor}%
-     \setunit{\addspace}%
+     \setunit{\printdelim{editortypedelim}}%
      \usebibmacro{bbx:savehash}}%
     \usebibmacro{#1}%
     \clearname{editor}}
@@ -7062,7 +7064,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   {\usebibmacro{bbx:dashcheck}
     {\bibnamedash}
     {\printnames{translator}%
-      \setunit{\addspace}%
+      \setunit{\printdelim{translatortypedelim}}%
       \usebibmacro{bbx:savehash}}%
     \usebibmacro{#1}%
     \clearname{translator}%
@@ -10822,8 +10824,8 @@ reference,mvreference,inreference]{volume}{%
         }{}}%
       \renewbibmacro*{related:init}{}%
       \DeclareNameAlias{sortname}{default}%
-      \ifbibmacroundef{date+extrayear}{}{%
-        \renewbibmacro*{date+extrayear}{}%
+      \ifbibmacroundef{date+extradate}{}{%
+        \renewbibmacro*{date+extradate}{}%
         \renewbibmacro*{date}{\printdate}}%
       \renewbibmacro*{pageref}{}%
     }{%
@@ -10882,7 +10884,7 @@ reference,mvreference,inreference]{volume}{%
 % in order to handle reviews. Compared to the default code, this is
 % simpler in that we don't check for repeated authors\slash editors (it
 % would be a rather biased review!), we directly set the author format,
-% and we don't nullify the \code{date+extrayear} macro.
+% and we don't nullify the \code{date+extradate} macro.
 %
 %    \begin{macrocode}
 \newbibmacro*{related:reviewof}[1]{%
@@ -11017,8 +11019,8 @@ reference,mvreference,inreference]{volume}{%
   \ifnumequal{\value{blx@ox@relitem}}{\value{bbx:relatedtotal}}%
     {\bibstring{and}\addspace}{}%
   \entrydata{#1}{%
-    \ifbibmacroundef{date+extrayear}{}{%
-      \renewbibmacro*{date+extrayear}{}}%
+    \ifbibmacroundef{date+extradate}{}{%
+      \renewbibmacro*{date+extradate}{}}%
     \usebibmacro{author}%
     \setunit{\printdelim{nametitledelim}}\newblock
     \usebibmacro{title}}}
@@ -11055,9 +11057,9 @@ reference,mvreference,inreference]{volume}{%
             {}}%
        \renewbibmacro*{related:init}{}%
        \DeclareNameAlias{sortname}{default}%
-       \ifbibmacroundef{date+extrayear}
+       \ifbibmacroundef{date+extradate}
          {}
-         {\renewbibmacro*{date+extrayear}{}%
+         {\renewbibmacro*{date+extradate}{}%
           \renewbibmacro*{date}{\printdate}}%
        \renewbibmacro*{pageref}{}}
       {\thefield{entrytype}}%
@@ -11340,7 +11342,7 @@ reference,mvreference,inreference]{volume}{%
 % end up at the front (library, collection, series).
 %
 %    \begin{macrocode}
-\DeclareSortingScheme{nty}{
+\DeclareSortingTemplate{nty}{
   \sort{
     \field{presort}
   }
@@ -11377,7 +11379,7 @@ reference,mvreference,inreference]{volume}{%
   }
 }
 
-\DeclareSortingScheme{nyt}{
+\DeclareSortingTemplate{nyt}{
   \sort{
     \field{presort}
   }
@@ -11414,7 +11416,7 @@ reference,mvreference,inreference]{volume}{%
   }
 }
 
-\DeclareSortingScheme{anyt}{
+\DeclareSortingTemplate{anyt}{
   \sort{
     \field{presort}
   }
@@ -11695,7 +11697,7 @@ reference,mvreference,inreference]{volume}{%
 % which we coin the |datelabel| field format.
 %
 %    \begin{macrocode}
-\providebibmacro*{date+extrayear}{}
+\providebibmacro*{date+extradate}{}
 \DeclareFieldFormat{datelabel}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
@@ -11704,14 +11706,14 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \newbibmacro*{labelyearrange}{%
   \printfield{labelyear}%
-  \printfield{extrayear}%
+  \printfield{extradate}%
   \iffieldundef{labelendyear}{}{%
     \iffieldsequal{labelyear}{labelendyear}{}{%
       \iffieldequalstr{labelendyear}{}{%
         \mbox{\bibdaterangesep}%
       }{%
         \bibdaterangesep
-        \iffieldundef{extrayear}{%
+        \iffieldundef{extradate}{%
           \blx@ox@compyear
             {\thefield{labelyear}}%
             {\thefield{labelendyear}}%
@@ -11744,7 +11746,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@maximum{%
-  \renewbibmacro*{date+extrayear}{%
+  \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{%
         \printfield{issue}%
@@ -11757,7 +11759,7 @@ reference,mvreference,inreference]{volume}{%
           \printlabeldateextra
         }{%
           \printfield{labelyear}%
-          \printfield{extrayear}}}%
+          \printfield{extradate}}}%
       \iffieldundef{\thefield{labeldatesource}year}{%
         \iffieldundef{\thefield{labeldatesource}}{}{%
           \iffieldequalstr{labeldatesource}{pubstate}{}{%
@@ -11781,7 +11783,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@compact{%
-  \renewbibmacro*{date+extrayear}{%
+  \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{%
         \ifboolexpr{%
@@ -11792,7 +11794,7 @@ reference,mvreference,inreference]{volume}{%
           \printlabeldateextra
         }{%
           \printfield{labelyear}%
-          \printfield{extrayear}}}%
+          \printfield{extradate}}}%
       \iffieldundef{\thefield{labeldatesource}year}{%
         \iffieldundef{\thefield{labeldatesource}}{}{%
           \iffieldequalstr{labeldatesource}{pubstate}{}{%
@@ -11816,7 +11818,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@year{%
-  \renewbibmacro*{date+extrayear}{%
+  \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{%
         \usebibmacro{labelyearrange}}%
@@ -11839,7 +11841,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@basic{%
-  \renewbibmacro*{date+extrayear}{%
+  \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{%
         \usebibmacro{labelyearrange}}%
@@ -11864,12 +11866,12 @@ reference,mvreference,inreference]{volume}{%
 %   \item |minimum| will only merge the |date| with the label date if the two
 %   are identical, that is, a bare year with no month or disambiguating suffix.
 %   Therefore we clear the year if and only if there is no month component, no
-%   |extrayear|, \emph{and} (if this is the regular |date|) no |issue|.
+%   |extradate|, \emph{and} (if this is the regular |date|) no |issue|.
 % \end{itemize}
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@minimum{%
-  \renewbibmacro*{date+extrayear}{%
+  \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{%
         \usebibmacro{labelyearrange}}%
@@ -11881,7 +11883,7 @@ reference,mvreference,inreference]{volume}{%
         \ifboolexpr{
           test {\iffieldundef{\thefield{labeldatesource}month}}
           and
-          test {\iffieldundef{extrayear}}
+          test {\iffieldundef{extradate}}
           and (
             test {\iffieldundef{issue}}
             or
@@ -11899,7 +11901,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \def\bbx@opt@mergedate@false{%
-  \renewbibmacro*{date+extrayear}{%
+  \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{%
         \usebibmacro{labelyearrange}}}}%
@@ -12088,10 +12090,10 @@ reference,mvreference,inreference]{volume}{%
       \dateuncertainprint
       \dateeraprint{#2year}%
       \iffieldundef{#2endyear}{%
-        \printfield{extrayear}%
+        \printfield{extradate}%
       }{%
         \iffieldequalstr{#2endyear}{}{%
-          \printfield{extrayear}%
+          \printfield{extradate}%
           \printtext{\mbox{\bibdaterangesep}}%
         }{%
           \printtext{%
@@ -12102,7 +12104,7 @@ reference,mvreference,inreference]{volume}{%
               \blx@printtime{#2}{end}%
             }{%
               \csuse{mkbibseasondate#1}{#2endyear}{#2endseason}}}%
-          \printfield{extrayear}%
+          \printfield{extradate}%
           \enddateuncertainprint
           \dateeraprint{#2endyear}}}}}}}
 
@@ -12153,10 +12155,10 @@ reference,mvreference,inreference]{volume}{%
             \dateeraprint{#2year}}}}%
       \dateuncertainprint
       \iffieldundef{#2endyear}{%
-        \printfield{extrayear}%
+        \printfield{extradate}%
       }{%
         \iffieldequalstr{#2endyear}{}{%
-          \printfield{extrayear}%
+          \printfield{extradate}%
           \printtext{\mbox{\bibdaterangesep}}%
         }{%
           \printtext{%
@@ -12169,7 +12171,7 @@ reference,mvreference,inreference]{volume}{%
                 \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
             }{%
               \csuse{mkbibseasondate#1}{#2endyear}{#2endseason}}}%
-          \printfield{extrayear}%
+          \printfield{extradate}%
           \enddateuncertainprint
           \dateeraprint{#2endyear}}}}}}
 
@@ -12188,10 +12190,10 @@ reference,mvreference,inreference]{volume}{%
 }
 %    \end{macrocode}
 %
-% The |extrayear| string should be printed bare.
+% The |extradate| string should be printed bare.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat{extrayear}{%
+\DeclareFieldFormat{extradate}{%
   \iffieldundef{\thefield{labeldatesource}}{%
     \iffieldnums{\thefield{labeldatesource}year}{}{~}%
   }{%
@@ -12308,7 +12310,7 @@ reference,mvreference,inreference]{volume}{%
 \xpatchbibmacro{author}{%
   \iffieldundef{authortype}%
 }{%
-  \usebibmacro{date+extrayear}%
+  \usebibmacro{date+extradate}%
   \setunit*{\addspace}%
   \iffieldundef{authortype}%
 }{}{}%
@@ -12318,7 +12320,7 @@ reference,mvreference,inreference]{volume}{%
   \global\undef\bbx@lasthash
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
-  \usebibmacro{date+extrayear}%
+  \usebibmacro{date+extradate}%
 }{}{}%
 %    \end{macrocode}
 %
@@ -12355,7 +12357,7 @@ reference,mvreference,inreference]{volume}{%
 \xpatchbibmacro{bbx:editor}{%
   \usebibmacro{#1}%
 }{%
-  \usebibmacro{date+extrayear}%
+  \usebibmacro{date+extradate}%
   \setunit*{\addspace}%
   \usebibmacro{#1}%
 }{}{}%
@@ -12365,7 +12367,7 @@ reference,mvreference,inreference]{volume}{%
   \global\undef\bbx@lasthash
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
-  \usebibmacro{date+extrayear}%
+  \usebibmacro{date+extradate}%
 }{}{}%
 \xpatchbibmacro{editor+alteditor}{%
   \printnames[byeditor]%
@@ -12397,12 +12399,12 @@ reference,mvreference,inreference]{volume}{%
   \global\undef\bbx@lasthash
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
-  \usebibmacro{date+extrayear}%
+  \usebibmacro{date+extradate}%
 }{}{}%
 \xpatchbibmacro{bbx:translator}{%
   \usebibmacro{#1}%
 }{%
-  \usebibmacro{date+extrayear}%
+  \usebibmacro{date+extradate}%
   \setunit*{\addspace}%
   \usebibmacro{#1}%
 }{}{}%
@@ -12678,10 +12680,10 @@ reference,mvreference,inreference]{volume}{%
 % We patch it with our version of year range compression.
 %
 %    \begin{macrocode}
-\xpatchbibmacro{cite:labelyear+extrayear}{%
+\xpatchbibmacro{cite:labeldate+extradate}{%
   \printfield{labelendyear}%
 }{%
-  \iffieldundef{extrayear}{%
+  \iffieldundef{extradate}{%
     \blx@ox@compyear
       {\thefield{labelyear}}%
       {\thefield{labelendyear}}%
@@ -12715,11 +12717,11 @@ reference,mvreference,inreference]{volume}{%
 % a comma.
 %
 %    \begin{macrocode}
-\renewcommand*{\nameyeardelim}{%
+\DeclareDelimFormat{nameyeardelim}{%
   \iffieldundef{\thefield{labeldatesource}year}%
     {\addcomma\space}%
     {\addspace}}
-\renewcommand*{\nonameyeardelim}{%
+\DeclareDelimFormat{nonameyeardelim}{%
   \iffieldundef{\thefield{labeldatesource}year}%
     {\addcomma\space}%
     {\addspace}}
@@ -12891,7 +12893,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareDatamodelFields[type=list,datatype=name]{scribe,owner}
 \DeclareDatamodelFields[type=list,datatype=literal]{origin}
 \DeclareDatamodelEntryfields[manuscript]{catalog,dating,shortlibrary,%
-  shortcollection,columns,languages, collection,usualtitle,shelfmark,%
+  shortcollection,columns,languages,collection,usualtitle,shelfmark,%
   sortshelfmark,support,columns,origin,scribe,owner}
 %    \end{macrocode}
 %
