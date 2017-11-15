@@ -2677,8 +2677,8 @@ Where the publisher changed between volumes, the following form is used:
   complication.}
 
 %</n|m|a|y>
-%<*n>
-\tip{You can alternatively use the standard \textsf{biblatex} relation type \code{multivolume}. Note that this construction is not portable to \textsf{oxyear}.}
+%<*n|m>
+\tip{You can alternatively use the standard \textsf{biblatex} relation type \code{multivolume}. Note that this construction is not portable to \textsf{oxyear}\slash\textsf{oxalph}.}
 
 \begin{bibexbox}
 <OGS \S15.2.6*>
@@ -2686,8 +2686,8 @@ Where the publisher changed between volumes, the following form is used:
 Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i–iii (Oxford: Talboys, 1838–9), iv (London: Bohn, 1846).
 \tcblower
 \begin{Verbatim}
-%</n>
-%<*n|bib>
+%</n|m>
+%<*n|m|bib>
 @mvbook{ritter1838hap1-3,
   author = {Heinrich Ritter},
   title = {The History of Ancient Philosophy},
@@ -2708,12 +2708,12 @@ Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W
   location = {London},
   publisher = {Bohn},
   date = {1846}}
-%</n|bib>
-%<*n>
+%</n|m|bib>
+%<*n|m>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n>
+%</n|m>
 %<*n|m|a|y>
 \subsection{One volume from several}
 
@@ -3141,10 +3141,11 @@ rather than within the publication block%
 %<n|m>.
 %<a|y>, but this does not affect the author–date style since the original date is at the head of the reference anyway.
 
-%<n|m>\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{first pub.} Year).}
+%<n|m>\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).}
 %<a|y>\spec{Author (OrigYear), \emph{Title} (Location: Publisher).}
 
 %<n|m>\tip{This format is triggered if you specify an original date but do not specify the original publisher or location, nor the edition of the later publication.}
+%<n|m>\info{In the following example, you will see the style uses ‘originally published’ instead of ‘first published’. This is because ‘originally’ is more common among the available examples.}
 
 \begin{bibexbox}
 %<n|m><OGS \S15.2.3>
