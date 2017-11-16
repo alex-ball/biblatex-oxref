@@ -2383,7 +2383,9 @@ Roderick O'Conor, \emph{A Sentimental Journal through \enquote{Finnegan's Wake},
 %<*a|y>
 \begin{bibexbox}<NHR \S18.5>
 {lyons1981lli}
-Lyons, J. (1981\emph{a}), \emph{Language and Linguistics: An Introduction} (Cambridge: Cambridge University Press).
+%<a>Lyons, J. (1981),
+%<y>Lyons, J. (1981\emph{a}),
+\emph{Language and Linguistics: An Introduction} (Cambridge: Cambridge University Press).
 \tcblower
 \begin{Verbatim}
 %</a|y>
@@ -2402,7 +2404,9 @@ Lyons, J. (1981\emph{a}), \emph{Language and Linguistics: An Introduction} (Camb
 
 \begin{bibexbox}<NHR \S18.5>
 {lyons1981lmc}
-Lyons, J. (1981\emph{b}), \emph{Language, Meaning and Context} (London: Fontana Paperbacks).
+%<a>Lyons, J. (1981),
+%<y>Lyons, J. (1981\emph{b}),
+\emph{Language, Meaning and Context} (London: Fontana Paperbacks).
 \tcblower
 \begin{Verbatim}
 %</a|y>
@@ -3483,7 +3487,9 @@ Barnes, J. (1982), \emph{Aristotle} (Past Masters; Oxford).
 %<*a|y>
 \begin{bibexbox}<OGS \S15.19.2>
 {smithFCgaf}
-Smith, P. (forthcoming \emph{a}), \emph{Gender and Famine}, 2 vols. (London).
+%<a>Smith, P. (forthcoming),
+%<y>Smith, P. (forthcoming \emph{a}),
+\emph{Gender and Famine}, 2 vols. (London).
 \tcblower
 \begin{Verbatim}
 %</a|y>
@@ -12408,6 +12414,61 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \RequireBibliographyStyle{oxyear}
+%    \end{macrocode}
+%
+% \subsection{Suppressing labelextra}
+%
+% Since the label codes do all the disambiguation, it is not necessary for
+% the date at the head of the reference to have a disambiguation component.
+%
+%    \begin{macrocode}
+\xpatchcmd{\bbx@opt@mergedate@maximum}{%
+  \printdateextra
+}{%
+  \printdate
+}{}{}
+\xpatchcmd{\bbx@opt@mergedate@maximum}{%
+  \csuse{print\thefield{labeldatesource}dateextra}
+}{%
+  \csuse{print\thefield{labeldatesource}date}
+}{}{}
+\xpatchcmd{\bbx@opt@mergedate@maximum}{%
+  \printlabeldateextra
+}{%
+  \printlabeldate
+}{}{}
+\xpatchcmd{\bbx@opt@mergedate@compact}{%
+  \csuse{print\thefield{labeldatesource}dateextra}
+}{%
+  \csuse{print\thefield{labeldatesource}date}
+}{}{}
+\xpatchcmd{\bbx@opt@mergedate@compact}{%
+  \printlabeldateextra
+}{%
+  \printlabeldate
+}{}{}
+\xpatchcmd{\bbx@opt@mergedate@year}{%
+  \printlabeldateextra
+}{%
+  \printlabeldate
+}{}{}
+\xpatchcmd{\bbx@opt@mergedate@basic}{%
+  \printlabeldateextra
+}{%
+  \printlabeldate
+}{}{}
+\xpatchcmd{\bbx@opt@mergedate@minimum}{%
+  \printlabeldateextra
+}{%
+  \printlabeldate
+}{}{}
+\xpatchcmd{\bbx@opt@mergedate@false}{%
+  \printlabeldateextra
+}{%
+  \printlabeldate
+}{}{}
+\ExecuteBibliographyOptions{mergedate}
+
 %    \end{macrocode}
 %
 % \subsection{Label codes: printing}
