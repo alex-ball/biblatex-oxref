@@ -4344,7 +4344,7 @@ There are typically many contributors to an audiovisual work, and the priority g
 The basic structure of audio recording entries is as follows:
 
 %<n|m>\spec{Composer, \emph{Title}, Artist, RecordingDate (RecordingCompany Type Number, PublicationDate) [Medium].}
-%<a|y>\spec{Composer (Year), \emph{Title}, Artist, RecordingDate (RecordingCompany Type Number, PublicationDate) [Medium].}
+%<a|y>\spec{Composer (RecordingYear), \emph{Title}, Artist, RecordingDate (RecordingCompany Type Number, PublicationDate) [Medium].}
 
 If the composer's name is not of interest, it may be omitted or replaced by the artist's name.
 %<y>In the absence of examples to the contrary, \textsf{oxyear} uses the year of recording at the head of the reference if available, otherwise it uses the year of publication.
@@ -5079,6 +5079,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
   title = {Tan Twan Eng Interview: \enquote{I Have No Alternative but to Write in English}},
   journaltitle = {The Spectator},
   date = {2013-05-20},
+  options = {varissuedate=false},
   url = {http://blogs.spectator.co.uk/books/2013/05/tan-twang-eng-interview-i-have-no-alternative-but-to-write-in-english/},
   urldate = {2013-11-09}}
 %<*n|m|a|y>
@@ -7279,7 +7280,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat{origdatetype}{%
   \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
 }
-\newbibmacro*{origdate+time}[1][]{%
+\newbibmacro*{origdate+time}{%
   \ifboolexpr{
     test {\iffieldundef{origyear}}
     and
@@ -7289,12 +7290,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     and
     test {\iffieldundef{orighour}}
   }{}{%
-    \ifstrempty{#1}{%
-      \printfield{origdatetype}%
-    }{%
-      \iffieldundef{origdatetype}%
-        {\bibstring{#1}}%
-        {\printfield{origdatetype}}}}%
+    \printfield{origdatetype}}%
   \setunit*{\addspace}%
   \iftoggle{blx@ox@timefirst}{%
     \printorigtime
@@ -9057,7 +9053,7 @@ reference,mvreference,inreference]{volume}{%
 \newbibmacro*{publisher+type+series+number+date}{%
   \iffieldundef{number}{}{%
     \setunit{\addcomma\space}%
-    \usebibmacro{origdate+time}[recorded]%
+    \usebibmacro{origdate+time}%
   }%
   \ifboolexpr{%
     test {\iflistundef{origpublisher}}
@@ -9107,7 +9103,7 @@ reference,mvreference,inreference]{volume}{%
       \printfield{number}%
       \iffieldundef{number}{%
         \setunit{\addcomma\space}%
-        \usebibmacro{origdate+time}[recorded]%
+        \usebibmacro{origdate+time}%
       }{}%
       \setunit{\addcomma\space}%
       \usebibmacro{date+time}}}}
@@ -11211,9 +11207,27 @@ reference,mvreference,inreference]{volume}{%
     }
 %    \end{macrocode}
 %
+% \subsubsection{Audiovisual materials}
+%
+% For audiovisual materials, |origdatetype| defaults to ‘recorded’.
+%
+%    \begin{macrocode}
+    \map[overwrite=false]{
+      \pertype{audio}
+      \pertype{music}
+      \pertype{movie}
+      \pertype{video}
+      \pertype{inaudio}
+      \pertype{inmusic}
+      \pertype{inmovie}
+      \pertype{invideo}
+      \step[fieldset=origdatetype,fieldvalue={recorded}]
+    }
+%    \end{macrocode}
+%
 % \subsubsection{Legal references}
 %
-% These help ensure compatibility with \textsf{oscola}.
+% These help ensure compatibility with \pkg{oscola}.
 %
 %    \begin{macrocode}
     \map[overwrite=false]{
