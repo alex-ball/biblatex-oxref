@@ -6416,6 +6416,10 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %    \begin{macrocode}
   book, books, canto, cantos, stanza, stanzas, act, acts, scene, scenes, folio, folios,
   article, articles, clause, clauses, regulation, regulations, rule, rules,
+  booktotal, booktotals, cantototal, cantototals, stanzatotal, stanzatotals,
+  acttotal, acttotals, scenetotal, scenetotals, foliototal, foliototals,
+  articletotal, articletotals, clausetotal, clausetotals, regulationtotal,
+  regulationtotals, ruletotal, ruletotals,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -10522,8 +10526,7 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \def\recto{r}
 \def\verso{v}
-\NumCheckSetup{\def\recto{r}\def\verso{v}}
-\DeclareNumChars*{rv}
+\NumCheckSetup{\def\recto{}\def\verso{}}
 %    \end{macrocode}
 %
 % Here are some special field formats for the |manuscript| driver.
@@ -12944,6 +12947,26 @@ reference,mvreference,inreference]{volume}{%
   regulations      = {{regulations}{regs\adddot}},
   rule             = {{rule}{r\adddot}},
   rules            = {{rules}{rr\adddot}},
+  booktotal        = {{book}{bk\adddot}},
+  booktotals       = {{books}{bks\adddot}},
+  cantototal       = {{canto}{canto}},
+  cantototals      = {{cantos}{cantos}},
+  stanzatotal      = {{stanza}{stanza}},
+  stanzatotals     = {{stanzas}{stanzas}},
+  acttotal         = {{Act}{Act}},
+  acttotals        = {{Acts}{Acts}},
+  scenetotal       = {{Scene}{Scene}},
+  scenetotals      = {{Scenes}{Scenes}},
+  foliototal       = {{folio}{fo\adddot}},
+  foliototals      = {{folios}{fos\adddot}},
+  articletotal     = {{article}{art\adddot}},
+  articletotals    = {{articles}{arts\adddot}},
+  clausetotal      = {{clause}{cl\adddot}},
+  clausetotals     = {{clauses}{cls\adddot}},
+  regulationtotal  = {{regulation}{reg\adddot}},
+  regulationtotals = {{regulations}{regs\adddot}},
+  ruletotal        = {{rule}{r\adddot}},
+  ruletotals       = {{rules}{rr\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
