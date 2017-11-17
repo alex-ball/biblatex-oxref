@@ -8,7 +8,7 @@ stipulations and examples provided by the 2014 *New Hart's Rules* and the 2002
     intended for use with footnotes;
   * `oxnum` is a style similar to the standard `numeric`,
     intended for use with numeric in-text citations.
-  * `oxalph` is a style similar to the standard `numeric`,
+  * `oxalph` is a style similar to the standard `alphabetic`,
     intended for use with alphabetic in-text citations.
   * `oxyear` is a style similar to the standard `authoryear`,
     intended for use with parenthetical in-text citations.
@@ -25,6 +25,15 @@ the styles handle certain tricky references are subject to change.
 To compile the documentation you will need to have the [minted] package working,
 which in turn relies on Python 2.6+ and Pygments. See the documentation of that
 package for details.
+
+### Managed way
+
+The latest stable release of the biblatex-oxref bundle has been packaged for
+TeX Live and MiKTeX. If you are running TeX Live and have `tlmgr` installed, you
+can install the bundle simply by running `tlmgr install biblatex-oxref`. If you
+are running MiKTeX, you can install the bundle by running
+`mpm --install=biblatex-oxref`. Both `tlmgr` and `mpm` have GUI versions that
+you might find friendlier.
 
 ### Automated way
 
