@@ -1146,7 +1146,16 @@ Test \parencites%
 \end{egcite}
 %</m|a>
 %<*y>
-The \emph{Oxford Guide to Style} consistently promotes an author–date citation scheme which uses parentheses, within which there is only a space between the name and date. Pages are set off with a colon, and multiple works are separated with a semicolon.
+The \emph{Oxford Guide to Style} consistently promotes an author–date citation scheme which uses parentheses, within which there is only a space between the name and date. 
+If there is no date, the replacement text is separated from the name by a comma.
+
+\begin{egcite}{(Anon.\@ 1956), (Marx 1867), (Clarke, n.d.).}
+\parencite{anon1956lu},
+\parencite{marx1867ccp},
+\parencite{clarkeNDeci}.
+\end{egcite}
+
+Pages are set off with a colon, and multiple works are separated with a semicolon.
 
 \begin{egcite}{Hankinson (1988: 93, 96; 1989: 72)}
 \textcites%
@@ -1162,7 +1171,6 @@ Up to two author names are given, after which ‘et al.’ is used.
 \end{egcite}
 
 If different authors have the same surname, they are distiguished by their initial.
-If there is no date, the replacement text is separated from the name by a comma.
 
 %</y>
 %</n|m|a|y>
@@ -11807,7 +11815,10 @@ reference,mvreference,inreference]{volume}{%
   \ifboolexpr{%
     togl {blx@labeldateparts}
     and not test {\iffieldundef{labeldatesource}}
-    and not test {\iffieldundef{\thefield{labeldatesource}year}}}}
+    and (
+      test {\iffieldequalstr{labeldatesource}{year}}
+      or not test {\iffieldundef{\thefield{labeldatesource}year}}
+    )}}
 \def\iflabeldateispubstate{%
   \ifboolexpr{%
     not test {\iffieldundef{labeldatesource}}
@@ -12649,13 +12660,13 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareDelimFormat{nameyeardelim}{%
-  \iffieldundef{\thefield{labeldatesource}year}%
-    {\addcomma\space}%
-    {\addspace}}
+  \iflabeldateisanydate
+    {\addspace}%
+    {\addcomma\space}}
 \DeclareDelimFormat{nonameyeardelim}{%
-  \iffieldundef{\thefield{labeldatesource}year}%
-    {\addcomma\space}%
-    {\addspace}}
+  \iflabeldateisanydate
+    {\addspace}%
+    {\addcomma\space}}
 %    \end{macrocode}
 %
 % Compressed citations are delimited with a semicolon, just like
