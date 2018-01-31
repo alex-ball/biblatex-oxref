@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2018/01/30 v0.11.2}
+\def\Version{2018/01/31 v0.11.2}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -7549,12 +7549,23 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 \DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
-% We provide a command for testing if a title is abbreviated.
+% We provide a command for testing if a title is abbreviated. We use the
+% traditional \LaTeX\ accent commands in case a non-Unicode input encoding is
+% being used. Testing for \c{C} and \c{S} causes errors when using OT1 encoding.
 %
 %    \begin{macrocode}
+\newcommand*{\blx@ox@abbrevstring}{%
+  A\^{A}BCDEFG\u{G}HI\.{I}\^{I}JKLMNO\"{O}\^{O}PQRSTU\"{U}\^{U}VWXYZ.}%
+\AtBeginDocument{
+  \ifdefstring{\encodingdefault}{OT1}{}{%
+    \renewcommand*{\blx@ox@abbrevstring}{%
+      A\^{A}BC\c{C}DEFG\u{G}HI\.{I}\^{I}JKLMNO\"{O}\^{O}PQRS\c{S}TU\"{U}\^{U}VWXYZ.}%
+  }%
+}
 \newcommand*{\ifabbrev}[3]{%
   \StrRight{#1}{1}[\blx@ox@lastchar]%
-  \IfSubStr{AÂBCÇDEFGĞHIİÎJKLMNOÖÔPQRSŞTUÜÛVWXYZ.}{\blx@ox@lastchar}{#2}{#3}}
+  \IfSubStr{\blx@ox@abbrevstring}{\blx@ox@lastchar}{#2}{#3}
+}
 %    \end{macrocode}
 %
 % We renew the |journal+issuetitle| macro so that if a work takes up a
