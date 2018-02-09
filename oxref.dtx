@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2018/01/31 v0.11.2}
+\def\Version{2018/02/09 v0.11.3}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -11881,7 +11881,7 @@ reference,mvreference,inreference]{volume}{%
           }{%
             \printlabeldateextra
             \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
-          }}}}}}%
+          }}}}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -11895,16 +11895,20 @@ reference,mvreference,inreference]{volume}{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{%
-        \iflabeldateisanydate{%
-          \csuse{print\thefield{labeldatesource}dateextra}%
-          \clearfield{\thefield{labeldatesource}year}%
-          \clearfield{\thefield{labeldatesource}season}%
-          \clearfield{\thefield{labeldatesource}month}%
-          \clearfield{\thefield{labeldatesource}day}%
+        \iflabeldateisdate{%
+          \printdateextra
+          \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
         }{%
-          \printlabeldateextra
-          \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
-        }}}}}%
+          \iflabeldateisanydate{%
+            \csuse{print\thefield{labeldatesource}dateextra}%
+            \clearfield{\thefield{labeldatesource}year}%
+            \clearfield{\thefield{labeldatesource}season}%
+            \clearfield{\thefield{labeldatesource}month}%
+            \clearfield{\thefield{labeldatesource}day}%
+          }{%
+            \printlabeldateextra
+            \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
+          }}}}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -11919,11 +11923,14 @@ reference,mvreference,inreference]{volume}{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{\printlabeldateextra}%
-      \iflabeldateisanydate{%
-        \clearfield{\thefield{labeldatesource}year}%
+      \iflabeldateisdate{%
+        \clearfield{year}
       }{%
-        \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
-      }}}}%
+        \iflabeldateisanydate{%
+          \clearfield{\thefield{labeldatesource}year}%
+        }{%
+          \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
+        }}}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -11938,17 +11945,20 @@ reference,mvreference,inreference]{volume}{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{\printlabeldateextra}%
-      \iflabeldateisanydate{%
-        \ifdateshavedifferentprecision{label}{\thefield{labeldatesource}}{}{%
-          \ifboolexpr{
-            test {\iffieldequalstr{labeldatesource}{}}
-            and
-            not test {\iffieldundef{issue}}
-          }{}{%
-            \clearfield{\thefield{labeldatesource}year}}}%
+      \iflabeldateisdate{%
+        \ifboolexpr{
+          test {\ifdateshavedifferentprecision{label}{}}
+          or
+          not test {\iffieldundef{issue}}
+        }{}{%
+          \clearfield{year}}%
       }{%
-        \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
-      }}}}
+        \iflabeldateisanydate{%
+          \ifdateshavedifferentprecision{label}{\thefield{labeldatesource}}{}{%
+            \clearfield{\thefield{labeldatesource}year}}%
+        }{%
+          \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
+        }}}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -11963,21 +11973,26 @@ reference,mvreference,inreference]{volume}{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
       \printtext[datelabel]{\printlabeldateextra}%
-      \iflabeldateisanydate{%
+      \iflabeldateisdate{%
         \ifboolexpr{
-          test {\ifdateshavedifferentprecision{label}{\thefield{labeldatesource}}}
+          test {\ifdateshavedifferentprecision{label}{}}
           or
           not test {\iffieldundef{extradate}}
+          or
+          not test {\iffieldundef{issue}}
         }{}{%
-          \ifboolexpr{
-            test {\iffieldequalstr{labeldatesource}{}}
-            and
-            not test {\iffieldundef{issue}}
-          }{}{%
-            \clearfield{\thefield{labeldatesource}year}}}%
+          \clearfield{year}}%
       }{%
-        \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
-      }}}}
+        \iflabeldateisanydate{%
+          \ifboolexpr{
+            test {\ifdateshavedifferentprecision{label}{\thefield{labeldatesource}}}
+            or
+            not test {\iffieldundef{extradate}}
+          }{}{%
+            \clearfield{\thefield{labeldatesource}year}}%
+        }{%
+          \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
+        }}}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
