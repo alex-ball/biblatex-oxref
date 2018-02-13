@@ -1507,7 +1507,7 @@ If the contribution of the translators or revisers is so great they could be joi
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Annotate \emph{either} the \code{editor} \emph{or} \code{translator} field with the keyword \code{jointauthor} to promote the name to the joint author position (you cannot do it for both). Note that you have to supply a suitable \code{shortauthor} value yourself; \pkg[biblatex]{oxref} does not calculate it for you.}
+\tip{Annotate \emph{either} the \code{editor} \emph{or} \code{translator} field with the keyword \code{jointauthor} to promote the name to the joint author position (you cannot do it for both). Internally, what this does is move the names to the \pkg[biblatex]{oxref}-specific \code{jointauthor} field; you can use this and \code{jointauthortype} directly if you like, at the cost of portability to other styles. Note that you have to supply a suitable \code{shortauthor} value yourself; \pkg[biblatex]{oxref} does not calculate it for you.}
 
 \section{Titular prefixes}\label{sec:nametitles}
 
@@ -4254,8 +4254,14 @@ CNNR/GMH (Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria
 
 \section{Reports with a type or series}
 
-%<n|m>\spec{Author, \emph{Title}, Series, Number (Location: Institution, Year).}
-%<a|y>\spec{Author (Year), \emph{Title}, Series, Number (Location: Institution).}
+\tip{The number of a report will only be printed if you also supply a type or
+  series, or both. The difference between the two is that the series will be
+  separated from the (type and) number by a comma, while the only a space
+  separates the type and number. In addition, if you supply a series but no
+  type, the number will be prefixed by `No.\@' or the localized equivalent.}
+
+%<n|m>\spec{Author, \emph{Title}, Series, Type Number (Location: Institution, Year).}
+%<a|y>\spec{Author (Year), \emph{Title}, Series, Type Number (Location: Institution).}
 
 %</n|m|a|y>
 %<*a|y>
@@ -4278,9 +4284,6 @@ Office of Population Censuses and Surveys (1979a), \emph{Area Mortality Tables: 
 %<*a|y>
 \end{Verbatim}
 \end{bibexbox}
-
-%<n|m>\spec{Author, \emph{Title}, Type Number (Location: Institution, Year).}
-%<a|y>\spec{Author (Year), \emph{Title}, Type Number (Location: Institution).}
 
 \begin{bibexbox}<OGS \S15.19.2>
 {opcs1979pnc}
@@ -4325,6 +4328,24 @@ Rosenblatt, J., et al. (1988), \emph{The Common Agricultural Policy of the Europ
 %</a|y>
 %<*n|m|a|y>%
 
+\section{Joint publications}
+
+It is more common with reports than with books for a work to be branded
+jointly by several issuing organizations. Neither the \emph{Oxford Guide to
+Style} nor \emph{New Hart's Rules} give explicit guidance on this, but I
+suggest handling it by giving corresponding lists as the \code{location}
+and \code{institution}:
+
+\begin{tcblisting}{listing only}
+  location = {Place 1 and Place 2 and Place 3},
+  institution = {Organization 1 and Organization 2 and Organization 3},
+\end{tcblisting}
+
+This will be printed as follows:
+
+\begin{tcolorbox}
+(Place 1: Organization 1, Place 2: Organization 2, and Place 3: Organization 3)
+\end{tcolorbox}
 
 \section{Theses}
 
