@@ -813,6 +813,10 @@ The style is self-contained, so you can load it with \pkg{biblatex}:
 
 The style has some options additional to the regular \pkg{biblatex} ones:
 
+\begin{docKey}{altbookseries}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Puts the series information for a book outside, rather than inside, the parenthetical publication block.
+\end{docKey}
+
 \begin{docKey}{altthesis}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Puts the thesis type inside, rather than outside, the parenthetical publication block.
 \end{docKey}
@@ -4301,7 +4305,7 @@ CNNR/GMH (Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria
 
 \tip{The number of a report will only be printed if you also supply a type or
   series, or both. The difference between the two is that the series will be
-  separated from the (type and) number by a comma, while the only a space
+  separated from the (type and) number by a comma, while only a space
   separates the type and number. In addition, if you supply a series but no
   type, the number will be prefixed by `No.\@' or the localized equivalent.}
 
@@ -8047,6 +8051,16 @@ reference,mvreference,inreference]{volume}{%
     \printfield{number}}
 %    \end{macrocode}
 %
+% We provide an option for displaying the series information before, instead of
+% within, the publication block.
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@altbookseries}
+\DeclareBibliographyOption[boolean]{altbookseries}[true]{%
+  \settoggle{blx@ox@altbookseries}{#1}
+}
+%    \end{macrocode}
+%
 % When citing both the first and a later edition, the first one comes
 % first, and the later one comes after a semicolon. As per standard
 % \pkg{biblatex}, the elements of a single edition are separated by commas
@@ -8128,6 +8142,9 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newbibmacro*{series+number+edition+publisher+location+date}{%
+  \iftoggle{blx@ox@altbookseries}{%
+    \usebibmacro{series+number}%
+    \setunit{\addspace}\newblock}{}%
   \ifboolexpr{
     test {\iffieldundef{series}}
     and
@@ -8147,8 +8164,9 @@ reference,mvreference,inreference]{volume}{%
   }{}{%
     \nopunct
     \printtext[publication]{%
-    \usebibmacro{series+number}%
-    \setunit{\addsemicolon\addspace}%
+    \iftoggle{blx@ox@altbookseries}{}{%
+      \usebibmacro{series+number}%
+      \setunit{\addsemicolon\addspace}}%
     \usebibmacro{edition+publisher+location+date}%
     \usebibmacro{copub}}}%
   \iffieldequalstr{relatedtype}{copub}{\clearfield{related}}%
@@ -8163,6 +8181,9 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newbibmacro*{series+number+publisher+location+date}{%
+  \iftoggle{blx@ox@altbookseries}{%
+    \usebibmacro{series+number}%
+    \setunit{\addspace}\newblock}{}%
   \ifboolexpr{
     test {\iffieldundef{series}}
     and
@@ -8180,8 +8201,9 @@ reference,mvreference,inreference]{volume}{%
   }{}{%
     \nopunct
     \printtext[publication]{%
-    \usebibmacro{series+number}%
-    \setunit{\addsemicolon\addspace}%
+    \iftoggle{blx@ox@altbookseries}{}{%
+      \usebibmacro{series+number}%
+      \setunit{\addsemicolon\addspace}}%
     \usebibmacro{publisher+location+date}%
     \usebibmacro{copub}}}%
   \iffieldequalstr{relatedtype}{copub}{\clearfield{related}}%
@@ -8380,7 +8402,7 @@ reference,mvreference,inreference]{volume}{%
   \printfield{volumes}%
   \newunit\newblock
   \printfield{note}%
-  \newunit\newblock%
+  \newunit\newblock
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
@@ -8432,7 +8454,7 @@ reference,mvreference,inreference]{volume}{%
   \newunit\newblock
   \printfield{note}%
   \newunit\newblock
-  \usebibmacro{series+number+publisher+location+date}%
+  \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit\newblock
@@ -8944,8 +8966,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % Our version of the |institution+location+date| macro is just like the
 % standard one except it is wrapped in parentheses, and the preceding
-% punctuation is therefore suppressed. This is used by the standard
-% |thesis| driver, which also works well for us, and the |report| driver.
+% punctuation is therefore suppressed. This is used by the |report| driver.
 %
 %    \begin{macrocode}
 \renewbibmacro*{institution+location+date}{%
