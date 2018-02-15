@@ -1054,7 +1054,6 @@ I would be most glad to hear from you:
     \item booklet
     \item suppcollection
     \item patent
-    \item suppperiodical
     \item artwork
     \item commentary
     \item letter
@@ -2262,6 +2261,52 @@ Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab 
   journaltitle = {Philosophy and Phenomenological Research},
   url = {http://cogprints.org/5780/1/ECSRAP.F07.pdf},
   pubstate = {inpress}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\section{Editorials and other regular features}
+
+Strictly speaking, when a work is headed ‘Editorial’ or ‘Letter to the Editor’
+in a periodical, this is a descriptor rather than a title.
+
+\tip{If a piece has a true title, the descriptor goes in the \code{note} field.
+  If it doesn't, the descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to remove the quote marks.
+  Alternatively, use the (non-standard) \code{descriptor} field for the descriptor in all cases, and \pkg[biblatex]{oxref} will take care of this for you.}
+
+\begin{bibexbox}
+{ball2015ed}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@suppperiodical{ball2015ed,
+  author = {Alexander Ball},
+  title = {Editorial},
+  title+an = {=descriptor},
+  date = {2015},
+  journaltitle = {International Journal of Digital Curation},
+  volume = {10},
+  number = {1},
+  pages = {i-v},
+  doi = {10.2218/ijdc.v10i1.376}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{jccm2006ed}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@suppperiodical{jccm2006ed,
+  title = {\enquote{What a Disaster} and Why Does This Question Matter?},
+  date = {2006},
+  note = {Editorial},
+  journaltitle   = {Journal of Contingencies and Crisis Management},
+  volume = {14},
+  pages = {1-2}}
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -7567,7 +7612,7 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % Subtypes for articles and similar are in square brackets.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[article,periodical,review]{entrysubtype}{\mkbibbrackets{#1}}
+\DeclareFieldFormat[article,periodical,suppperiodical,review]{entrysubtype}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
 % We provide a command for testing if a title is abbreviated. We use the
@@ -7843,6 +7888,68 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
+% The |suppperiodical| driver is just like the |article| one, except the note
+% comes sooner after the title. This is to allow it to be used as a descriptor.
+% Since we're breaking the alias, we need to explicitly replicate the article
+% formatting for the rest of the entry.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[suppperiodical]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
+  \undef\currentfield}
+\DeclareFieldFormat[suppperiodical]{volume}{#1}% volume of a journal
+\DeclareFieldFormat[suppperiodical]{number}{#1}% number of a journal
+\DeclareFieldFormat[suppperiodical]{series}{% series of a journal
+  \ifinteger{#1}
+  {\mkbibordseries{#1}~\bibstring{jourser}}
+  {\ifbibstring{#1}{\bibstring{#1}}{#1}}}
+\DeclareBibliographyDriver{suppperiodical}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{bytranslator+others}%
+  \newunit\newblock
+  \printfield{note}\clearfield{note}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit\newblock
+  \usebibmacro{journal+issuetitle}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \iffieldequalstr{relatedtype}{suppto}{%
+    \setunit{\addsemicolon\space}%
+    \iftoggle{bbx:related}{%
+      \usebibmacro{related:init}%
+      \usebibmacro{related}%
+      \clearfield{related}%
+    }{}%
+  }{}%
+  \newunit
+  \usebibmacro{note+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
 % \subsection{Books and works in books}
 %
 % By default, editors do not appear before the title in book or reference
@@ -7857,15 +7964,6 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 % however, are set in italics.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[bookinbook]{citetitle}{%
-  \ifboolexpr{
-    test {\iffieldequalstr{entrysubtype}{poem}}
-    or
-    test {\iffieldequalstr{entrysubtype}{play}}
-  }{%
-    \mkbibemph{#1}%
-  }{%
-    \mkbibquote{#1\isdot}}}
 \DeclareFieldFormat[bookinbook]{title}{%
   \ifboolexpr{
     test {\iffieldequalstr{entrysubtype}{poem}}
@@ -9393,12 +9491,10 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % The examples of image references in \emph{New Hart's Rules} are all for online
-% images, and the |online| driver seems to work well for them. The main
-% difference is that they use a different format for the title.
+% images, and the |online| driver seems to work well for them.
 %
 %    \begin{macrocode}
 \DeclareBibliographyAlias{image}{online}
-\DeclareFieldFormat[image]{title}{\mkbibquote{#1\isdot}}
 
 %    \end{macrocode}
 %
@@ -9410,7 +9506,7 @@ reference,mvreference,inreference]{volume}{%
 % are written in roman text within quotes.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[online]{title}{%
+\DeclareFieldFormat[online,image]{title}{%
   \def\currentfield{title}%
   \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
   \undef\currentfield}
@@ -12409,9 +12505,17 @@ reference,mvreference,inreference]{volume}{%
 % the equivalent information in the bibliography entry.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[online,image]{citetitle}{\mkbibquote{#1\isdot}}
-\DeclareFieldFormat[legislation,legal]{citetitle}{#1}
-\DeclareFieldFormat[manuscript,unpublished]{citetitle}{%
+\DeclareFieldFormat[bookinbook]{citetitle}{%
+  \ifboolexpr{
+    test {\iffieldequalstr{entrysubtype}{poem}}
+    or
+    test {\iffieldequalstr{entrysubtype}{play}}
+  }{%
+    \mkbibemph{#1}%
+  }{%
+    \mkbibquote{#1\isdot}}}
+\DeclareFieldFormat[suppperiodical,inaudio,inmusic,inmovie,invideo,online,%
+    image,manuscript,unpublished]{citetitle}{%
   \def\currentfield{title}%
   \ifboolexpr{
     test {\iffieldannotation{descriptor}}
@@ -12421,6 +12525,72 @@ reference,mvreference,inreference]{volume}{%
       test {\iffieldundef{title}}
     )
   }{#1}{\mkbibquote{#1\isdot}}%
+  \undef\currentfield}
+\DeclareFieldFormat[suppperiodical,inaudio,inmusic,inmovie,invideo,online,%
+    image,manuscript,unpublished]{citetitle}{%
+  \def\currentfield{title}%
+  \ifboolexpr{
+    test {\iffieldannotation{descriptor}}
+    or (
+      test {\iffieldundef{shorttitle}}
+      and
+      test {\iffieldundef{title}}
+    )
+  }{#1}{\mkbibquote{#1\isdot}}%
+  \undef\currentfield}
+\DeclareFieldFormat[audio,music]{citetitle}{%
+  \def\currentfield{title}%
+  \ifboolexpr{
+    test {\iffieldannotation{descriptor}}
+    or (
+      test {\iffieldundef{shorttitle}}
+      and
+      test {\iffieldundef{title}}
+    )
+  }{#1}{%
+    \iffieldequalstr{entrysubtype}{podcast}{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}}}%
+  \undef\currentfield}
+\DeclareFieldFormat[movie,video]{citetitle}{%
+  \def\currentfield{title}%
+  \ifboolexpr{
+    test {\iffieldannotation{descriptor}}
+    or (
+      test {\iffieldundef{shorttitle}}
+      and
+      test {\iffieldundef{title}}
+    )
+  }{#1}{%
+    \ifboolexpr{
+      test {\iffieldequalstr{entrysubtype}{episode}}
+      or
+      test {\iffieldequalstr{entrysubtype}{clip}}
+      or
+      test {\iffieldequalstr{entrysubtype}{webcast}}
+    }{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}}}%
+  \undef\currentfield}
+\DeclareFieldFormat[legislation,legal]{citetitle}{#1}
+\DeclareFieldFormat[misc]%
+    {citetitle}{%
+  \def\currentfield{title}%
+  \ifboolexpr{
+    test {\iffieldannotation{descriptor}}
+    or (
+      test {\iffieldundef{shorttitle}}
+      and
+      test {\iffieldundef{title}}
+    )
+  }{#1}{%
+    \iffieldequalstr{relatedtype}{in}{%
+      \mkbibquote{#1\isdot}%
+    }{%
+      \mkbibemph{#1}%
+    }}%
   \undef\currentfield}
 
 %    \end{macrocode}
