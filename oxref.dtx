@@ -334,6 +334,8 @@ Copyright (C) 2016–2018 Alex Ball
 \DeclareSourcemap{%
   \maps[datatype=bibtex]{%
     \map[overwrite=true]{%
+%<a>      \pertype{legislation}
+%<a>      \pertype{legal}
       \step[fieldset=shorthand, null=true]
     }%
   }%
@@ -1054,7 +1056,6 @@ I would be most glad to hear from you:
 
 \begin{multicols}{3}
   \begin{itemize}\firmlist
-    \item suppbook
     \item booklet
     \item suppcollection
     \item patent
@@ -3858,6 +3859,7 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
 @suppbook{gill1987intro,
   author = {Roma Gill},
   title = {introduction},
+  title+an = {=descriptor},
   booktitle = {The Complete Works of Christopher Marlow},
   volume = {1},
   origlocation = {Oxford},
@@ -3868,6 +3870,25 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
 \end{Verbatim}
 \end{bibexbox}
 
+\begin{bibexbox}
+{atwan2000fw}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@suppcollection{atwan2000fw,
+  author = {Robert Atwan},
+  title = {foreword},
+  title+an = {=descriptor},
+  address = {Boston},
+  booktitle = {The Best American Essays of the Century},
+  date = {2000},
+  editor = {Joyce Carol Oates and Robert Atwan},
+  publisher = {Houghton},
+  pages = {x-xvi}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
 
 \chapter{Works presented at meetings}\label{sec:proceedings}
 \chapterprecis{proceedings, mvproceedings, inproceedings, unpublished}
@@ -4558,7 +4579,7 @@ generated references more Oxford-like.
   sortyear = {1990},
   title = {Recommendations for citing and referencing published material},
   label = {BS~5605:1990},
-  shorthand = {BS5605},
+%<!n|m|y>  shorthand = {BS5605},
   organization = {British Standards Institute}}
 %<*n|m|a|y>
 \end{Verbatim}
@@ -4604,7 +4625,7 @@ generated references more Oxford-like.
 
 
 \chapter{Audiovisual materials}\label{sec:audiovideo}
-\chapterprecis{audio, inaudio, image, movie, music, inmusic, video}
+\chapterprecis{artwork, audio, inaudio, image, movie, music, inmusic, performance, video}
 
 There are typically many contributors to an audiovisual work, and the priority given to each role is fluid. \pkg[biblatex]{Oxref} uses \code{author} for contributors that should go at the head of the reference, and \code{editor} for others. As well as the normal ones you can use the author\slash editor types \code{performer}, \code{conductor}, \code{director} and \code{reader}.
 
@@ -5234,6 +5255,114 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \end{Verbatim}
 \end{bibexbox}
 
+\begin{bibexbox}
+{davinci1480mr}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@artwork{davinci1480mr,
+  author = {given=Leonardo, family=da Vinci},
+  title = {Madonna of the Rocks},
+  type = {oil on canvas},
+  note = {78 x 48.5 in\adddot},
+  year = {1480s},
+  institution = {Louvre},
+  location = {Paris}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{gormley1998an}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@artwork{gormley1998an,
+  author = {Anthony Gormley},
+  title = {Angel of the {North}},
+  date = {1998},
+  type = {sculpture},
+  location = {Low Fell, Gateshead}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{rodin1882k}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@artwork{rodin1882k,
+  author = {Auguste Rodin},
+  title = {The Kiss},
+  date = {1882},
+  type = {marble},
+  institution = {Musée Rodin},
+  location = {Paris}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\section{Performances}
+
+\begin{bibexbox}
+{ashton1937wb}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@performance{ashton1937wb,
+  author = {Frederick Ashton},
+  origdate = {1937},
+  title = {A Wedding Bouquet},
+  venue = {Royal Opera House},
+  location = {London},
+  date = {2004-10-22}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{lord2007dc}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@performance{lord2007dc,
+  author = {Jon Lord},
+  date = {2007-10-20},
+  title = {Durham Concerto},
+  editor = {{Liverpool Philharmonic Orchestra}},
+  editortype = {performer},
+  editora = {Mischa Damev},
+  editoratype = {conductor},
+  venue = {Durham Cathedral},
+  location = {Durham}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{judge1995mnd}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@performance{judge1995mnd,
+  options = {useauthor=false},
+  author = {William Shakespeare},
+  title = {A Midsummer Night's Dream},
+  editor = {Ian Judge},
+  editortype = {director},
+  date = {1995-02-26},
+  venue = {Thatre Royal},
+  location = {Newcastle upon Tyne}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
 
 \chapter{Digital media}\label{sec:electronic}
 \chapterprecis{online, software, dataset}
@@ -6272,7 +6401,7 @@ it provides the \code{commentary} entry type simply as an alias for \code{book}.
 
 
 \chapter{Specialist materials}\label{sec:special}
-\chapterprecis{misc, unpublished, letter}
+\chapterprecis{misc, unpublished, letter, manuscript}
 
 \section{Poems}\label{sec:poem}
 
@@ -6409,6 +6538,45 @@ Play titles, like those of epic poems, are set in italics rather than quoted.
 \tip{To assist with quoting passages, \pkg[biblatex]{oxref} provides the additional pagination types
   \code{act} and \code{scene} (\code{line} is already defined),
   though in reality you are probably better off doing it by hand.}
+
+
+\section{Letters}
+
+\begin{bibexbox}
+%<n|m><OGS \S15.15.3*>
+%<a|y><OGS \S15.15.3*\textdagger>
+{ritter2001rp}%
+%<n|m>R. M. Ritter, \enquote{Revised proofs} [email to H. E. Cox], (1 Aug.\@ 2001) \url{ogs@ritter.org.uk}, accessed 3 Aug.\@ 2001.
+%<a|y>Ritter, R. M. (2001), \enquote{Revised proofs} [email to H. E. Cox], (1 Aug.\@) \url{ogs@ritter.org.uk}, accessed 3 Aug.\@ 2001.
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@letter{ritter2001rp,
+  author = {R. M. Ritter},
+  title = {Revised proofs},
+  howpublished = {email to H. E. Cox},
+  date = {2001-08-01},
+  url = {ogs@ritter.org.uk},
+  urldate = {2001-08-03}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{bloggs2017tc}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@letter{bloggs2017tc,
+  author = {Joseph Bloggs},
+  title = {letter to Tom Cobley},
+  title+an = {=descriptor},
+  date = {2017-05-25}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
 
 \section{Manuscripts}\label{sec:ms}
 
@@ -7709,7 +7877,6 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
     \do\={\mathbin{}\mskip-\Urlmuskip\mathchar`\=\mskip\Urlmuskip}%
     \do\?{\mathbin{}\mskip-\Urlmuskip\mathchar`\?\mskip\Urlmuskip}%
     \do\_{\mathbin{}\mskip-\Urlmuskip\_\mskip\Urlmuskip}%
-    \do\@{\mathbin{}\mskip-\Urlmuskip\@\mskip\Urlmuskip}%
     \do\#{\mathbin{}\mskip-\Urlmuskip\#\mskip\Urlmuskip}%
   }%
   \ifnumgreater{\value{biburlnumpenalty}}{0}
