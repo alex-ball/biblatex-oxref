@@ -4377,7 +4377,7 @@ Rosenblatt, J., et al. (1988), \emph{The Common Agricultural Policy of the Europ
 %</a|y>
 %<*n|m|a|y>%
 
-\section{Joint publications}
+\section{Jointly published reports}
 
 It is more common with reports than with books for a work to be branded
 jointly by several issuing organizations. Neither the \emph{Oxford Guide to
@@ -4420,11 +4420,187 @@ This will be printed as follows:
 \end{Verbatim}
 \end{bibexbox}
 
-
 The following form is also supported: to use it, pass the \texttt{altthesis} option.
 
 %<n|m>\spec{Author, \enquote{Title}, (Type, Institution, Year).}
 %<a|y>\spec{Author (Year), \enquote{Title}, (Type, Institution).}
+
+\section{Booklets, pamphlets, leaflets, and other formal but unpublished texts}
+
+There are no obvious examples of this kind of material in the \emph{Oxford Guide
+to Style} or \emph{New Hart's Rules}. I welcome suggestions for how to make the
+generated references more Oxford-like.
+
+\begin{bibexbox}
+{msbh1921fvd}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@booklet{msbh1921fvd,
+  title = {The Facts about Venereal Diseases},
+  date = {1921},
+  howpublished = {distributed by the Missouri State Board of Health, Division of Venereal Diseases},
+  location = {Jefferson City, MO}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{lloyds2015m}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@booklet{lloyds2015m,
+  author = {{Lloyds TSB Bank plc}},
+  title = {Mortgages},
+  date = {2015},
+  howpublished = {Obtained in Paisley branch}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\section{Patents}
+
+There are no examples of patents in the \emph{Oxford Guide to Style} or
+\emph{New Hart's Rules}. I welcome suggestions for how to make the
+generated references more Oxford-like.
+
+Following the conventions from \pkg{biblatex-chicago}, use \texttt{origdate} for
+the date the patent was filed (or the application was published), and
+\texttt{date} for the date the patent was finally issued or published.
+
+\begin{bibexbox}
+{petroff.stapelbroek1980bib}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@patent{petroff.stapelbroek1980bib,
+  author = {Petroff, M.~D. and Stapelbroek, M.~G.},
+  title = {Blocked impurity band detectors},
+  date = {1986-02-04},
+  origdate = {1980-10-23},
+  type = {patentus},
+  number = {4,586,960},
+  location = {Washington, DC},
+  publisher = {U.S. Patent and Trademark Office}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{arduengo.etal2001pmi}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@patent{arduengo.etal2001pmi,
+  author = {Arduengo, III, Anthony J. and Gentry, Jr., Frederick P.
+    and Taverkere,  Prakash~K. and Simmons, III, Howard E.},
+  title = {Process for manufacture of imidazoles},
+  year = {2001},
+  type = {patentus},
+  holder = {{E.~I. DuPont}},
+  number = {6177575}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{pm1981opa}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@patent{pm1981opa,
+  author = {{Phillipp Morris Inc.}},
+  title = {Optical perforating apparatus and system},
+  origdate = {1981-01-07},
+  date = {1985-05-15},
+  type = {patenteu},
+  number = {EP0021165}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{hideki1992qmc}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@patent{hideki1992qmc,
+  author = {U. Hideki},
+  title = {Quadrature Modulation Circuit},
+  type = {patentjp},
+  number = {152932/92},
+  year = {1992-05-20}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\section{Standard}
+
+There are no examples of technical standards in the \emph{Oxford Guide
+to Style} or \emph{New Hart's Rules}. I welcome suggestions for how to make the
+generated references more Oxford-like.
+
+\begin{bibexbox}
+{bs5605:1990}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@standard{bs5605:1990,
+  sortkey = {BS 5605:1990},
+  sortyear = {1990},
+  title = {Recommendations for citing and referencing published material},
+  label = {BS~5605:1990},
+  shorthand = {BS5605},
+  organization = {British Standards Institute}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{w3c2017html5.2}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@standard{w3c2017html5.2,
+  title = {{HTML} 5.2},
+  editor = {Steve Faulkner and Arron Eicholz and Travis Leithead and
+    Alex Danilo and Sangwhan Moon},
+  date = {2017-12-14},
+  type = {W3C Recommendation},
+  organization = {World Wide Web Consortium},
+  url = {https://www.w3.org/TR/html52/},
+  urldate = {2018-02-17}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+
+\begin{bibexbox}
+{ietf.rfc1155}
+(not in book)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@standard{ietf.rfc1155,
+  author = {M. T. Rose and K. McCloghrie},
+  title = {Structure and identification of management information for {TCP/IP}-based internets},
+  date = {1990-05},
+  organization = {Internet Engineering Task Force},
+  series = {Request for Comments},
+  type = {Internet Standard},
+  number = {RFC~1155/STD~16},
+  doi = {10.17487/RFC1155}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
 
 
 \chapter{Audiovisual materials}\label{sec:audiovideo}
