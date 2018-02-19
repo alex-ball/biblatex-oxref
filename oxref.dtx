@@ -1057,7 +1057,6 @@ I would be most glad to hear from you:
 \begin{multicols}{3}
   \begin{itemize}\firmlist
     \item booklet
-    \item suppcollection
     \item patent
     \item artwork
     \item commentary
@@ -3847,6 +3846,13 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
 
 \section{Supplementary works in books and collections}
 
+If the work is headed ‘Introduction’, ‘Foreword’, ‘Afterword’, or similar,
+this is technically a descriptor rather than a title.
+
+\tip{If the work has a true title, the descriptor goes in the \code{note} field.
+  If it doesn't, the descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to correct the formatting.
+  Alternatively, use the (non-standard) \code{descriptor} field for the descriptor in all cases, and \pkg[biblatex]{oxref} will take care of this for you.}
+
 \begin{bibexbox}
 %<n|m><NHR \S18.2.6*>
 %<a|y><NHR \S18.2.6*\textdagger>
@@ -3889,6 +3895,16 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
+
+It is quite rare for such items to have a true title in addition, so previous
+versions of \pkg[biblatex]{oxref} treated all titles of \texttt{suppbook}
+entries as descriptors.
+
+\tip{To restore the previous behaviour, include the following code:}
+
+\begin{tcblisting}{listing only}
+\DeclareFieldFormat[suppbook]{title}{#1}
+\end{tcblisting}
 
 \chapter{Works presented at meetings}\label{sec:proceedings}
 \chapterprecis{proceedings, mvproceedings, inproceedings, unpublished}
@@ -8765,7 +8781,60 @@ reference,mvreference,inreference]{volume}{%
     \usebibmacro{related}}
   {}%
   \usebibmacro{finentry}}
-\DeclareFieldFormat[suppbook]{title}{#1\nopunct}
+%    \end{macrocode}
+%
+% Our |suppbook| driver is just like |inbook| except that the note is moved
+% nearer the title so it can be used as a descriptor.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[suppbook]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{\mkbibemph{#1}}%
+  \undef\currentfield}
+\DeclareBibliographyDriver{suppbook}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{note}%
+  \setunit{\addspace}\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{bybookauthor}%
+  \newunit\newblock
+  \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{volumes}%
+  \newunit\newblock
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
 %    \end{macrocode}
 %
 % We also provide a |bookinbook| driver that handles \code{origdate}
@@ -8944,6 +9013,58 @@ reference,mvreference,inreference]{volume}{%
   \printfield{volumes}%
   \newunit\newblock
   \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{series+number+edition+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Our |suppcollection| driver is just like |incollection| except that the note
+% is moved nearer the title so it can be used as a descriptor.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[suppcollection]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{\mkbibemph{#1}}%
+  \undef\currentfield}
+\DeclareBibliographyDriver{suppcollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{note}%
+  \setunit{\addspace}\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{bookeditor}%
+  \newunit\newblock
+  \usebibmacro{maintitle+booktitle}%
+  \newunit
+  \iffieldundef{maintitle}
+  {\printfield{volume}%
+    \printfield{part}}
+  {}%
+  \newunit\newblock
+  \printfield{volumes}%
   \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
