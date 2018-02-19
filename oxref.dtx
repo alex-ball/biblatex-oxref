@@ -4462,7 +4462,7 @@ The following form is also supported: to use it, pass the \texttt{altthesis} opt
 %<n|m>\spec{Author, \enquote{Title}, (Type, Institution, Year).}
 %<a|y>\spec{Author (Year), \enquote{Title}, (Type, Institution).}
 
-\section{Booklets, pamphlets, leaflets, and other formal but unpublished texts}
+\section{Booklets, leaflets, and other formal but unpublished texts}
 
 There are no obvious examples of this kind of material in the \emph{Oxford Guide
 to Style} or \emph{New Hart's Rules}. I welcome suggestions for how to make the
@@ -4493,7 +4493,7 @@ generated references more Oxford-like.
   author = {{Lloyds TSB Bank plc}},
   title = {Mortgages},
   date = {2015},
-  howpublished = {Obtained in Paisley branch}}
+  howpublished = {obtained in Paisley branch}}
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -4573,7 +4573,7 @@ the date the patent was filed (or the application was published), and
   title = {Quadrature Modulation Circuit},
   type = {patentjp},
   number = {152932/92},
-  year = {1992-05-20}}
+  date = {1992-05-20}}
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -6882,6 +6882,14 @@ The second uses the dedicated \code{manuscript} entry type from \textsf{biblatex
 %
 %    \begin{macrocode}
   anon, pseudo, urldown,
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item country names, patents, and patent requests;
+% \end{itemize}
+%
+%    \begin{macrocode}
+  countryjp, patentjp, patreqjp,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -13715,6 +13723,16 @@ reference,mvreference,inreference]{volume}{%
   anon             = {{Anonymous}{Anon\adddot}},
   pseudo           = {{Pseudo-}{Ps\adddot-}},
   urldown          = {{downloaded}{downloaded}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Country names, patents, and patent requests,
+% \end{itemize}
+%
+%    \begin{macrocode}
+  countryjp        = {{Japan}{JP}},
+  patentjp         = {{Japanese patent}{Japanese pat.\adddot}},
+  patreqjp         = {{Japanese patent request}{Japanese pat.\adddot req.\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
