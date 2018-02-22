@@ -888,7 +888,7 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \begin{docKey}{mergedate}{=\val{maximum}|\val{compact}|\val{basic}|\val{minimum}|\val{year}|\val{false}}{default \val{year}, initially \val{year}}
   Affects how the date at the start of the references relates to the date in the ‘normal’ position.
   The default value of \val{year} is intended for use with the default setting of \key{labeldate}\texttt{=}\val{year}.
-  If you set \key{labeldate} to something else, you will probably want to set this option to \val{compact} or \val{maximum}.
+  If you set \key{labeldate} to something else, you will probably want to set this option to \val{compact} or \val{maximum}. It can also be set on a per-type basis.
 \end{docKey}
 %</a|y>
 
@@ -12559,6 +12559,13 @@ reference,mvreference,inreference]{volume}{%
        {Invalid option 'mergedate=#1'}
        {Valid values are 'maximum', 'compact', 'basic', 'minimum',\MessageBreak
         'year', 'true' (=year), and 'false'.}}}
+\DeclareTypeOption{mergedate}[true]{%
+  \ifcsdef{bbx@opt@mergedate@#1}
+    {\csuse{bbx@opt@mergedate@#1}}
+    {\PackageError{biblatex}
+       {Invalid option 'mergedate=#1'}
+       {Valid values are 'maximum', 'compact', 'basic', 'minimum',\MessageBreak
+        'year', 'true' (=year), and 'false'.}}}
 %    \end{macrocode}
 %
 % The various values affect the definition of the following macro, used at
@@ -12648,18 +12655,21 @@ reference,mvreference,inreference]{volume}{%
           \printfield{issue}\clearfield{issue}%
           \setunit*{\addspace}%
           \printdateextra
-          \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
         }{%
           \iflabeldateisanydate{%
             \csuse{print\thefield{labeldatesource}dateextra}%
-            \clearfield{\thefield{labeldatesource}year}%
-            \clearfield{\thefield{labeldatesource}season}%
-            \clearfield{\thefield{labeldatesource}month}%
-            \clearfield{\thefield{labeldatesource}day}%
           }{%
-            \printlabeldateextra
-            \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
-          }}}}}}
+            \printlabeldateextra}}}%
+      \iflabeldateisdate{%
+        \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
+      }{%
+        \iflabeldateisanydate{%
+          \clearfield{\thefield{labeldatesource}year}%
+          \clearfield{\thefield{labeldatesource}season}%
+          \clearfield{\thefield{labeldatesource}month}%
+          \clearfield{\thefield{labeldatesource}day}%
+        }{%
+          \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}}}}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -12675,18 +12685,21 @@ reference,mvreference,inreference]{volume}{%
       \printtext[datelabel]{%
         \iflabeldateisdate{%
           \printdateextra
-          \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
         }{%
           \iflabeldateisanydate{%
             \csuse{print\thefield{labeldatesource}dateextra}%
-            \clearfield{\thefield{labeldatesource}year}%
-            \clearfield{\thefield{labeldatesource}season}%
-            \clearfield{\thefield{labeldatesource}month}%
-            \clearfield{\thefield{labeldatesource}day}%
           }{%
-            \printlabeldateextra
-            \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
-          }}}}}}
+            \printlabeldateextra}}}%
+      \iflabeldateisdate{%
+        \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
+      }{%
+        \iflabeldateisanydate{%
+          \clearfield{\thefield{labeldatesource}year}%
+          \clearfield{\thefield{labeldatesource}season}%
+          \clearfield{\thefield{labeldatesource}month}%
+          \clearfield{\thefield{labeldatesource}day}%
+        }{%
+          \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}}}}}}
 %    \end{macrocode}
 %
 % \begin{itemize}
