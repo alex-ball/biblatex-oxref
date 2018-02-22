@@ -1058,7 +1058,6 @@ I would be most glad to hear from you:
 
 \begin{multicols}{3}
   \begin{itemize}\firmlist
-    \item booklet
     \item artwork
     \item commentary
     \item performance
@@ -9708,6 +9707,16 @@ reference,mvreference,inreference]{volume}{%
 }{}{}
 %    \end{macrocode}
 %
+% We give booklet entries descriptor support.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[booklet]{title}{%
+  \def\currentfield{title}%
+  \iffieldannotation{descriptor}{#1}{%
+    \mkbibquote{#1\isdot}}%
+  \undef\currentfield}
+%    \end{macrocode}
+%
 % The main change to the |manual| driver compared to the standard style is
 % that |type|, |series|, |number|, |edition| and |organization| are moved into
 % the publication information block with |publisher|, |location| and |date|.
@@ -11540,13 +11549,6 @@ reference,mvreference,inreference]{volume}{%
   \iftoggle{bbx:related}
 }{}{}
 \xpatchbibdriver{misc}{%
-  \newunit\newblock
-  \iftoggle{bbx:related}
-}{%
-  \setunit{\relatedtypepunct}\newblock
-  \iftoggle{bbx:related}
-}{}{}
-\xpatchbibdriver{patent}{%
   \newunit\newblock
   \iftoggle{bbx:related}
 }{%
