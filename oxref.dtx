@@ -815,14 +815,6 @@ The style is self-contained, so you can load it with \pkg{biblatex}:
 
 The style has some options additional to the regular \pkg{biblatex} ones:
 
-\begin{docKey}{altbookseries}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
-  Puts the series information for a book outside, rather than inside, the parenthetical publication block.
-\end{docKey}
-
-\begin{docKey}{altthesis}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
-  Puts the thesis type inside, rather than outside, the parenthetical publication block.
-\end{docKey}
-
 \begin{docKey}{anon}{=\val{literal}|\val{long}|\val{short}}{default \val{short}, initially \val{literal}}
   Affects what happens if the author name matches the value of \cs{oxrefanon}.
   By default, this is ‘Anonymous’, but you could change it a different word (such as ‘Anonimo’) instead.
@@ -840,6 +832,10 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 %<m|a>    in the bibliography.
 %<n>    in the bibliography, but neither are printed in citations.
   \end{itemize}
+\end{docKey}
+
+\begin{docKey}{bookseries}{=\val{in}|\val{out}}{default \val{in}, initially \val{in}}
+  Puts the series information for a book \docValue{in}side or \docValue{out}side the parenthetical publication block.
 \end{docKey}
 
 \begin{docKey}{court-plain}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
@@ -864,6 +860,12 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 
 \begin{docKey}{isourls}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Surrounds URLs with angle brackets.
+\end{docKey}
+
+\begin{docKey}{issuedate-plain}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Removes the parentheses around the date of a periodical without a volume number.
+  This can also be set on a per-type and per-entry basis.
+  (This option was previously called \key{varissuedate}.)
 \end{docKey}
 
 \begin{docKey}{issuestyle}{=\val{slash}|\val{colon}|\val{comma}|\val{parens}}{default \val{slash}, initially \val{slash}}
@@ -913,6 +915,11 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \end{docKey}
 %</n|m>
 
+\begin{docKey}{thesis}{=\val{in}|\val{out}|\val{plain}}{default \val{out}, initially \val{out}}
+  Puts the thesis type \docValue{in}side or \docValue{out}side the parenthetical publication block,
+  while \docValue{plain} removes the parentheses entirely.
+\end{docKey}
+
 \begin{docKey}{timefirst}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
   Prints the time (if provided) before the date instead of after it.
   This can also be set on a per-type and per-entry basis.
@@ -921,11 +928,6 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 \begin{docKey}{usenametitles}{=\val{true}|\val{false}}{default \val{true}, initially \val{true}}
   Controls whether titular prefixes such as Revd, Dr, Mrs, Sir, and so on are printed.
   (See \cref{sec:nametitles} for how to supply titles as part of a name.)
-  This can also be set on a per-type and per-entry basis.
-\end{docKey}
-
-\begin{docKey}{varissuedate}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
-  Removes the parentheses around the date of a periodical without a volume number.
   This can also be set on a per-type and per-entry basis.
 \end{docKey}
 
@@ -1351,7 +1353,7 @@ Oxford style is to give the attribution in square brackets.
 \tip{You can also use the syntax from \textsf{biblatex-realauthor}.
   If you do not specify the \code{author}, then \code{realauthor} is treated as an alias for \code{author} annotated with the keyword \code{inferred}.
   The equivalent is true for \code{realeditor}.
-  Note, however, that \pkg[biblatex]{oxref} does not recognize the \code{userealauthor} and \code{userealeditor} options.}
+  Note, however, that \pkg[biblatex]{oxref} does not recognize the \key{userealauthor} and \key{userealeditor} options.}
 
 \subsection{Pseudonyms}
 
@@ -1676,9 +1678,9 @@ Conversely, it might be helpful to provide the English original of a translated 
 
 For periodicals, grey literature, audiovisual and online material, the lack of a place of publication is not surprising; indeed it may be expected. For books, however, it may be remarkable and deserve marking in the bibliography with \enquote{n.p.\@} (for \enquote{no place}).
 
-\tip{To have \pkg[biblatex]{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for books, collections, reference works, proceedings and similar entry types, use the \code{nolocation} bibliography option.}
+\tip{To have \pkg[biblatex]{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for books, collections, reference works, proceedings and similar entry types, use the \key{nolocation} bibliography option.}
 
-\tip{To have \pkg[biblatex]{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for only a specific entry, use the \code{nolocation} entry option instead.
+\tip{To have \pkg[biblatex]{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for only a specific entry, use the \key{nolocation} entry option instead.
   This has the feature of hiding the \enquote{n.p.\@} from other styles that do not follow the same convention.}
 
 \begin{bibexbox}
@@ -1707,7 +1709,7 @@ For periodicals, grey literature, audiovisual and online material, the lack of a
 
 \section{Articles in periodicals with volumes/numbers}
 
-The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxyear} which uses a colon to demarcate the page numbers. These variations are implemented as the option \textsf{issuestyle}; see \autoref{sec:loading} for details.
+The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxyear} which uses a colon to demarcate the page numbers. These variations are implemented as the option \key{issuestyle}; see \autoref{sec:loading} for details.
 
 %<n|m>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.}
 %<a|y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.}
@@ -2636,7 +2638,7 @@ Hankinson, R. J. (1988) (ed.), \emph{Method, Medicine, and Metaphysics} (Edmonto
 
 Biblatex uses \code{reference} for encyclopaedias and dictionaries, which are typically made up of many small contributions by distinct authors and compiled by an editorial board whose membership might change between successive editions. From a database perspective, reference works are like collections in that they have no single author (a reference work written by a single author should use the \code{book} entry type instead).
 
-\tip{The \emph{Oxford Guide to Style} considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first, but \emph{New Hart's Rules} doesn't. \pkg[biblatex]{Oxref} takes the former approach, but you can switch to the latter by setting the \texttt{useeditor} option back to true for this type.}
+\tip{The \emph{Oxford Guide to Style} considers the titles of reference works to be more important and memorable than those of the editor, and so lists the title first, but \emph{New Hart's Rules} doesn't. \pkg[biblatex]{Oxref} takes the former approach, but you can switch to the latter by setting the \key{useeditor} option back to true for this type.}
 
 \begin{tcblisting}{listing only}
 \ExecuteBibliographyOptions[reference,mvreference]{useeditor=true}
@@ -4455,10 +4457,16 @@ This will be printed as follows:
 \end{Verbatim}
 \end{bibexbox}
 
-The following form is also supported: to use it, pass the \texttt{altthesis} option.
+The following forms are also supported; to use them, pass the \key{thesis} option:
 
-%<n|m>\spec{Author, \enquote{Title}, (Type, Institution, Year).}
-%<a|y>\spec{Author (Year), \enquote{Title}, (Type, Institution).}
+\begin{itemize}
+  \item \key{thesis}\texttt{=}\val{in}\par
+%<n|m>\spec{Author, \enquote{Title} (Type, Institution, Year).}
+%<a|y>\spec{Author (Year), \enquote{Title} (Type, Institution).}
+  \item \key{thesis}\texttt{=}\val{plain}\par
+%<n|m>\spec{Author, \enquote{Title}, Type, Institution, Year.}
+%<a|y>\spec{Author (Year), \enquote{Title}, Type, Institution.}
+\end{itemize}
 
 \section{Booklets, leaflets, and other formal but unpublished texts}
 
@@ -4994,7 +5002,7 @@ Sometimes publishers will put several works on a single release without giving i
 
 \tip{You can place up to four credits in the editor position, more if any of them correspond to the built-in editor types like \texttt{commentator} or \texttt{translator}.
   If you do supply a lot of credits, the \emph{Oxford Guide to Style} recommends you shift them to the end of the reference.
-  You can do this with the \texttt{endeditor} option.}
+  You can do this with the \key{endeditor} option.}
 
 
 \begin{bibexbox}
@@ -6980,6 +6988,8 @@ will trigger the use of parentheses.
 \newtoggle{blx@ox@nametitle}\toggletrue{blx@ox@nametitle}%
 \DeclareBibliographyOption[boolean]{usenametitles}[true]{%
   \settoggle{blx@ox@nametitle}{#1}}
+\DeclareTypeOption[boolean]{usenametitles}[true]{%
+  \settoggle{blx@ox@nametitle}{#1}}
 \DeclareEntryOption[boolean]{usenametitles}[true]{%
   \settoggle{blx@ox@nametitle}{#1}}
 %    \end{macrocode}
@@ -7731,6 +7741,8 @@ will trigger the use of parentheses.
 \newtoggle{blx@ox@timefirst}
 \DeclareBibliographyOption{timefirst}[true]{%
   \settoggle{blx@ox@timefirst}{#1}}
+\DeclareTypeOption{timefirst}[true]{%
+  \settoggle{blx@ox@timefirst}{#1}}
 \DeclareEntryOption{timefirst}[true]{%
   \settoggle{blx@ox@timefirst}{#1}}
 \newbibmacro*{date+time}{%
@@ -8152,7 +8164,15 @@ will trigger the use of parentheses.
 \newtoggle{blx@ox@varissuedate}
 \DeclareBibliographyOption[boolean]{varissuedate}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
+\DeclareTypeOption[boolean]{varissuedate}[true]{%
+  \settoggle{blx@ox@varissuedate}{#1}}
 \DeclareEntryOption[boolean]{varissuedate}[true]{%
+  \settoggle{blx@ox@varissuedate}{#1}}
+\DeclareBibliographyOption[boolean]{issuedate-plain}[true]{%
+  \settoggle{blx@ox@varissuedate}{#1}}
+\DeclareTypeOption[boolean]{issuedate-plain}[true]{%
+  \settoggle{blx@ox@varissuedate}{#1}}
+\DeclareEntryOption[boolean]{issuedate-plain}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
 \renewbibmacro*{issue+date}{%
   \ifboolexpr{
@@ -8440,9 +8460,15 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@altbookseries}
-\DeclareBibliographyOption[boolean]{altbookseries}[true]{%
-  \settoggle{blx@ox@altbookseries}{#1}
-}
+\DeclareBibliographyOption[string]{bookseries}[in]{%
+  \ifstrequal{#1}{out}{%
+    \toggletrue{blx@ox@altbookseries}%
+  }{%
+    \togglefalse{blx@ox@altbookseries}%
+    \ifstrequal{#1}{in}{}{%
+      \PackageError{oxref}
+      {Invalid option 'bookseries=#1'}
+      {Valid values are 'in' and 'out'.}}}}
 %    \end{macrocode}
 %
 % When citing both the first and a later edition, the first one comes
@@ -9502,9 +9528,28 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@altthesis}
+\newtoggle{blx@ox@plainthesis}
+\DeclareFieldAlias{thesis:publication}{publication}
+\DeclareFieldFormat{plain}{#1}
 \DeclareBibliographyOption[boolean]{altthesis}[true]{%
   \settoggle{blx@ox@altthesis}{#1}
 }
+\DeclareBibliographyOption[string]{thesis}[out]{%
+  \ifstrequal{#1}{plain}{%
+    \toggletrue{blx@ox@altthesis}%
+    \toggletrue{blx@ox@plainthesis}%
+    \DeclareFieldAlias{thesis:publication}{plain}%
+  }{%
+    \togglefalse{blx@ox@plainthesis}%
+    \DeclareFieldAlias{thesis:publication}{publication}%
+    \ifstrequal{#1}{in}{%
+      \toggletrue{blx@ox@altthesis}%
+    }{%
+      \togglefalse{blx@ox@altthesis}%
+      \ifstrequal{#1}{out}{}{%
+        \PackageError{oxref}
+        {Invalid option 'bookseries=#1'}
+        {Valid values are 'in', 'out', and 'plain'.}}}}}
 \newbibmacro*{type+institution+location+date}{%
   \iftoggle{blx@ox@altthesis}{%
     \ifboolexpr{
@@ -9520,8 +9565,8 @@ reference,mvreference,inreference]{volume}{%
       and
       test {\iffieldundef{month}}
     }{}{%
-      \nopunct
-      \printtext[publication]{%
+      \iftoggle{blx@ox@plainthesis}{}{\nopunct}%
+      \printtext[thesis:publication]{%
         \printfield{type}%
         \setunit*{\addcomma\space}%
         \printlist{location}%
@@ -11514,6 +11559,18 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareBibliographyOption{relationpunct}[semicolon]{%
+  \ifcsdef{add#1}{%
+    \ifstrequal{#1}{space}{%
+      \renewcommand*{\relatedtypepunct}{\addspace}%
+    }{%
+      \renewcommand*{\relatedtypepunct}{\csuse{add#1}\space}}%
+  }{%
+    \PackageError{biblatex-oxref}{%
+      Invalid option 'relationpunct=#1'%
+    }{%
+      Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
+      'period', 'exclam', 'question', and 'space'.}}}
+\DeclareTypeOption{relationpunct}[semicolon]{%
   \ifcsdef{add#1}{%
     \ifstrequal{#1}{space}{%
       \renewcommand*{\relatedtypepunct}{\addspace}%
