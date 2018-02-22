@@ -1057,7 +1057,6 @@ I would be most glad to hear from you:
 \begin{multicols}{3}
   \begin{itemize}\firmlist
     \item booklet
-    \item patent
     \item artwork
     \item commentary
     \item performance
@@ -6846,7 +6845,7 @@ will trigger the use of parentheses.
 % \end{itemize}
 %
 %    \begin{macrocode}
-  bydirector, byperformer, byreader, byconductor, byserieseditor,
+  bydirector, byperformer, byreader, byconductor, byserieseditor, byholder,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -6891,7 +6890,7 @@ will trigger the use of parentheses.
 % \end{itemize}
 %
 %    \begin{macrocode}
-  nolocation, modified, recorded, uploaded,
+  nolocation, modified, recorded, uploaded, filed, issued,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -9666,7 +9665,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % The main change to the |manual| driver compared to the standard style is
 % that |type|, |series|, |number|, |edition| and |organization| are moved into
-% the publication information block with |publisher|, |location| and |date|;
+% the publication information block with |publisher|, |location| and |date|.
 %
 %    \begin{macrocode}
 \DeclareBibliographyDriver{manual}{%
@@ -9706,6 +9705,87 @@ reference,mvreference,inreference]{volume}{%
   {\usebibmacro{related:init}%
     \usebibmacro{related}}
   {}%
+  \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% The |patent| driver differs from the regular one by having |note| moved
+% further forward, and having a publication block consisting of |location|,
+% |origdate| and |date|. The |holder|, |origdate| and |date| fields have
+% explicit signposting.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat[patent]{title}{\mkbibemph{#1}}
+\DeclareFieldFormat[patent]{type}{\ifbibstring{#1}{\biblstring{#1}}{#1}}
+\DeclareNameAlias{byholder}{default}
+\renewbibmacro*{byholder}{%
+  \ifnameundef{holder}{}{%
+    \bibstring{byholder}%
+    \setunit{\addspace}%
+    \printnames[byholder]{holder}}}
+\newbibmacro*{location+dates}{%
+  \ifboolexpr{
+    test {\iffieldundef{location}}
+    and
+    test {\iffieldundef{origyear}}
+    and
+    test {\iffieldundef{origmonth}}
+    and
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+  }{}{%
+    \nopunct
+    \printtext[publication]{%
+      \printlist[][-\value{listtotal}]{location}%
+      \setunit*{\addcomma\space}%
+      \ifboolexpr{
+        test {\iffieldundef{origyear}}
+        and
+        test {\iffieldundef{origmonth}}
+      }{}{%
+        \bibstring{filed}%
+        \setunit*{\addspace}}%
+      \usebibmacro{origdate+time}%
+      \setunit*{\addcomma\space}%
+      \ifboolexpr{
+        test {\iffieldundef{year}}
+        and
+        test {\iffieldundef{month}}
+      }{}{%
+        \bibstring{issued}%
+        \setunit*{\addspace}}%
+      \usebibmacro{date}}}}
+\DeclareBibliographyDriver{patent}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \printfield{type}%
+  \setunit*{\addspace}%
+  \printfield{number}%
+  \newunit\newblock
+  \usebibmacro{byholder}%
+  \newunit\newblock
+  \usebibmacro{location+dates}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -13651,6 +13731,7 @@ reference,mvreference,inreference]{volume}{%
   byreader         = {{read by}{read by}},
   byconductor      = {{conducted by}{cond\adddot}},
   byserieseditor   = {{edited by}{ed\adddot}},
+  byholder         = {{held by}{held by}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -13744,6 +13825,8 @@ reference,mvreference,inreference]{volume}{%
   modified         = {{last modified}{last modified}},
   recorded         = {{recorded}{recorded}},
   uploaded         = {{uploaded}{uploaded}},
+  filed            = {{filed}{filed}},
+  issued           = {{issued}{issued}},
 %    \end{macrocode}
 %
 % \begin{itemize}
