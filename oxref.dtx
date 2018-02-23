@@ -897,6 +897,12 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   Alternatively, it may be set on a per-entry basis.
 \end{docKey}
 
+%<*a|y>
+\begin{docKey}{nonodate}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Suppresses the printing of the \code{nodate} localization string when an entry is missing a recognizable date. It can also be set on a per-type and per-entry basis. It is automatically set to \val{true} for entries with a \code{sortyear}, on the assumption that the date has been given in a non-date field (e.g.\@ the number of a standard).
+\end{docKey}
+%</a|y>
+
 \begin{docKey}{nopublisher}{}{no value, initially unset}
   Removes publisher name from all entries. Once set, this option cannot be overridden.
 \end{docKey}
@@ -1061,7 +1067,6 @@ I would be most glad to hear from you:
     \item artwork
     \item commentary
     \item performance
-    \item standard
   \end{itemize}
 \end{multicols}
 
@@ -4583,7 +4588,7 @@ the date the patent was filed (or the application was published), and
 \end{Verbatim}
 \end{bibexbox}
 
-\section{Standard}
+\section{Standards}
 
 There are no examples of technical standards in the \emph{Oxford Guide
 to Style} or \emph{New Hart's Rules}. I welcome suggestions for how to make the
@@ -4596,11 +4601,10 @@ generated references more Oxford-like.
 \begin{Verbatim}
 %</n|m|a|y>
 @standard{bs5605:1990,
-  sortkey = {BS 5605:1990},
   sortyear = {1990},
   title = {Recommendations for citing and referencing published material},
-  label = {BS~5605:1990},
-%<!n|m|y>  shorthand = {BS5605},
+  number = {BS~5605:1990},
+%<!n&!m&!y>  shorthand = {BS5605},
   organization = {British Standards Institute}}
 %<*n|m|a|y>
 \end{Verbatim}
@@ -9717,51 +9721,6 @@ reference,mvreference,inreference]{volume}{%
   \undef\currentfield}
 %    \end{macrocode}
 %
-% The main change to the |manual| driver compared to the standard style is
-% that |type|, |series|, |number|, |edition| and |organization| are moved into
-% the publication information block with |publisher|, |location| and |date|.
-%
-%    \begin{macrocode}
-\DeclareBibliographyDriver{manual}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/editor}%
-  \setunit{\printdelim{nametitledelim}}\newblock
-  \usebibmacro{title}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor}%
-  \newunit\newblock
-  \printfield{type}%
-  \newunit
-  \printfield{version}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\relatedtypepunct}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
-%    \end{macrocode}
-%
 % The |patent| driver differs from the regular one by having |note| moved
 % further forward, and having a publication block consisting of |location|,
 % |origdate| and |date|. The |holder|, |origdate| and |date| fields have
@@ -9841,6 +9800,69 @@ reference,mvreference,inreference]{volume}{%
      \usebibmacro{related}}
     {}%
   \usebibmacro{finentry}}
+%    \end{macrocode}
+%
+% Direct use of the |manual| entry type is not encouraged, but it serves as a
+% basis for other entry types, notably standards, datasets, and software.
+% The main change to the |manual| driver compared to the standard style is
+% that |type|, |series|, |number|, |edition| and |organization| are moved into
+% the publication information block with |publisher|, |location| and |date|.
+% Note that standards will put the |number| field at the head of the reference
+% if there is no author.
+%
+%    \begin{macrocode}
+\DeclareBibliographyDriver{manual}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \ifboolexpr{
+    test {\ifentrytype{standard}}
+    and
+    test {\ifnameundef{author}}
+    and
+    not test {\iffieldundef{number}}
+  }{%
+    \printfield{number}\clearfield{number}%
+    \newunit\newblock
+  }{}%
+  \usebibmacro{author/editor}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \ifentrytype{software}{%
+    \usebibmacro{title+version}%
+  }{%
+    \usebibmacro{title}}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor}%
+  \newunit
+  \ifentrytype{software}{}{%
+    \newunit\printfield{version}}%
+  \newunit
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit
+  \printfield{pagetotal}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+\DeclareBibliographyAlias{standard}{manual}
+\ExecuteBibliographyOptions[standard]{useeditor=false}
 %    \end{macrocode}
 %
 % \subsection{Audiovisual materials}
@@ -10264,45 +10286,10 @@ reference,mvreference,inreference]{volume}{%
 \DeclareFieldFormat[software]{urldate}{\bibstring{urldown}\space#1}
 %    \end{macrocode}
 %
-% The software driver is based loosely on the manual driver.
+% The software driver is a variant of the manual driver.
 %
 %    \begin{macrocode}
-\DeclareBibliographyDriver{software}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/editor}%
-  \setunit{\printdelim{nametitledelim}}\newblock
-  \usebibmacro{title+version}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \usebibmacro{byeditor}%
-  \newunit\newblock
-  \printfield{type}%
-  \newunit
-  \printfield{note}%
-  \newunit\newblock
-  \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
-  \newunit\newblock
-  \usebibmacro{chapter+pages}%
-  \newunit
-  \printfield{pagetotal}%
-  \newunit\newblock
-  \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \setunit{\relatedtypepunct}\newblock
-  \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
-  \usebibmacro{finentry}}
+\DeclareBibliographyAlias{software}{manual}
 %    \end{macrocode}
 %
 % \subsubsection{Datasets}
@@ -12025,6 +12012,22 @@ reference,mvreference,inreference]{volume}{%
     }
 %    \end{macrocode}
 %
+% \subsubsection{Standards}
+%
+% The purpose of this map is to move the number to the head of the reference
+% in the absence of an author, and try to fix the sorting accordingly.
+%
+%    \begin{macrocode}
+    \map[overwrite=false]{
+      \pertype{standard}
+      \step[notfield=author,
+            fieldsource=number,
+            final]
+      \step[fieldset=sortkey,
+            origfieldval]
+    }
+%    \end{macrocode}
+%
 % \subsubsection{Audiovisual materials}
 %
 % For audiovisual materials, |origdatetype| defaults to ‘recorded’.
@@ -12621,7 +12624,27 @@ reference,mvreference,inreference]{volume}{%
   \ifboolexpr{%
     not test {\iffieldundef{labeldatesource}}
     and test {\iffieldequalstr{labeldatesource}{pubstate}}}}
-
+%    \end{macrocode}
+%
+% We also provide a wrapper around \cs{printlabeldateextra} that does nothing
+% if the label date is the `nodate' literal \emph{and} |sortyear| is defined.
+% Sadly |sortyear| is consumed before we get to this point, so we need a proxy
+% toggle.
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@nonodate}
+\DeclareBibliographyOption[boolean]{nonodate}[true]{%
+  \settoggle{blx@ox@nonodate}{#1}}
+\DeclareTypeOption[boolean]{nonodate}[true]{%
+  \settoggle{blx@ox@nonodate}{#1}}
+\DeclareEntryOption[boolean]{nonodate}[true]{%
+  \settoggle{blx@ox@nonodate}{#1}}
+\newbibmacro*{labeldate}{%
+  \ifboolexpr{
+    test {\iffieldequalstr{labeldatesource}{nodate}}
+    and
+    togl {blx@ox@nonodate}
+  }{}{\printtext[datelabel]{\printlabeldateextra}}}
 
 %    \end{macrocode}
 %
@@ -12652,25 +12675,22 @@ reference,mvreference,inreference]{volume}{%
 \def\bbx@opt@mergedate@maximum{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
-      \printtext[datelabel]{%
-        \iflabeldateisdate{%
+      \iflabeldateisdate{%
+        \printtext[datelabel]{%
           \printfield{issue}\clearfield{issue}%
           \setunit*{\addspace}%
-          \printdateextra
-        }{%
-          \iflabeldateisanydate{%
-            \csuse{print\thefield{labeldatesource}dateextra}%
-          }{%
-            \printlabeldateextra}}}%
-      \iflabeldateisdate{%
+          \printdateextra}%
         \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
       }{%
         \iflabeldateisanydate{%
+          \printtext[datelabel]{%
+            \csuse{print\thefield{labeldatesource}dateextra}}%
           \clearfield{\thefield{labeldatesource}year}%
           \clearfield{\thefield{labeldatesource}season}%
           \clearfield{\thefield{labeldatesource}month}%
           \clearfield{\thefield{labeldatesource}day}%
         }{%
+          \usebibmacro{labeldate}%
           \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}}}}}}
 %    \end{macrocode}
 %
@@ -12684,23 +12704,19 @@ reference,mvreference,inreference]{volume}{%
 \def\bbx@opt@mergedate@compact{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
-      \printtext[datelabel]{%
-        \iflabeldateisdate{%
-          \printdateextra
-        }{%
-          \iflabeldateisanydate{%
-            \csuse{print\thefield{labeldatesource}dateextra}%
-          }{%
-            \printlabeldateextra}}}%
       \iflabeldateisdate{%
+        \printtext[datelabel]{\printdateextra}%
         \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
       }{%
         \iflabeldateisanydate{%
+          \printtext[datelabel]{%
+            \csuse{print\thefield{labeldatesource}dateextra}}%
           \clearfield{\thefield{labeldatesource}year}%
           \clearfield{\thefield{labeldatesource}season}%
           \clearfield{\thefield{labeldatesource}month}%
           \clearfield{\thefield{labeldatesource}day}%
         }{%
+          \usebibmacro{labeldate}%
           \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}}}}}}
 %    \end{macrocode}
 %
@@ -12715,7 +12731,7 @@ reference,mvreference,inreference]{volume}{%
 \def\bbx@opt@mergedate@year{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
-      \printtext[datelabel]{\printlabeldateextra}%
+      \usebibmacro{labeldate}%
       \iflabeldateisdate{%
         \clearfield{year}
       }{%
@@ -12737,7 +12753,7 @@ reference,mvreference,inreference]{volume}{%
 \def\bbx@opt@mergedate@basic{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
-      \printtext[datelabel]{\printlabeldateextra}%
+      \usebibmacro{labeldate}%
       \iflabeldateisdate{%
         \ifboolexpr{
           test {\ifdateshavedifferentprecision{label}{}}
@@ -12765,7 +12781,7 @@ reference,mvreference,inreference]{volume}{%
 \def\bbx@opt@mergedate@minimum{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
-      \printtext[datelabel]{\printlabeldateextra}%
+      \usebibmacro{labeldate}%
       \iflabeldateisdate{%
         \ifboolexpr{
           test {\ifdateshavedifferentprecision{label}{}}
@@ -12797,7 +12813,7 @@ reference,mvreference,inreference]{volume}{%
 \def\bbx@opt@mergedate@false{%
   \renewbibmacro*{date+extradate}{%
     \iffieldundef{labelyear}{}{%
-      \printtext[datelabel]{\printlabeldateextra}%
+      \usebibmacro{labeldate}%
       \iflabeldateisanydate{}{%
         \iflabeldateispubstate{}{\clearfield{\thefield{labeldatesource}}}%
       }}}}
@@ -13313,6 +13329,51 @@ reference,mvreference,inreference]{volume}{%
   \field{maintitle}
   \field{library}
 }
+%    \end{macrocode}
+%
+% \subsection{Source maps}
+%
+% We use the source mapping capabilities of Biber to fix the following issues.
+%
+%    \begin{macrocode}
+\DeclareStyleSourcemap{%
+  \maps[datatype=bibtex]{%
+%    \end{macrocode}
+%
+% \subsubsection{Suppressing a ‘nodate’ label}
+%
+% Unless already set, the \key{nonodate} option is inserted if |sortyear| is
+% used. We accomplish this with source maps; the first one works where options
+% (not including |nonodate|) have been set, the second where no options have
+% been set.
+%
+%    \begin{macrocode}
+    \map[overwrite=true]{
+      \step[notmatch=\regexp{nonodate}, fieldsource=options, final]
+      \step[fieldsource=sortyear, final]
+      \step[fieldset=options, append, fieldvalue={,nonodate}]
+    }
+    \map[overwrite=true]{
+      \step[notfield=options, final]
+      \step[fieldsource=sortyear, final]
+      \step[fieldset=options, fieldvalue={nonodate}]
+    }
+%    \end{macrocode}
+%
+% \subsubsection{Standards}
+%
+% The purpose of this map is to change the number into a label in the absence
+% of an author, so that the citations come out right and the date is positioned
+% correctly.
+%
+%    \begin{macrocode}
+    \map[overwrite=false]{
+      \pertype{standard}
+      \step[notfield=author,
+            fieldsource=number,
+            fieldtarget=label]
+    }
+}}
 
 %    \end{macrocode}
 %
@@ -13349,37 +13410,12 @@ reference,mvreference,inreference]{volume}{%
 }{%
   \csuse{print\thefield{labeldatesource}date}
 }{}{}
-\xpatchcmd{\bbx@opt@mergedate@maximum}{%
-  \printlabeldateextra
-}{%
-  \printlabeldate
-}{}{}
 \xpatchcmd{\bbx@opt@mergedate@compact}{%
   \csuse{print\thefield{labeldatesource}dateextra}
 }{%
   \csuse{print\thefield{labeldatesource}date}
 }{}{}
-\xpatchcmd{\bbx@opt@mergedate@compact}{%
-  \printlabeldateextra
-}{%
-  \printlabeldate
-}{}{}
-\xpatchcmd{\bbx@opt@mergedate@year}{%
-  \printlabeldateextra
-}{%
-  \printlabeldate
-}{}{}
-\xpatchcmd{\bbx@opt@mergedate@basic}{%
-  \printlabeldateextra
-}{%
-  \printlabeldate
-}{}{}
-\xpatchcmd{\bbx@opt@mergedate@minimum}{%
-  \printlabeldateextra
-}{%
-  \printlabeldate
-}{}{}
-\xpatchcmd{\bbx@opt@mergedate@false}{%
+\xpatchbibmacro{labeldate}{%
   \printlabeldateextra
 }{%
   \printlabeldate
