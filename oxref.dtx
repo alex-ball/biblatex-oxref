@@ -1057,19 +1057,6 @@ thoughts on the GitHub issue tracker.\footnote{\url{https://github.com/alex-ball
 At some point version 1.0 will be released, after which the default (expected)
 behaviour of the styles will be fixed, though alternative behaviour may be added.
 
-I do not have any examples to work from for the following entry types, so they
-are currently untested. If you have strong feelings about how they should be
-rendered in Oxford style and can provide me with a sample reference or several,
-I would be most glad to hear from you:
-
-\begin{multicols}{3}
-  \begin{itemize}\firmlist
-    \item artwork
-    \item commentary
-    \item performance
-  \end{itemize}
-\end{multicols}
-
 You are of course encouraged to report any bugs you discover on the
 \href{https://github.com/alex-ball/biblatex-oxref/issues}{GitHub issue tracker}
 as well.
@@ -5254,7 +5241,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   author = {M. Clarke},
   title = {Exports of Coal to the IFS},
   titleaddon = {poster},
-  organization = {Manchester Art Gallery},
+  institution = {Manchester Art Gallery},
   url = {http://www.machestergalleries.org/the-collections/search-the-collection/display.php?EMUSESSID=70bd7f1a388d79a82f52ea9aae713ef2&irn=4128},
   urldate = {2013-11-05}}
 %<*n|m|a|y>
@@ -5272,7 +5259,9 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %</n|m|a|y>
 @image{ibwNDcgs,
   title = {Christ the Good Shepherd},
-  note = {stained glass window, Church of St Erfyl, Llanerfyl, Powys},
+  type = {stained glass window},
+  venue = {Church of St Erfyl},
+  location = {Llanerfyl, Powys},
   organization = {Imaging the Bible in Wales Database},
   url = {http://imagingthebible.llgc.org.uk/object/1884},
   urldate = {2013-11-10}}
@@ -5292,6 +5281,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
   type = {oil on canvas},
   note = {78 x 48.5 in\adddot},
   year = {1480s},
+  date+an = {=inferred},
   institution = {Louvre},
   location = {Paris}}
 %<*n|m|a|y>
@@ -5377,13 +5367,13 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \begin{Verbatim}
 %</n|m|a|y>
 @performance{judge1995mnd,
-  options = {useauthor=false},
+  options = {useauthor=false,useeditor=false},
   author = {William Shakespeare},
   title = {A Midsummer Night's Dream},
   editor = {Ian Judge},
   editortype = {director},
   date = {1995-02-26},
-  venue = {Thatre Royal},
+  venue = {Theatre Royal},
   location = {Newcastle upon Tyne}}
 %<*n|m|a|y>
 \end{Verbatim}
@@ -10157,11 +10147,85 @@ reference,mvreference,inreference]{volume}{%
 
 %    \end{macrocode}
 %
-% The examples of image references in \emph{New Hart's Rules} are all for online
-% images, and the |online| driver seems to work well for them.
+% The |performance| driver is similar to the |audio| driver, but instead of a
+% publication block, it displays a set of event-related fields. With a bit of
+% generosity, it can also work for artworks and images.
 %
 %    \begin{macrocode}
-\DeclareBibliographyAlias{image}{online}
+\DeclareBibliographyDriver{performance}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \usebibmacro{maintitle}%
+  \iffieldequalstr{relatedtype}{includes}{%
+    \iftoggle{bbx:related}{%
+      \newunit\newblock
+      \usebibmacro{related:init}%
+      \usebibmacro{related}%
+      \clearfield{related}%
+    }{}%
+  }{}%
+  \setunit{\addspace}
+  \usebibmacro{onlinetype}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{pre-byeditor+others}%
+  \setunit{\addspace}%
+  \printfield{howpublished}%
+  \newunit\newblock
+  \printfield{type}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock%
+  \usebibmacro{event+venue+location+date}%
+  \newunit\newblock
+  \usebibmacro{post-byeditor+others}%
+  \newunit\newblock
+  \printlist{organization}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+  {\printfield{isbn}}
+  {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \setunit{\relatedtypepunct}\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}%
+    \usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+\DeclareBibliographyAlias{image}{performance}
+\DeclareBibliographyAlias{artwork}{performance}
+%    \end{macrocode}
+%
+% Here is the macro used for printing the event location and date for
+% performances and exhibitions.
+%
+%    \begin{macrocode}
+\renewbibmacro*{event+venue+location+date}{%
+  \printfield{eventtitle}%
+  \newunit
+  \printfield{eventtitleaddon}%
+  \newunit
+  \printlist{institution}%
+  \newunit
+  \printfield{venue}%
+  \newunit
+  \printlist{location}%
+  \newunit%
+  \ifboolexpr{
+    test {\iffieldundef{year}}
+    and
+    test {\iffieldundef{month}}
+  }{\printeventdate}{\usebibmacro{date+time}}}
 
 %    \end{macrocode}
 %
