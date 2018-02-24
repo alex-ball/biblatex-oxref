@@ -7790,6 +7790,23 @@ will trigger the use of parentheses.
 }
 %    \end{macrocode}
 %
+% If a date is inferred, it goes in square brackets.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{date}{%
+  \def\currentfield{date}%
+  \iffieldannotation{inferred}{\mkbibbrackets{#1}}{#1}%
+  \undef\currentfield}
+\DeclareFieldFormat{origdate}{%
+  \def\currentfield{origdate}%
+  \iffieldannotation{inferred}{\mkbibbrackets{#1}}{#1}%
+  \undef\currentfield}
+\DeclareFieldFormat{eventdate}{%
+  \def\currentfield{eventdate}%
+  \iffieldannotation{inferred}{\mkbibbrackets{#1}}{#1}%
+  \undef\currentfield}
+%    \end{macrocode}
+%
 % \subsection{Editions, pages, and other number-like fields}
 %
 % We let |edition| take a localization key as well as a number.
@@ -12650,6 +12667,16 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \providebibmacro*{date+extradate}{}
 \DeclareFieldFormat{datelabel}{\mkbibparens{#1}}
+\DeclareFieldFormat{labeldate}{%
+  \iflabeldateisdate{%
+    \def\currentfield{date}%
+  }{%
+    \iflabeldateisanydate{%
+      \def\currentfield{\thefield{labeldatesource}date}%
+    }{%
+      \def\currentfield{\thefield{labeldatesource}}}}%
+  \iffieldannotation{inferred}{\mkbibbrackets{#1}}{#1}%
+  \undef\currentfield}
 %    \end{macrocode}
 %
 % On a related note, the |labeldate| uses the |origdate| if provided in
