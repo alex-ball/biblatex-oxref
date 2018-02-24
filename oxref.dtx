@@ -1047,7 +1047,7 @@ but by no means all of them will be supported.
 For information on installing the styles, and for the documented source code,
 see the separate documentation file \href{./oxref.pdf}{\texttt{oxref.pdf}}
 
-\section{To do}
+\section{Stability}
 
 The \pkg[biblatex]{oxref} family of styles is currently at \fileversion.
 As mentioned above, what the styles \emph{should} be doing is open to some
@@ -1693,6 +1693,26 @@ For periodicals, grey literature, audiovisual and online material, the lack of a
 \end{Verbatim}
 \end{bibexbox}
 
+\section{Missing and inferred date of publication}
+
+If the date is missing from a work, you can sometimes make an educated guess
+what it should be. It is usual practice to enclose such guesses in square
+brackets.
+
+\tip{With \pkg[biblatex]{oxref}, you can achieve this by annotating the
+  \code{date}, \code{origdate}, or \code{eventdate} field with the keyword
+  \code{inferred}.}
+
+\begin{tcblisting}{listing only}
+  date+an = {=inferred},
+\end{tcblisting}
+%<*a|y>
+
+Otherwise, if you don't supply a suitable date, it will be replaced with the
+localization string \code{nodate}. If you don't want this behaviour, you can
+suppress it with the \key{nonodate} option, which can be set globally or on a
+per-type or per-entry basis.
+%</a|y>
 
 \chapter{Articles and periodicals}\label{sec:article}
 \chapterprecis{article, periodical, suppperiodical, review}
@@ -4505,6 +4525,9 @@ Following the conventions from \pkg{biblatex-chicago}, use \texttt{origdate} for
 the date the patent was filed (or the application was published), and
 \texttt{date} for the date the patent was finally issued or published.
 
+\tip{You can override the default date descriptions with the (non-standard)
+\code{origdatetype} and \code{datetype} fields.}
+
 \begin{bibexbox}
 {petroff.stapelbroek1980bib}
 (not in book)
@@ -4580,6 +4603,19 @@ the date the patent was filed (or the application was published), and
 There are no examples of technical standards in the \emph{Oxford Guide
 to Style} or \emph{New Hart's Rules}. I welcome suggestions for how to make the
 generated references more Oxford-like.
+
+The particular quirk with standards entries is that the number is promoted to
+the head of the reference if an author is not specified (or \key{useauthor} is
+\val{false}). If this happens, the number is copied to \code{sortkey} so the
+entry appears in the right place in the reference list. You can override this
+by giving the \code{sortkey} yourself, for example if you want ‘ISO 1000’ to
+come after ‘ISO 999’.
+
+\tip{You are encouraged to put the standards body in \code{organization}, but
+  you can use \code{publisher} instead.}
+
+\tip{The examples don't demonstrate it, but you can use the \code{version} field
+  for the version of the standard.}
 
 \begin{bibexbox}
 {bs5605:1990}
@@ -5224,9 +5260,14 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \end{bibexbox}
 
 
-\section{Images}
+\section{Images and works of art}
 
-\tip{If desired, use \code{titleaddon} to specify the type of image.}
+\tip{If you need the type of image or arrtwork to appear in square brackets,
+  put it in \code{titleaddon}. Otherwise, put it in \code{type}.}
+
+\tip{Use \code{institution} (a list) or \code{venue} (a literal) for the
+  organization, museum, gallery or building physically hosting the image, and
+  \code{location} for where it is.}
 
 \begin{bibexbox}
 %<n|m><NHR \S18.8.5>
@@ -5247,6 +5288,8 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\tip{Use \code{organization} for the website or online location of the image.}
 
 \begin{bibexbox}
 %<n|m><NHR \S18.8.5>
@@ -5322,6 +5365,18 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \end{bibexbox}
 
 \section{Performances}
+
+\tip{Use \code{origdate} for the date when the play, ballet, opera, or whatever
+  was written or premièred, and \code{date} for the date of the performance you
+  are referencing. You can specify what these dates signify with the
+  (non-standard) \code{origdatetype} and \code{datetype} fields. You can also
+  use \code{eventdate} in place of \code{date}, but then you won't be able to
+  specify the type.}
+
+\tip{As for recordings, you can use the \code{author} and \code{editor} fields
+  to provide various credits. As for artworks, use \code{venue} and
+  \code{location} for where the performance occurred, and \code{organization}
+  for a website or organization hosting a recording of the performance online.}
 
 \begin{bibexbox}
 {ashton1937wb}
@@ -9831,7 +9886,9 @@ reference,mvreference,inreference]{volume}{%
   \ifboolexpr{
     test {\ifentrytype{standard}}
     and
-    test {\ifnameundef{author}}
+    ( test {\ifnameundef{author}}
+      or
+      not test \ifuseauthor )
     and
     not test {\iffieldundef{number}}
   }{%
@@ -10204,7 +10261,14 @@ reference,mvreference,inreference]{volume}{%
   \printfield{type}%
   \newunit\newblock
   \printfield{note}%
-  \newunit\newblock%
+  \ifboolexpr{
+    test {\iffieldundef{origyear}}
+    and
+    test {\iffieldundef{origmonth}}
+  }{}{%
+    \setunit{\addspace}\newblock
+    \printtext[publication]{\usebibmacro{origdate+time}}}
+  \newunit\newblock
   \usebibmacro{event+venue+location+date}%
   \newunit\newblock
   \usebibmacro{post-byeditor+others}%
@@ -13406,17 +13470,6 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % \subsection{Manuscripts}
-%
-% The dates for manuscripts should not really be in parentheses, but it
-% looks really odd to have them bare, when compared to other entries.
-% As a compromise, we use square brackets.
-%
-%    \begin{macrocode}
-\DeclareFieldFormat[manuscript]{datelabel}{\mkbibbrackets{#1}}
-\DeclareFieldFormat[unpublished]{datelabel}{%
-  \iftoggle{blx@ox@ms}{\mkbibbrackets{#1}}{\mkbibparens{#1}}}
-\renewbibmacro*{manuscript:date}{\usebibmacro{date}}
-%    \end{macrocode}
 %
 % We include the |library| field as a fallback title.
 %
