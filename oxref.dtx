@@ -9711,14 +9711,17 @@ reference,mvreference,inreference]{volume}{%
   \undef\currentfield}
 %    \end{macrocode}
 %
-% The |patent| driver differs from the regular one by having |note| moved
-% further forward, and having a publication block consisting of |location|,
-% |origdate| and |date|. The |holder|, |origdate| and |date| fields have
-% explicit signposting.
+% With patents, the titles are italic and the patent type is not abbreviated.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[patent]{title}{\mkbibemph{#1}}
 \DeclareFieldFormat[patent]{type}{\ifbibstring{#1}{\biblstring{#1}}{#1}}
+%    \end{macrocode}
+%
+% The |holder|, |origdate| and |date| fields have explicit signposting; the
+% latter two use |origdatetype| and |datetype|, with some sensible defaults.
+%
+%    \begin{macrocode}
 \DeclareNameAlias{byholder}{default}
 \renewbibmacro*{byholder}{%
   \ifnameundef{holder}{}{%
@@ -9746,7 +9749,10 @@ reference,mvreference,inreference]{volume}{%
         and
         test {\iffieldundef{origmonth}}
       }{}{%
-        \bibstring{filed}%
+        \iffieldundef{origdatetype}{%
+          \bibstring{filed}
+        }{
+          \printfield{origdatetype}}%
         \setunit*{\addspace}}%
       \usebibmacro{origdate+time}%
       \setunit*{\addcomma\space}%
@@ -9755,9 +9761,19 @@ reference,mvreference,inreference]{volume}{%
         and
         test {\iffieldundef{month}}
       }{}{%
-        \bibstring{issued}%
+        \iffieldundef{datetype}{%
+          \bibstring{issued}%
+        }{
+          \printfield{datetype}}%
         \setunit*{\addspace}}%
       \usebibmacro{date}}}}
+%    \end{macrocode}
+%
+% The |patent| driver differs from the regular one by having |note| moved
+% further forward, and having a publication block consisting of |location|,
+% |origdate| and |date|.
+%
+%    \begin{macrocode}
 \DeclareBibliographyDriver{patent}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
