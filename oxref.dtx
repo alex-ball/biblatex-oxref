@@ -9304,26 +9304,17 @@ reference,mvreference,inreference]{volume}{%
 %
 % In our version of the |event+venue+date| macro, the venue and date
 % are set off with commas respectively instead of
-% parentheses. A bit of jiggery-pokery is used to make the colon italic
-% if it follows italic text.
+% parentheses.
 %
 %    \begin{macrocode}
 \renewbibmacro*{event+venue+date}{%
   \printfield{eventtitle}%
   \newunit
   \printfield{eventtitleaddon}%
-  \ifboolexpr{
-    test {\iffieldundef{venue}}
-    and
-    test {\iffieldundef{eventyear}}
-  }{}{%
-    \iffieldundef{eventtitle}{%
-      \setunit{\mkbibemph{\addcomma}\space}%
-    }{%
-      \newunit}%
-    \printfield{venue}%
-    \newunit%
-    \printeventdate}%
+  \newunit
+  \printfield{venue}%
+  \newunit%
+  \printeventdate%
   \newunit}
 %    \end{macrocode}
 %
@@ -9905,11 +9896,11 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\iffieldundef{month}}
     and
-    test {\iffieldundef{eventyear}}
+    test {\iffieldundef{origyear}}
     and
-    test {\iffieldundef{eventseason}}
+    test {\iffieldundef{origseason}}
     and
-    test {\iffieldundef{eventmonth}}
+    test {\iffieldundef{origmonth}}
     and
     test {\iffieldundef{hour}}
   }{}{%
