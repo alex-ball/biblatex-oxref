@@ -7562,6 +7562,12 @@ will trigger the use of parentheses.
 \DeclareFieldFormat{authortype}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
+% We make the punctuation between a title and ‘by [author]’ configurable.
+%
+%    \begin{macrocode}
+\newcommand{\titlebyauthordelim}{\addspace}
+%    \end{macrocode}
+%
 % Following |authortitle| and |authoryear|, we redefine the |editor| and
 % |editor+others| macros to use a common |bbx:editor| macro. The macro
 % we use is the similar to the normal one except we delegate printing editor
@@ -8292,7 +8298,7 @@ will trigger the use of parentheses.
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{bytranslator+others}%
@@ -8383,7 +8389,7 @@ will trigger the use of parentheses.
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{bytranslator+others}%
@@ -8745,7 +8751,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/editor+others/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
@@ -8808,7 +8814,7 @@ reference,mvreference,inreference]{volume}{%
   }{}{%
     \printfield{volume}%
     \printfield{part}}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
@@ -8859,7 +8865,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{in:}%
@@ -8913,7 +8919,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \printfield{note}%
@@ -8963,7 +8969,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{in:}%
@@ -9113,7 +9119,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{in:}%
@@ -9165,7 +9171,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \printfield{note}%
@@ -9216,7 +9222,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{title}%
   \newunit\newblock
   \printfield{edition}%
-  \newunit
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
@@ -9268,7 +9274,7 @@ reference,mvreference,inreference]{volume}{%
     \printfield{part}}%
   \newunit\newblock
   \printfield{edition}%
-  \newunit
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
@@ -9320,7 +9326,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \iffieldundef{editor}{}{%
@@ -9466,7 +9472,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{in:}%
@@ -9717,7 +9723,7 @@ reference,mvreference,inreference]{volume}{%
   {\printfield{volume}%
     \printfield{part}}
   {}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \printfield{version}%
@@ -9845,7 +9851,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{title}%
   \newunit
   \printlist{language}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \printfield{note}%
@@ -9901,7 +9907,7 @@ reference,mvreference,inreference]{volume}{%
     \usebibmacro{title+version}%
   }{%
     \usebibmacro{title}}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor}%
@@ -10044,7 +10050,7 @@ reference,mvreference,inreference]{volume}{%
   }{}%
   \setunit{\addspace}
   \usebibmacro{onlinetype}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{pre-byeditor+others}%
@@ -10096,7 +10102,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{in:}%
@@ -10251,7 +10257,7 @@ reference,mvreference,inreference]{volume}{%
   }{}%
   \setunit{\addspace}
   \usebibmacro{onlinetype}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{pre-byeditor+others}%
@@ -10373,7 +10379,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle}
   \setunit{\addspace}%
   \usebibmacro{onlinetype}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
@@ -11563,7 +11569,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \printfield{howpublished}%
@@ -11624,10 +11630,10 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
+  \setunit{\titlebyauthordelim}\newblock
+  \usebibmacro{byauthor}%
   \newunit\newblock
   \printfield{note}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
   \setunit{\addspace}\newblock
   \printfield{howpublished}%
   \newunit\newblock
@@ -11896,7 +11902,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{author/translator+others}%
   \setunit{\printdelim{nametitledelim}}\newblock
   \usebibmacro{title}%
-  \newunit\newblock
+  \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{bytranslator+others}%
