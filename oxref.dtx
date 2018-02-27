@@ -13709,19 +13709,18 @@ reference,mvreference,inreference]{volume}{%
 \ExecuteBibliographyOptions{uniquename=init}
 %    \end{macrocode}
 %
-% We patch it with our version of year range compression.
+% We provide a slightly different labeldate macro that obeys the \code{nonodate}
+% option.
 %
 %    \begin{macrocode}
-\xpatchbibmacro{cite:labeldate+extradate}{%
-  \printfield{labelendyear}%
-}{%
-  \iffieldundef{extradate}{%
-    \blx@ox@compyear
-      {\thefield{labelyear}}%
-      {\thefield{labelendyear}}%
-  }{%
-    \printfield{labelendyear}}%
-}{}{}
+\newbibmacro*{cite:labeldate+extradate}{%
+  \ifboolexpr{
+    test {\iffieldundef{labelyear}}
+    or
+    ( test {\iffieldequalstr{labeldatesource}{nodate}}
+      and
+      togl {blx@ox@nonodate} )
+  }{}{\printtext[bibhyperref]{\printlabeldateextra}}}
 %    \end{macrocode}
 %
 % We insert anonymous author handling into |cite|.
@@ -13763,6 +13762,7 @@ reference,mvreference,inreference]{volume}{%
 % non-compressed citations.
 %
 %    \begin{macrocode}
+\renewcommand*{\multicitedelim}{\addsemicolon\space}
 \renewcommand*{\compcitedelim}{\addsemicolon\space}
 %    \end{macrocode}
 %
@@ -13781,7 +13781,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \setcounter{FancyVerbLine}{19}
 %
-% The standard |numeric| style works without further adjustment.
+% The standard |numeric| style works, needing only a little configuration.
 %
 %    \begin{macrocode}
 \RequireCitationStyle{numeric-comp}
@@ -13791,6 +13791,7 @@ reference,mvreference,inreference]{volume}{%
 % non-compressed citations.
 %
 %    \begin{macrocode}
+\renewcommand*{\multicitedelim}{\addsemicolon\space}
 \renewcommand*{\compcitedelim}{\addsemicolon\space}
 %    \end{macrocode}
 %
@@ -13809,7 +13810,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \setcounter{FancyVerbLine}{19}
 %
-% The standard |alphabetic| style works without further adjustment.
+% The standard |alphabetic| style works, needing only a little configuration.
 %
 %    \begin{macrocode}
 \RequireCitationStyle{alphabetic}
@@ -13819,6 +13820,7 @@ reference,mvreference,inreference]{volume}{%
 % non-compressed citations.
 %
 %    \begin{macrocode}
+\renewcommand*{\multicitedelim}{\addsemicolon\space}
 \renewcommand*{\compcitedelim}{\addsemicolon\space}
 %    \end{macrocode}
 %
