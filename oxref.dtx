@@ -328,7 +328,7 @@ Copyright (C) 2016–2018 Alex Ball
 %     \finentrypunct
 %   }{}%
 % }{}{}
-%<*doc&(m|a)>
+%<*doc>
 % Shorthands useful for oxyear make overlong labels for oxnum/oxalph,
 % so we remove them.
 \DeclareSourcemap{%
@@ -336,11 +336,13 @@ Copyright (C) 2016–2018 Alex Ball
     \map[overwrite=true]{%
 %<a>      \pertype{legislation}
 %<a>      \pertype{legal}
+%<n|y>      \pernottype{legslation}
+%<n|y>      \pernottype{legal}
       \step[fieldset=shorthand, null=true]
     }%
   }%
 }
-%</doc&(m|a)>
+%</doc>
 
 \hypersetup{pdfborder={0 0 0},pdfencoding=auto}
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
@@ -817,17 +819,17 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 
 \begin{docKey}{anon}{=\val{literal}|\val{long}|\val{short}}{default \val{short}, initially \val{literal}}
   Affects what happens if the author name matches the value of \cs{oxrefanon}.
-  By default, this is ‘Anonymous’, but you could change it a different word (such as ‘Anonimo’) instead.
+  By default, this is \enquote{Anonymous}, but you could change it a different word (such as \enquote{Anonimo}) instead.
   \begin{itemize}
   \item\docValue{literal}
     means no special handling is used.
   \item\docValue{long}
-    will print the unabbreviated localization string \code{anon} (‘Anonymous’) instead of the author name
+    will print the unabbreviated localization string \code{anon} (\enquote{Anonymous}) instead of the author name
 %<y>    in citations and the bibliography.
 %<m|a>    in the bibliography.
 %<n>    in the bibliography, but neither are printed in citations.
   \item\docValue{short}
-    will print the abbreviated localization string \code{anon} (‘Anon.\@’) instead of the author name
+    will print the abbreviated localization string \code{anon} (\enquote{Anon.\@}) instead of the author name
 %<y>    in citations and the bibliography.
 %<m|a>    in the bibliography.
 %<n>    in the bibliography, but neither are printed in citations.
@@ -872,28 +874,28 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   Affects how journal volumes and numbers are printed.
   \begin{itemize}
   \item\docValue{slash}
-    separates the two with a solidus, e.g. ‘23/2’.
+    separates the two with a solidus, e.g. \enquote{23/2}.
   \item\docValue{colon}
-    separates the two with a colon and space, e.g. ‘23: 2’.
+    separates the two with a colon and space, e.g. \enquote{23: 2}.
 %<a|y>    It is intended for use with \textsf{oxnotes}\slash\textsf{oxnum} and not recommended for this style.
   \item\docValue{comma}
-    separates the two with a comma and space, e.g. ‘23, 2’.
+    separates the two with a comma and space, e.g. \enquote{23, 2}.
   \item\docValue{parens}
-    sets off the issue number in parentheses, e.g. ‘23 (2)’.
+    sets off the issue number in parentheses, e.g. \enquote{23 (2)}.
 %<n|m>    It is intended for use with \textsf{oxalph}\slash\textsf{oxyear} and not recommended for this style.
   \end{itemize}
 \end{docKey}
 
 %<*a|y>
 \begin{docKey}{mergedate}{=\val{maximum}|\val{compact}|\val{basic}|\val{minimum}|\val{year}|\val{false}}{default \val{year}, initially \val{year}}
-  Affects how the date at the start of the references relates to the date in the ‘normal’ position.
+  Affects how the date at the start of the references relates to the date in the \enquote{normal} position.
   The default value of \val{year} is intended for use with the default setting of \key{labeldate}\texttt{=}\val{year}.
   If you set \key{labeldate} to something else, you will probably want to set this option to \val{compact} or \val{maximum}. It can also be set on a per-type basis.
 \end{docKey}
 %</a|y>
 
 \begin{docKey}{nolocation}{}{no value, initially unset}
-  Replaces missing locations with ‘n.p.’ or the localized equivalent in books, collections, reference works, proceedings, and similar entry types. Once set, this option cannot be overridden.
+  Replaces missing locations with \enquote{n.p.} or the localized equivalent in books, collections, reference works, proceedings, and similar entry types. Once set, this option cannot be overridden.
   Alternatively, it may be set on a per-entry basis.
 \end{docKey}
 
@@ -973,7 +975,7 @@ Examples that follow standard \textsf{biblatex} semantics, and are therefore
   Code used in bibliography file.
 \end{tcolorbox}
 
-Examples that have been ‘hacked’ in some way, and are therefore not portable
+Examples that have been \enquote{hacked} in some way, and are therefore not portable
 to other styles, are in amber:
 
 \begin{tcolorbox}%
@@ -1050,12 +1052,14 @@ see the separate documentation file \href{./oxref.pdf}{\texttt{oxref.pdf}}
 \section{Stability}
 
 The \pkg[biblatex]{oxref} family of styles is currently at \fileversion.
-As mentioned above, what the styles \emph{should} be doing is open to some
-interpretation, so at the moment I am open to the idea of changing how the
-styles handle cases not covered by the two style manuals. Please leave your
-thoughts on the GitHub issue tracker.\footnote{\url{https://github.com/alex-ball/biblatex-oxref/issues}}
-At some point version 1.0 will be released, after which the default (expected)
-behaviour of the styles will be fixed, though alternative behaviour may be added.
+I have no further features planned, so unless there is popular demand otherwise,
+it should be bug-fix releases only between now and the release of version 1.0.
+When that happens, the default (expected) behaviour of the styles will be frozen,
+meaning I will do my best to avoid backwards-incompatible changes, though
+alternative behaviour may be added. If you spot any aspects of the styles that
+could be improved before then, especially for the cases not covered by the two
+style manuals, please leave your thoughts on the GitHub issue tracker.%
+\footnote{\url{https://github.com/alex-ball/biblatex-oxref/issues}}
 
 You are of course encouraged to report any bugs you discover on the
 \href{https://github.com/alex-ball/biblatex-oxref/issues}{GitHub issue tracker}
@@ -1123,7 +1127,7 @@ Test\footcite[49-50]{faith1997epg}
 \end{egcite}
 \addtocategory{hidden}{cobban}
 
-Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} describe an alternative system that uses the abbreviations ‘ibid.\@’, ‘op.\@ cit.\@’, ‘loc.\@ cit.\@’, and ‘id.\@’ and friends, though with underwhelming enthusiasm. If you would like to use these abbreviations, load the \textsf{verbose-trad1} citation scheme instead (and remember to use the \code{gender} field):
+Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} describe an alternative system that uses the abbreviations \enquote{ibid.\@}, \enquote{op.\@ cit.\@}, \enquote{loc.\@ cit.\@}, and \enquote{id.\@} and friends, though with underwhelming enthusiasm. If you would like to use these abbreviations, load the \textsf{verbose-trad1} citation scheme instead (and remember to use the \code{gender} field):
 
 \begin{tcblisting}{listing only}
 \usepackage[bibstyle=oxnotes,citestyle=verbose-trad1]{biblatex}
@@ -1133,7 +1137,9 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} describe an al
 %<*m|a>
 Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} describe a system that uses simple numbers as citation labels, almost as if they were endnotes. This system does not support page references, unlike the citation labels familiar to \LaTeX\ users. In the absence of a better idea, therefore, this style treats citation labels rather like author–year parenthetical citations and adopts the conventions from \textsf{oxyear}. Pages are set off with a colon, and multiple works are separated with a semicolon.
 
-\begin{egcite}{}
+\begin{egcite}%
+%<m>{Test [\citefield{hankinson1988mmm}{labelnumber}: 93, 96; \citefield{hankinson1989gba}{labelnumber}: 72]}
+%<a>{Test [\citefield{hankinson1988mmm}{labelalpha}: 93, 96; \citefield{hankinson1989gba}{labelalpha}: 72]}
 Test \parencites%
   [93, 96]{hankinson1988mmm}%
   [72]{hankinson1989gba}
@@ -1157,7 +1163,7 @@ Pages are set off with a colon, and multiple works are separated with a semicolo
   [72]{hankinson1989gba}
 \end{egcite}
 
-Up to two author names are given, after which ‘et al.’ is used.
+Up to two author names are given, after which \enquote{et al.} is used.
 
 \begin{egcite}{(Barnes and Griffin 1989; Brady et al. 1994)}
 \parencite{barnes.griffin1989pte,%
@@ -1199,13 +1205,13 @@ If a short author label is provided, it is used in place of the full author.
 
 \subsection{Missing attribution}
 %<*n>
-Where works have no attribution, both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} suggest printing them without further adornment in notes, but listing them under ‘Anonymous’ (or ‘Anon.\@’ in the latter case) in the bibliography.
+Where works have no attribution, both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} suggest printing them without further adornment in notes, but listing them under \enquote{Anonymous} (or \enquote{Anon.\@} in the latter case) in the bibliography.
 %</n>
 %<*y>
-The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’ in place of the author name, while \emph{New Hart's Rules} suggests using ‘Anon.\@’ or a short title.
+The \emph{Oxford Guide to Style} prefers anonymous works to have \enquote{Anonymous} in place of the author name, while \emph{New Hart's Rules} suggests using \enquote{Anon.\@} or a short title.
 %</y>
 
-\tip{\pkg[biblatex]{Oxref} will not automatically generate anonymous labels for you, but if you use the \key{anon} option (see \cref{sec:loading}), you can transform an author name of ‘Anonymous’ (or whatever \cs{oxrefanon} is set to) in your .bib file to either the long or short localization string \code{anon}.
+\tip{\pkg[biblatex]{Oxref} will not automatically generate anonymous labels for you, but if you use the \key{anon} option (see \cref{sec:loading}), you can transform an author name of \enquote{Anonymous} (or whatever \cs{oxrefanon} is set to) in your .bib file to either the long or short localization string \code{anon}.
 %<n>  Doing this will automatically suppress the printing of the anonymous author in notes.
 }
 
@@ -1271,8 +1277,8 @@ The \emph{Oxford Guide to Style} prefers anonymous works to have ‘Anonymous’
 
 \subsection{Pseudepigraphy}
 Some older works are known to have been written pseudepigraphically, that is, falsely attributed to a more famous author. The way of indicating this in Oxford style, if desired, is
-%<n>to add the prefix ‘Pseudo-’ before the name in notes, and
-to put ‘(Ps.-)’ after the name in the bibliography.
+%<n>to add the prefix \enquote{Pseudo-} before the name in notes, and
+to put \enquote{(Ps.-)} after the name in the bibliography.
 
 \tip{With \pkg[biblatex]{oxref}, you can achieve this by annotating the name with the keyword \code{pseudo}.
 %<n>Since this mechanism is aimed at ancient texts, it has only been designed to work with single-part names
@@ -1672,7 +1678,7 @@ For periodicals, grey literature, audiovisual and online material, the lack of a
 \tip{To have \pkg[biblatex]{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for books, collections, reference works, proceedings and similar entry types, use the \key{nolocation} bibliography option.}
 
 \tip{To have \pkg[biblatex]{oxref} automatically insert \enquote{n.p.\@} or the localized equivalent for only a specific entry, use the \key{nolocation} entry option instead.
-  This has the feature of hiding the \enquote{n.p.\@} from other styles that do not follow the same convention.}
+  The advantage of doing this over simply giving \enquote{n.p.\@} as the publisher is that it hides it from other styles that do not follow the same convention.}
 
 \begin{bibexbox}
 %<n|m><NHR \S18.2.9>
@@ -2219,7 +2225,7 @@ or add the book details to a periodical entry.
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Use \code{bookpagination} to force the display of ‘pp.’ (since the number format is odd), and \cs{DeclareNumChars*}\brackets{S} to ensure that \code{S61} is recognized as a number.}%
+\tip{Use \code{bookpagination} to force the display of \enquote{pp.} (since the number format is odd), and \cs{DeclareNumChars*}\brackets{S} to ensure that \code{S61} is recognized as a number.}%
 
 
 \section{Articles that span multiple issues}
@@ -2282,7 +2288,7 @@ Stookey, R. W. (1974), \enquote{Social Structure and Politics in the Yemen Arab 
 
 \section{Editorials and other regular features}
 
-Strictly speaking, when a work is headed ‘Editorial’ or ‘Letter to the Editor’
+Strictly speaking, when a work is headed \enquote{Editorial} or \enquote{Letter to the Editor}
 in a periodical, this is a descriptor rather than a title.
 
 \tip{If a piece has a true title, the descriptor goes in the \code{note} field.
@@ -2331,7 +2337,7 @@ in a periodical, this is a descriptor rather than a title.
 %<n|m>\spec{Author, \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number (Year), Pages.}
 %<a|y>\spec{Author (Year), \enquote{Title}, \lit{review of} ReviewedWork, \lit{in} \emph{JournalTitle}, Vol/Number: Pages.}
 
-\tip{To get this format, use a separate entry for the reviewed item, reference it in the ‘related’ field, and use the key ‘reviewof’ as the ‘relatedtype’.}
+\tip{To get this format, use a separate entry for the reviewed item, reference it in the \enquote{related} field, and use the key \enquote{reviewof} as the \enquote{relatedtype}.}
 
 \begin{bibexbox}
 %<n|m><OGS \S15.4.4>
@@ -3164,7 +3170,7 @@ J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Use the localization key \code{revised} as the edition to get ‘revised edition’. Use the localization key \code{revisedenlarged} as the edition to get ‘revised and enlarged edition’}
+\tip{Use the localization key \code{revised} as the edition to get \enquote{revised edition}. Use the localization key \code{revisedenlarged} as the edition to get \enquote{revised and enlarged edition}}
 
 \begin{bibexbox}<OGS \S15.2.1*>
 {gibbon1686dfs}
@@ -3187,7 +3193,7 @@ J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).
 \end{Verbatim}
 \end{bibexbox}
 
-\info{In the \emph{Oxford Guide to Style}, there is no comma after ‘rev. edn.’ in the above reference; this may be an error.}
+\info{In the \emph{Oxford Guide to Style}, there is no comma after \enquote{rev. edn.} in the above reference; this may be an error.}
 %</n|m>
 %<*a|y>
 \begin{bibexbox}<OGS \S15.19.2>
@@ -3226,7 +3232,7 @@ rather than within the publication block%
 %<a|y>\spec{Author (OrigYear), \emph{Title} (Location: Publisher).}
 
 %<n|m>\tip{This format is triggered if you specify an original date but do not specify the original publisher or location, nor the edition of the later publication.}
-%<n|m>\info{In the following example, you will see the style uses ‘originally published’ instead of ‘first published’. This is because ‘originally’ is more common among the available examples.}
+%<n|m>\info{In the following example, you will see the style uses \enquote{originally published} instead of \enquote{first published}. This is because \enquote{originally} is more common among the available examples.}
 
 \begin{bibexbox}
 %<n|m><OGS \S15.2.3>
@@ -3252,7 +3258,7 @@ rather than within the publication block%
 \subsection{Reprints}
 
 %<n|m>\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{repr.} Location: Publisher, Year).}
-%<a|y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; \lit{repr.} Location: Publisher).}
+%<a|y>\spec{Author (Year–Year), \emph{Title} (Location: Publisher; \lit{repr.} Location: Publisher).}
 
 \tip{Use localization key \code{reprint} as the edition. For a revised reprint, use \code{revisedreprint}.}
 
@@ -3301,7 +3307,7 @@ rather than within the publication block%
 \end{bibexbox}
 
 %<n|m>\spec{Author, \emph{Title} (Location: Publisher, Year; \lit{facs. edn.}, Location: Publisher, Year).}
-%<a|y>\spec{Author (Year/Year), \emph{Title} (Location: Publisher; \lit{facs. edn.}, Location: Publisher).}
+%<a|y>\spec{Author (Year–Year), \emph{Title} (Location: Publisher; \lit{facs. edn.}, Location: Publisher).}
 
 \tip{Use localization key \code{facsimile} as the edition.}
 
@@ -3857,7 +3863,7 @@ The \emph{Oxford Guide to Style} suggests citing entries in dictionaries and enc
 
 \section{Supplementary works in books and collections}
 
-If the work is headed ‘Introduction’, ‘Foreword’, ‘Afterword’, or similar,
+If the work is headed \enquote{Introduction}, \enquote{Foreword}, \enquote{Afterword}, or similar,
 this is technically a descriptor rather than a title.
 
 \tip{If the work has a true title, the descriptor goes in the \code{note} field.
@@ -4607,9 +4613,9 @@ generated references more Oxford-like.
 The particular quirk with standards entries is that the number is promoted to
 the head of the reference if an author is not specified (or \key{useauthor} is
 \val{false}). If this happens, the number is copied to \code{sortkey} so the
-entry appears in the right place in the reference list. You can override this
-by giving the \code{sortkey} yourself, for example if you want ‘ISO 1000’ to
-come after ‘ISO 999’.
+entry appears in the right place in the reference list, unless you get there
+first with your own value of \code{sortkey}. You may want to do this if, for
+example, you want \enquote{ISO 1000} to come after \enquote{ISO 999}.
 
 \tip{You are encouraged to put the standards body in \code{organization}, but
   you can use \code{publisher} instead.}
@@ -4632,6 +4638,12 @@ come after ‘ISO 999’.
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
+
+%<*y>
+\begin{egcite}{}
+\cite{bs5605:1990}
+\end{egcite}
+%</y>
 
 \begin{bibexbox}
 {w3c2017html5.2}
@@ -5130,7 +5142,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 %<n|m>\spec{\enquote{EpisodeTitle}, \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Date.}
 %<a|y>\spec{\enquote{EpisodeTitle} (Year), \emph{SeriesTitle}, \lit{Episode} EpisodeNumber, Channel, Day Month.}
 
-\tip{If the episode has a true title, the episide descriptor (e.g. ‘Episode 1’) goes in the \code{note} field.
+\tip{If the episode has a true title, the episide descriptor (e.g. \enquote{Episode 1}) goes in the \code{note} field.
   If it doesn't, the episode descriptor goes in the \code{title} field; annotate the field with the keyword \code{descriptor} to remove the quote marks.
   Alternatively, use the (non-standard) \code{descriptor} field for the episode descriptor in all cases, and \pkg[biblatex]{oxref} will take care of this for you.}
 
@@ -5438,7 +5450,7 @@ The \emph{Oxford Guide to Style} prints all information about the transmission, 
 \chapterprecis{online, software, dataset}
 
 In Section 18.8.5 of \emph{New Hart's Rules}, some publication dates are printed in parentheses and some are left bare.
-In theory, the difference should be that parentheses indicate ‘proper’ publication (bare dates are when the resource was created or issued). In practice, it seems to be random. I have therefore decided to ignore the variation and leave all such dates in parentheses.
+In theory, the difference should be that parentheses indicate \enquote{proper} publication (bare dates are when the resource was created or issued). In practice, it seems to be random. I have therefore decided to ignore the variation and leave all such dates in parentheses.
 
 \section{Website articles}
 
@@ -5575,13 +5587,13 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{Unlike standard \textsf{biblatex}, \pkg[biblatex]{oxref} supports \code{maintitle} for online entries and prints the result in italics. For more portability, you could either hard-code the italics into the \code{organization} field or use the \code{article} entry type.}
+
 \info{It is not made explicit why \emph{Encyclopaedia Britannica} is in italics and \emph{Wikipedia} is not.
   It might be historical or customary, because \emph{Encyclopaedia Britannica} was established as a print publication and \emph{Wikipedia} has only been online;
   it might be because \emph{Encyclopaedia Britannica} is a Latin title;
   it might reflect an opinion on the two resources;
   or it may just be illustrative of variant practice.}
-
-\tip{Unlike standard \textsf{biblatex}, \pkg[biblatex]{oxref} supports \code{maintitle} for online entries and prints the result in italics. For more portability, you could either hard-code the italics into the \code{organization} field or use the \code{article} entry type.}
 
 \begin{bibexbox}
 %<n|m><NHR \S18.8.5>
@@ -5669,7 +5681,7 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{If it feels odd putting the entire content of a tweet in your reference, \emph{New Hart's Rules} suggests using a descriptor like ‘Twitter post’ instead of the title. As described in \cref{sec:broadcasts}, you can do this either by annotating the title field with the keyword \code{descriptor} or by using the (non-standard) \code{descriptor} field in place of \code{title}.}
+\tip{If it feels odd putting the entire content of a tweet in your reference, \emph{New Hart's Rules} suggests using a descriptor like \enquote{Twitter post} instead of the title. As described in \cref{sec:broadcasts}, you can do this either by annotating the title field with the keyword \code{descriptor} or by using the (non-standard) \code{descriptor} field in place of \code{title}.}
 
 \begin{bibexbox}
 {oup2015tweet}
@@ -5807,7 +5819,7 @@ Use the \code{jurisdiction} entry type for citing cases.
 
 \tip{Several additional pagination types are defined for use with legal citations:
   \val{article}, \val{clause}, \val{regulation}, and \val{rule} all work as normal.
-  The default is a bare number (\val{none}), indicating a page reference, though EU and ECHR cases default to using the ‘para’ (\val{paragraph}) prefix.
+  The default is a bare number (\val{none}), indicating a page reference, though EU and ECHR cases default to using the \enquote{para} (\val{paragraph}) prefix.
   There is also an alternative pagination type for paragraphs, \val{[]}, which prints the number in square brackets instead of giving it a prefix.
 }
 
@@ -5930,6 +5942,8 @@ Test\footcite[13]{rvg2004}
 \parencite[13]{rvg2004}
 \end{egcite}
 %</y>
+
+%<y>\hack{Note that in the cases above and below, the head of the reference won't match the citation, which may cause confusion. You may wish to hack the in-text citation to fix this.}
 
 \tip{If a report is published a long time after the decision, you can put the decision date in \code{origdate} to clarify the situation.}
 
@@ -6070,7 +6084,7 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
   The \key{ecli} option determines under what circumstances the identifier is printed.}
 
 \tip{European cases still get sorted by title, even if the entry begins with the case number.
-  Use \code{sorttitle} if you would rather they were sorted under ‘Case’ or ‘Joined Cases’.}
+  Use \code{sorttitle} if you would rather they were sorted under \enquote{Case} or \enquote{Joined Cases}.}
 
 \begin{bibexbox}
 <OGS \S13.4.4>
@@ -6092,7 +6106,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Indicate Commission Decisions by putting \code{commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field. Put the case number (including the word ‘Case’ if needed) in either the \code{titleaddon}, \code{parvolume}, or \code{userb} field.}
+\tip{Indicate Commission Decisions by putting \code{commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field. Put the case number (including the word \enquote{Case} if needed) in either the \code{titleaddon}, \code{parvolume}, or \code{userb} field.}
 
 \tip{An unfortunate side effect of this is that is not possible to use either the parallel or neutral citation idiom to get a reference to look like the following. In such cases, use the \code{note} field to provide the second citation.}
 
@@ -6368,7 +6382,7 @@ Convention Relating to the Status of Refugees (adopted 28 July 1951, entered int
 @legal{refugees,
   entrysubtype = {piltreaty},
   title = {Convention Relating to the Status of Refugees},
-%<!m|a>  shorthand = {Refugee Convention},
+%<!m&!a>  shorthand = {Refugee Convention},
   execution = {adopted=1951-07-28 and inforce=1954-04-22},
   pagination = {article},
   volume = {189},
@@ -6379,7 +6393,7 @@ Convention Relating to the Status of Refugees (adopted 28 July 1951, entered int
 \end{bibexbox}
 
 %<*y>
-\tip{Since the lack of a \code{date} field may cause an inaccurate ‘n.d.’ label to be printed, use the \code{shorthand} field to provide a sensible citation label. You could use \cs{citetitle} the first time to ensure the reader can find it in the bibliography.}
+\tip{Since the lack of a \code{date} field may cause an inaccurate \enquote{n.d.\@} label to be printed, use the \code{shorthand} field to provide a sensible citation label. You could use \cs{citetitle} the first time to ensure the reader can find it in the bibliography. You can also suppress the \enquote{n.d.\@} label by specifying \code{sortyear} or using the \key{nonodate} option.}
 
 \begin{egcite}{(Refugee Convention: art.\@ 24)}
   \parencite[24]{refugees}
@@ -6617,8 +6631,8 @@ An author–date system like \textsf{oxyear} does not really lend itself to manu
 but support is provided anyway for the sake of completeness.
 
 %</y>
-%<n|m>\spec{Author, ‘Title’/Descriptor, Date, Archive, Location, Collection Series, Shelfmark, Folios.}
-%<a|y>\spec{Author (Year), ‘Title’/Descriptor, Date, Archive, Location, Collection Series, Shelfmark, Folios.}
+%<n|m>\spec{Author, \enquote{Title}/Descriptor, Date, Archive, Location, Collection Series, Shelfmark, Folios.}
+%<a|y>\spec{Author (Year), \enquote{Title}/Descriptor, Date, Archive, Location, Collection Series, Shelfmark, Folios.}
 
 With \pkg[biblatex]{oxref}, you can enter manuscripts in either of two ways. The first uses the \code{unpublished} entry type.
 
@@ -6789,14 +6803,15 @@ Note that it is usually acceptable to exclude personal communications from
 the reference section, and simply cite them in the text (in which case you may
 not need the \pkg{biblatex} machinery).
 
-%<n|m>\spec{Author, ‘Title’/Descriptor, Date.}
-%<a|y>\spec{Author (Year), ‘Title’/Descriptor, Date.}
+%<n|m>\spec{Author, \enquote{Title}/Descriptor, Date.}
+%<a|y>\spec{Author (Year), \enquote{Title}/Descriptor, Date.}
 
 \begin{bibexbox}
 %<n|m><OGS \S15.11.1*>
 %<a|y><OGS \S15.11.1*\textdagger>
 {anon2001pl}
-Personal letter to the author, 2 May 2001.
+%<n|m>Personal letter to the author, 2 May 2001.
+%<a|y>Personal letter to the author (2001), 2 May.
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6812,8 +6827,8 @@ In the absence of any explicit rationale governing whether the date is
 parenthetical, in \pkg[biblatex]{oxref} the presence of a URL
 will trigger the use of parentheses.
 
-%<n|m>\spec{Author, ‘Title’/Descriptor [HowPublished], (Date), OnlineAccess.}
-%<a|y>\spec{Author (Year), ‘Title’/Descriptor [HowPublished], (Date), OnlineAccess.}
+%<n|m>\spec{Author, \enquote{Title}/Descriptor [HowPublished], (Date), OnlineAccess.}
+%<a|y>\spec{Author (Year), \enquote{Title}/Descriptor [HowPublished], (Date), OnlineAccess.}
 
 \begin{bibexbox}
 %<n|m><OGS \S15.15.3*>
@@ -7241,7 +7256,7 @@ will trigger the use of parentheses.
 %    \end{macrocode}
 %
 % There is no comma before numeric suffixes, but there is before textual
-% ones (e.g. ‘junior’).
+% ones (e.g. \enquote{junior}).
 %
 %    \begin{macrocode}
 \xpatchbibmacro{name:given-family}%
@@ -7474,7 +7489,7 @@ will trigger the use of parentheses.
   \finentry}
 %    \end{macrocode}
 %
-% We provide options for how to handle the author name ‘Anonymous’.
+% We provide options for how to handle the author name \enquote{Anonymous}.
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@autoanon}
@@ -7507,7 +7522,7 @@ will trigger the use of parentheses.
 % The |author| macro is enhanced from the standard version by
 % \begin{itemize}
 %   \item
-%   checking if the author name is ‘Anonymous’;
+%   checking if the author name is \enquote{Anonymous};
 %   \item
 %   including a dash check, to see if the name(s) should be replaced
 %   with a dash (as in |authortitle| and |authoryear|);
@@ -7562,7 +7577,7 @@ will trigger the use of parentheses.
 \DeclareFieldFormat{authortype}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
-% We make the punctuation between a title and ‘by [author]’ configurable.
+% We make the punctuation between a title and \enquote{by [author]} configurable.
 %
 %    \begin{macrocode}
 \newcommand{\titlebyauthordelim}{\addspace}
@@ -11961,7 +11976,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Related editions}
 %
-% This macro is based on the ‘bytranslator’ one, but more general.
+% This macro is based on the \enquote{bytranslator} one, but more general.
 %
 %    \begin{macrocode}
 \newbibmacro*{related:editedas}[1]{%
@@ -12192,7 +12207,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Audiovisual materials}
 %
-% For audiovisual materials, |origdatetype| defaults to ‘recorded’.
+% For audiovisual materials, |origdatetype| defaults to \enquote{recorded}.
 %
 %    \begin{macrocode}
     \map[overwrite=false]{
@@ -13501,7 +13516,7 @@ reference,mvreference,inreference]{volume}{%
   \maps[datatype=bibtex]{%
 %    \end{macrocode}
 %
-% \subsubsection{Suppressing a ‘nodate’ label}
+% \subsubsection{Suppressing a \enquote{nodate} label}
 %
 % Unless already set, the \key{nonodate} option is inserted if |sortyear| is
 % used. We accomplish this with source maps; the first one works where options
@@ -13744,7 +13759,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % The name and year are usually separated by a space, but if the date is
-% replaced by a word (e.g. ‘forthcoming’, ‘n.d.’), they are separated by
+% replaced by a word (e.g. \enquote{forthcoming}, \enquote{n.d.}), they are separated by
 % a comma.
 %
 %    \begin{macrocode}
@@ -13841,7 +13856,7 @@ reference,mvreference,inreference]{volume}{%
 % This code is appended to all the citation style files.
 %
 % We fix the |textcite| macro so if the \key{anon} option is set to \val{long}
-% or \val{short}, a value of ‘Anonymous’ is replaced by the bibstring.
+% or \val{short}, a value of \enquote{Anonymous} is replaced by the bibstring.
 %
 %    \begin{macrocode}
 \xpatchbibmacro{textcite}{%
@@ -13902,7 +13917,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % The |rawauthor| field is used internally for checking whether an
-% the name given in the |author| field is a keyword meaning ‘anonymous’.
+% the name given in the |author| field is a keyword meaning \enquote{anonymous}.
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{rawauthor}
@@ -14150,8 +14165,8 @@ reference,mvreference,inreference]{volume}{%
 % Many of these are guesses extrapolated from what is given.
 %
 % The roles expressed as functions do not need adjusting. The roles
-% expressed as actions do not typically end in ‘by’ when abbreviated;
-% the ‘with’ parts go first when abbreviated if there is more than one
+% expressed as actions do not typically end in \enquote{by} when abbreviated;
+% the \enquote{with} parts go first when abbreviated if there is more than one
 % editorial role (at least, that is one way of interpreting the examples).
 %
 %    \begin{macrocode}
@@ -14263,21 +14278,21 @@ reference,mvreference,inreference]{volume}{%
   origpubin        = {{originally published in}{originally pub\adddot}},
 %    \end{macrocode}
 %
-% There is also a different abbreviation for ‘paragraph’.
+% There is also a different abbreviation for \enquote{paragraph}.
 %
 %    \begin{macrocode}
   paragraph        = {{paragraph}{para\adddot}},
   paragraphs       = {{paragraphs}{paras\adddot}},
 %    \end{macrocode}
 %
-% \emph{New Hart's Rules} uses ‘accessed’ for URL dates.
+% \emph{New Hart's Rules} uses \enquote{accessed} for URL dates.
 %
 %    \begin{macrocode}
   urlseen          = {{accessed}{accessed}},
 %    \end{macrocode}
 %
-% Scholarly citation terms are abbreviated. Oxford style is to use ‘henceforth’
-% for shorthands and ‘at’ to cite a page within a range.
+% Scholarly citation terms are abbreviated. Oxford style is to use \enquote{henceforth}
+% for shorthands and \enquote{at} to cite a page within a range.
 %
 %    \begin{macrocode}
   idem             = {{idem}{id\adddot}},
