@@ -11484,12 +11484,16 @@ reference,mvreference,inreference]{volume}{%
     test {\ifnameundef{author}}
     and
     test {\iffieldundef{title}}
+    and
+    test {\iffieldundef{label}}
   }{}{\usebibmacro{date}}}
 \newbibmacro{dating}{%
   \ifboolexpr{(
       test {\ifnameundef{author}}
       and
       test {\iffieldundef{title}}
+      and
+      test {\iffieldundef{label}}
     ) or
     test {\iffieldundef{year}}
   }{%
