@@ -102,7 +102,8 @@ the styles handle certain tricky references are subject to change.
 %</readme>
 %<*bib>
 @reference{ritter2002ogs,
-  author = {R. M. Ritter},
+  editor = {R. M. Ritter},
+  editortype= {editorcm},
   title = {The {Oxford} Guide to Style},
   date = {2002},
   publisher = {Oxford University Press},
@@ -1201,7 +1202,7 @@ If a short author label is provided, it is used in place of the full author.
 \emph{New Hart's Rules} is mostly consistent with this, but has some variations where the author and date are separated by a comma, and where multiple references are also separated by commas.
 %</y>
 
-\section{Missing and inferred attribution}
+\section{Missing or inferred attribution}
 
 \subsection{Missing attribution}
 %<*n>
@@ -1699,7 +1700,7 @@ For periodicals, grey literature, audiovisual and online material, the lack of a
 \end{Verbatim}
 \end{bibexbox}
 
-\section{Missing and inferred date of publication}
+\section{Missing or inferred date of publication}
 
 If the date is missing from a work, you can sometimes make an educated guess
 what it should be. It is usual practice to enclose such guesses in square
@@ -1726,7 +1727,7 @@ per-type or per-entry basis.
 
 \section{Articles in periodicals with volumes/numbers}
 
-The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxyear} which uses a colon to demarcate the page numbers. These variations are implemented as the option \key{issuestyle}; see \autoref{sec:loading} for details.
+The \emph{Oxford Guide to Style} consistently prefers volume and part numbers to be written like \enquote{23/2}, but also discusses formats such as \enquote{23: 2} and \enquote{23 (2)}. \emph{New Hart's Rules} adds \enquote{23, 2} as a further possibility. The latter two are better suited to \textsf{oxalph}\slash\textsf{oxyear} which use a colon to demarcate the page numbers. These variations are implemented as the option \key{issuestyle}; see \autoref{sec:loading} for details.
 
 %<n|m>\spec{Author, \enquote{Title}, \emph{JournalTitle}, Vol/Number (Year), Pages.}
 %<a|y>\spec{Author (Year), \enquote{Title}, \emph{JournalTitle}, Vol/Number: Pages.}
@@ -1871,11 +1872,11 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 
 % Electronic identifier instead of a page range
 \begin{bibexbox}(hacked)
-%<n><NHR \S18.8.5*>
-%<y><NHR \S18.8.5*\textdagger>
+%<n|m><NHR \S18.8.5*>
+%<a|y><NHR \S18.8.5*\textdagger>
 {li.etal2013flh}
-%<n>Shu Li et al., \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11 (2013), e78188. doi: \path{10.1371/journal.pone.0078188}
-%<y>Li, S. et al. (2013), \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11, e78188. doi: \path{10.1371/journal.pone.0078188}
+%<n|m>Shu Li et al., \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11 (2013), e78188. doi: \path{10.1371/journal.pone.0078188}
+%<a|y>Li, S. et al. (2013), \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11, e78188. doi: \path{10.1371/journal.pone.0078188}
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6908,7 +6909,8 @@ will trigger the use of parentheses.
 %
 %    \begin{macrocode}
 \NewBibliographyString{%
-  director, performer, reader, conductor,
+  director, performer, reader, conductor, serieseditor, holder, editorcm,
+  directors, performers, readers, conductors, serieseditors, holders, editorcms,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -6916,7 +6918,7 @@ will trigger the use of parentheses.
 % \end{itemize}
 %
 %    \begin{macrocode}
-  bydirector, byperformer, byreader, byconductor, byserieseditor, byholder,
+  bydirector, byperformer, byreader, byconductor, byserieseditor, byholder, byeditorcm,
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -14002,9 +14004,19 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
   director         = {{director}{dir\adddot}},
+  directors        = {{directors}{dirs\adddot}},
   performer        = {{}{}},
+  performers       = {{}{}},
   reader           = {{reader}{reader}},
+  readers          = {{readers}{readers}},
   conductor        = {{conductor}{cond\adddot}},
+  conductors       = {{conductors}{cond\adddot}},
+  serieseditor     = {{series editor}{ser\adddotspace ed\adddot}},
+  serieseditors    = {{series editors}{ser\adddotspace eds\adddot}},
+  holder           = {{holder}{holder}},
+  holders          = {{holders}{holders}},
+  editorcm         = {{editor and compiler}{ed\adddotspace and comp\adddot}},
+  editorcms        = {{editors and compilers}{eds\adddotspace and comp\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -14018,6 +14030,7 @@ reference,mvreference,inreference]{volume}{%
   byconductor      = {{conducted by}{cond\adddot}},
   byserieseditor   = {{edited by}{ed\adddot}},
   byholder         = {{held by}{held by}},
+  byeditorcm       = {{edited and compiled by}{ed\adddotspace and comp\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -14027,7 +14040,7 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
   facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
   revised          = {{revised edition}{rev\adddotspace edn\adddot}},
-  revisedenlarged  = {{revised and enlarged edition}{rev\adddotspace ane enl\addotspace edn\adddot}},
+  revisedenlarged  = {{revised and enlarged edition}{rev\adddotspace and enl\addotspace edn\adddot}},
   revisedreprint   = {{revised reprint}{rev\adddotspace repr\adddot}},
   suppto           = {{Supplement to}{Supplement to}},
   equals           = {{=}{=}},
