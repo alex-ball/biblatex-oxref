@@ -52,13 +52,13 @@ uninst:
 
 install: all
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(PFX)$(NAME)
-	sudo $(NAME).{dtx,ins} $(LOCAL)/source/latex/$(PFX)$(NAME)
-	sudo $(NAME).bbx {$(STY1),$(STY2),$(STY3),$(STY4)}.{b,c,d}bx {american,british,english}-$(NAME).lbx $(LOCAL)/tex/latex/$(PFX)$(NAME)
+	sudo cp $(NAME).{dtx,ins} $(LOCAL)/source/latex/$(PFX)$(NAME)
+	sudo cp $(NAME).bbx {$(STY1),$(STY2),$(STY3),$(STY4)}.{b,c,d}bx {american,british,english}-$(NAME).lbx $(LOCAL)/tex/latex/$(PFX)$(NAME)
 	sudo cp $(NAME).{bib,pdf} {$(STY1),$(STY2),$(STY3),$(STY4)}-doc.{tex,pdf} $(LOCAL)/doc/latex/$(PFX)$(NAME)
-	mktexlsr
+	sudo mktexlsr
 uninstall:
 	sudo rm -r $(LOCAL)/{tex,source,doc}/latex/$(PFX)$(NAME)
-	mktexlsr
+	sudo mktexlsr
 
 zip: all
 	mkdir $(TDIR)
