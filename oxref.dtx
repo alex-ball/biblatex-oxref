@@ -5773,9 +5773,9 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 \chapterprecis{commentary, jurisdiction, legal, legislation}
 
 \pkg[biblatex]{Oxref} provides only a basic level of support for legal references, in case you need to use some in a mainly non-legal text.
-For a more thorough and robust treatment, intended for a specialist readership, I recommend you use the \href{http://www.ctan.org/pkg/oscola}{\textsf{oscola}} style instead.
+For a more thorough and robust treatment, intended for a specialist readership, I recommend you use the \pkg{oscola} style instead.
 
-Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules} and the \emph{Oxford Standard for the Citation of Legal Authorities}, \pkg[biblatex]{oxref} largely mimics \textsf{oscola} and its data model, though there are some small formatting differences. What you should \emph{not} expect from \pkg[biblatex]{oxref} are facilities for compiling specialist indices of sources, or anything special regarding the handling of postnotes.
+Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules} and the \emph{Oxford Standard for the Citation of Legal Authorities}, \pkg[biblatex]{oxref} largely mimics \pkg{oscola} and its data model, though there are some small formatting differences. What you should \emph{not} expect from \pkg[biblatex]{oxref} are facilities for compiling specialist indices of sources, or anything special regarding the handling of postnotes.
 
 %<y>Since legal references are usually cited using footnotes, how \textsf{oxyear} should behave is not well defined. As a result, I have not configured it to do anything fancy: the full reference will be formatted just the same as with \textsf{oxnotes}, and citations will typically be title–year using parentheses in the usual way. I am open to suggestions for how to handle things better.
 
@@ -6087,6 +6087,9 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \tip{European cases still get sorted by title, even if the entry begins with the case number.
   Use \code{sorttitle} if you would rather they were sorted under \enquote{Case} or \enquote{Joined Cases}.}
 
+\tip{For ECR cases, you can use either \code{number} or the non-standard \code{casenumber} field
+  for the case number.}
+
 \begin{bibexbox}
 <OGS \S13.4.4>
 {C118/07}
@@ -6107,9 +6110,7 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Indicate Commission Decisions by putting \code{commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field. Put the case number (including the word \enquote{Case} if needed) in either the \code{titleaddon}, \code{parvolume}, or \code{userb} field.}
-
-\tip{An unfortunate side effect of this is that is not possible to use either the parallel or neutral citation idiom to get a reference to look like the following. In such cases, use the \code{note} field to provide the second citation.}
+\tip{Indicate Commission Decisions by putting \code{Commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field, and put the case number in the (non-standard) \code{casenumber} field or (\pkg{oscola}-supported) \code{userb} field. If wider portability is an issue, you can put the case number, including the word \enquote{Case} if needed, in the \code{titleaddon} field instead.}
 
 \begin{bibexbox}
 <OGS \S13.2.6>
@@ -6121,14 +6122,18 @@ Case C–118/07 \emph{Commission of the European Communities v Finland} [2002] E
 @jurisdiction{alcatel,
   keywords = {eu},
   title = {Alcatel/Telettra},
-  parvolume = {Case IV/M042},
-  institution = {commission},
+  casenumber = {IV/M042},
+  institution = {Commission},
   date = {1991},
   journaltitle = {OJ},
   series = {L},
   volume = {122},
   pages = {48},
-  note = {[1991] 4 CLMR 391}}
+  pardate = {1991},
+  parreporter = {CLMR},
+  parvolume = {4},
+  parpages = {391},
+  options = {paryear-essential}}
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
@@ -10478,7 +10483,7 @@ reference,mvreference,inreference]{volume}{%
 % \subsection{Legal references}
 %
 % Legal references are a law unto themselves, and thus require extensive
-% fiddly coding. This entire section is adapted from \textsf{oscola} by
+% fiddly coding. This entire section is adapted from \pkg{oscola} by
 % Paul Stanley.
 %
 % \subsubsection{Entry options}
@@ -10774,7 +10779,7 @@ reference,mvreference,inreference]{volume}{%
     \setunit{\addspace}%
     \printfield{pages}}}
 \newbibmacro{pcitenote}{%
-  \iffieldundef{userc}{}{% parreporter
+  \iffieldundef{parreporter}{}{%
     \setunit{\addcomma\space}%
     \iffieldundef{postnote}{}{%
       \printfield{postnote}%
@@ -10855,22 +10860,32 @@ reference,mvreference,inreference]{volume}{%
 % Here is the format for EU cases.
 %
 %    \begin{macrocode}
+\newtoggle{bbx@commissiondecision}
 \newbibmacro*{eujuriscitation}{%
-  \iflistcontains{institution}{\commission}{}{%
+  \ifboolexpr{
+    test {\iflistcontains{institution}{\commission}}
+    or
+    test {\iflistcontains{institution}{\Commission}}
+  }{%
+    \toggletrue{bbx@commissiondecision}%
+  }{%
+    \togglefalse{bbx@commissiondecision}}%
+  \iftoggle{bbx@commissiondecision}{}{%
     \usebibmacro{eucasenumber}}%
   \usebibmacro{title}%
   \setunit{\addspace}%
-  \iflistcontains{institution}{\commission}{%
+  \iftoggle{bbx@commissiondecision}{%
     \usebibmacro{eucommissiondecision}}{}%
   \setunit{\addspace}%
   \usebibmacro{eu:reportinfo}%
-  \iflistcontains{institution}{\commission}{%
+  \iftoggle{bbx@commissiondecision}{%
     \setunit{\addcomma\space}%
   }{%
     \setunit{\addspace}}%
+  \usebibmacro{altreportdetails}%
   \usebibmacro{court-note}%
 }
-\newbibmacro{eucasenumber}{%
+\newbibmacro{eucasetype}{%
   \iffieldundef{type}{%
     \ifboolexpr{
       test {\IfSubStr{\thefield{number}}{,}}
@@ -10884,19 +10899,33 @@ reference,mvreference,inreference]{volume}{%
       \bibstring{eucase}}%
   }{%
     \printfield{type}}%
+}
+\newbibmacro{eucasenumber}{%
+  \usebibmacro{eucasetype}%
   \setunit{\addnbspace}%
   \printfield{number}%
   \setunit{\addspace}}
 \newbibmacro{eucommissiondecision}{%
-  \iffieldundef{userb}{}{%
-    \printfield[parens]{userb}}%
-  \setunit{\addspace}%
-  \iffieldundef{number}{}{%
-    \iffieldundef{type}{%
-      \setunit{\addspace\bibstring{commissiondecision}\addspace}%
-    }{%
-      \setunit{\addspace\printfield{type}\addspace}}%
-    \printfield{number}}}
+  \iffieldundef{userb}{%
+    \iffieldundef{number}{}{%
+      \printtext[parens]{%
+        \usebibmacro{eucasetype}%
+        \setunit{\addnbspace}%
+        \printfield{number}}}%
+  }{%
+    \printtext[parens]{%
+      \usebibmacro{eucasetype}%
+      \setunit{\addnbspace}%
+      \printfield{userb}}%
+    \setunit{\addspace}%
+    \iffieldundef{number}{}{%
+      \iffieldundef{type}{%
+        \setunit{\addspace\bibstring{commissiondecision}\addspace}%
+      }{%
+        \setunit{\addspace\printfield{type}\addspace}}%
+      \printfield{number}}%
+  }%
+}
 \newbibmacro*{eu:reportinfo}{%
   \iftoggle{bbx@eclionly}{%
     \iffieldundef{verba}{%
@@ -11175,7 +11204,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{court-note}}
 \newbibmacro{altreportdetails}{%
   \restorefield{prenote}{\postnotesecond}%
-  \iffieldundef{userc}{}{% parreporter
+  \iffieldundef{parreporter}{}{%
     \usebibmacro{journaldate}[par]%
     \setunit{\addspace}\newblock
     \usebibmacro{altreportvolume}%
@@ -11189,26 +11218,17 @@ reference,mvreference,inreference]{volume}{%
       \setunit{\addcomma\space}%
       \printfield[postnote]{prenote}}}}
 \newbibmacro*{altreportvolume}{%
-  \iffieldundef{userb}{% parvolume
-    \printfield{volume}%
-  }{%
-    \printfield{userb}}}
+  \iffieldundef{parvolume}{}{%
+    \printfield{parvolume}}}
 \newbibmacro*{altjournaltitle}{%
-  \iffieldundef{userc}{% parreporter
-    \printfield{journaltitle}%
-    \setunit{\addspace}%
-  }{
-    \printfield{userc}}}
+  \iffieldundef{parreporter}{}{
+    \printfield{parreporter}}}
 \newbibmacro*{altseries}{%
-  \iffieldundef{userd}{% parseries
-    \printfield{series}%
-  }{%
-    \printfield{userd}}}
+  \iffieldundef{parseries}{}{%
+    \printfield{parseries}}}
 \newbibmacro*{altjurisdictionpages}{%
-  \iffieldundef{usere}{% parpages
-    \usebibmacro{jurisdictionpages}%
-  }{%
-    \printfield{usere}}}%
+  \iffieldundef{parpages}{}{%
+    \printfield{parpages}}}%
 
 %    \end{macrocode}
 %
@@ -12234,14 +12254,6 @@ reference,mvreference,inreference]{volume}{%
       \pertype{jurisdiction}
       \step[fieldsource=reporter,
             fieldtarget=journaltitle]
-      \step[fieldsource=parvolume,
-            fieldtarget=userb]
-      \step[fieldsource=parreporter,
-            fieldtarget=userc]
-      \step[fieldsource=parseries,
-            fieldtarget=userd]
-      \step[fieldsource=parpages,
-            fieldtarget=usere]
       \step[fieldsource=court,
             fieldtarget=institution]
       \step[fieldsource=additionalreports,
@@ -12263,7 +12275,7 @@ reference,mvreference,inreference]{volume}{%
     }
 %    \end{macrocode}
 %
-% This is how \textsf{oscola} removes dots from entries.
+% This is how \pkg{oscola} removes dots from entries.
 %
 %    \begin{macrocode}
     \map[overwrite=true]{
@@ -12294,16 +12306,16 @@ reference,mvreference,inreference]{volume}{%
      \step [fieldsource=shorttitle,
             match=\regexp{(\D)\.},
             replace=\regexp{$1}]
-     \step[fieldsource=userc,
+     \step[fieldsource=parreporter,
            match=\regexp{(\d)\.(\d)},
            replace=\regexp{$1.$2}]
-     \step[fieldsource=userc,
+     \step[fieldsource=parreporter,
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
-     \step[fieldsource=userc,
+     \step[fieldsource=parreporter,
             match=\regexp{\.(\D)},
             replace=\regexp{$1}]
-     \step [fieldsource=userc,
+     \step [fieldsource=parreporter,
             match=\regexp{(\D)\.},
             replace=\regexp{$1}]
      \step[fieldsource=journaltitle,
@@ -12379,8 +12391,20 @@ reference,mvreference,inreference]{volume}{%
             match=\regexp{(\D)\.},
             replace=\regexp{$1}]
     }
+%    \end{macrocode}
+%
+% If |casenumber| is given, it is converted to |number| or, if the |number| is
+% already set, |userb|.
+%
+%    \begin{macrocode}
+    \map[overwrite=false]{
+      \step[fieldsource=casenumber, final]
+      \step[notfield=number, fieldsource=casenumber, fieldtarget=number]
+      \step[fieldsource=casenumber, fieldtarget=userb]
+    }
   }%
 }
+
 %    \end{macrocode}
 %
 % \subsection{Sorting schemes}
@@ -13952,7 +13976,11 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=date]{pardate}
-\DeclareDatamodelEntryfields[jurisdiction]{pardate}
+\DeclareDatamodelFields[type=field,datatype=literal]{parreporter,parseries}
+\DeclareDatamodelFields[type=field,datatype=integer]{parvolume}
+\DeclareDatamodelFields[type=field,datatype=range]{parpages}
+\DeclareDatamodelEntryfields[jurisdiction]{pardate,parreporter,parseries,%
+  parvolume,parpages}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
