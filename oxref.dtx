@@ -416,7 +416,7 @@ Copyright (C) 2016–2018 Alex Ball
 % egcite displays a sample citation:
 % (colour)[title]{hand-coded citation text}[additional TCB options]
 % Put the citation command in the environment.
-\NewTCBListing{egcite}{D(){ok}omo}%
+\NewTCBListing{egcite}{D(){ok} o m !o}%
   {colframe = #1
   ,colback = #1!5!white
   ,listing side text
@@ -425,7 +425,7 @@ Copyright (C) 2016–2018 Alex Ball
   ,before lower = {\raggedright\ifblank{#3}{}{\hangfrom{\booksym\space}#3\par}\hangfrom{\cogsym\space}}
   ,IfNoValueTF={#4}{}{#4}}
 % egcite* uses upper and lower portions
-\NewTCBListing{egcite*}{D(){ok}omo}%
+\NewTCBListing{egcite*}{D(){ok} o m !o}%
   {colframe = #1
   ,colback = #1!5!white
   ,IfNoValueTF={#2}{}{title = #2}
