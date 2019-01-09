@@ -9652,7 +9652,7 @@ reference,mvreference,inreference]{volume}{%
     }{%
       \togglefalse{blx@ox@altthesis}%
       \ifstrequal{#1}{out}{}{%
-        \PackageError{oxref}
+        \PackageError{biblatex-oxref}
         {Invalid option 'bookseries=#1'}
         {Valid values are 'in', 'out', and 'plain'.}}}}}
 \newbibmacro*{type+institution+location+date}{%
@@ -10347,7 +10347,7 @@ reference,mvreference,inreference]{volume}{%
 % performances and exhibitions.
 %
 %    \begin{macrocode}
-\renewbibmacro*{event+venue+location+date}{%
+\newbibmacro*{event+venue+location+date}{%
   \printfield{eventtitle}%
   \newunit
   \printfield{eventtitleaddon}%
@@ -14444,7 +14444,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareBibliographyStrings{%
-  inherit          = {english-oxref},
+  inherit          = {english},
   am               = {{a\adddot m\adddot}{a\adddot m\adddot}},
   pm               = {{p\adddot m\adddot}{p\adddot m\adddot}},
 }
@@ -14460,9 +14460,9 @@ reference,mvreference,inreference]{volume}{%
 % \setcounter{FancyVerbLine}{19}
 %
 %    \begin{macrocode}
-\InheritBibliographyExtras{english-oxref}
+\InheritBibliographyExtras{english}
 \DeclareBibliographyExtras{\uspunctuation}
-\InheritBibliographyStrings{english-oxref}
+\InheritBibliographyStrings{english}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
