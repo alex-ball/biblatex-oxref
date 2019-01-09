@@ -14411,6 +14411,12 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \InheritBibliographyExtras{british}
 \DeclareBibliographyExtras{%
+%    \end{macrocode}
+%
+% The only difference from the standard British date format is that we print it
+% \enquote{clean}, with a cardinal instead of an ordinal day.
+%
+%    \begin{macrocode}
   \protected\def\mkbibdatelong#1#2#3{%
     \iffieldundef{#3}
       {}
@@ -14420,7 +14426,15 @@ reference,mvreference,inreference]{volume}{%
       {}
       {\mkbibmonth{\thefield{#2}}%
        \iffieldundef{#1}{}{\space}}%
-    \stripzeros{\thefield{#1}}}%
+    \iffieldbibstring{#1}
+      {\bibstring{\thefield{#1}}}
+      {\dateeraprintpre{#1}\stripzeros{\thefield{#1}}}}%
+%    \end{macrocode}
+%
+% As you'd expect from an Oxford style, we use the Oxford comma, and use a
+% period as the time separator.
+%
+%    \begin{macrocode}
   \def\finalandcomma{\addcomma}%
   \def\bibtimesep{\addperiod}%
 }
