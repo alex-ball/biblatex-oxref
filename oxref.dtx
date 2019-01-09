@@ -7754,8 +7754,8 @@ will trigger the use of parentheses.
 %
 % Year ranges are truncated (e.g.~2012–3). Therefore, we provide a command that
 % compares two years, and outputs a full or truncated version of the second
-% year, depending on how similar it is to the first. It is extracted and adapted
-% from code by Marco Daniel.\footnote{\url{http://tex.stackexchange.com/questions/23483/}}
+% year, depending on how similar it is to the first. It is adapted from code by
+% Marco Daniel.\footnote{\url{http://tex.stackexchange.com/questions/23483/}}
 %
 %    \begin{macrocode}
 \newcommand{\blx@ox@compyear}[2]{%
@@ -7763,14 +7763,35 @@ will trigger the use of parentheses.
   \def\num@two{#2}%
   \StrLen{\num@one}[\num@one@len]%
   \StrLen{\num@two}[\num@two@len]%
-  \IfEq{\num@one@len}{\num@two@len}%
-  {\StrCompare{\num@one}{\num@two}[\Result]%
+%    \end{macrocode}
+%
+% The year is only trimmed if it is greater than, but has the same number of
+% digits as, the comparison number.
+%
+%    \begin{macrocode}
+  \ifboolexpr{
+    test {\ifnumequal{\num@one@len}{\num@two@len}}
+    and
+    test {\ifnumless{\num@one}{\num@two}}
+  }{%
+%    \end{macrocode}
+%
+% For years since 1000, at least two digits must be the same before trimming
+% occurs.
+%
+%    \begin{macrocode}
+    \StrCompare{\num@one}{\num@two}[\Result]%
     \ifnum\num@two@len>3%
-    \IfStrEq{\Result}{2}{\def\Result{1}}{}%
+      \IfStrEq{\Result}{2}{\def\Result{1}}{}%
     \fi
-    \StrGobbleLeft{0\num@two}{\Result}}%
-  {\num@two}%
-}
+%    \end{macrocode}
+%
+% Since \cs{Result} is the number of digits to trim from the left hand side of
+% the year, plus one, we provide an extra sacrificial zero before trimming.
+%
+%    \begin{macrocode}
+    \StrGobbleLeft{0\num@two}{\Result}%
+  }{\num@two}}
 %    \end{macrocode}
 %
 % We patch the date range formats from |biblatex.sty| to use the
