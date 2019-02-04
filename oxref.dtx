@@ -1147,7 +1147,7 @@ Test \parencites%
 \end{egcite}
 %</m|a>
 %<*y>
-The \emph{Oxford Guide to Style} consistently promotes an author–date citation scheme which uses parentheses, within which there is only a space between the name and date. 
+The \emph{Oxford Guide to Style} consistently promotes an author–date citation scheme which uses parentheses, within which there is only a space between the name and date.
 If there is no date, the replacement text is separated from the name by a comma.
 
 \begin{egcite}{(Anon.\@ 1956), (Marx 1867), (Clarke, n.d.).}
@@ -13133,25 +13133,25 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \xpatchcmd{\mkdaterangefull}{%
-  \iffieldundef{#2year} {}%
+  \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangefull{#1}{#2}}%
-}{}{}
+}{}{\wlog{FAILED TO PATCH mkdaterangefull}}
 \xpatchcmd{\mkdaterangetrunc}{%
-  \iffieldundef{#2year} {}%
+  \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangetrunc{#1}{#2}}%
-}{}{}
+}{}{\wlog{FAILED TO PATCH mkdaterangetrunc}}
 \xpatchcmd{\mkdaterangefullextra}{%
-  \iffieldundef{#2year} {}%
+  \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangefull{#1}{#2}}%
-}{}{}
+}{}{\wlog{FAILED TO PATCH mkdaterangefullextra}}
 \xpatchcmd{\mkdaterangetruncextra}{%
-  \iffieldundef{#2year} {}%
+  \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangetrunc{#1}{#2}}%
-}{}{}
+}{}{\wlog{FAILED TO PATCH mkdaterangetruncextra}}
 
 %    \end{macrocode}
 %
