@@ -9591,11 +9591,12 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \renewbibmacro*{institution+location+date}{%
   \ifboolexpr{
-    test {\iffieldundef{type}}
-    and
-    test {\iffieldundef{series}}
-    and
-    test {\iffieldundef{number}}
+    ( test {\iffieldundef{number}}
+      or
+      not test {\iffieldundef{type}}
+      or
+      not test {\iffieldundef{series}}
+    )
     and
     test {\iflistundef{institution}}
     and
