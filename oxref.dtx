@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2018/03/03 v0.12}
+\def\Version{2019/02/15 v1.0}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -94,9 +94,6 @@ stipulations and examples provided by the 2014 *New Hart's Rules* and the 2002
     intended for use with alphabetic in-text citations.
   * `oxyear` is a style similar to the standard `authoryear`,
     intended for use with parenthetical in-text citations.
-
-These styles should be considered experimental. In particular, the ways in which
-the styles handle certain tricky references are subject to change.
 
 [biblatex]: http://ctan.org/pkg/biblatex
 %</readme>
@@ -782,7 +779,7 @@ first two steps.
 
 ## Licence
 
-Copyright 2016–2018 Alex Ball.
+Copyright 2016–2019 Alex Ball.
 
 This work consists of the documented LaTeX file oxref.dtx and a Makefile.
 
@@ -1053,19 +1050,19 @@ see the separate documentation file \href{./oxref.pdf}{\texttt{oxref.pdf}}
 \section{Stability}
 
 The \pkg[biblatex]{oxref} family of styles is currently at \fileversion.
-I have no further features planned, so unless there is popular demand otherwise,
-it should be bug-fix releases only between now and the release of version 1.0.
-When that happens, the default (expected) behaviour of the styles will be frozen,
-meaning I will do my best to avoid backwards-incompatible changes, though
-alternative behaviour may be added. If you spot any aspects of the styles that
-could be improved before then, especially for the cases not covered by the two
-style manuals, please leave your thoughts on the GitHub issue tracker.%
-\footnote{\url{https://github.com/alex-ball/biblatex-oxref/issues}}
 
-You are of course encouraged to report any bugs you discover on the
-\href{https://github.com/alex-ball/biblatex-oxref/issues}{GitHub issue tracker}
-as well.
+I have no plans to change the default (expected) behaviour of the styles,
+and will do my best to avoid backwards-incompatible changes, though
+alternative behaviour may be added. If changes are introduced that alter
+the advertised output, this will be signalled by a change in major
+version number.
 
+Please report any bugs you discover on the
+\href{https://github.com/alex-ball/biblatex-oxref/issues}{GitHub issue tracker}.%
+\footnote{Issue tracker for \pkg[biblatex]{oxref}:
+\url{https://github.com/alex-ball/biblatex-oxref/issues}}
+You are also welcome to leave your thoughts there on how the styles could
+be improved, especially for the cases not covered by the two style manuals.
 
 \chapter{Citations and common formatting}\label{sec:citing}
 

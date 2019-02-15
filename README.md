@@ -13,9 +13,6 @@ stipulations and examples provided by the 2014 *New Hart's Rules* and the 2002
   * `oxyear` is a style similar to the standard `authoryear`,
     intended for use with parenthetical in-text citations.
 
-These styles should be considered experimental. In particular, the ways in which
-the styles handle certain tricky references are subject to change.
-
 [biblatex]: http://ctan.org/pkg/biblatex
 
 ## Installation
@@ -119,7 +116,7 @@ first two steps.
 
 ## Licence
 
-Copyright 2016–2018 Alex Ball.
+Copyright 2016–2019 Alex Ball.
 
 This work consists of the documented LaTeX file oxref.dtx and a Makefile.
 
