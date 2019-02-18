@@ -146,7 +146,7 @@ See:     http://www.latex-project.org/lppl.txt
 \endpreamble
 \postamble
 
-Copyright (C) 2016–2018 Alex Ball
+Copyright (C) 2016–2019 Alex Ball
 \endpostamble
 
 \usedir{tex/latex/\jobname}
@@ -7265,10 +7265,12 @@ will trigger the use of parentheses.
 %    \begin{macrocode}
 \xpatchbibmacro{name:given-family}%
   {\bibnamedelimd\mkbibnamesuffix{#4}}%
-  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}{}{}
+  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}%
+{}{\wlog{WARNING: biblatex-oxref failed to patch name:given-family}}
 \xpatchbibmacro{name:family-given}%
   {\bibnamedelimd\mkbibnamesuffix{#4}}%
-  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}{}{}
+  {\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}}%
+{}{\wlog{WARNING: biblatex-oxref failed to patch name:family-given}}
 %    \end{macrocode}
 %
 % Pseudonyms are printed after the main name, enclosed in parentheses (OGS) or
@@ -7638,7 +7640,8 @@ will trigger the use of parentheses.
   {\global\undef\bbx@lasthash}}
 \xpatchbibmacro{translatorstrg}%
   {\bibstring}%
-  {\bibstring[\mkbibparens]}{}{}%
+  {\bibstring[\mkbibparens]}%
+{}{\wlog{WARNING: biblatex-oxref failed to patch translatorstrg}}%
 \xpatchbibmacro{translator+othersstrg}%
   {\bibstring}%
   {\bibstring[\mkbibparens]}{}{}%
@@ -7913,11 +7916,10 @@ will trigger the use of parentheses.
 % We let |edition| take a localization key as well as a number.
 %
 %    \begin{macrocode}
-\xpatchfieldformat{edition}{%
-  #1\isdot
-}{%
-  \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
-}{}{}
+\xpatchfieldformat{edition}%
+  {#1\isdot}%
+  {\ifbibstring{#1}{\bibstring{#1}}{#1\isdot}}%
+{}{\wlog{WARNING: biblatex-oxref failed to patch edition}}
 %    \end{macrocode}
 %
 % Page ranges are compressed, but are not usually marked with
@@ -8068,7 +8070,8 @@ will trigger the use of parentheses.
 \DeclareFieldFormat{urldate}{\bibstring{urlseen}\space#1}
 \xpatchbibmacro{url+urldate}%
   {\setunit*{\addspace}}%
-  {\setunit*{\addcomma\addspace}}{}{}
+  {\setunit*{\addcomma\addspace}}%
+{}{\wlog{WARNING: biblatex-oxref failed to patch url+urldate}}
 %    \end{macrocode}
 %
 % The DOI is introduced by \enquote{doi} in lowercase.
@@ -8076,7 +8079,8 @@ will trigger the use of parentheses.
 %    \begin{macrocode}
 \xpatchfieldformat{doi}%
   {\mkbibacro{DOI}}%
-  {\printtext{doi}}{}{}
+  {\printtext{doi}}%
+{}{\wlog{WARNING: biblatex-oxref failed to patch doi}}
 %    \end{macrocode}
 %
 % Unlike URLs, DOIs are preceded by a full stop.
@@ -8084,7 +8088,8 @@ will trigger the use of parentheses.
 %    \begin{macrocode}
 \xpatchbibmacro{doi+eprint+url}%
   {\printfield{doi}}%
-  {\setunit{\addperiod\space}\printfield{doi}}{}{}
+  {\setunit{\addperiod\space}\printfield{doi}}%
+{}{\wlog{WARNING: biblatex-oxref failed to patch doi+eprint+url}}
 
 %    \end{macrocode}
 %
@@ -9808,7 +9813,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{institution+location+date}%
 }{%
   \usebibmacro{type+institution+location+date}%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref failed to patch thesis}}
 %    \end{macrocode}
 %
 % We give booklet entries descriptor support.
@@ -11752,14 +11757,14 @@ reference,mvreference,inreference]{volume}{%
 }{%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref failed to patch booklet}}
 \xpatchbibdriver{misc}{%
   \newunit\newblock
   \iftoggle{bbx:related}
 }{%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref failed to patch misc}}
 %    \end{macrocode}
 %
 % We provide an option for setting the relatedtype punctuation.
@@ -11815,7 +11820,7 @@ reference,mvreference,inreference]{volume}{%
       \setunit{\addspace}}{}%
     \iffieldequalstr{relatedtype}{multivolume}{%
       \setunit{\addcomma\space}}{}%
-  }}{}{}
+}}{}{\wlog{WARNING: biblatex-oxref failed to append to begrelated}}
 
 %    \end{macrocode}
 %
@@ -12593,7 +12598,7 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \iftoggle{blx@ox@scnames}{\bibcplstring[\textsc]{anon}}{\bibcplstring{anon}}%
   }%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxnotes) failed to patch author}}
 %    \end{macrocode}
 %
 % \subsection{Page ranges in citations}
@@ -12683,7 +12688,7 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \iftoggle{blx@ox@scnames}{\bibcplstring[\textsc]{anon}}{\bibcplstring{anon}}%
   }%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxnum) failed to patch author}}
 %    \end{macrocode}
 %
 % \subsection{Label numbers}
@@ -13134,22 +13139,22 @@ reference,mvreference,inreference]{volume}{%
   \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangefull{#1}{#2}}%
-}{}{\wlog{FAILED TO PATCH mkdaterangefull}}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangefull}}
 \xpatchcmd{\mkdaterangetrunc}{%
   \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangetrunc{#1}{#2}}%
-}{}{\wlog{FAILED TO PATCH mkdaterangetrunc}}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangetrunc}}
 \xpatchcmd{\mkdaterangefullextra}{%
   \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangefull{#1}{#2}}%
-}{}{\wlog{FAILED TO PATCH mkdaterangefullextra}}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangefullextra}}
 \xpatchcmd{\mkdaterangetruncextra}{%
   \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangetrunc{#1}{#2}}%
-}{}{\wlog{FAILED TO PATCH mkdaterangetruncextra}}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangetruncextra}}
 
 %    \end{macrocode}
 %
@@ -13169,7 +13174,7 @@ reference,mvreference,inreference]{volume}{%
 \xpretonameformat{family-given}{%
   \iffieldannotation{inferred}{\ifnumequal{\value{listcount}}{1}{\bibopenbracket}{}}{}%
   \ifitemannotation{inferred}{\bibopenbracket}{}%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to prepend to family-given}}
 \xpatchnameformat{family-given}{%
   \usebibmacro{name:andothers}%
 }{%
@@ -13189,7 +13194,7 @@ reference,mvreference,inreference]{volume}{%
         test {\ifnumgreater{\value{listtotal}}{\value{maxnames}}} )
     }{\bibclosebracket}{}%
   }{}%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch family-given}}
 \DeclareNameAlias{shortauthor}{family-given}
 \DeclareNameAlias{shorteditor}{family-given}
 %    \end{macrocode}
@@ -13248,9 +13253,11 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \xapptobibmacro{begrelated}{%
-  \booltrue{bbx@inset}}{}{}
+  \booltrue{bbx@inset}}%
+{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to append to begrelated}}
 \xapptobibmacro{endrelated}{%
-  \usebibmacro*{bbx:savehash}}{}{}
+  \usebibmacro*{bbx:savehash}}%
+{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to append to endrelated}}
 %    \end{macrocode}
 %
 % We patch the |author| macro so that the date label information appears
@@ -13263,7 +13270,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{date+extradate}%
   \setunit*{\addspace}%
   \iffieldundef{authortype}%
-}{}{}%
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch author (authortype)}}%
 \xpatchbibmacro{author}{%
   \global\undef\bbx@lasthash
 }{%
@@ -13271,7 +13278,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
   \usebibmacro{date+extradate}%
-}{}{}%
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch author (lasthash)}}%
 %    \end{macrocode}
 %
 % We patch it further so that, where an author name has a corresponding
@@ -13284,7 +13291,7 @@ reference,mvreference,inreference]{volume}{%
   \printnames[by#1]%
 }{%
   \printnames[#1]%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch namepairs}}
 \xpatchbibmacro{author+altauthor}{%
   \printnames{author}%
 }{%
@@ -13297,7 +13304,7 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \printnames{author}%
   }%
-}{}{}%
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch author+altauthor}}%
 %    \end{macrocode}
 %
 % We apply the same patches to |bbx:editor|, but also move the editor
@@ -13310,7 +13317,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{date+extradate}%
   \setunit*{\addspace}%
   \usebibmacro{#1}%
-}{}{}%
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch bbx:editor}}%
 \xpatchbibmacro{bbx:editor}{%
   \global\undef\bbx@lasthash
 }{%
@@ -13318,12 +13325,12 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
   \usebibmacro{date+extradate}%
-}{}{}%
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch bbx:editor (lasthash)}}%
 \xpatchbibmacro{editor+alteditor}{%
   \printnames[byeditor]%
 }{%
   \printnames[editor]%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch editor+alteditor}}
 \xpatchbibmacro{editor+alteditor}{%
   \printnames{editor}%
 }{%
@@ -13336,7 +13343,7 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \printnames{editor}%
   }%
-}{}{}%
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch editor+alteditor (shorteditor)}}%
 %    \end{macrocode}
 %
 % We apply the same patches to |bbx:translator| as we do for
@@ -13350,14 +13357,14 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{labeltitle}%
   \setunit*{\addspace}%
   \usebibmacro{date+extradate}%
-}{}{}%
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch bbx:translator (lasthash)}}%
 \xpatchbibmacro{bbx:translator}{%
   \usebibmacro{#1}%
 }{%
   \usebibmacro{date+extradate}%
   \setunit*{\addspace}%
   \usebibmacro{#1}%
-}{}{}%
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch bbx:translator}}%
 %    \end{macrocode}
 %
 % The |labeltitle| macro differs from the one from |authoryear| in that
@@ -13405,7 +13412,7 @@ reference,mvreference,inreference]{volume}{%
     \clearfield{maintitle}%
     \clearfield{volume}%
   }{}%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to prepend to maintitle+title}}
 \DeclareFieldFormat[mvbook,mvcollection,mvreference,proceedings,mvproceedings]{maintitle+volume}{#1}
 %    \end{macrocode}
 %
@@ -13422,7 +13429,7 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\iffieldundef{month}}
   }%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch online}}
 %    \end{macrocode}
 %
 % We ensure the label title in citations matches the formatting used for
@@ -13625,22 +13632,22 @@ reference,mvreference,inreference]{volume}{%
   \printdateextra
 }{%
   \printdate
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxalph) failed to patch bbx@opt@mergedate@maximum (print)}}
 \xpatchcmd{\bbx@opt@mergedate@maximum}{%
-  \csuse{print\thefield{labeldatesource}dateextra}
+  \csuse{print\thefield{labeldatesource}dateextra}%
 }{%
-  \csuse{print\thefield{labeldatesource}date}
-}{}{}
+  \csuse{print\thefield{labeldatesource}date}%
+}{}{\wlog{WARNING: biblatex-oxref (oxalph) failed to patch bbx@opt@mergedate@maximum (label)}}
 \xpatchcmd{\bbx@opt@mergedate@compact}{%
-  \csuse{print\thefield{labeldatesource}dateextra}
+  \csuse{print\thefield{labeldatesource}dateextra}%
 }{%
-  \csuse{print\thefield{labeldatesource}date}
-}{}{}
+  \csuse{print\thefield{labeldatesource}date}%
+}{}{\wlog{WARNING: biblatex-oxref (oxalph) failed to patch bbx@opt@mergedate@compact}}
 \xpatchbibmacro{labeldate}{%
   \printlabeldateextra
 }{%
   \printlabeldate
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxalph) failed to patch labeldate}}
 \ExecuteBibliographyOptions{mergedate}
 
 %    \end{macrocode}
@@ -13800,7 +13807,7 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \printnames{labelname}%
   }%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch cite}}
 %    \end{macrocode}
 %
 % The name and year are usually separated by a space, but if the date is
@@ -13918,7 +13925,7 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \printnames{labelname}%
   }%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref failed to patch textcite}}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -32,6 +32,7 @@ $(STY4)-doc.pdf: $(STY4)-doc.tex $(NAME).bbx $(STY4).bbx $(STY4).cbx american-$(
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $(STY4)-doc.tex >/dev/null
 
 clean:
+	for log in *.log; do grep "WARNING: biblatex-oxref" $$log; test $$? -eq 1; done
 	rm -f {$(NAME),$(STY1)-doc,$(STY2)-doc,$(STY3)-doc,$(STY4)-doc}.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f {$(STY1),$(STY2),$(STY3),$(STY4),american-$(NAME),british-$(NAME),english-$(NAME)}.doc
 	rm -rf _minted-*
