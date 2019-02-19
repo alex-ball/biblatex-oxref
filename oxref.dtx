@@ -6929,6 +6929,7 @@ will trigger the use of parentheses.
 % \end{itemize}
 %
 %    \begin{macrocode}
+\RequirePackage{etoolbox}
 \RequirePackage{xpatch}
 \RequirePackage{xstring}
 \RequirePackage{graphicx}
@@ -13982,6 +13983,19 @@ reference,mvreference,inreference]{volume}{%
 % \setcounter{FancyVerbLine}{0}
 %
 % This code is appended to all the citation style files.
+%
+% We fix the |textcite| macro so if the \key{anon} option is set to \val{long}
+% or \val{short}, a value of \enquote{Anonymous} is replaced by the bibstring.
+%
+% Just in case someone loaded this without loading |oxref.bbx|, we ensure the
+% necessary definitions are in place.
+%
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+\RequirePackage{xpatch}
+\providetoggle{blx@ox@autoanon}
+\providetoggle{blx@ox@abbranon}
+%    \end{macrocode}
 %
 % We fix the |textcite| macro so if the \key{anon} option is set to \val{long}
 % or \val{short}, a value of \enquote{Anonymous} is replaced by the bibstring.
