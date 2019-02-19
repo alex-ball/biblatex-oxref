@@ -1126,7 +1126,7 @@ and indeed loads a tweaked version of a standard \textsf{biblatex} one.
 \section{Test citations}
 
 %<*n>
-Following the advice of \emph{New Hart's Rules}, \textsf{oxnotes} loads by default the standard \textsf{verbose} citation style, in which repeated citations are abbreviated to the author surname and a short title.
+Following the advice of \emph{New Hart's Rules}, \textsf{oxnotes} loads by default a tweaked version of the  standard \textsf{verbose} citation style, in which repeated citations are abbreviated to the author surname and a short title.
 
 %</n>
 %</n|m|a|y>
@@ -1163,11 +1163,13 @@ Test\footcite[49-50]{faith1997epg}
 \end{egcite}
 \addtocategory{hidden}{cobban}
 
-Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} describe an alternative system that uses the abbreviations \enquote{ibid.\@}, \enquote{op.\@ cit.\@}, \enquote{loc.\@ cit.\@}, and \enquote{id.\@} and friends, though with underwhelming enthusiasm. If you would like to use these abbreviations, load the \textsf{verbose-trad1} citation scheme instead (and remember to use the \code{gender} field):
+Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} describe an alternative system that uses the abbreviations \enquote{ibid.\@}, \enquote{op.\@ cit.\@}, \enquote{loc.\@ cit.\@}, and \enquote{id.\@} and friends, though with underwhelming enthusiasm. If you would like to use these abbreviations, you can use the \textsf{oxnotes-trad1} citation style instead (and remember to use the \code{gender} field). As with the standard styles, a bibliographic style alias has been provided so you can just do this:
 
 \begin{tcblisting}{listing only}
-\usepackage[bibstyle=oxnotes,citestyle=verbose-trad1]{biblatex}
+\usepackage[style=oxnotes-trad1]{biblatex}
 \end{tcblisting}
+
+If you are particularly keen to use the other variants that \pkg{biblatex} provides, then parallel \textsf{oxnotes} variants have been provided for your convenience: \textsf{oxnotes-ibid}, \textsf{oxnotes-note}, \textsf{oxnotes-inote}, \textsf{oxnotes-trad2}, and \textsf{oxnotes-trad3}.
 
 %</n>
 %<*m|a>
