@@ -12601,24 +12601,6 @@ reference,mvreference,inreference]{volume}{%
 }{}{\wlog{WARNING: biblatex-oxref (oxnotes) failed to patch author}}
 %    \end{macrocode}
 %
-% \subsection{Page ranges in citations}
-%
-% If specifying a page within a range in the course of a citation note,
-% Oxford style is to format that as \enquote{\emph{range} at
-% \emph{page}}; if no page range is specified, the page is printed as
-% normal.
-%
-%    \begin{macrocode}
-\renewbibmacro*{postnote}{%
-  \iffieldundef{postnote}{}{%
-    \iffieldundef{pages}{%
-      \setunit{\postnotedelim}%
-      \printfield{postnote}%
-    }{%
-      \printtext{\addspace\bibstring{thiscite}\space}%
-      \printfield{postnote}}}}
-%    \end{macrocode}
-%
 % \subsection{Source maps}
 %
 %    \begin{macrocode}
@@ -13746,10 +13728,23 @@ reference,mvreference,inreference]{volume}{%
 %
 % \setcounter{FancyVerbLine}{19}
 %
-% The standard |verbose| style works without further adjustment.
+% The standard |verbose| style is a close match for what we need.
 %
 %    \begin{macrocode}
 \RequireCitationStyle{verbose}
+%    \end{macrocode}
+%
+% The main difference is that the \key{citepages} option from |verbose|
+% needs to be \val{separate} by default, and the \cs{postnotedelim} before
+% the bibstring |thiscite| (\enquote{at}) is replaced by a simple space.
+%
+%    \begin{macrocode}
+\newbibmacro*{cite:postnote:pages}{%
+  \setunit{\addspace}%
+  \bibstring{thiscite}%
+  \setunit{\addspace}%
+  \printfield{postnote}}
+\ExecuteBibliographyOptions{citepages=separate}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
