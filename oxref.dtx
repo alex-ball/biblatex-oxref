@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2019/02/15 v1.0}
+\def\Version{2019/02/19 v1.1}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -665,8 +665,8 @@ This document provides the documented sources for the \pkg[biblatex]{oxref}
 biblography styles:
 \begin{itemize}
 \item
-  \textsf{oxnotes}: a style similar to the standard \textsf{verbose},
-  intended for use with footnotes;
+  \textsf{oxnotes}: a style similar to the standard \textsf{verbose}
+  and its variants, intended for use with footnotes;
 \item
   \textsf{oxnum}: a style similar to the standard \textsf{numeric},
   intended for use with numeric in-text citation labels;
@@ -712,6 +712,7 @@ and
 \href{./oxyear-doc.pdf}{\texttt{oxyear-doc.pdf}}
 respectively.
 
+\sloppy
 \begin{markdown*}{hybrid=true}
 %</driver>
 %<*driver|readme>
@@ -740,10 +741,16 @@ UNIX-like systems:
 
   * Running `make source` generates the derived files
       - README.md
-      - oxref.bbx, oxnotes.bbx, oxyear.bbx, oxnum.bbx, oxalph.bbx
-      - oxnotes.cbx, oxyear.cbx, oxnum.cbx, oxalph.cbx
+      - oxref.bbx, oxnotes.bbx, oxnotes-ibid.bbx, oxnotes-note.bbx,
+        oxnotes-inote.bbx, oxnotes-trad1.bbx, oxnotes-trad2.bbx,
+        oxnotes-trad3.bbx, oxyear.bbx, oxnum.bbx, oxalph.bbx
+      - oxnotes.cbx, oxnotes-ibid.cbx, oxnotes-note.cbx, oxnotes-inote.cbx,
+        oxnotes-trad1.cbx, oxnotes-trad2.cbx, oxnotes-trad3.cbx, oxyear.cbx,
+        oxnum.cbx, oxalph.cbx
       - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx
-      - oxnotes.dbx, oxyear.dbx, oxnum.dbx, oxalph.dbx
+      - oxnotes.dbx, oxnotes-ibid.dbx, oxnotes-note.dbx, oxnotes-inote.dbx,
+        oxnotes-trad1.dbx, oxnotes-trad2.dbx, oxnotes-trad3.dbx, oxyear.dbx,
+        oxnum.dbx, oxalph.dbx
       - oxref.bib
       - oxref.ins
       - oxnotes-doc.tex, oxyear-doc.tex, oxnum-doc.tex, oxalph-doc.tex
@@ -789,6 +796,24 @@ first two steps.
         oxnotes.bbx,
         oxnotes.cbx,
         oxnotes.dbx,
+        oxnotes-ibid.bbx,
+        oxnotes-ibid.cbx,
+        oxnotes-ibid.dbx,
+        oxnotes-inote.bbx,
+        oxnotes-inote.cbx,
+        oxnotes-inote.dbx,
+        oxnotes-note.bbx,
+        oxnotes-note.cbx,
+        oxnotes-note.dbx,
+        oxnotes-trad1.bbx,
+        oxnotes-trad1.cbx,
+        oxnotes-trad1.dbx,
+        oxnotes-trad2.bbx,
+        oxnotes-trad2.cbx,
+        oxnotes-trad2.dbx,
+        oxnotes-trad3.bbx,
+        oxnotes-trad3.cbx,
+        oxnotes-trad3.dbx,
         oxnum.bbx,
         oxnum.cbx,
         oxnum.dbx,
@@ -835,6 +860,7 @@ This work is ‘maintained’ (as per LPPL maintenance status) by [Alex Ball][me
 %<*driver>
 \end{markdown*}
 
+\fussy
 \iffalse % syntax highlighting \fix
 %</driver>
 %<*doc|bib>
@@ -6124,6 +6150,9 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \tip{European cases still get sorted by title, even if the entry begins with the case number.
   Use \code{sorttitle} if you would rather they were sorted under \enquote{Case} or \enquote{Joined Cases}.}
 
+\tip{The number will be classed as \enquote{Joined Cases} if it contains a comma, a double hyphen (\code{--}),
+  or the string \cs{oxrefand}, which defaults to \enquote{\code{\textvisiblespace and\textvisiblespace}}.}
+
 \tip{For ECR cases, you can use either \code{number} or the non-standard \code{casenumber} field
   for the case number.}
 
@@ -6918,6 +6947,7 @@ will trigger the use of parentheses.
 % \setcounter{FancyVerbLine}{19}
 %
 % \subsection{Loading dependencies, setting up languages, applying options}
+% \label{sec:setup}
 %
 % Dependencies:
 % \begin{itemize}
@@ -10950,6 +10980,7 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{altreportdetails}%
   \usebibmacro{court-note}%
 }
+\newcommand*\oxrefand{ and }
 \newbibmacro{eucasetype}{%
   \iffieldundef{type}{%
     \ifboolexpr{
@@ -10957,7 +10988,7 @@ reference,mvreference,inreference]{volume}{%
       or
       test {\IfSubStr{\thefield{number}}{--}}
       or
-      test {\IfSubStr{\thefield{number}}{ and }}
+      test {\IfSubStr{\thefield{number}}{\oxrefand}}
     }{%
       \bibstring{eujoinedcases}%
     }{%
@@ -13821,7 +13852,8 @@ reference,mvreference,inreference]{volume}{%
 %
 % The main difference is that the \key{citepages} option from these styles
 % needs to be \val{separate} by default, and the \cs{postnotedelim} before
-% the bibstring |thiscite| (\enquote{at}) is replaced by a simple space.
+% the bibliography string |thiscite| (\enquote{at}) is replaced by a simple
+% space.
 %
 %    \begin{macrocode}
 \newbibmacro*{cite:postnote:pages}{%
@@ -13834,6 +13866,35 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</n>
+%<*m>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Numeric style: oxnum.cbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% The standard |numeric| style works, needing only a little configuration.
+%
+%    \begin{macrocode}
+\RequireCitationStyle{numeric-comp}
+%    \end{macrocode}
+%
+% Compressed citations are delimited with a semicolon, just like
+% non-compressed citations.
+%
+%    \begin{macrocode}
+\renewcommand*{\multicitedelim}{\addsemicolon\space}
+\renewcommand*{\compcitedelim}{\addsemicolon\space}
+%    \end{macrocode}
+%
+% The page reference postnote is given after a colon.
+%
+%    \begin{macrocode}
+\renewcommand*{\postnotedelim}{\addcolon\space}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</m>
 %<*y>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -13921,39 +13982,10 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</y>
-%<*m>
-% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% \section{Notes style: oxnum.cbx}
-%
-% \setcounter{FancyVerbLine}{19}
-%
-% The standard |numeric| style works, needing only a little configuration.
-%
-%    \begin{macrocode}
-\RequireCitationStyle{numeric-comp}
-%    \end{macrocode}
-%
-% Compressed citations are delimited with a semicolon, just like
-% non-compressed citations.
-%
-%    \begin{macrocode}
-\renewcommand*{\multicitedelim}{\addsemicolon\space}
-\renewcommand*{\compcitedelim}{\addsemicolon\space}
-%    \end{macrocode}
-%
-% The page reference postnote is given after a colon.
-%
-%    \begin{macrocode}
-\renewcommand*{\postnotedelim}{\addcolon\space}
-%    \end{macrocode}
-%
-% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%</m>
 %<*a>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% \section{Notes style: oxalph.cbx}
+% \section{Alphabetic style: oxalph.cbx}
 %
 % \setcounter{FancyVerbLine}{19}
 %
@@ -13987,9 +14019,6 @@ reference,mvreference,inreference]{volume}{%
 %
 % This code is appended to all the citation style files.
 %
-% We fix the |textcite| macro so if the \key{anon} option is set to \val{long}
-% or \val{short}, a value of \enquote{Anonymous} is replaced by the bibstring.
-%
 % Just in case someone loaded this without loading |oxref.bbx|, we ensure the
 % necessary definitions are in place.
 %
@@ -14001,7 +14030,8 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % We fix the |textcite| macro so if the \key{anon} option is set to \val{long}
-% or \val{short}, a value of \enquote{Anonymous} is replaced by the bibstring.
+% or \val{short}, a value of \enquote{Anonymous} is replaced by the bibliography
+% string |anon|.
 %
 %    \begin{macrocode}
 \xpatchbibmacro{textcite}{%
@@ -14562,6 +14592,14 @@ reference,mvreference,inreference]{volume}{%
 \DeclareBibliographyExtras{\uspunctuation}
 \InheritBibliographyStrings{english}
 %    \end{macrocode}
+%
+% \section{Other languages}
+%
+% Currently \pkg[biblatex]{oxref} only supports British and American
+% English explicitly, but if there is demand more languages may be
+% added. If you would like to contribute support for your language, a
+% list of the non-standard bibliography strings requiring definition may
+% be found in section~\ref{sec:setup}.
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</us>

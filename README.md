@@ -39,10 +39,16 @@ UNIX-like systems:
 
   * Running `make source` generates the derived files
       - README.md
-      - oxref.bbx, oxnotes.bbx, oxyear.bbx, oxnum.bbx, oxalph.bbx
-      - oxnotes.cbx, oxyear.cbx, oxnum.cbx, oxalph.cbx
+      - oxref.bbx, oxnotes.bbx, oxnotes-ibid.bbx, oxnotes-note.bbx,
+        oxnotes-inote.bbx, oxnotes-trad1.bbx, oxnotes-trad2.bbx,
+        oxnotes-trad3.bbx, oxyear.bbx, oxnum.bbx, oxalph.bbx
+      - oxnotes.cbx, oxnotes-ibid.cbx, oxnotes-note.cbx, oxnotes-inote.cbx,
+        oxnotes-trad1.cbx, oxnotes-trad2.cbx, oxnotes-trad3.cbx, oxyear.cbx,
+        oxnum.cbx, oxalph.cbx
       - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx
-      - oxnotes.dbx, oxyear.dbx, oxnum.dbx, oxalph.dbx
+      - oxnotes.dbx, oxnotes-ibid.dbx, oxnotes-note.dbx, oxnotes-inote.dbx,
+        oxnotes-trad1.dbx, oxnotes-trad2.dbx, oxnotes-trad3.dbx, oxyear.dbx,
+        oxnum.dbx, oxalph.dbx
       - oxref.bib
       - oxref.ins
       - oxnotes-doc.tex, oxyear-doc.tex, oxnum-doc.tex, oxalph-doc.tex
@@ -88,6 +94,24 @@ first two steps.
         oxnotes.bbx,
         oxnotes.cbx,
         oxnotes.dbx,
+        oxnotes-ibid.bbx,
+        oxnotes-ibid.cbx,
+        oxnotes-ibid.dbx,
+        oxnotes-inote.bbx,
+        oxnotes-inote.cbx,
+        oxnotes-inote.dbx,
+        oxnotes-note.bbx,
+        oxnotes-note.cbx,
+        oxnotes-note.dbx,
+        oxnotes-trad1.bbx,
+        oxnotes-trad1.cbx,
+        oxnotes-trad1.dbx,
+        oxnotes-trad2.bbx,
+        oxnotes-trad2.cbx,
+        oxnotes-trad2.dbx,
+        oxnotes-trad3.bbx,
+        oxnotes-trad3.cbx,
+        oxnotes-trad3.dbx,
         oxnum.bbx,
         oxnum.cbx,
         oxnum.dbx,
