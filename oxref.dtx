@@ -13,7 +13,13 @@
     [\Version\space Base settings for bibliography styles inspired by the Oxford Guide to Style]
 %</bbx&o>
 %<*bbx&n>
-\ProvidesFile{oxnotes.bbx}
+%<default>\ProvidesFile{oxnotes.bbx}
+%<ibid>\ProvidesFile{oxnotes-ibid.bbx}
+%<note>\ProvidesFile{oxnotes-note.bbx}
+%<inote>\ProvidesFile{oxnotes-inote.bbx}
+%<trad1>\ProvidesFile{oxnotes-trad1.bbx}
+%<trad2>\ProvidesFile{oxnotes-trad2.bbx}
+%<trad3>\ProvidesFile{oxnotes-trad3.bbx}
     [\Version\space Footnote-based bibliography style inspired by the Oxford Guide to Style]
 %</bbx&n>
 %<*bbx&m>
@@ -29,7 +35,13 @@
     [\Version\space Author-year bibliography style inspired by the Oxford Guide to Style]
 %</bbx&y>
 %<*cbx&n>
-\ProvidesFile{oxnotes.cbx}
+%<default>\ProvidesFile{oxnotes.cbx}
+%<ibid>\ProvidesFile{oxnotes-ibid.cbx}
+%<note>\ProvidesFile{oxnotes-note.cbx}
+%<inote>\ProvidesFile{oxnotes-inote.cbx}
+%<trad1>\ProvidesFile{oxnotes-trad1.cbx}
+%<trad2>\ProvidesFile{oxnotes-trad2.cbx}
+%<trad3>\ProvidesFile{oxnotes-trad3.cbx}
     [\Version\space Footnote-based citation style inspired by the Oxford Guide to Style]
 %</cbx&n>
 %<*cbx&m>
@@ -45,7 +57,15 @@
     [\Version\space Author-year citation style inspired by the Oxford Guide to Style]
 %</cbx&y>
 %<*dbx>
-%<n>\ProvidesFile{oxnotes.dbx}
+%<*n>
+%<default>\ProvidesFile{oxnotes.dbx}
+%<ibid>\ProvidesFile{oxnotes-ibid.dbx}
+%<note>\ProvidesFile{oxnotes-note.dbx}
+%<inote>\ProvidesFile{oxnotes-inote.dbx}
+%<trad1>\ProvidesFile{oxnotes-trad1.dbx}
+%<trad2>\ProvidesFile{oxnotes-trad2.dbx}
+%<trad3>\ProvidesFile{oxnotes-trad3.dbx}
+%</n>
 %<m>\ProvidesFile{oxnum.dbx}
 %<a>\ProvidesFile{oxalph.dbx}
 %<y>\ProvidesFile{oxyear.dbx}
@@ -152,15 +172,33 @@ Copyright (C) 2016–2019 Alex Ball
 \usedir{tex/latex/\jobname}
 \generate{
   \file{\jobname.bbx}{\from{\jobname.dtx}{bbx,o}}
-  \file{oxnotes.bbx}{\from{\jobname.dtx}{bbx,n}}
+  \file{oxnotes.bbx}{\from{\jobname.dtx}{bbx,n,default}}
+  \file{oxnotes-ibid.bbx}{\from{\jobname.dtx}{bbx,n,ibid}}
+  \file{oxnotes-note.bbx}{\from{\jobname.dtx}{bbx,n,note}}
+  \file{oxnotes-inote.bbx}{\from{\jobname.dtx}{bbx,n,inote}}
+  \file{oxnotes-trad1.bbx}{\from{\jobname.dtx}{bbx,n,trad1}}
+  \file{oxnotes-trad2.bbx}{\from{\jobname.dtx}{bbx,n,trad2}}
+  \file{oxnotes-trad3.bbx}{\from{\jobname.dtx}{bbx,n,trad3}}
   \file{oxnum.bbx}{\from{\jobname.dtx}{bbx,m}}
   \file{oxalph.bbx}{\from{\jobname.dtx}{bbx,a}}
   \file{oxyear.bbx}{\from{\jobname.dtx}{bbx,y}}
-  \file{oxnotes.cbx}{\from{\jobname.dtx}{cbx,n}}
+  \file{oxnotes.cbx}{\from{\jobname.dtx}{cbx,n,default}}
+  \file{oxnotes-ibid.cbx}{\from{\jobname.dtx}{cbx,n,ibid}}
+  \file{oxnotes-note.cbx}{\from{\jobname.dtx}{cbx,n,note}}
+  \file{oxnotes-inote.cbx}{\from{\jobname.dtx}{cbx,n,inote}}
+  \file{oxnotes-trad1.cbx}{\from{\jobname.dtx}{cbx,n,trad1}}
+  \file{oxnotes-trad2.cbx}{\from{\jobname.dtx}{cbx,n,trad2}}
+  \file{oxnotes-trad3.cbx}{\from{\jobname.dtx}{cbx,n,trad3}}
   \file{oxnum.cbx}{\from{\jobname.dtx}{cbx,m}}
   \file{oxalph.cbx}{\from{\jobname.dtx}{cbx,a}}
   \file{oxyear.cbx}{\from{\jobname.dtx}{cbx,y}}
-  \file{oxnotes.dbx}{\from{\jobname.dtx}{dbx,n}}
+  \file{oxnotes.dbx}{\from{\jobname.dtx}{dbx,n,default}}
+  \file{oxnotes-ibid.dbx}{\from{\jobname.dtx}{dbx,n,ibid}}
+  \file{oxnotes-note.dbx}{\from{\jobname.dtx}{dbx,n,note}}
+  \file{oxnotes-inote.dbx}{\from{\jobname.dtx}{dbx,n,inote}}
+  \file{oxnotes-trad1.dbx}{\from{\jobname.dtx}{dbx,n,trad1}}
+  \file{oxnotes-trad2.dbx}{\from{\jobname.dtx}{dbx,n,trad2}}
+  \file{oxnotes-trad3.dbx}{\from{\jobname.dtx}{dbx,n,trad3}}
   \file{oxnum.dbx}{\from{\jobname.dtx}{dbx,m}}
   \file{oxalph.dbx}{\from{\jobname.dtx}{dbx,a}}
   \file{oxyear.dbx}{\from{\jobname.dtx}{dbx,y}}
@@ -7504,7 +7542,7 @@ will trigger the use of parentheses.
   \ifcsdef{blx@ox@opt@anon@#1}{%
     \csuse{blx@ox@opt@anon@#1}%
   }{%
-    \PackageError{oxref}
+    \PackageError{biblatex-oxref}
     {Invalid option 'anon=#1'}
     {Valid values are 'long', 'short', and 'literal'.}}}
 \csdef{blx@ox@opt@anon@literal}{\togglefalse{blx@ox@autoanon}}
@@ -8230,7 +8268,7 @@ will trigger the use of parentheses.
   \ifcsdef{blx@ox@issuestyle@#1}{%
     \csuse{blx@ox@issuestyle@#1}%
   }{%
-    \PackageError{biblatex}
+    \PackageError{biblatex-oxref}
       {Invalid option 'issuestyle=#1'}
       {Valid values are 'slash', 'colon', 'comma', 'parens'}%
   }%
@@ -8582,7 +8620,7 @@ reference,mvreference,inreference]{volume}{%
   }{%
     \togglefalse{blx@ox@altbookseries}%
     \ifstrequal{#1}{in}{}{%
-      \PackageError{oxref}
+      \PackageError{biblatex-oxref}
       {Invalid option 'bookseries=#1'}
       {Valid values are 'in' and 'out'.}}}}
 %    \end{macrocode}
@@ -12563,6 +12601,7 @@ reference,mvreference,inreference]{volume}{%
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</o>
 %<*n>
+%<*default>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Notes style: oxnotes.bbx}
@@ -12633,6 +12672,10 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</default>
+%<*ibid|note|inote|trad1|trad2|trad3>
+\RequireBibliographyStyle{oxnotes}
+%</ibid|note|inote|trad1|trad2|trad3>
 %</n>
 %<*m>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12769,14 +12812,14 @@ reference,mvreference,inreference]{volume}{%
 \DeclareBibliographyOption{mergedate}[true]{%
   \ifcsdef{bbx@opt@mergedate@#1}
     {\csuse{bbx@opt@mergedate@#1}}
-    {\PackageError{biblatex}
+    {\PackageError{biblatex-oxref}
        {Invalid option 'mergedate=#1'}
        {Valid values are 'maximum', 'compact', 'basic', 'minimum',\MessageBreak
         'year', 'true' (=year), and 'false'.}}}
 \DeclareTypeOption{mergedate}[true]{%
   \ifcsdef{bbx@opt@mergedate@#1}
     {\csuse{bbx@opt@mergedate@#1}}
-    {\PackageError{biblatex}
+    {\PackageError{biblatex-oxref}
        {Invalid option 'mergedate=#1'}
        {Valid values are 'maximum', 'compact', 'basic', 'minimum',\MessageBreak
         'year', 'true' (=year), and 'false'.}}}
@@ -13722,6 +13765,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %<*n>
+%<*default>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Notes style: oxnotes.cbx}
@@ -13734,7 +13778,44 @@ reference,mvreference,inreference]{volume}{%
 \RequireCitationStyle{verbose}
 %    \end{macrocode}
 %
-% The main difference is that the \key{citepages} option from |verbose|
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</default>
+%<*ibid>
+%    \begin{macrocode}
+\RequireCitationStyle{verbose-ibid}
+%    \end{macrocode}
+%</ibid>
+%<*note>
+%    \begin{macrocode}
+\RequireCitationStyle{verbose-note}
+%    \end{macrocode}
+%</note>
+%<*inote>
+%    \begin{macrocode}
+\RequireCitationStyle{verbose-inote}
+%    \end{macrocode}
+%</inote>
+%<*trad1>
+%    \begin{macrocode}
+\RequireCitationStyle{verbose-trad1}
+%    \end{macrocode}
+%</trad1>
+%<*trad2>
+%    \begin{macrocode}
+\RequireCitationStyle{verbose-trad2}
+%    \end{macrocode}
+%</trad2>
+%<*trad3>
+%    \begin{macrocode}
+\RequireCitationStyle{verbose-trad3}
+%    \end{macrocode}
+%</trad3>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Variants are also provided that load the respective variant of |verbose|
+% at this point.
+%
+% The main difference is that the \key{citepages} option from these styles
 % needs to be \val{separate} by default, and the \cs{postnotedelim} before
 % the bibstring |thiscite| (\enquote{at}) is replaced by a simple space.
 %
