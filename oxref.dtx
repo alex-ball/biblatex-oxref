@@ -7715,7 +7715,8 @@ will trigger the use of parentheses.
 {}{\wlog{WARNING: biblatex-oxref failed to patch translatorstrg}}%
 \xpatchbibmacro{translator+othersstrg}%
   {\bibstring}%
-  {\bibstring[\mkbibparens]}{}{}%
+  {\bibstring[\mkbibparens]}%
+{}{\wlog{WARNING: biblatex-oxref failed to patch translator+othersstrg}}%
 %    \end{macrocode}
 %
 % When referencing one work from a collection by the same author,
@@ -7875,28 +7876,28 @@ will trigger the use of parentheses.
   \iffieldundef{#2endmonth}%
     {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
     {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref failed to patch mkdaterangefull}}
 \patchcmd{\mkdaterangefullextra}{%
   \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
 }{%
   \iffieldundef{#2endmonth}%
     {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
     {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
-}{}{}
-\patchcmd{\mkdaterangetrunc}{%
+}{}{\wlog{WARNING: biblatex-oxref failed to patch mkdaterangefullextra}}
+\patchcmd{\mkdaterangetrunc@i}{%
   \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
 }{%
   \iffieldundef{#2endmonth}%
     {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
     {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
-}{}{}
-\patchcmd{\mkdaterangetruncextra}{%
+}{}{\wlog{WARNING: biblatex-oxref failed to patch mkdaterangetrunc@i}}
+\patchcmd{\mkdaterangetruncextra@i}{%
   \csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}%
 }{%
   \iffieldundef{#2endmonth}%
     {\blx@ox@compyear{\thefield{#2year}}{\thefield{#2endyear}}}%
     {\csuse{mkbibdate#1}{#2endyear}{#2endmonth}{#2endday}}%
-}{}{}
+}{}{\wlog{WARNING: biblatex-oxref failed to patch mkdaterangetruncextra@i}}
 %    \end{macrocode}
 %
 % We provide a way of prefacing dates (and times) with a type. This is mainly
@@ -7998,21 +7999,21 @@ will trigger the use of parentheses.
 % numbers.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat{pages}{%
-  \iffieldundef{bookpagination}%
-    {\mkcomprange{#1}}%
-    {\mkcomprange[{\mkpageprefix[bookpagination]}]{#1}}%
-}
+% \DeclareFieldFormat{pages}{%
+%   \iffieldundef{bookpagination}%
+%     {\mkcomprange{#1}}%
+%     {\mkcomprange[{\mkpageprefix[bookpagination]}]{#1}}%
+% }
 %    \end{macrocode}
 %
 % The same is true in citations.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat{postnote}{%
-  \iffieldundef{pagination}%
-  {\mkcomprange{#1}}%
-  {\mkcomprange[{\mkpageprefix}]{#1}}%
-}
+% \DeclareFieldFormat{postnote}{%
+%   \iffieldundef{pagination}%
+%   {\mkcomprange{#1}}%
+%   {\mkcomprange[{\mkpageprefix}]{#1}}%
+% }
 
 %    \end{macrocode}
 %
@@ -13200,21 +13201,21 @@ reference,mvreference,inreference]{volume}{%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangefull{#1}{#2}}%
 }{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangefull}}
-\xpatchcmd{\mkdaterangetrunc}{%
+\xpatchcmd{\mkdaterangetrunc@i}{%
   \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangetrunc{#1}{#2}}%
-}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangetrunc}}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangetrunc@i}}
 \xpatchcmd{\mkdaterangefullextra}{%
   \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangefull{#1}{#2}}%
 }{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangefullextra}}
-\xpatchcmd{\mkdaterangetruncextra}{%
+\xpatchcmd{\mkdaterangetruncextra@i}{%
   \iffieldundef{#2year} {\blx@nounit}%
 }{%
   \iffieldundef{#2year} {\mknoyeardaterangetrunc{#1}{#2}}%
-}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangetruncextra}}
+}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch mkdaterangetruncextra@i}}
 
 %    \end{macrocode}
 %
