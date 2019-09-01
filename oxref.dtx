@@ -7112,7 +7112,7 @@ will trigger the use of parentheses.
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@scnames}
-\DeclareBibliographyOption[boolean]{scnames}[true]{%
+\DeclareBibliographyOption{scnames}[true]{%
   \settoggle{blx@ox@scnames}{#1}
 }
 %    \end{macrocode}
@@ -7124,11 +7124,11 @@ will trigger the use of parentheses.
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@nametitle}\toggletrue{blx@ox@nametitle}%
-\DeclareBibliographyOption[boolean]{usenametitles}[true]{%
+\DeclareBibliographyOption{usenametitles}[true]{%
   \settoggle{blx@ox@nametitle}{#1}}
-\DeclareTypeOption[boolean]{usenametitles}[true]{%
+\DeclareTypeOption{usenametitles}[true]{%
   \settoggle{blx@ox@nametitle}{#1}}
-\DeclareEntryOption[boolean]{usenametitles}[true]{%
+\DeclareEntryOption{usenametitles}[true]{%
   \settoggle{blx@ox@nametitle}{#1}}
 %    \end{macrocode}
 %
@@ -8298,7 +8298,7 @@ will trigger the use of parentheses.
 % by |issue+date| instead (see below).
 %
 %    \begin{macrocode}
-\DeclareBibliographyOption{issuestyle}[slash]{%
+\DeclareBibliographyOption[string]{issuestyle}[slash]{%
   \ifcsdef{blx@ox@issuestyle@#1}{%
     \csuse{blx@ox@issuestyle@#1}%
   }{%
@@ -8350,17 +8350,17 @@ will trigger the use of parentheses.
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@varissuedate}
-\DeclareBibliographyOption[boolean]{varissuedate}[true]{%
+\DeclareBibliographyOption{varissuedate}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareTypeOption[boolean]{varissuedate}[true]{%
+\DeclareTypeOption{varissuedate}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareEntryOption[boolean]{varissuedate}[true]{%
+\DeclareEntryOption{varissuedate}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareBibliographyOption[boolean]{issuedate-plain}[true]{%
+\DeclareBibliographyOption{issuedate-plain}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareTypeOption[boolean]{issuedate-plain}[true]{%
+\DeclareTypeOption{issuedate-plain}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareEntryOption[boolean]{issuedate-plain}[true]{%
+\DeclareEntryOption{issuedate-plain}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
 \renewbibmacro*{issue+date}{%
   \ifboolexpr{
@@ -9711,7 +9711,7 @@ reference,mvreference,inreference]{volume}{%
 \newtoggle{blx@ox@plainthesis}
 \DeclareFieldAlias{thesis:publication}{publication}
 \DeclareFieldFormat{plain}{#1}
-\DeclareBibliographyOption[boolean]{altthesis}[true]{%
+\DeclareBibliographyOption{altthesis}[true]{%
   \settoggle{blx@ox@altthesis}{#1}
 }
 \DeclareBibliographyOption[string]{thesis}[out]{%
@@ -10134,7 +10134,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@endeditor}
-\DeclareEntryOption[boolean]{endeditor}[true]{%
+\DeclareEntryOption{endeditor}[true]{%
   \settoggle{blx@ox@endeditor}{#1}}
 \newbibmacro*{pre-byeditor+others}{%
   \iftoggle{blx@ox@endeditor}{}{%
@@ -10602,7 +10602,7 @@ reference,mvreference,inreference]{volume}{%
   \settoggle{bbx:altcourt}{#1}}
 \newtoggle{bbx@ecliuse}
 \newtoggle{bbx@eclionly}
-\DeclareBibliographyOption{ecli}[yes]{%
+\DeclareBibliographyOption[string]{ecli}[yes]{%
   \ifstrequal{#1}{no}{%
     \global\togglefalse{bbx@ecliuse}%
     \global\togglefalse{bbx@eclionly}%
@@ -11843,7 +11843,7 @@ reference,mvreference,inreference]{volume}{%
 % We provide an option for setting the relatedtype punctuation.
 %
 %    \begin{macrocode}
-\DeclareBibliographyOption{relationpunct}[semicolon]{%
+\DeclareBibliographyOption[string]{relationpunct}[semicolon]{%
   \ifcsdef{add#1}{%
     \ifstrequal{#1}{space}{%
       \renewcommand*{\relatedtypepunct}{\addspace}%
@@ -11855,7 +11855,7 @@ reference,mvreference,inreference]{volume}{%
     }{%
       Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
       'period', 'exclam', 'question', and 'space'.}}}
-\DeclareTypeOption{relationpunct}[semicolon]{%
+\DeclareTypeOption[string]{relationpunct}[semicolon]{%
   \ifcsdef{add#1}{%
     \ifstrequal{#1}{space}{%
       \renewcommand*{\relatedtypepunct}{\addspace}%
@@ -11868,7 +11868,7 @@ reference,mvreference,inreference]{volume}{%
       Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
       'period', 'exclam', 'question', and 'space'.}}}
 \newtoggle{blx@ox@relpunctset}
-\DeclareEntryOption{relationpunct}[semicolon]{%
+\DeclareEntryOption[string]{relationpunct}[semicolon]{%
   \ifcsdef{add#1}{%
     \ifstrequal{#1}{space}{%
       \renewcommand*{\relatedtypepunct}{\addspace}%
@@ -12761,7 +12761,7 @@ reference,mvreference,inreference]{volume}{%
 
 \providebool{bbx:subentry}
 
-\DeclareBibliographyOption[boolean]{subentry}[true]{%
+\DeclareBibliographyOption{subentry}[true]{%
   \setbool{bbx:subentry}{#1}}
 
 \DeclareFieldFormat{bibentrysetcount}{\mkbibparens{\mknumalph{#1}}}
@@ -12931,11 +12931,11 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@nonodate}
-\DeclareBibliographyOption[boolean]{nonodate}[true]{%
+\DeclareBibliographyOption{nonodate}[true]{%
   \settoggle{blx@ox@nonodate}{#1}}
-\DeclareTypeOption[boolean]{nonodate}[true]{%
+\DeclareTypeOption{nonodate}[true]{%
   \settoggle{blx@ox@nonodate}{#1}}
-\DeclareEntryOption[boolean]{nonodate}[true]{%
+\DeclareEntryOption{nonodate}[true]{%
   \settoggle{blx@ox@nonodate}{#1}}
 \newbibmacro*{labeldate}{%
   \ifboolexpr{
