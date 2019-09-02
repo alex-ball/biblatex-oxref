@@ -1533,7 +1533,7 @@ If the contribution of the translators or revisers is so great they could be joi
 
 %<*n>
 \begin{egcite*}{}
-\cite{kuehner.blass1890ef}
+\textcite{kuehner.blass1890ef}
 \end{egcite*}
 %</n>
 %<*m|a>
@@ -7999,21 +7999,21 @@ will trigger the use of parentheses.
 % numbers.
 %
 %    \begin{macrocode}
-% \DeclareFieldFormat{pages}{%
-%   \iffieldundef{bookpagination}%
-%     {\mkcomprange{#1}}%
-%     {\mkcomprange[{\mkpageprefix[bookpagination]}]{#1}}%
-% }
+\DeclareFieldFormat{pages}{%
+  \iffieldundef{bookpagination}%
+    {\mkcomprange{#1}}%
+    {\mkcomprange[{\mkpageprefix[bookpagination]}]{#1}}%
+}
 %    \end{macrocode}
 %
 % The same is true in citations.
 %
 %    \begin{macrocode}
-% \DeclareFieldFormat{postnote}{%
-%   \iffieldundef{pagination}%
-%   {\mkcomprange{#1}}%
-%   {\mkcomprange[{\mkpageprefix}]{#1}}%
-% }
+\DeclareFieldFormat{postnote}{%
+  \iffieldundef{pagination}%
+  {\mkcomprange{#1}}%
+  {\mkcomprange[{\mkpageprefix}]{#1}}%
+}
 
 %    \end{macrocode}
 %
@@ -12845,14 +12845,7 @@ reference,mvreference,inreference]{volume}{%
 % this is implemented as the |year| value.
 %
 %    \begin{macrocode}
-\DeclareBibliographyOption{mergedate}[true]{%
-  \ifcsdef{bbx@opt@mergedate@#1}
-    {\csuse{bbx@opt@mergedate@#1}}
-    {\PackageError{biblatex-oxref}
-       {Invalid option 'mergedate=#1'}
-       {Valid values are 'maximum', 'compact', 'basic', 'minimum',\MessageBreak
-        'year', 'true' (=year), and 'false'.}}}
-\DeclareTypeOption{mergedate}[true]{%
+\DeclareBiblatexOption{global,type,entry}{mergedate}[true]{%
   \ifcsdef{bbx@opt@mergedate@#1}
     {\csuse{bbx@opt@mergedate@#1}}
     {\PackageError{biblatex-oxref}
