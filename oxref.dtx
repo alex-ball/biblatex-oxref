@@ -2827,45 +2827,41 @@ Where the publisher changed between volumes, the following form is used:
   all in \S13.11.1). I am therefore choosing to ignore this unnecessary
   complication.}
 
-%</n|m|a|y>
-%<*n|m>
-\tip{You can alternatively use the standard \textsf{biblatex} relation type \code{multivolume}. Note that this construction is not portable to \textsf{oxyear}\slash\textsf{oxalph}.}
+\tip{You can alternatively use the standard \textsf{biblatex} relation type \code{multivolume}.
+%<n|m>Note that when you do so, the overall date is removed, so be sure that individual volume dates are provided.
+}
 
-\begin{bibexbox}(hacked)
-<OGS \S15.2.6*>
-{ritter1838hap1-3}
-Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i–iii (Oxford: Talboys, 1838–9), iv (London: Bohn, 1846).
+\begin{bibexbox}
+%<n|m><OGS \S15.2.6*>
+%<a|y><OGS \S15.2.6*\textdagger>
+{ritter1838hap:mv}
+%<n|m>Heinrich Ritter, \emph{The History of Ancient Philosophy}, trans. Alexander J. W. Morrison, 4~vols., i–iii (Oxford: Talboys, 1838–9), iv (London: Bohn, 1846).
+%<a|y>Ritter, H (1838-46). \emph{The History of Ancient Philosophy}, trans. A. J. W. Morrison, 4~vols., i–iii (Oxford: Talboys, 1838–9), iv (London: Bohn, 1846).
 \tcblower
 \begin{Verbatim}
-%</n|m>
-%<*n|m|bib>
-@mvbook{ritter1838hap1-3,
+%</n|m|a|y>
+@mvbook{ritter1838hap:mv,
   author = {Heinrich Ritter},
   title = {The History of Ancient Philosophy},
   translator = {Alexander J. W. Morrison},
   volumes = {4},
+  date = {1838/1846},
+  related = {ritter1838hap1-3,ritter1838hap4},
+  relatedtype = {multivolume}}
+@book{ritter1838hap1-3,
   volume = {1-3},
   location = {Oxford},
   publisher = {Talboys},
-  date = {1838/1839},
-  related = {ritter1838hap4},
-  relatedtype = {multivolume}}
-@mvbook{ritter1838hap4,
-  author = {Heinrich Ritter},
-  title = {The History of Ancient Philosophy},
-  translator = {Alexander J. W. Morrison},
-  volumes = {4},
+  date = {1838/1839}}
+@book{ritter1838hap4,
   volume = {4},
   location = {London},
   publisher = {Bohn},
   date = {1846}}
-%</n|m|bib>
-%<*n|m>
+%<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
 
-%</n|m>
-%<*n|m|a|y>
 \subsection{One volume from several}
 
 Where the volumes are merely numbered, the following form is used:
@@ -11896,7 +11892,8 @@ reference,mvreference,inreference]{volume}{%
     \iffieldequalstr{relatedtype}{multivolume}{%
       \setunit{\addcomma\space}}{}%
 }}{}{\wlog{WARNING: biblatex-oxref failed to append to begrelated}}
-\renewcommand*{\begrelateddelimmultivolume}{\newunitpunct}
+\DeclareDelimFormat{relateddelimmultivolume}{\newunitpunct}
+\DeclareDelimFormat{begrelateddelimmultivolume}{\newunitpunct}
 
 %    \end{macrocode}
 %
@@ -12090,9 +12087,23 @@ reference,mvreference,inreference]{volume}{%
   \entrydata*{#1}{%
     \printtext{%
       \printfield{volume}%
-      \printfield{part}}%
+      \printfield{part}%
+      \iffieldsequal{savedtitle}{title}{}{%
+        \setunit{\addcolon\space}%
+        \usebibmacro{title}}%
+    }%
     \setunit*{\addspace}%
-  \usebibmacro{series+number+edition+publisher+location+date}}}
+    \iffieldsequal{savedseries}{series}{\clearfield{series}}{}%
+    \iffieldsequal{savednumber}{number}{\clearfield{number}}{}%
+    \iffieldsequal{savededition}{edition}{\clearfield{edition}}{}%
+    \ifboolexpr{
+      test {\iflistsequal{savedpublisher}{publisher}}
+      and
+      test {\iflistsequal{savedlocation}{location}}
+    }{\clearlist{publisher}\clearlist{location}}{}%
+      \iffieldsequal{saveddate}{date}{\clearfield{date}}{}%
+      \usebibmacro{series+number+edition+publisher+location+date}%
+    }}
 
 %    \end{macrocode}
 %
@@ -12654,6 +12665,8 @@ reference,mvreference,inreference]{volume}{%
 \RequireBibliographyStyle{oxref}
 %    \end{macrocode}
 %
+% \subsection{Names}
+%
 % We apply our special name format to names likely to appear at the start of
 % an entry.
 %
@@ -12676,6 +12689,19 @@ reference,mvreference,inreference]{volume}{%
     \iftoggle{blx@ox@scnames}{\bibcplstring[\textsc]{anon}}{\bibcplstring{anon}}%
   }%
 }{}{\wlog{WARNING: biblatex-oxref (oxnotes) failed to patch author}}
+%    \end{macrocode}
+%
+% \subsection{Multivolume dates}
+%
+% For the very particular use case of breaking down multivolume works into
+% their constituent volumes, we remove the overall date, assuming that the
+% individual volume dates will be used instead.
+%
+%    \begin{macrocode}
+\xpretobibmacro{series+number+edition+publisher+location+date}{%
+  \iffieldequalstr{relatedtype}{multivolume}{%
+    \clearfield{year}\clearfield{month}\clearfield{day}%
+  }{}}{}{}
 %    \end{macrocode}
 %
 % \subsection{Source maps}
@@ -12730,6 +12756,8 @@ reference,mvreference,inreference]{volume}{%
 \RequireBibliographyStyle{oxref}
 %    \end{macrocode}
 %
+% \subsection{Names}
+%
 % We apply our special name format to names likely to appear at the start of
 % an entry.
 %
@@ -12752,6 +12780,19 @@ reference,mvreference,inreference]{volume}{%
     \iftoggle{blx@ox@scnames}{\bibcplstring[\textsc]{anon}}{\bibcplstring{anon}}%
   }%
 }{}{\wlog{WARNING: biblatex-oxref (oxnum) failed to patch author}}
+%    \end{macrocode}
+%
+% \subsection{Multivolume dates}
+%
+% For the very particular use case of breaking down multivolume works into
+% their constituent volumes, we remove the overall date, assuming that the
+% individual volume dates will be used instead.
+%
+%    \begin{macrocode}
+\xpretobibmacro{series+number+edition+publisher+location+date}{%
+  \iffieldequalstr{relatedtype}{multivolume}{%
+    \clearfield{year}\clearfield{month}\clearfield{day}%
+  }{}}{}{}
 %    \end{macrocode}
 %
 % \subsection{Label numbers}
