@@ -8579,7 +8579,9 @@ will trigger the use of parentheses.
 %    \end{macrocode}
 %
 % Volume numbers in monograph-style entries are formatted as roman
-% numerals.
+% numerals (if they are indeed numbers). We take some care here to support
+% simple ranges (e.g.\@ 1-3, 4--9). Support for more complex ranges may be
+% considered on request.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat[book,mvbook,bookinbook,inbook,suppbook,%
@@ -8589,11 +8591,11 @@ reference,mvreference,inreference]{volume}{%
 \IfSubStr{#1}{-}{%
   \StrCount{#1}{-}[\blx@ox@dashnum]%
   \StrBefore{#1}{-}[\blx@ox@volnum]%
-  \Rn{\blx@ox@volnum}\bibrangedash
+  \expandafter\ifinteger\blx@ox@volnum{\Rn{\blx@ox@volnum}}{\blx@ox@volnum}\bibrangedash
   \StrBehind[\blx@ox@dashnum]{#1}{-}[\blx@ox@volnum]%
-  \Rn{\blx@ox@volnum}%
+  \expandafter\ifinteger\blx@ox@volnum{\Rn{\blx@ox@volnum}}{\blx@ox@volnum}%
 }{%
-  \Rn{#1}}}
+  \ifinteger{#1}{\Rn{#1}}{#1}}}
 %    \end{macrocode}
 %
 % Where a multi-volume work is more like a series, the volume number and
