@@ -9993,7 +9993,7 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % Direct use of the |manual| entry type is not encouraged, but it serves as a
-% basis for other entry types, notably standards, datasets, and software.
+% basis for other entry types, notably standards, and software.
 % The main change to the |manual| driver compared to the standard style is
 % that |type|, |series|, |number|, |edition| and |organization| are moved into
 % the publication information block with |publisher|, |location| and |date|.
@@ -10567,10 +10567,43 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Datasets}
 %
-% Datasets are currently treated like manuals
+% The main change to the |dataset| driver compared to the standard style is
+% that |type|, |series|, |number|, |edition| and |organization| are moved into
+% the publication information block with |publisher|, |location| and |date|.
 %
 %    \begin{macrocode}
-\DeclareBibliographyAlias{dataset}{manual}
+\DeclareBibliographyDriver{dataset}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \setunit{\titlebyauthordelim}\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{type}%
+  \newunit
+  \printfield{version}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{type+series+number+edition+organization+publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
 %    \end{macrocode}
 %
 % \subsection{Legal references}
