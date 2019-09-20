@@ -13677,6 +13677,20 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsection{Manuscripts}
 %
+% Since we clear the title, we need a more sophisticated test for whether to
+% suppress the date.
+%
+%    \begin{macrocode}
+\newbibmacro{manuscript:date}{%
+  \ifboolexpr{
+    test {\ifnameundef{author}}
+    and
+    not togl {blx@ox@clearedtitle}
+    and
+    test {\iffieldundef{label}}
+  }{}{\usebibmacro{date}}}
+%    \end{macrocode}
+%
 % We include the |library| field as a fallback title.
 %
 %    \begin{macrocode}
