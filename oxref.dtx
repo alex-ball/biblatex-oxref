@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2019/09/20 v2.0}
+\def\Version{2020/01/27 v2.0.1}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -166,7 +166,7 @@ See:     http://www.latex-project.org/lppl.txt
 \endpreamble
 \postamble
 
-Copyright (C) 2016–2019 Alex Ball
+Copyright (C) 2016–2020 Alex Ball
 \endpostamble
 
 \usedir{tex/latex/\jobname}
@@ -842,7 +842,7 @@ first two steps.
 
 ## Licence
 
-Copyright 2016–2019 Alex Ball.
+Copyright 2016–2020 Alex Ball.
 
 This work consists of the documented LaTeX file oxref.dtx and a Makefile.
 
@@ -14156,6 +14156,12 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=literal]{datetype,origdatetype}
+%    \end{macrocode}
+%
+% We add the |inaudio| entry type and friends.
+%
+%    \begin{macrocode}
+\DeclareDatamodelEntrytypes{inaudio,inmusic,inmovie,invideo}
 %    \end{macrocode}
 %
 % The |authoraddon| and |editoraddon| fields are used for handling
