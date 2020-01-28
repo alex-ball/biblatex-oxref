@@ -7,7 +7,7 @@ AUX   = aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,n
 SHELL = bash
 PWD   = $(shell pwd)
 TEMP := $(shell mktemp -d -t tmp.XXXXXXXXXX)
-TDIR  = $(TEMP)/$(NAME)
+TDIR  = $(TEMP)/$(PFX)$(NAME)
 VERS  = $(shell ltxfileinfo -v $(NAME).dtx)
 LOCAL = $(shell kpsewhich --var-value TEXMFLOCAL)
 UTREE = $(shell kpsewhich --var-value TEXMFHOME)
@@ -58,8 +58,8 @@ uninstall:
 zip: all
 	mkdir $(TDIR)
 	cp $(NAME).{dtx,pdf} $(STYS:%=%-doc.pdf) README.md Makefile $(NAME).bbx $(STYS:%=%.{b,c,d}bx) $(VARS:%=$(STY1)-%.{b,c,d}bx) {american,british,english}-$(NAME).lbx $(TDIR)
-	cd $(TEMP); zip -Drq $(PWD)/$(PFX)$(NAME)-$(VERS).zip $(NAME)
+	cd $(TEMP); zip -Drq $(PWD)/$(PFX)$(NAME)-$(VERS).zip $(PFX)$(NAME)
 ctan: all
 	mkdir $(TDIR)
 	cp $(NAME).{dtx,pdf} $(STYS:%=%-doc.pdf) README.md Makefile $(TDIR)
-	cd $(TEMP); zip -Drq $(PWD)/$(PFX)$(NAME)-$(VERS).zip $(NAME)
+	cd $(TEMP); zip -Drq $(PWD)/$(PFX)$(NAME)-$(VERS).zip $(PFX)$(NAME)
