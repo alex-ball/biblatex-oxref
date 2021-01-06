@@ -229,7 +229,7 @@ Copyright (C) 2016–2020 Alex Ball
 \PassOptionsToPackage{style=oxnotes}{biblatex}
 %</driver>
 %<doc&n>\PassOptionsToPackage{style=oxnotes,scnames,varissuedate,anon}{biblatex}
-%<doc&m>\PassOptionsToPackage{style=oxnum,scnames,varissuedate,anon}{biblatex}
+%<doc&m>\PassOptionsToPackage{style=oxnum,scnames,varissuedate,anon,backref=true}{biblatex}
 %<doc&a>\PassOptionsToPackage{style=oxalph,varissuedate,anon}{biblatex}
 %<doc&y>\PassOptionsToPackage{style=oxyear,varissuedate,anon}{biblatex}
 %<*driver|doc>
@@ -8438,13 +8438,13 @@ will trigger the use of parentheses.
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -8469,13 +8469,13 @@ will trigger the use of parentheses.
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -8531,13 +8531,13 @@ will trigger the use of parentheses.
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -8889,13 +8889,13 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -8953,19 +8953,19 @@ reference,mvreference,inreference]{volume}{%
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -8988,9 +8988,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+booktitle}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
@@ -9003,19 +9003,19 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9044,9 +9044,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+booktitle}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
@@ -9057,19 +9057,19 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9092,9 +9092,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+booktitle}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit\newblock
   \usebibmacro{byeditor+others}%
   \newunit\newblock
@@ -9107,19 +9107,19 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9147,19 +9147,19 @@ reference,mvreference,inreference]{volume}{%
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9205,19 +9205,19 @@ reference,mvreference,inreference]{volume}{%
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9242,9 +9242,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+booktitle}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock
@@ -9255,19 +9255,19 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9296,9 +9296,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+booktitle}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit\newblock
   \printfield{volumes}%
   \newunit\newblock%
@@ -9307,19 +9307,19 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9352,19 +9352,19 @@ reference,mvreference,inreference]{volume}{%
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9413,19 +9413,19 @@ reference,mvreference,inreference]{volume}{%
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9450,9 +9450,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+booktitle}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit\newblock
   \printfield{edition}%
   \newunit
@@ -9469,19 +9469,19 @@ reference,mvreference,inreference]{volume}{%
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9539,9 +9539,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+title}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit\newblock
   \usebibmacro{event+venue+date}%
   \newunit\newblock
@@ -9560,19 +9560,19 @@ reference,mvreference,inreference]{volume}{%
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9593,9 +9593,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+booktitle}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \newunit\newblock
   \usebibmacro{event+venue+date}%
   \newunit\newblock
@@ -9612,19 +9612,19 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9835,9 +9835,9 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{maintitle+title}%
   \newunit
   \iffieldundef{maintitle}
-  {\printfield{volume}%
-    \printfield{part}}
-  {}%
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
   \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
@@ -9848,28 +9848,27 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{series+type+number}%
   \setunit{\addspace}%
   \usebibmacro{institution+location+date}%
-  \iffieldequals{entrysubtype}{\legreport}{%
-    \setunit{\addspace}\nopunct
-  }{%
-    \newunit\newblock}%
+  \iffieldequals{entrysubtype}{\legreport}
+    {\setunit{\addspace}\nopunct}
+    {\newunit\newblock}%
   \usebibmacro{chapter+pages}%
   \newunit
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isrn}}
-  {}%
+    {\printfield{isrn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -9982,13 +9981,13 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -10018,17 +10017,17 @@ reference,mvreference,inreference]{volume}{%
   }{}%
   \usebibmacro{author/editor}%
   \setunit{\printdelim{nametitledelim}}\newblock
-  \ifentrytype{software}{%
-    \usebibmacro{title+version}%
-  }{%
-    \usebibmacro{title}}%
+  \ifentrytype{software}
+    {\usebibmacro{title+version}}
+    {\usebibmacro{title}}%
   \setunit{\titlebyauthordelim}\newblock
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{byeditor}%
   \newunit
-  \ifentrytype{software}{}{%
-    \newunit\printfield{version}}%
+  \ifentrytype{software}
+    {}
+    {\newunit\printfield{version}}%
   \newunit
   \printfield{note}%
   \newunit\newblock
@@ -10039,19 +10038,19 @@ reference,mvreference,inreference]{volume}{%
   \printfield{pagetotal}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 \DeclareBibliographyAlias{standard}{manual}
 \ExecuteBibliographyOptions[standard]{useeditor=false}
@@ -10183,19 +10182,19 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{post-byeditor+others}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -10250,19 +10249,19 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{post-byeditor+others}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -10397,19 +10396,19 @@ reference,mvreference,inreference]{volume}{%
   \printlist{organization}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
-  {\printfield{isbn}}
-  {}%
+    {\printfield{isbn}}
+    {}%
   \newunit\newblock
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 \DeclareBibliographyAlias{image}{performance}
 \DeclareBibliographyAlias{artwork}{performance}
@@ -10512,19 +10511,19 @@ reference,mvreference,inreference]{volume}{%
   \printlist{publisher}%
   \newunit\newblock
   \iftoggle{bbx:eprint}
-  {\usebibmacro{eprint}}
-  {}%
+    {\usebibmacro{eprint}}
+    {}%
   \newunit\newblock
   \usebibmacro{url+urldate}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
-  {\usebibmacro{related:init}%
-    \usebibmacro{related}}
-  {}%
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -10596,13 +10595,13 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \newunit\newblock
+  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -10962,13 +10961,13 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \setunit{\addspace}%\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\addspace}%\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 \newtoggle{bbx@juriscitedone}
 \newbibmacro{juriscitation}{%
@@ -11387,7 +11386,8 @@ reference,mvreference,inreference]{volume}{%
         \usebibmacro{legsupp}}}}%
   \setunit{\addcomma\space}%
   \printfield{note}%
-  \setunit{\addspace}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 \newbibmacro*{courtrules}{%
   \restorefield{prenote}{\postnotesecond}%
@@ -11762,6 +11762,8 @@ reference,mvreference,inreference]{volume}{%
     \usebibmacro{related:init}%
     \usebibmacro{related}%
   }{}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -11824,13 +11826,13 @@ reference,mvreference,inreference]{volume}{%
     {}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
@@ -11851,22 +11853,42 @@ reference,mvreference,inreference]{volume}{%
 % \subsection{Related entries}
 %
 % We make the punctuation before related items configurable in remaining drivers
-% inherited from the standard style.
+% inherited from the standard style, and move the |pageref| macro to the end.
 %
 %    \begin{macrocode}
 \xpatchbibdriver{booklet}{%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \newunit\newblock
   \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
 }{%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
 }{}{\wlog{WARNING: biblatex-oxref failed to patch booklet}}
 \xpatchbibdriver{misc}{%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
   \newunit\newblock
   \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
 }{%
   \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
 }{}{\wlog{WARNING: biblatex-oxref failed to patch misc}}
 %    \end{macrocode}
 %
@@ -12843,8 +12865,8 @@ reference,mvreference,inreference]{volume}{%
 \defbibenvironment{bibliography}
   {\list
      {\printtext[labelnumberwidth]{%
-	\printfield{labelprefix}%
-	\printfield{labelnumber}}}
+      \printfield{labelprefix}%
+      \printfield{labelnumber}}}
      {\setlength{\labelwidth}{\labelnumberwidth}%
       \setlength{\leftmargin}{\labelwidth}%
       \setlength{\labelsep}{\biblabelsep}%
@@ -12872,7 +12894,7 @@ reference,mvreference,inreference]{volume}{%
   \entryset
     {\ifbool{bbx:subentry}
        {\printfield[bibentrysetcount]{entrysetcount}%
-	\printunit*{\addnbspace}}
+        \printunit*{\addnbspace}}
        {}}
     {}%
   \newunit\newblock
