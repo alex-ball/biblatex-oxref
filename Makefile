@@ -26,7 +26,7 @@ $(STYS:%=%-doc.pdf): %-doc.pdf : %-doc.tex $(NAME).bbx %.bbx %.cbx british-$(NAM
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
 
 clean:
-	for log in *.log; do [ -e "$$log" ] || continue; grep "WARNING: biblatex-oxref" $$log; test $$? -eq 1; done
+	@for log in *.log; do [ -e "$$log" ] || continue; grep "WARNING: biblatex-oxref" $$log; test $$? -eq 1; done
 	rm -f $(NAME).{$(AUX)} $(STYS:%=%-doc.{$(AUX)})
 	rm -f $(STYS:%=%.doc) {american,british,english}-$(NAME).doc
 	rm -rf _minted-*
