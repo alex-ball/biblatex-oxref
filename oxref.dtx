@@ -8213,7 +8213,7 @@ will trigger the use of parentheses.
 }
 \newcommand*{\ifabbrev}[3]{%
   \StrRight{#1}{1}[\blx@ox@lastchar]%
-  \IfSubStr{\blx@ox@abbrevstring}{\blx@ox@lastchar}{#2}{#3}
+  \expandafter\IfSubStr*{\blx@ox@abbrevstring}{\blx@ox@lastchar}{#2}{#3}%
 }
 %    \end{macrocode}
 %
@@ -8245,9 +8245,9 @@ will trigger the use of parentheses.
     }{}}%
   \usebibmacro{journal}%
   \iffieldundef{journalsubtitle}{%
-    \ifabbrev{\thefield{journaltitle}}{\setunit{\addspace}}{\newunit}%
+    \ifabbrev{\strfield{journaltitle}}{\setunit{\addspace}}{\newunit}%
   }{%
-    \ifabbrev{\thefield{journalsubtitle}}{\setunit{\addspace}}{\newunit}}%
+    \ifabbrev{\strfield{journalsubtitle}}{\setunit{\addspace}}{\newunit}}%
   \iffieldundef{series}{}{%
     \newunit\newblock
     \printfield{series}%
@@ -8270,9 +8270,9 @@ will trigger the use of parentheses.
 \renewbibmacro*{title+issuetitle}{%
   \usebibmacro{periodical}%
   \iffieldundef{subtitle}{%
-    \ifabbrev{\thefield{title}}{\setunit{\addspace}}{\newunit}%
+    \ifabbrev{\strfield{title}}{\setunit{\addspace}}{\newunit}%
   }{%
-    \ifabbrev{\thefield{subtitle}}{\setunit{\addspace}}{\newunit}}%
+    \ifabbrev{\strfield{subtitle}}{\setunit{\addspace}}{\newunit}}%
   \iffieldundef{series}{}{%
     \newunit\newblock
     \printfield{series}%
