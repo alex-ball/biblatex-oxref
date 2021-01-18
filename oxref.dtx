@@ -971,6 +971,10 @@ The style has some options additional to the regular \pkg{biblatex} ones:
   Removes publisher name from all entries. Once set, this option cannot be overridden.
 \end{docKey}
 
+\begin{docKey}{norelatedin}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Suppresses the printing of the \code{in} localization string in circumstances where it would appear directly following a related string such as \enquote{originally published as}. It can also be set on a per-type and per-entry basis. The effects of this key are not well tested, so do please get in touch (see below) if you encounter problems with it.
+\end{docKey}
+
 \begin{docKey}{relationpunct}{=\val{period}|\val{comma}|\val{semicolon}|\val{colon}|\val{space}}{default \val{semicolon}, initially \val{semicolon}}
   Sets the punctuation that precedes the \code{relatedtype} localization string.
   An additional space is assumed unless the value is \val{space}.
@@ -7125,11 +7129,7 @@ rather than \pkg[biblatex]{oxref}.}
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@nametitle}\toggletrue{blx@ox@nametitle}%
-\DeclareBibliographyOption{usenametitles}[true]{%
-  \settoggle{blx@ox@nametitle}{#1}}
-\DeclareTypeOption{usenametitles}[true]{%
-  \settoggle{blx@ox@nametitle}{#1}}
-\DeclareEntryOption{usenametitles}[true]{%
+\DeclareBiblatexOption{global,type,entry}{usenametitles}[true]{%
   \settoggle{blx@ox@nametitle}{#1}}
 %    \end{macrocode}
 %
@@ -7908,11 +7908,7 @@ rather than \pkg[biblatex]{oxref}.}
   \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
 }
 \newtoggle{blx@ox@timefirst}
-\DeclareBibliographyOption{timefirst}[true]{%
-  \settoggle{blx@ox@timefirst}{#1}}
-\DeclareTypeOption{timefirst}[true]{%
-  \settoggle{blx@ox@timefirst}{#1}}
-\DeclareEntryOption{timefirst}[true]{%
+\DeclareBiblatexOption{global,type,entry}{timefirst}[true]{%
   \settoggle{blx@ox@timefirst}{#1}}
 \newbibmacro*{date+time}{%
   \ifboolexpr{
@@ -8350,17 +8346,9 @@ rather than \pkg[biblatex]{oxref}.}
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@varissuedate}
-\DeclareBibliographyOption{varissuedate}[true]{%
+\DeclareBiblatexOption{global,type,entry}{varissuedate}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareTypeOption{varissuedate}[true]{%
-  \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareEntryOption{varissuedate}[true]{%
-  \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareBibliographyOption{issuedate-plain}[true]{%
-  \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareTypeOption{issuedate-plain}[true]{%
-  \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareEntryOption{issuedate-plain}[true]{%
+\DeclareBiblatexOption{global,type,entry}{issuedate-plain}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
 \renewbibmacro*{issue+date}{%
   \ifboolexpr{
@@ -10605,9 +10593,7 @@ reference,mvreference,inreference]{volume}{%
     \setboolean{bbx@paryear-essential}{#1}}
 \newtoggle{blx@ox@nopostnotedelim}
 \newtoggle{bbx:altcourt}
-\DeclareBibliographyOption{court-plain}[true]{%
-  \settoggle{bbx:altcourt}{#1}}
-\DeclareEntryOption{court-plain}[true]{%
+\DeclareBiblatexOption{global,type,entry}{court-plain}[true]{%
   \settoggle{bbx:altcourt}{#1}}
 \newtoggle{bbx@ecliuse}
 \newtoggle{bbx@eclionly}
@@ -11882,22 +11868,7 @@ reference,mvreference,inreference]{volume}{%
 \DeclareDelimFormat{begrelateddelimmultivolume}{\newunitpunct}
 \DeclareDelimFormat{relateddelimmultivolume}{\newunitpunct}
 \newtoggle{blx@ox@success}
-\DeclareBibliographyOption[string]{relationpunct}[semicolon]{%
-  \bgroup\blx@blxinit
-  \ifcsdef{add#1}{\global\toggletrue{blx@ox@success}}{%
-    \global\togglefalse{blx@ox@success}%
-    \PackageError{biblatex-oxref}{%
-      Invalid option 'relationpunct=#1'%
-    }{%
-      Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
-      'period', 'exclam', 'question', and 'space'.}}%
-  \egroup
-  \iftoggle{blx@ox@success}{\ifstrequal{#1}{space}{%
-    \DeclareDelimFormat{begrelateddelim}{\addspace}%
-  }{%
-    \DeclareDelimFormat{begrelateddelim}{\csuse{add#1}\space}}%
-  }{}}
-\DeclareTypeOption[string]{relationpunct}[semicolon]{%
+\DeclareBiblatexOption{global,type}[string]{relationpunct}[semicolon]{%
   \bgroup\blx@blxinit
   \ifcsdef{add#1}{\global\toggletrue{blx@ox@success}}{%
     \global\togglefalse{blx@ox@success}%
@@ -11946,6 +11917,28 @@ reference,mvreference,inreference]{volume}{%
 \xapptobibmacro{begrelated}{%
   \setcounter{blx@ox@relitem}{0}%
 }{}{\wlog{WARNING: biblatex-oxref failed to append to begrelated}}
+%    \end{macrocode}
+%
+% We provide an option to prevent a related item beginning with "in".
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@norelin}
+\DeclareBiblatexOption{global,type,entry}{norelatedin}[true]{%
+  \settoggle{blx@ox@norelin}{#1}}
+\xapptobibmacro{begrelatedloop}{%
+  \iftoggle{blx@ox@norelin}{%
+    \renewbibmacro*{in:}{%
+      \ifboolexpr{
+        test {\ifnameundef{author}}
+        and
+        test {\ifnameundef{translator}}
+        and
+        test {\iffieldundef{title}}
+      }{}{%
+        \bibstring{in}%
+        \printunit{\intitlepunct}%
+      }}}{}%
+}{}{\wlog{WARNING: biblatex-oxref failed to append to begrelatedloop}}
 
 %    \end{macrocode}
 %
@@ -13016,11 +13009,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@nonodate}
-\DeclareBibliographyOption{nonodate}[true]{%
-  \settoggle{blx@ox@nonodate}{#1}}
-\DeclareTypeOption{nonodate}[true]{%
-  \settoggle{blx@ox@nonodate}{#1}}
-\DeclareEntryOption{nonodate}[true]{%
+\DeclareBiblatexOption{global,type,entry}{nonodate}[true]{%
   \settoggle{blx@ox@nonodate}{#1}}
 \newbibmacro*{labeldate}{%
   \ifboolexpr{
