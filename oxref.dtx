@@ -12563,7 +12563,8 @@ reference,mvreference,inreference]{volume}{%
 % \subsection{Sorting schemes}
 %
 % We adjust the sort order to take into account some other fields that might
-% end up at the front (library, collection, series).
+% end up at the front (library, collection, series). The `|nty|` scheme is used
+% by \textsf{oxnotes}.
 %
 %    \begin{macrocode}
 \DeclareSortingTemplate{nty}{
@@ -12602,7 +12603,11 @@ reference,mvreference,inreference]{volume}{%
     \field{series}
   }
 }
-
+%    \end{macrocode}
+%
+% The `|nyt|` scheme is used by \textsf{oxyear}.
+%
+%    \begin{macrocode}
 \DeclareSortingTemplate{nyt}{
   \sort{
     \field{presort}
@@ -12621,7 +12626,7 @@ reference,mvreference,inreference]{volume}{%
   }
   \sort{
     \field{sortyear}
-    \field{year}
+    \field{labelyear}
   }
   \sort{
     \field{sorttitle}
@@ -12639,7 +12644,11 @@ reference,mvreference,inreference]{volume}{%
     \field{series}
   }
 }
-
+%    \end{macrocode}
+%
+% The `|anyt|` scheme is used by \textsf{oxalph}.
+%
+%    \begin{macrocode}
 \DeclareSortingTemplate{anyt}{
   \sort{
     \field{presort}
@@ -12661,7 +12670,7 @@ reference,mvreference,inreference]{volume}{%
   }
   \sort{
     \field{sortyear}
-    \field{year}
+    \field{labelyear}
   }
   \sort{
     \field{sorttitle}
