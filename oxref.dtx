@@ -380,6 +380,13 @@ Copyright (C) 2016–2021 Alex Ball
 }
 %</doc>
 
+%<*!doc>
+\usepackage[tightLists=false]{markdown}
+\markdownSetup{rendererPrototypes={%
+    link = {\href{#3}{#1}},%
+}}
+
+%</!doc>
 \hypersetup{pdfborder={0 0 0},pdfencoding=unicode}
 \usepackage[noabbrev,capitalize,nameinlink]{cleveref}
 \crefname{page}{page}{pages}
@@ -476,10 +483,6 @@ Copyright (C) 2016–2021 Alex Ball
 \GetFileInfo{\jobname.tex}
 %</doc>
 %<*driver>
-\usepackage[tightLists=false]{markdown}
-\markdownSetup{rendererPrototypes={%
-    link = {\href{#3}{#1}}%
-}}
 
 % For typesetting the implementation
 \makeatletter
