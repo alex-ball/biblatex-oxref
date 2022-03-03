@@ -8611,7 +8611,8 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \renewbibmacro*{in:}{%
   \iffieldequalstr{entrysubtype}{yearbook}{}{%
-    \printtext{\bibstring{in}\intitlepunct}}}
+    \bibstring{in}%
+    \printunit{\intitlepunct}}}
 %    \end{macrocode}
 %
 % Oxford style signifies formal publication by putting the relevant
@@ -11932,12 +11933,14 @@ reference,mvreference,inreference]{volume}{%
   \iftoggle{blx@ox@norelin}{%
     \renewbibmacro*{in:}{%
       \ifboolexpr{
-        test {\ifnameundef{author}}
-        and
-        test {\ifnameundef{translator}}
-        and
-        test {\iffieldundef{title}}
-      }{}{%
+        test {\iffieldequalstr{entrysubtype}{yearbook}}
+        or (
+          test {\ifnameundef{author}}
+          and
+          test {\ifnameundef{translator}}
+          and
+          test {\iffieldundef{title}}
+      )}{}{%
         \bibstring{in}%
         \printunit{\intitlepunct}%
       }}}{}%
