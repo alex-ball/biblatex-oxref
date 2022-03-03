@@ -7917,7 +7917,7 @@ rather than \pkg[biblatex]{oxref}.}
   \ifboolexpr{
     test {\iffieldundef{year}}
     and
-    test {\iffieldundef{season}}
+    test {\iffieldundef{yeardivision}}
     and
     test {\iffieldundef{month}}
     and
@@ -7947,7 +7947,7 @@ rather than \pkg[biblatex]{oxref}.}
   \ifboolexpr{
     test {\iffieldundef{origyear}}
     and
-    test {\iffieldundef{origseason}}
+    test {\iffieldundef{origyeardivision}}
     and
     test {\iffieldundef{origmonth}}
     and
@@ -8343,7 +8343,7 @@ rather than \pkg[biblatex]{oxref}.}
 % approach.
 %
 % We provide an option for switching between the two approaches. If active
-% and an issue has no volume or issue numbers (first block), the season
+% and an issue has no volume or issue numbers (first block), the year division
 % and date are printed bare. Otherwise (second block) they are printed
 % in parentheses just as in the standard version of the macro.
 %
@@ -8359,7 +8359,7 @@ rather than \pkg[biblatex]{oxref}.}
     and
     test {\iffieldundef{year}}
     and
-    test {\iffieldundef{season}}
+    test {\iffieldundef{yeardivision}}
     and
     test {\iffieldundef{month}}
   }{}{%
@@ -8746,7 +8746,7 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\iffieldundef{year}}
     and
-    test {\iffieldundef{season}}
+    test {\iffieldundef{yeardivision}}
     and
     test {\iffieldundef{month}}
   }{}{%
@@ -8783,7 +8783,7 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\iffieldundef{year}}
     and
-    test {\iffieldundef{season}}
+    test {\iffieldundef{yeardivision}}
     and
     test {\iffieldundef{month}}
   }{}{%
@@ -9654,7 +9654,7 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\iffieldundef{year}}
     and
-    test {\iffieldundef{season}}
+    test {\iffieldundef{yeardivision}}
     and
     test {\iffieldundef{month}}
   }{}{%
@@ -9717,7 +9717,7 @@ reference,mvreference,inreference]{volume}{%
       and
       test {\iffieldundef{year}}
       and
-      test {\iffieldundef{season}}
+      test {\iffieldundef{yeardivision}}
       and
       test {\iffieldundef{month}}
     }{}{%
@@ -9765,7 +9765,7 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\iffieldundef{year}}
     and
-    test {\iffieldundef{season}}
+    test {\iffieldundef{yeardivision}}
     and
     test {\iffieldundef{month}}
   }{}{%
@@ -10062,13 +10062,13 @@ reference,mvreference,inreference]{volume}{%
     and
     test {\iffieldundef{year}}
     and
-    test {\iffieldundef{season}}
+    test {\iffieldundef{yeardivision}}
     and
     test {\iffieldundef{month}}
     and
     test {\iffieldundef{origyear}}
     and
-    test {\iffieldundef{origseason}}
+    test {\iffieldundef{origyeardivision}}
     and
     test {\iffieldundef{origmonth}}
     and
@@ -13066,13 +13066,13 @@ reference,mvreference,inreference]{volume}{%
           \printfield{issue}\clearfield{issue}%
           \setunit*{\addspace}%
           \printdateextra}%
-        \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
+        \clearfield{year}\clearfield{yeardivision}\clearfield{month}\clearfield{day}%
       }{%
         \iflabeldateisanydate{%
           \printtext[datelabel]{%
             \csuse{print\thefield{labeldatesource}dateextra}}%
           \clearfield{\thefield{labeldatesource}year}%
-          \clearfield{\thefield{labeldatesource}season}%
+          \clearfield{\thefield{labeldatesource}yeardivision}%
           \clearfield{\thefield{labeldatesource}month}%
           \clearfield{\thefield{labeldatesource}day}%
         }{%
@@ -13092,13 +13092,13 @@ reference,mvreference,inreference]{volume}{%
     \iffieldundef{labelyear}{}{%
       \iflabeldateisdate{%
         \printtext[datelabel]{\printdateextra}%
-        \clearfield{year}\clearfield{season}\clearfield{month}\clearfield{day}%
+        \clearfield{year}\clearfield{yeardivision}\clearfield{month}\clearfield{day}%
       }{%
         \iflabeldateisanydate{%
           \printtext[datelabel]{%
             \csuse{print\thefield{labeldatesource}dateextra}}%
           \clearfield{\thefield{labeldatesource}year}%
-          \clearfield{\thefield{labeldatesource}season}%
+          \clearfield{\thefield{labeldatesource}yeardivision}%
           \clearfield{\thefield{labeldatesource}month}%
           \clearfield{\thefield{labeldatesource}day}%
         }{%
@@ -13220,26 +13220,26 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \newrobustcmd*{\mknoyeardaterangefull}[2]{%
   \iffieldundef{#2month}{}{%
-    \datecircaprint
-    \printtext[#2date]{%
-    \iffieldundef{#2season}{%
-      \csuse{mkbibdate#1}{}{#2month}{#2day}%
-      \blx@printtime{#2}{}%
-    }{%
-      \csuse{mkbibseasondate#1}{}{#2season}}%
-    \dateuncertainprint
-    \iffieldundef{#2endmonth}{}{%
-      \iffieldequalstr{#2endmonth}{}{%
-        \mbox{\bibdaterangesep}%
+    \printtext[{#2date}]{%
+      \datecircaprint
+      \iffieldundef{#2yeardivision}{%
+        \csuse{mkbibdate#1}{}{#2month}{#2day}%
+        \blx@printtime{#2}{}%
       }{%
-        \bibdaterangesep
-        \enddatecircaprint
-        \iffieldundef{#2season}{%
-          \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}%
-          \blx@printtime{#2}{end}%
+        \csuse{mkbibyeardivisiondate#1}{}{#2yeardivision}}%
+      \dateuncertainprint
+      \iffieldundef{#2endmonth}{}{%
+        \iffieldequalstr{#2endmonth}{}{%
+          \mbox{\bibdaterangesep}%
         }{%
-          \csuse{mkbibseasondate#1}{}{#2endseason}}%
-        \enddateuncertainprint}}}}}
+          \bibdaterangesep
+          \enddatecircaprint
+          \iffieldundef{#2yeardivision}{%
+            \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}%
+            \blx@printtime{#2}{end}%
+          }{%
+            \csuse{mkbibyeardivisiondate#1}{}{#2endyeardivision}}%
+          \enddateuncertainprint}}}}}
 %    \end{macrocode}
 %
 % There is a potential problem for \cs{mknoyeardaterangetrunc}, in that if
@@ -13251,11 +13251,11 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \newrobustcmd*{\mknoyeardaterangetrunc}[2]{%
   \iffieldundef{#2month}{}{%
-    \datecircaprint
-    \printtext[#2date]{%
-      \iffieldundef{#2season}{%
+    \printtext[{#2date}]{%
+      \datecircaprint
+      \iffieldundef{#2yeardivision}{%
         \ifboolexpr{
-          test {\iffieldsequal{labelyear}{labelendyear}}
+          test {\ifdateyearsequal{label}{labelend}}
           and
           test {\iffieldsequal{#2month}{#2endmonth}}
         }{%
@@ -13263,7 +13263,7 @@ reference,mvreference,inreference]{volume}{%
         }{%
           \csuse{mkbibdate#1}{}{#2month}{#2day}}%
       }{%
-        \csuse{mkbibseasondate#1}{}{#2season}}%
+        \csuse{mkbibyeardivisiondate#1}{}{#2yeardivision}}%
       \dateuncertainprint
       \iffieldundef{#2endmonth}{}{%
         \iffieldequalstr{#2endmonth}{}{%
@@ -13271,10 +13271,10 @@ reference,mvreference,inreference]{volume}{%
         }{%
           \bibdaterangesep
           \enddatecircaprint
-          \iffieldundef{#2season}{%
+          \iffieldundef{#2yeardivision}{%
             \csuse{mkbibdate#1}{}{#2endmonth}{#2endday}%
           }{%
-            \csuse{mkbibseasondate#1}{}{#2endseason}}%
+            \csuse{mkbibyeardivisiondate#1}{}{#2endyeardivision}}%
           \enddateuncertainprint}}}}}
 %    \end{macrocode}
 %
@@ -13574,7 +13574,7 @@ reference,mvreference,inreference]{volume}{%
   \iffieldundef{year}%
 }{%
   \ifboolexpr{
-    test {\iffieldundef{season}}
+    test {\iffieldundef{yeardivision}}
     and
     test {\iffieldundef{month}}
   }%
