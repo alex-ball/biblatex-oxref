@@ -13,6 +13,7 @@ LOCAL = $(shell kpsewhich --var-value TEXMFLOCAL)
 UTREE = $(shell kpsewhich --var-value TEXMFHOME)
 
 .PHONY: source clean distclean inst uninst install uninstall zip ctan
+.INTERMEDIATE: test-*.tex test-*.pdf
 
 all: $(NAME).pdf $(STYS:%=%-doc.pdf) clean
 	@exit 0
@@ -25,9 +26,16 @@ $(NAME).pdf: $(NAME).dtx $(NAME).bbx $(STY1).bbx $(STY1).cbx british-$(NAME).lbx
 $(STYS:%=%-doc.pdf): %-doc.pdf : %-doc.tex $(NAME).bbx %.bbx %.cbx british-$(NAME).lbx english-$(NAME).lbx
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
 
+$(STYS:%=test-%.tex): test-%.tex : test-template.tex
+	sed 's/style=oxref/style=$*/' $< > $@
+$(STYS:%=test-%.pdf): test-%.pdf : test-%.tex $(NAME).bbx %.bbx %.cbx british-$(NAME).lbx english-$(NAME).lbx
+	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
+$(STYS:%=%.bbi): %.bbi : test-%.pdf
+	pdftotext $< $@
+
 clean:
 	@for log in *.log; do [ -e "$$log" ] || continue; grep "WARNING: biblatex-oxref" $$log; test $$? -eq 1; done
-	rm -f $(NAME).{$(AUX)} $(STYS:%=%-doc.{$(AUX)})
+	rm -f $(NAME).{$(AUX)} $(STYS:%=%-doc.{$(AUX)}) $(STYS:%=test-%.{$(AUX)})
 	rm -f $(STYS:%=%.doc) {american,british,english}-$(NAME).doc
 	rm -rf _minted-*
 	rm -f $(NAME).markdown.in

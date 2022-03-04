@@ -125,5 +125,18 @@ sympy-plots-for-*.tex/
 *.bak
 *.sav
 
+# Python
+venv/
+
 # Compiled files
+*.bbi
+*.bbx
+*.bib
+*.cbx
+*.dbx
+*.lbx
+*.ins
+*-doc.tex
 biblatex-oxref*.zip
+test-ox*.tex
+test-ox*.pdf
