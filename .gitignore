@@ -136,7 +136,9 @@ venv/
 *.dbx
 *.lbx
 *.ins
+*-doc.pdf
 *-doc.tex
 biblatex-oxref*.zip
+oxref.pdf
 test-ox*.tex
 test-ox*.pdf
