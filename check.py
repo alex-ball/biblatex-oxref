@@ -22,6 +22,7 @@ def extract_targets(filename: str) -> t.Mapping[str, t.Mapping[str, str]]:
     print()
 
     targets = {BIB: dict(), CIT: dict()}
+    undotted = list()
 
     GOBBLE = 0
     HEADER = 1
@@ -59,7 +60,7 @@ def extract_targets(filename: str) -> t.Mapping[str, t.Mapping[str, str]]:
                         r"(?P<note>\[.*?\])?"
                         r"\{(?P<id>[^}]*)\}"
                         r"(?P<opt>\[.*?\])?",
-                        head_buffer
+                        head_buffer,
                     ):
                         current_id = m.group("id")
                         if m.group("opt"):
@@ -73,6 +74,9 @@ def extract_targets(filename: str) -> t.Mapping[str, t.Mapping[str, str]]:
                 category = BIB
                 continue
             if "\\tcblower" in line:
+                if not item_buffer.endswith("."):
+                    undotted.append(current_id)
+                    item_buffer += "."
                 targets[category][current_id] = item_buffer
                 item_buffer = ""
                 current_id = None
@@ -82,6 +86,8 @@ def extract_targets(filename: str) -> t.Mapping[str, t.Mapping[str, str]]:
                 item_buffer += " "
             item_buffer += line.strip().replace("\\@", "").replace("~", " ")
 
+    if undotted:
+        click.echo(f"Info: added full stop to entries {', '.join(undotted)}.")
     return targets
 
 
@@ -103,7 +109,9 @@ def get_bibitems(filename: str) -> t.List[str]:
     current_line = list()
 
     def finish_record():
-        lines.append(" ".join(current_line).replace("\\url {", "\\url{"))
+        line = " ".join(current_line)
+        line = re.sub(r"\\([A-Za-z]+)\s+\{", r"\\\1{", line)
+        lines.append(line)
         lines.append("")
         current_line.clear()
 
@@ -163,9 +171,13 @@ def parse_simple_bibitems(lines: t.List[str]) -> t.Mapping[str, t.Mapping[str, s
         elif line == "":
             current_id = None
         else:
-            line = re.sub(r"‘(.*?)’", r"\\enquote{\1}", line)
+            line = re.sub(r"“\{”(.*?)\}", r"\\enquote{\1}", line)
+            line = re.sub(r"‘(.*?)’(?!\w)", r"\\enquote{\1}", line)
+            line = re.sub(r"(?<!\w)\{(.*?)\}(?!\w)", r"\1", line)
             line = re.sub(r", (\d{4})[ab]\. ", r", \1. ", line)
-            outputs[category][current_id] = line.replace("’", "'").replace("–", "--")
+            outputs[category][current_id] = (
+                line.replace("’", "'").replace("\\@", "").replace("~", " ")
+            )
 
     return outputs
 
