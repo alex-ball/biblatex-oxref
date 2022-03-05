@@ -2,24 +2,17 @@
 \usepackage[british]{babel}
 \usepackage[hmargin=3cm,vmargin=2.5cm]{geometry}
 \frenchspacing
-\usepackage{iftex}
-\ifPDFTeX
-  \usepackage{CJKutf8}
-\else
-  \ifLuaTeX
-    \usepackage{luatexja-fontspec}
-  \else
-    \ifXeTeX
-    \usepackage{ctex}
-    \fi
-  \fi
-\fi
 \usepackage{csquotes}
 \newcommand*{\noop}[1]{}
-\usepackage[backend=biber,bibencoding=utf8,style=oxref]{biblatex}
+\usepackage[backend=biber,bibencoding=utf8,style=oxref,varissuedate,anon]{biblatex}
 \addbibresource{oxref.bib}
 \usepackage{biblatex2bibitem}
 \begin{document}
 \nocite{*}
+\printbibitembibliography
+%%% Citations
+\makeatletter
+\AtNextBibliography{\togglefalse{blx@bibliography}}
+\makeatother
 \printbibitembibliography
 \end{document}

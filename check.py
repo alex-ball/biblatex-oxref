@@ -1,7 +1,4 @@
 #! /usr/bin/env python3
-from collections import deque, defaultdict
-from gettext import ngettext
-import html
 import os
 import re
 import subprocess
@@ -10,45 +7,51 @@ import typing as t
 import click
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+BIB = "bibitems"
+CIT = "fullcites"
 
 
-def extract_targets(filename: str) -> t.Mapping[str, str]:
-    """Parses a LaTeX file and returns a mapping of IDs to target output
-    extracted from `bibexbox` environments.
+def extract_targets(filename: str) -> t.Mapping[str, t.Mapping[str, str]]:
+    """Parses a LaTeX file and returns two mappings of IDs to target output
+    extracted from `bibexbox` environments. The outer mapping keys are
+    `fullcites` and `bibitems`.
     """
     subprocess.run(["make", filename], check=True)
     if not os.path.isfile(filename):
         raise click.FileError(f"Could not generate {filename}.")
     print()
 
-    targets = dict()
+    targets = {BIB: dict(), CIT: dict()}
 
     GOBBLE = 0
     HEADER = 1
     TARGET = 2
     state = GOBBLE
-    buffer = ""
+    head_buffer = ""
+    item_buffer = ""
     current_id = None
+    category = CIT
     with open(filename) as f:
         for line in f:
             if state == GOBBLE:
-                if r"\begin{bibexbox}" in line:
+                if "\\begin{bibexbox}" in line:
                     state = HEADER
-                    buffer += line.strip()
+                    category = CIT
+                    head_buffer += line.strip()
                 else:
                     continue
 
             if state == HEADER:
                 if current_id:
                     if line.startswith("["):
-                        buffer += line.strip()
+                        head_buffer += line.strip()
                     else:
-                        buffer = ""
+                        head_buffer = ""
                         state = TARGET
                 elif line.startswith(("<", "[", "{")):
-                    buffer += line.strip()
+                    head_buffer += line.strip()
 
-                if buffer:
+                if head_buffer:
                     if m := re.search(
                         r"\\begin\{bibexbox\}"
                         r"(?P<state>\(.*?\))?"
@@ -56,24 +59,28 @@ def extract_targets(filename: str) -> t.Mapping[str, str]:
                         r"(?P<note>\[.*?\])?"
                         r"\{(?P<id>[^}]*)\}"
                         r"(?P<opt>\[.*?\])?",
-                        buffer
+                        head_buffer
                     ):
                         current_id = m.group("id")
-                        targets[current_id] = ""
                         if m.group("opt"):
-                            buffer = ""
+                            head_buffer = ""
                             state = TARGET
                     continue
 
-            if line.startswith(("%", "\\toggletrue")):
+            if line.startswith("%"):
+                continue
+            if line.startswith("\\toggletrue"):
+                category = BIB
                 continue
             if "\\tcblower" in line:
+                targets[category][current_id] = item_buffer
+                item_buffer = ""
                 current_id = None
                 state = GOBBLE
                 continue
-            if targets[current_id]:
-                targets[current_id] += " "
-            targets[current_id] += line.strip().replace("\\@", "").replace("~", " ")
+            if item_buffer:
+                item_buffer += " "
+            item_buffer += line.strip().replace("\\@", "").replace("~", " ")
 
     return targets
 
@@ -90,7 +97,7 @@ def get_bibitems(filename: str) -> t.List[str]:
         raise click.FileError(f"Could not generate {filename}.")
     print()
 
-    # Process BBL file:
+    # Process BBI file:
     preamble = True
     lines = list()
     current_line = list()
@@ -139,23 +146,26 @@ def get_bibitems(filename: str) -> t.List[str]:
     return lines
 
 
-def parse_simple_bibitems(lines: t.List[str]) -> t.Mapping[str, str]:
+def parse_simple_bibitems(lines: t.List[str]) -> t.Mapping[str, t.Mapping[str, str]]:
     """Parses the output from biblatex2bibitem and returns a mapping of
     IDs to actual bibitem output.
     """
-    outputs = dict()
+    outputs = {BIB: dict(), CIT: dict()}
 
+    category = BIB
     current_id = None
     for line in lines:
         if current_id is None:
             if m := re.search(r"\\bibitem\{(?P<id>[^}]*)\}", line):
                 current_id = m.group("id")
+            elif line.startswith("References"):
+                category = CIT
         elif line == "":
             current_id = None
         else:
             line = re.sub(r"‘(.*?)’", r"\\enquote{\1}", line)
             line = re.sub(r", (\d{4})[ab]\. ", r", \1. ", line)
-            outputs[current_id] = line.replace("’", "'").replace("–", "--")
+            outputs[category][current_id] = line.replace("’", "'").replace("–", "--")
 
     return outputs
 
@@ -199,7 +209,14 @@ def main(style):
     targets = extract_targets(f"{style}-doc.tex")
     lines = get_bibitems(f"{style}.bbi")
     outputs = parse_simple_bibitems(lines)
-    contrast_refs(Target=targets, Output=outputs)
+    click.echo(
+        click.style("Targets:", bold=True)
+        + f" {len(targets[BIB])} {BIB}, {len(targets[CIT])} {CIT}. "
+        + click.style("Outputs:", bold=True)
+        + f" {len(outputs[BIB])} {BIB}, {len(outputs[CIT])} {CIT}.\n"
+    )
+    contrast_refs(Target=targets[BIB], Output=outputs[BIB])
+    contrast_refs(Target=targets[CIT], Output=outputs[CIT])
 
 
 if __name__ == "__main__":

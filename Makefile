@@ -26,8 +26,14 @@ $(NAME).pdf: $(NAME).dtx $(NAME).bbx $(STY1).bbx $(STY1).cbx british-$(NAME).lbx
 $(STYS:%=%-doc.pdf): %-doc.pdf : %-doc.tex $(NAME).bbx %.bbx %.cbx british-$(NAME).lbx english-$(NAME).lbx
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
 
-$(STYS:%=test-%.tex): test-%.tex : test-template.tex
-	sed 's/style=oxref/style=$*/' $< > $@
+test-oxalph.tex : test-template.tex
+	sed 's/style=oxref/style=oxalph/' $< > $@
+test-oxnotes.tex : test-template.tex
+	sed 's/style=oxref/style=oxnotes,scnames/' $< > $@
+test-oxnum.tex : test-template.tex
+	sed 's/style=oxref/style=oxnum,scnames,backref=true/' $< > $@
+test-oxyear.tex : test-template.tex
+	sed 's/style=oxref/style=oxyear/' $< > $@
 $(STYS:%=test-%.pdf): test-%.pdf : test-%.tex $(NAME).bbx %.bbx %.cbx british-$(NAME).lbx english-$(NAME).lbx
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
 $(STYS:%=%.bbi): %.bbi : test-%.pdf
