@@ -13,7 +13,6 @@ LOCAL = $(shell kpsewhich --var-value TEXMFLOCAL)
 UTREE = $(shell kpsewhich --var-value TEXMFHOME)
 
 .PHONY: source clean distclean inst uninst install uninstall zip ctan
-.INTERMEDIATE: test-*.tex test-*.pdf
 
 all: $(NAME).pdf $(STYS:%=%-doc.pdf) clean
 	@exit 0
@@ -41,7 +40,7 @@ $(STYS:%=%.bbi): %.bbi : test-%.pdf
 
 clean:
 	@for log in *.log; do [ -e "$$log" ] || continue; grep "WARNING: biblatex-oxref" $$log; test $$? -eq 1; done
-	rm -f $(NAME).{$(AUX)} $(STYS:%=%-doc.{$(AUX)}) $(STYS:%=test-%.{$(AUX)})
+	rm -f $(NAME).{$(AUX)} $(STYS:%=%-doc.{$(AUX)}) $(STYS:%=test-%.{tex,pdf}) $(STYS:%=test-%.{$(AUX)})
 	rm -f $(STYS:%=%.doc) {american,british,english}-$(NAME).doc
 	rm -rf _minted-*
 	rm -f $(NAME).markdown.in

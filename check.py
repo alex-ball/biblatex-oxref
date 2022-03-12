@@ -174,7 +174,6 @@ def parse_simple_bibitems(lines: t.List[str]) -> t.Mapping[str, t.Mapping[str, s
             line = re.sub(r"“\{”(.*?)\}", r"\\enquote{\1}", line)
             line = re.sub(r"‘(.*?)’(?!\w)", r"\\enquote{\1}", line)
             line = re.sub(r"(?<!\w)\{(.*?)\}(?!\w)", r"\1", line)
-            line = re.sub(r", (\d{4})[ab]\. ", r", \1. ", line)
             outputs[category][current_id] = (
                 line.replace("’", "'").replace("\\@", "").replace("~", " ")
             )
@@ -182,7 +181,7 @@ def parse_simple_bibitems(lines: t.List[str]) -> t.Mapping[str, t.Mapping[str, s
     return outputs
 
 
-def contrast_refs(**kwargs: t.Mapping[str, t.Mapping[str, str]]) -> None:
+def contrast_refs(**kwargs: t.Mapping[str, t.Mapping[str, str]]) -> t.Mapping[str, int]:
     """Performs a comparison between different sets of mappings from
     bib database IDs to formatted references.
 
@@ -194,22 +193,38 @@ def contrast_refs(**kwargs: t.Mapping[str, t.Mapping[str, str]]) -> None:
         raise click.ClickException("No contrast to make.")
 
     labels = list(kwargs.keys())
+    stats = {"passed": 0, "skipped": 0}
 
     for id, target in kwargs[labels[0]].items():
         errors = list()
+        skippable = "(not in book)" in target
+        ambiguous = (  # Should we ignore disambiguation letters?
+            (re.search(r"\(([–\d]+)\\emph\{[ab]\}\)", target) is None)
+            if not skippable
+            else False
+        )
         for label in labels[1:]:
             if id not in kwargs[label]:
                 errors.append(f"{label} is missing ID {id}.")
-            elif "(not in book)" in target:
-                continue
-            elif kwargs[label][id] != target:
-                errors.append(f"{label}: {kwargs[label][id]}")
+            elif skippable:
+                stats["skipped"] += 1
+            else:
+                if ambiguous:
+                    kwargs[label][id] = re.sub(
+                        r"\(([–\d]+)\\emph\{[ab]\}\)", r"(\1)", kwargs[label][id]
+                    )
+                if kwargs[label][id] == target:
+                    stats["passed"] += 1
+                else:
+                    errors.append(f"{label}: {kwargs[label][id]}")
         if errors:
             click.secho(id, bold=True)
             click.echo(f"{labels[0]}: {target}")
             for error in errors:
                 click.echo(error)
             print()
+
+    return stats
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -227,8 +242,20 @@ def main(style):
         + click.style("Outputs:", bold=True)
         + f" {len(outputs[BIB])} {BIB}, {len(outputs[CIT])} {CIT}.\n"
     )
-    contrast_refs(Target=targets[BIB], Output=outputs[BIB])
-    contrast_refs(Target=targets[CIT], Output=outputs[CIT])
+    stats = dict()
+    stats[BIB] = contrast_refs(Target=targets[BIB], Output=outputs[BIB])
+    stats[CIT] = contrast_refs(Target=targets[CIT], Output=outputs[CIT])
+    for key in [BIB, CIT]:
+        fails = len(targets[key])
+        for stat in stats[key].values():
+            fails -= stat
+        stats[key]["failed"] = fails
+        click.echo(
+            click.style(f"Test {key}:", bold=True)
+            + f" {stats[key]['passed']} passed;"
+            + f" {stats[key]['skipped']} skipped;"
+            + f" {stats[key]['failed']} failed."
+        )
 
 
 if __name__ == "__main__":
