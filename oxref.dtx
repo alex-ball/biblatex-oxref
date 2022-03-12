@@ -1946,7 +1946,7 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 %<a|y><NHR \S18.8.5*\textdagger>
 {li.etal2013flh}
 %<n|m>Shu Li et al., \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11 (2013), e78188. doi: \nolinkurl{10.1371/journal.pone.0078188}
-%<a|y>Li, S. et al. (2013), \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11, e78188. doi: \nolinkurl{10.1371/journal.pone.0078188}
+%<a|y>Li, S., et al. (2013), \enquote{Forever Love: The Hitherto Earliest Record of Copulating Insects from the Middle Jurassic of China}, \emph{PLoS ONE}, 8/11, e78188. doi: \nolinkurl{10.1371/journal.pone.0078188}
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -3239,9 +3239,9 @@ J. D. Denniston, \emph{The Greek Particles} (1934; 2nd edn., Oxford, 1954).
 
 \tip{Use the localization key \code{revised} as the edition to get \enquote{revised edition}. Use the localization key \code{revisedenlarged} as the edition to get \enquote{revised and enlarged edition}}
 
-\begin{bibexbox}<OGS \S15.2.1*>
+\begin{bibexbox}<OGS \S15.2.1>
 {gibbon1686dfs}[]
-[John Gibbon], \emph{Day-Fatality: Or Some Observations on Days Lucky and Unlucky}, (London, 1678; rev.~edn., 1686).
+[John Gibbon], \emph{Day-Fatality: Or Some Observations on Days Lucky and Unlucky} (London, 1678; rev.~edn., 1686).
 \tcblower
 \begin{Verbatim}
 %</n|m>
@@ -3334,7 +3334,7 @@ rather than within the publication block%
 %<a|y><OGS \S15.2.4\textdagger>
 {adam.tannery1897odd}
 %<n|m>C. Adam and D. Tannery (eds.), \emph{Œuvres de Descartes} (Paris: Cerf, 1897–1913; repr. Paris: J. Vrin, CNRS, 1964–76).
-%<a|y>Adam, C. and Tannery, D. (1897–1913) (eds.), \emph{Œuvres de Descartes} (Paris: Cerf; repr. Paris: J. Vrin, CNRS, 1964–76).
+%<a|y>Adam, C., and Tannery, D. (1897–1913) (eds.), \emph{Œuvres de Descartes} (Paris: Cerf; repr. Paris: J. Vrin, CNRS, 1964–76).
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -4983,7 +4983,7 @@ Sometimes publishers will put several works on a single release without giving i
 %<a|y><NHR \S18.7.2*\textdagger>
 {davis1997sw}
 %<n|m>Miles Davis et al., \enquote{So What}, in \emph{Kind of Blue}, rec. 1959 (Columbia CK 64935, 1997) [CD].
-%<a|y>Davis, M. et al. (1959), \enquote{So What}, in \emph{Kind of Blue} (Columbia CK 64935, 1997) [CD].
+%<a|y>Davis, M., et al. (1959), \enquote{So What}, in \emph{Kind of Blue} (Columbia CK 64935, 1997) [CD].
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -7174,14 +7174,14 @@ rather than \pkg[biblatex]{oxref}.}
       and
       test {\ifdefvoid{#2}}%
     }{}{%
-      \revsdnamepunct}%
+      \printdelim{revsdnamedelim}}%
     \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\bibnamedelimd\mkbibnametitle{#5}\isdot}{}}%
     \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
   }{%
     \usebibmacro{name:delim}{#1}%
     \usebibmacro{name:hook}{#1}%
     \mkbibnamefamily{#1}\isdot
-    \ifdefvoid{#4}{}{\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
+    \ifdefvoid{#4}{}{\ifnumeral{#4}{}{\addcomma}\bibnamedelimd\mkbibnamesuffix{#4}\isdot}%
     \ifboolexpe{%
       (test {\ifdefvoid{#5}} or not togl {blx@ox@nametitle})
       and
@@ -7189,7 +7189,7 @@ rather than \pkg[biblatex]{oxref}.}
       and
       test {\ifdefvoid{#3}}%
     }{}{%
-      \revsdnamepunct}%
+      \printdelim{revsdnamedelim}}%
     \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\bibnamedelimd\mkbibnametitle{#5}\isdot}{}}%
     \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
     \ifdefvoid{#3}{}{\bibnamedelimd\mkbibnameprefix{#3}\isdot}}}
@@ -7245,6 +7245,14 @@ rather than \pkg[biblatex]{oxref}.}
       \renewcommand*{\mkbibnamesuffix}[1]{##1}%
       \renewcommand*{\mkbibnametitle}[1]{##1}%
     }{}%
+    \ifboolexpe{%
+      test {\ifnumgreater{\value{listcount}}{1}}
+      or (
+        test {\ifdefvoid\namepartgiven}
+        and
+        test {\ifdefvoid\namepartprefix}
+      )
+    }{}{\usebibmacro{name:revsdelim}}%
   }{%
     \ifgiveninits{%
       \usebibmacro{name:title-given-family}%
@@ -7331,6 +7339,14 @@ rather than \pkg[biblatex]{oxref}.}
     \global\settoggle{blx@ox@variantname}{true}%
   }{%
     \global\settoggle{blx@ox@variantname}{false}}%
+  \ifboolexpe{%
+    test {\ifnumgreater{\value{listcount}}{1}}
+    or (
+      test {\ifdefvoid\namepartgiven}
+      and
+      test {\ifdefvoid\namepartprefix}
+    )
+  }{}{\usebibmacro{name:revsdelim}}%
   \usebibmacro{name:andothers}}
 %    \end{macrocode}
 %
@@ -11809,7 +11825,45 @@ reference,mvreference,inreference]{volume}{%
 % The driver for letters is similar to the one for other unpublished materials.
 %
 %    \begin{macrocode}
-\DeclareBibliographyAlias{letter}{unpublished}
+\DeclareBibliographyDriver{letter}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iffieldundef{library}{\togglefalse{blx@ox@ms}}{\toggletrue{blx@ox@ms}}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \setunit{\titlebyauthordelim}\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{note}%
+  \iffieldundef{howpublished}{}{\nopunct\printfield{howpublished}}%
+  \newunit\newblock
+  \iftoggle{blx@ox@ms}{%
+    \usebibmacro{manuscript:date}%
+    \newunit\newblock
+    \usebibmacro{library+location+series+number}%
+    \newunit
+    \printfield{support}%
+    \newunit
+    \usebibmacro{dating}%
+    \setunit{\datingpagespunct}
+    \usebibmacro{manuscript:pages}
+  }{%
+    \usebibmacro{location+date}%
+  }%
+  \newunit\newblock
+  \iftoggle{bbx:url}
+    {\usebibmacro{url+urldate}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
 \DeclareFieldFormat[letter]{title}{%
   \def\currentfield{title}%
   \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
