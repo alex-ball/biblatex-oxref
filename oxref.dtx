@@ -3291,21 +3291,27 @@ Marx, K. (1867), \emph{Capital: A Critique of Political Economy}, i, trans. B. F
 
 If the publication has not been revised, but has been re-typeset by a different publisher,
 the \emph{Oxford Guide to Style} suggests putting the original date in a note at the end,
-rather than within the publication block%
+after rather than within the publication block%
 %<n|m>.
 %<a|y>, but this does not affect the author–date style since the original date is at the head of the reference anyway.
 
 %<n|m>\spec{Author, \emph{Title} (Location: Publisher, Year) (\lit{originally pub.} Year).}
 %<a|y>\spec{Author (OrigYear), \emph{Title} (Location: Publisher).}
 
-%<n|m>\tip{This format is triggered if you specify an original date but do not specify the original publisher or location, nor the edition of the later publication.}
-%<n|m>\info{In the following example, you will see the style uses \enquote{originally published} instead of \enquote{first published}. This is because \enquote{originally} is more common among the available examples.}
+%<*n|m>
+\tip{This format is triggered if you specify an original date but do not specify the original publisher or location, nor the edition of the later publication.}
+\info{In the \emph{Oxford Guide to Style}, the following example has the string \enquote{first pub.\@} in place of the more common \enquote{originally pub.\@};
+to use this phrase in all entries, use the regular \pkg{biblatex} command to reset the string:}
+\begin{tcblisting}{listing only,left skip=2em}
+\DefineBibliographyStrings{english}{origpubin={first pub\adddot}}
+\end{tcblisting}
+%</n|m>
 
 \begin{bibexbox}
-%<n|m><OGS \S15.2.3>
+%<n|m><OGS \S15.2.3*>
 %<a|y><OGS \S15.2.3\textdagger>
 {bettelheim1976uem}
-%<n|m>Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (first pub. 1976).
+%<n|m>Bruno Bettelheim, \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988) (originally pub. 1976).
 %<a|y>Bettelheim, B. (1976), \emph{The Uses of Enchantment: The Meaning and Importance of Fairy Tales} (Harmondsworth: Penguin Books, 1988).
 \tcblower
 \begin{Verbatim}
@@ -3837,11 +3843,11 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 \tip{Use \code{origdate} to give the date of original publication.}
 
 \begin{bibexbox}
-%<n|m><OGS \S15.3>
-%<a|y><OGS \S15.3\textdagger>
+%<n|m><OGS \S15.3*>
+%<a|y><OGS \S15.3*\textdagger>
 {frege1892osr}
-%<n|m>G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).
-%<a|y>Frege, G. (1892), \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, trans. and ed. P. T. Geach and M. Black (Oxford: Blackwell, 1952).
+%<n|m>G. Frege, \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, ed. and trans. P. T. Geach and M. Black (Oxford: Blackwell, 1952) (originally pub. 1892).
+%<a|y>Frege, G. (1892), \enquote{On Sense and Reference}, in id., \emph{Philosophical Writings}, ed. and trans. P. T. Geach and M. Black (Oxford: Blackwell, 1952).
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -3860,6 +3866,12 @@ Biblatex provides the \code{bookinbook} entry type for citing a part of an antho
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
+
+\info{In the \emph{Oxford Guide to Style}, the above example has the string \enquote{trans.\@ and ed.\@} in place of \enquote{ed.\@ and trans.\@};
+to use this phrase in all entries, use the regular \pkg{biblatex} command to reset the string:}
+\begin{tcblisting}{listing only,left skip=2em}
+\DefineBibliographyStrings{english}{byeditortr={trans\adddotspace and ed\adddot}}
+\end{tcblisting}
 
 \subsection{Both versions equally accessible}
 
@@ -4437,7 +4449,9 @@ CNNR/GMH (Comisión Nacional de Reparación y Reconciliación y Grupo de Memoria
 %<*a|y>
 \begin{bibexbox}<OGS \S15.19.2>
 {opcs1979amt}
-Office of Population Censuses and Surveys (1979\emph{a}), \emph{Area Mortality Tables: The Registrar-General's Decennial Supplement for England and Wales 1969–1973}, Series DS, No.~3 (London)
+%<a>Office of Population Censuses and Surveys (1979),
+%<y>Office of Population Censuses and Surveys (1979\emph{a}),
+\emph{Area Mortality Tables: The Registrar-General's Decennial Supplement for England and Wales 1969–1973}, Series DS, No.~3 (London)
 \tcblower
 \begin{Verbatim}
 %</a|y>
@@ -4457,7 +4471,9 @@ Office of Population Censuses and Surveys (1979\emph{a}), \emph{Area Mortality T
 
 \begin{bibexbox}<OGS \S15.19.2>
 {opcs1979pnc}
-Office of Population Censuses and Surveys (1979\emph{b}), \emph{Projections of the New Commonwealth and Pakistani Population}, OPCS Monitor PP2 79/1 (London)
+%<a>Office of Population Censuses and Surveys (1979),
+%<y>Office of Population Censuses and Surveys (1979\emph{b}),
+\emph{Projections of the New Commonwealth and Pakistani Population}, OPCS Monitor PP2 79/1 (London)
 \tcblower
 \begin{Verbatim}
 %</a|y>
@@ -7677,7 +7693,7 @@ rather than \pkg[biblatex]{oxref}.}
 % We make the punctuation between a title and \enquote{by [author]} configurable.
 %
 %    \begin{macrocode}
-\newcommand{\titlebyauthordelim}{\addspace}
+\newcommand{\titlebyauthordelim}{\addcomma\space}
 %    \end{macrocode}
 %
 % Following |authortitle| and |authoryear|, we redefine the |editor| and
