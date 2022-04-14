@@ -82,6 +82,7 @@ acs-*.bib
 *-tikzDictionary
 
 # listings
+*.listing
 *.lol
 
 # makeidx
