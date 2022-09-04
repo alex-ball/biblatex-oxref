@@ -6229,6 +6229,8 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \end{Verbatim}
 \end{bibexbox}
 
+\tip{Unreported cases with a \code{neutralcite} or \code{number} do not show the date after the \code{institution}.}
+
 \begin{bibexbox}
 <OSCOLA \S2.1.4>
 {calvert02}
@@ -6301,7 +6303,7 @@ Joined Cases C-430/93–C-431/93 \emph{Jereon van Schijndel v Stichting Pensioen
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Indicate Commission Decisions by putting \code{Commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field, and put the case number in the (non-standard) \code{casenumber} field or (\pkg{oscola}-supported) \code{userb} field. If wider portability is an issue, you can put the case number, including the word \enquote{Case} if needed, in the \code{titleaddon} field instead.}
+\tip{Indicate Commission Decisions by putting \code{Commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field, and put the case number in the (non-standard) \code{casenumber} field; the \enquote{Case} prefix is added automatically in this case. Alternatively, you can put the case number (including the word \enquote{Case} if needed) in the \code{userb} field for compatibility with \pkg{oscola}, or in the \code{titleaddon} field for wider portability.}
 
 \begin{bibexbox}
 <OGS \S13.2.6>
@@ -6508,7 +6510,13 @@ if you give the \code{journltitle} as \code{CD} or \code{DR}.}
 \end{Verbatim}
 \end{bibexbox}
 
-\subsection{Cases from other jurisdiction}
+\subsection{Cases from other jurisdictions}
+
+The \emph{Oxford Guide to Style}, \emph{New Hart's Rules}, and \emph{OSCOLA}
+provide only limited information on citing cases from other jurisdictions,
+deferring to other authorities I can't effectively support in
+\pkg[biblatex]{oxref}. The examples in this section demonstrate a few
+formats that can nevertheless be achieved.
 
 \subsubsection{Australia}
 
@@ -6616,8 +6624,7 @@ if you give the \code{journltitle} as \code{CD} or \code{DR}.}
 %</n|m|a|y>
 @jurisdiction{operadora09,
   title = {Re Operadora D.B. Mexico S.A.},
-  indextitle = {Operadora D.B. Mexico S.A., Re},
-  number = {6:09-cv-383-Orl022GJK},
+  number = {6:09-cv-383-Orl 022GJK},
   eprint = {2009 WL 2423138},
   court = {M.D. Fla.},
   date = {2009},
@@ -6648,7 +6655,7 @@ if you give the \code{journltitle} as \code{CD} or \code{DR}.}
 
 \begin{bibexbox}
 {nicaragua}
-\emph{Land, Island and Maritime Frontier Case (El Salvador/ Honduras, Nicaragua intervening)} (Application for Intervention) [1994] ICJ Rep 92
+\emph{Land, Island and Maritime Frontier Case (El Salvador/Honduras, Nicaragua intervening)} (Application for Intervention) [1994] ICJ Rep 92
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6666,7 +6673,7 @@ if you give the \code{journltitle} as \code{CD} or \code{DR}.}
 
 \begin{bibexbox}
 {wall}
-\emph{Legal Consequences of the Construction of a Wall} (Advisory Opinion) (2004) $\langle$\url{http://www.icj-cij.org/icjwww/imwp/imwpframe.htm}$\rangle$ accessed 21 July 2005
+\emph{Legal Consequences of the Construction of a Wall} (Advisory Opinion) (2004) \url{http://www.icj-cij.org/icjwww/imwp/imwpframe.htm} accessed 21 July 2005
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6684,7 +6691,7 @@ if you give the \code{journltitle} as \code{CD} or \code{DR}.}
 
 \begin{bibexbox}
 {chorzow}
-\emph{Case Concerning the Factory at Chorzów} (Germany v Poland) (Merits) [1928] PCIJ Rep Series A No 17
+\emph{Case Concerning the Factory at Chorzów (Germany v Poland)} (Merits) [1928] PCIJ Rep Series A No 17
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6766,7 +6773,7 @@ Learner Travel (Wales) Measure 2008 (nawm 2)
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
-  
+
 \begin{bibexbox}
 <OSCOLA \S2.4.5>
 {academies}
@@ -6801,7 +6808,7 @@ Explanatory Notes on the Charities Act 2006
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
-  
+
 \tip{Specify an \code{entrysubtype} of \code{secondary} for secondary legislation.
   The number is then printed as well.}
 
@@ -6838,15 +6845,20 @@ Eggs and Chicks (England) Regulations 2009, SI 2009/2163
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
-  
-%<*n|m|a>
-\begin{egcite}{}
-\textcite[7(3)]{eggs}
+
+%<*n>
+\begin{egcite}{\emph{Eggs and Chicks (England) Regulations}, reg.~7(3)}
+\cite[\pno~7(3)]{eggs}
 \end{egcite}
-%</n|m|a>
+%</n>
+%<*m|a>
+\begin{egcite}{}
+\textcite[\pno~7(3)]{eggs}
+\end{egcite}
+%</m|a>
 %<*y>
 \begin{egcite}{}
-\parencite[7(3)]{eggs}
+\parencite[\pno~7(3)]{eggs}
 \end{egcite}
 %</y>
 
@@ -6859,7 +6871,7 @@ According to both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules},
 you can provide an even sparser reference for primary European legislation.
 
 %<*n>
-\begin{egcite}{EC Treaty (Treaty of Rome, as amended), art.\@ 3b}
+\begin{egcite}{EC Treaty (Treaty of Rome, as amended), art.~3b}
 \cite[\pno~3b]{ECT:Rome}
 \end{egcite}
 %</n>
@@ -6916,7 +6928,7 @@ Consolidated Version of the Treaty on European Union [2008] OJ C115/13
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
-  
+
 Secondary legislation should always have a full reference.
 
 \begin{bibexbox}
@@ -7041,7 +7053,7 @@ Convention for the Protection of Human Rights and Fundamental Freedoms (opened f
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
-  
+
 \section{Hansard}
 
 References to Hansard use the \code{legal} entry type, with \code{parliamentary} as the \code{entrysubtype}.
@@ -11503,6 +11515,8 @@ reference,mvreference,inreference]{volume}{%
     test {\iffieldundef{journaltitle}}%
     and
     test {\iffieldundef{number}}%
+    and
+    test {\iffieldundef{neutralcite}}%
   }{%
     \setunit{\addcomma\space}%
     \usebibmacro{date}%
@@ -11877,6 +11891,8 @@ reference,mvreference,inreference]{volume}{%
 \newbibmacro{enjuriscitation}{%
   \usebibmacro{title}%
   \setunit{\addspace}\newblock
+  \printfield{neutralcite}%
+  \setunit*{\addcomma\space}%
   \printfield{number}%
   \setunit*{\addcomma\space}%
   \iffieldundef{journaltitle}{}{%
@@ -14883,11 +14899,12 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \DeclareDatamodelFields[type=field,datatype=date]{pardate}
-\DeclareDatamodelFields[type=field,datatype=literal]{parreporter,parseries}
+\DeclareDatamodelFields[type=field,datatype=literal]{%
+  parreporter,parseries,neutralcite}
 \DeclareDatamodelFields[type=field,datatype=integer]{parvolume}
 \DeclareDatamodelFields[type=field,datatype=range]{parpages}
-\DeclareDatamodelEntryfields[jurisdiction]{pardate,parreporter,parseries,%
-  parvolume,parpages}
+\DeclareDatamodelEntryfields[jurisdiction]{neutralcite,pardate,%
+  parreporter,parseries,parvolume,parpages}
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
