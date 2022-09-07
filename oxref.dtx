@@ -7652,6 +7652,28 @@ rather than \pkg[biblatex]{oxref}.}
 }
 %    \end{macrocode}
 %
+% This utility will help with bibstrings that refer to languages.
+%
+%    \begin{macrocode}
+\newcommand{\langbibstring@english}[2]{#1\addspace\bibstring{#2}}
+\let\langbibstring@american\langbibstring@english
+\let\langbibstring@australian\langbibstring@english
+\let\langbibstring@british\langbibstring@english
+\let\langbibstring@canadian\langbibstring@english
+\let\langbibstring@newzealand\langbibstring@english
+\let\langbibstring@UKenglish\langbibstring@english
+\let\langbibstring@USenglish\langbibstring@english
+\newcommand{\langbibstring}[2]{%
+  \ifboolexpr{
+    test {\ifcsdef{langbibstring@\currentlang}}
+    and
+    test {\notblank{#1}}
+  }{%
+    \csuse{langbibstring@\currentlang}{#1}{#2}%
+  }{%
+    \bibstring{#2}}}
+%    \end{macrocode}
+%
 % We base our styles on the standard on the principle of least surprise
 % (and to aid with maintenance in the face of new \pkg{biblatex} versions).
 % We set some defaults different to the standard ones, but the author can
@@ -8414,8 +8436,7 @@ rather than \pkg[biblatex]{oxref}.}
       \printtext[parens]{\printfield{origtitle}}%
     }{%
       \printtext[brackets]{%
-        \printlist{language}\space
-        \bibstring{translationof}\space
+        \langbibstring{\printlist{language}}{translationof}\addspace
         \printfield{origtitle}}}}}
 %    \end{macrocode}
 %
@@ -12623,8 +12644,11 @@ reference,mvreference,inreference]{volume}{%
   \docsvfield{related}%
 }
 \DeclareFieldFormat{relatedstring:translationof}{%
-  \usebibmacro{rellanguage}\space
-  \bibstring{original}\addcomma\space}
+  \iffieldundef{relatedstring}{%
+    \langbibstring{\usebibmacro{rellanguage}}{original}%
+    \printunit{\addcomma\space}
+  }{%
+    \thefield{relatedstring}\printunit{\relatedpunct}}}
 
 \DeclareFieldFormat{related:translationof}{%
   \mkbibbrackets{#1}}
