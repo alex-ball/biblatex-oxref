@@ -6303,7 +6303,13 @@ Joined Cases C-430/93–C-431/93 \emph{Jereon van Schijndel v Stichting Pensioen
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{Indicate Commission Decisions by putting \code{Commission} in the \code{institution} field. If a decision has a formal decision number, put this in the \code{number} field, and put the case number in the (non-standard) \code{casenumber} field; the \enquote{Case} prefix is added automatically in this case. Alternatively, you can put the case number (including the word \enquote{Case} if needed) in the \code{userb} field for compatibility with \pkg{oscola}, or in the \code{titleaddon} field for wider portability.}
+\tip{Indicate Commission Decisions by putting \code{Commission} in the \code{institution} field.
+  If a decision has a formal decision number, put this in the \code{number} field,
+  and put the case number in the (non-standard) \code{casenumber} field;
+  the \enquote{Case} prefix is added automatically in this case.
+  Alternatively, you can put the case number (including the word \enquote{Case} if needed)
+  in the \code{userb} field for compatibility with \pkg{oscola},
+  or in the \code{titleaddon} field for wider portability.}
 
 \begin{bibexbox}
 <OGS \S13.2.6>
@@ -11624,8 +11630,6 @@ reference,mvreference,inreference]{volume}{%
         \printfield{number}}}%
   }{%
     \printtext[parens]{%
-      \usebibmacro{eucasetype}%
-      \setunit{\addnbspace}%
       \printfield{userb}}%
     \setunit{\addspace}%
     \iffieldundef{number}{}{%
