@@ -142,4 +142,4 @@ venv/
 biblatex-oxref*.zip
 oxref.pdf
 test-ox*.tex
-test-ox*.pdf
+test-*.pdf

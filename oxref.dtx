@@ -7652,26 +7652,14 @@ rather than \pkg[biblatex]{oxref}.}
 }
 %    \end{macrocode}
 %
-% This utility will help with bibstrings that refer to languages.
+% The \cs{blx@ox@langbibstring} utility is used to prefix a bibstring with one
+% or more language names, but since this only works in certain languages, by
+% default it discards the language names (first argument) and just prints the
+% bibstring (second argument). This is overridden in |english-oxref.lbx| and
+% friends.
 %
 %    \begin{macrocode}
-\newcommand{\langbibstring@english}[2]{#1\addspace\bibstring{#2}}
-\let\langbibstring@american\langbibstring@english
-\let\langbibstring@australian\langbibstring@english
-\let\langbibstring@british\langbibstring@english
-\let\langbibstring@canadian\langbibstring@english
-\let\langbibstring@newzealand\langbibstring@english
-\let\langbibstring@UKenglish\langbibstring@english
-\let\langbibstring@USenglish\langbibstring@english
-\newcommand{\langbibstring}[2]{%
-  \ifboolexpr{
-    test {\ifcsdef{langbibstring@\currentlang}}
-    and
-    test {\notblank{#1}}
-  }{%
-    \csuse{langbibstring@\currentlang}{#1}{#2}%
-  }{%
-    \bibstring{#2}}}
+\def\blx@ox@langbibstring#1#2{\bibstring{#2}}
 %    \end{macrocode}
 %
 % We base our styles on the standard on the principle of least surprise
@@ -8426,7 +8414,7 @@ rather than \pkg[biblatex]{oxref}.}
 % native language translation of a foreign work, the original title is given
 % in parentheses. If the cited work is foreign translation of a native language
 % work, the original title is printed in square brackets, preceded by the name
-% of the foreign language and \enquote{translation of}.
+% of the foreign language (if appropriate) and \enquote{translation of}.
 %
 %    \begin{macrocode}
 \DeclareFieldFormat{origtitle}{\mkbibemph{#1}}
@@ -8436,7 +8424,7 @@ rather than \pkg[biblatex]{oxref}.}
       \printtext[parens]{\printfield{origtitle}}%
     }{%
       \printtext[brackets]{%
-        \langbibstring{\printlist{language}}{translationof}\addspace
+        \blx@ox@langbibstring{\printlist{language}}{translationof}\addspace
         \printfield{origtitle}}}}}
 %    \end{macrocode}
 %
@@ -12633,8 +12621,8 @@ reference,mvreference,inreference]{volume}{%
 %
 % \subsubsection{Translations}
 %
-% Where related item is the translation, the related string is prefaced with the
-% language.
+% Where the related item is the translation, the related string is (by default,
+% in English at least) prefaced with the language.
 %
 %    \begin{macrocode}
 \newbibmacro*{rellanguage}{%
@@ -12645,7 +12633,7 @@ reference,mvreference,inreference]{volume}{%
 }
 \DeclareFieldFormat{relatedstring:translationof}{%
   \iffieldundef{relatedstring}{%
-    \langbibstring{\usebibmacro{rellanguage}}{original}%
+    \blx@ox@langbibstring{\usebibmacro{rellanguage}}{original}%
     \printunit{\addcomma\space}
   }{%
     \thefield{relatedstring}\printunit{\relatedpunct}}}
@@ -14947,11 +14935,17 @@ reference,mvreference,inreference]{volume}{%
 % \setcounter{FancyVerbLine}{19}
 %
 % Here we set some language-specific punctuation and date formatting.
+% In particular, we set \cs{blx@ox@langbibstring} to use its first
+% argument.
 %
 %    \begin{macrocode}
 \InheritBibliographyExtras{english}
 \DeclareBibliographyExtras{%
   \def\finalandcomma{\addcomma}%
+  \def\blx@ox@langbibstring#1#2{#1\addspace\bibstring{#2}}%
+}
+\UndeclareBibliographyExtras{%
+  \def\blx@ox@langbibstring#1#2{\bibstring{#2}}%
 }
 %    \end{macrocode}
 %
@@ -15351,11 +15345,16 @@ reference,mvreference,inreference]{volume}{%
 %    \end{macrocode}
 %
 % As you'd expect from an Oxford style, we use the Oxford comma, and use a
-% period as the time separator.
+% period as the time separator. The redefinition of \cs{blx@ox@langbibstring}
+% is given here as well.
 %
 %    \begin{macrocode}
   \def\finalandcomma{\addcomma}%
   \def\bibtimesep{\addperiod}%
+  \def\blx@ox@langbibstring#1#2{#1\addspace\bibstring{#2}}%
+}
+\UndeclareBibliographyExtras{%
+  \def\blx@ox@langbibstring#1#2{\bibstring{#2}}%
 }
 %    \end{macrocode}
 %
