@@ -6175,25 +6175,6 @@ Both the \emph{Oxford Guide to Style} and \emph{New Hart's Rules} are inconsiste
 \end{Verbatim}
 \end{bibexbox}
 
-\begin{bibexbox}
-<NHR \S13.4.1>
-{michael1976}
-\emph{Michael v Johnson}, 426 US 346 (1976)
-\tcblower
-\begin{Verbatim}
-%</n|m|a|y>
-@jurisdiction{michael1976,
-  title = {Michael v. Johnson},
-  volume = {426},
-  reporter = {U.S.},
-  pages = {346},
-  date = {1976},
-  keywords = {us}}
-%<*n|m|a|y>
-\end{Verbatim}
-\end{bibexbox}
-
-
 \subsection{Unreported cases}
 
 \tip{For cases reported in newspapers, set the \code{entrysubtype} to \code{newspaper}.}
@@ -6562,9 +6543,15 @@ formats that can nevertheless be achieved.
 
 \subsubsection{Canada}
 
+\info{\emph{New Hart's Rules} prefers to put commas between case titles and bare
+numbers, but you can suppress this for Canadian cases with the following command:}
+\begin{tcblisting}{listing only,left skip=2em}
+\renewcommand*{\cacasetitlepunct}{\addspace}
+\end{tcblisting}
+
 \begin{bibexbox}
 {clearbrook}
-\emph{Clearbrook Ironworks Ltd v Letorneau} 2006 FCA 42, 46 CPR (4th) 241
+\emph{Clearbrook Ironworks Ltd v Letorneau}, 2006 FCA 42, 46 CPR (4th) 241
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6584,10 +6571,34 @@ formats that can nevertheless be achieved.
 
 \subsubsection{United States of America}
 
+\info{\emph{New Hart's Rules} prefers to put commas between case titles and bare
+numbers, but you can suppress this for American cases with the following command:}
+\begin{tcblisting}{listing only,left skip=2em}
+\renewcommand*{\uscasetitlepunct}{\addspace}
+\end{tcblisting}
+
 \begin{bibexbox}
-<OSCOLA \S2.8.1>
+<NHR \S13.4.1>
+{michael1976}
+\emph{Michael v Johnson}, 426 US 346 (1976)
+\tcblower
+\begin{Verbatim}
+%</n|m|a|y>
+@jurisdiction{michael1976,
+  title = {Michael v. Johnson},
+  volume = {426},
+  reporter = {U.S.},
+  pages = {346},
+  date = {1976},
+  keywords = {us}}
+%<*n|m|a|y>
+\end{Verbatim}
+\end{bibexbox}
+  
+\begin{bibexbox}
+<OSCOLA \S2.8.1*>
 {henningsen60}
-\emph{Henningsen v Bloomfield Motors Inc} 161 A 2d 69 (NJ 1960)
+\emph{Henningsen v Bloomfield Motors Inc}, 161 A 2d 69 (NJ 1960)
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6605,9 +6616,9 @@ formats that can nevertheless be achieved.
 \end{bibexbox}
 
 \begin{bibexbox}
-<OSCOLA \S2.8.1>
+<OSCOLA \S2.8.1*>
 {roe73}
-\emph{Roe v Wade} 410 US 113, 163–64 (1973)
+\emph{Roe v Wade}, 410 US 113, 163–64 (1973)
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6624,7 +6635,7 @@ formats that can nevertheless be achieved.
 
 \begin{bibexbox}
 {operadora09}
-\emph{Re Operadora DB Mexico SA} 6:09-cv-383-Orl 022GJK, 2009 WL 2423138 (MD Fla 2009)
+\emph{Re Operadora DB Mexico SA}, 6:09-cv-383-Orl 022GJK, 2009 WL 2423138 (MD Fla 2009)
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -6679,7 +6690,7 @@ formats that can nevertheless be achieved.
 
 \begin{bibexbox}
 {wall}
-\emph{Legal Consequences of the Construction of a Wall} (Advisory Opinion) (2004) \url{http://www.icj-cij.org/icjwww/imwp/imwpframe.htm} accessed 21 July 2005
+\emph{Legal Consequences of the Construction of a Wall} (Advisory Opinion) (2004), \url{http://www.icj-cij.org/icjwww/imwp/imwpframe.htm}, accessed 21 July 2005
 \tcblower
 \begin{Verbatim}
 %</n|m|a|y>
@@ -7678,9 +7689,10 @@ rather than \pkg[biblatex]{oxref}.}
 \ExecuteBibliographyOptions{urldate=comp,pagetracker,timezeros=false,time=12h,isbn=false}
 %    \end{macrocode}
 %
-% Here are the new default punctuation conventions. The new \cs{relatedtypepunct}
-% is for before the |relatedtype| localization string, while \cs{recordseriespunct}
-% is used for audiovisual resources.
+% Here are the new default punctuation conventions. The new \cs{recordseriespunct}
+% is used for audiovisual resources, while \cs{cacasetitlepunct} and
+% \cs{uscasetitlepunct} are for punctuation following the case title in Canadian and
+% American cases respectively.
 %
 %    \begin{macrocode}
 \renewcommand*{\labelnamepunct}{\addcomma\space}
@@ -7689,7 +7701,8 @@ rather than \pkg[biblatex]{oxref}.}
 \renewcommand*{\intitlepunct}{\nopunct\space}
 \renewcommand*{\bibnamedash}{\resizebox{2em}{\height}{\textemdash}\addthinspace}
 \newcommand*{\recordseriespunct}{\addcomma\space}
-\newcommand*{\relatedtypepunct}{\addsemicolon\space}
+\newcommand*{\cacasetitlepunct}{\addcomma\space}
+\newcommand*{\uscasetitlepunct}{\addcomma\space}
 \renewcommand*{\relateddelim}{\addsemicolon\space}
 \DeclareDelimFormat{revsdnamedelim}{\addcomma}
 \DeclareDelimFormat{authortypedelim}{\addspace}
@@ -11799,7 +11812,7 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \newbibmacro{cajuriscitation}{%
   \usebibmacro{title}%
-  \setunit{\addspace}\newblock
+  \setunit{\cacasetitlepunct}\newblock
   \printfield{number}%
   \setunit{\addcomma\space}%
   \iffieldundef{journaltitle}{}{%
@@ -11847,7 +11860,7 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \newbibmacro{usjuriscitation}{%
   \usebibmacro{title}%
-  \setunit{\addcomma\space}\newblock%
+  \setunit{\uscasetitlepunct}\newblock%
   \iffieldundef{journaltitle}{%
     \printfield{number}%
     \setunit{\addcomma\space}%

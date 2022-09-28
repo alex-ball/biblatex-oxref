@@ -130,6 +130,7 @@ sympy-plots-for-*.tex/
 venv/
 
 # Compiled files
+_markdown_*/
 *.bbi
 *.bbx
 *.bib
@@ -137,6 +138,8 @@ venv/
 *.dbx
 *.lbx
 *.ins
+*.hd
+*.markdown.in
 *-doc.pdf
 *-doc.tex
 biblatex-oxref*.zip
