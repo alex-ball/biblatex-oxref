@@ -5870,7 +5870,14 @@ Standard \textsf{biblatex} only provides for one title for online resources, whi
 \pkg[biblatex]{Oxref} provides only a basic level of support for legal references, in case you need to use some in a mainly non-legal text.
 For a more thorough and robust treatment, intended for a specialist readership, I recommend you use the \pkg{oscola} style instead.
 
-Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules} and the \emph{Oxford Standard for the Citation of Legal Authorities}, \pkg[biblatex]{oxref} largely mimics \pkg{oscola} and its data model, though there are some small formatting differences. What you should \emph{not} expect from \pkg[biblatex]{oxref} are facilities for compiling specialist indices of sources, or anything special regarding the handling of postnotes.
+Since there is a family resemblence between the \emph{Oxford Guide to Style\slash New Hart's Rules}
+and the \emph{Oxford Standard for the Citation of Legal Authorities},
+\pkg[biblatex]{oxref} largely mimics \pkg{oscola} and its data model, though there are some small formatting differences.
+What you should \emph{not} expect from \pkg[biblatex]{oxref} are facilities for compiling specialist indices of sources,
+or anything special regarding the handling of postnotes.
+
+\pkg[biblatex]{Oxref} follows \pkg{oscola} in stripping out abbreviation dots from most fields using regular expressions,
+but if you want to retain a dot that it strips, you can do so by writing it \verb|{.}|, \cs{adddot} or \cs{addotspace}.
 
 %<y>Since legal references are usually cited using footnotes, how \textsf{oxyear} should behave is not well defined. As a result, I have not configured it to do anything fancy: the full reference will be formatted just the same as with \textsf{oxnotes}, and citations will typically be title–year using parentheses in the usual way. I am open to suggestions for how to handle things better.
 
@@ -6720,7 +6727,7 @@ numbers, but you can suppress this for American cases with the following command
   journaltitle = {PCIJ Rep},
   series = {A},
   pages = {17},
-  date = {1929},
+  date = {1928},
   keywords = {int}}
 %<*n|m|a|y>
 \end{Verbatim}
@@ -7109,7 +7116,7 @@ Parl.\@ Deb.\@ (series 4) vol.\@ 24, col.\@ 234 (24 Mar.\@ 1895)
 %</n|m|a|y>
 @legal{pd4/24,
   entrysubtype = {parliamentary},
-  title = {Parl. Deb.},
+  title = {Parl\adddotspace Deb\adddot},
   series = {4},
   volume = {24},
   pages = {234},
@@ -10464,10 +10471,16 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{series+type+number}%
   \setunit{\addspace}%
   \usebibmacro{institution+location+date}%
-  \iffieldequals{entrysubtype}{\legreport}
-    {\setunit{\addspace}\nopunct}
-    {\newunit\newblock}%
-  \usebibmacro{chapter+pages}%
+  \iffieldequals{entrysubtype}{\legreport}{%
+    \setunit{\addspace}\nopunct
+    \let\origadddot\adddot
+    \def\adddot{}%
+    \usebibmacro{chapter+pages}%
+    \let\adddot\origadddot
+  }{%
+    \newunit\newblock
+    \usebibmacro{chapter+pages}%
+  }%
   \newunit
   \printfield{pagetotal}%
   \newunit\newblock
@@ -11515,9 +11528,13 @@ reference,mvreference,inreference]{volume}{%
     {\printfield{note}%
      \toggletrue{blx@ox@nopostnotedelim}}}
 \newbibmacro*{jurisdictionpages}{%
+  \let\origadddot\adddot
+  \def\adddot{}%
   \iffieldequals{entrysubtype}{\subtypenewsp}{}{%
     \setunit{\addspace}%
-    \printfield{pages}}}
+    \printfield{pages}}%
+  \let\adddot\origadddot
+}
 \newbibmacro{pcitenote}{%
   \iffieldundef{parreporter}{}{%
     \setunit{\addcomma\space}%
@@ -11810,6 +11827,8 @@ reference,mvreference,inreference]{volume}{%
   \printfield{titleaddon}%
 }
 \newbibmacro*{int:jurisdictionpages}{%
+  \let\origaddot\adddot
+  \def\adddot{}%
   \iffieldequals{journaltitle}{\pcijrep}{%
     \printtext{\bibcpstring{number}\addspace}%
     \iffieldundef{pages}{%
@@ -11817,7 +11836,9 @@ reference,mvreference,inreference]{volume}{%
     }{%
       \printfield{pages}}%
   }{%
-    \printfield{pages}}}
+    \printfield{pages}}%
+  \let\addot\origadddot
+}
 
 %    \end{macrocode}
 %
@@ -13153,10 +13174,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=title,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step [fieldsource=title,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
      \step[fieldsource=shorttitle,
            match=\regexp{(\d)\.(\d)},
@@ -13165,10 +13186,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=shorttitle,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step [fieldsource=shorttitle,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
      \step[fieldsource=parreporter,
            match=\regexp{(\d)\.(\d)},
@@ -13177,10 +13198,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=parreporter,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step [fieldsource=parreporter,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
      \step[fieldsource=journaltitle,
            match=\regexp{(\d)\.(\d)},
@@ -13189,10 +13210,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=journaltitle,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step [fieldsource=journaltitle,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
      \step[fieldsource=institution,
            match=\regexp{(\d)\.(\d)},
@@ -13201,10 +13222,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=institution,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step[fieldsource=institution,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
      \step[fieldsource=publisher,
            match=\regexp{(\d)\.(\d)},
@@ -13213,10 +13234,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=publisher,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step [fieldsource=publisher,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
      \step[fieldsource=location,
            match=\regexp{(\d)\.(\d)},
@@ -13225,10 +13246,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=location,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step [fieldsource=location,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
      \step[fieldsource=series,
            match=\regexp{(\d)\.(\d)},
@@ -13237,10 +13258,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=series,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step [fieldsource=series,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
      \step[fieldsource=indextitle,
            match=\regexp{(\d)\.(\d)},
@@ -13249,10 +13270,10 @@ reference,mvreference,inreference]{volume}{%
            match=\regexp{(\D)\.(\d)},
            replace=\regexp{$1 $2}]
      \step[fieldsource=indextitle,
-            match=\regexp{\.(\D)},
+            match=\regexp{(?:\A|[^{])\K\.([^\d}])},
             replace=\regexp{$1}]
      \step [fieldsource=indextitle,
-            match=\regexp{(\D)\.},
+            match=\regexp{([^\d{])\.(?![}])},
             replace=\regexp{$1}]
     }
 %    \end{macrocode}
