@@ -8483,6 +8483,20 @@ rather than \pkg[biblatex]{oxref}.}
     \fi
 %    \end{macrocode}
 %
+% In legal references, the truncated year is at least two digits.
+%
+%    \begin{macrocode}
+      \ifboolexpr{
+      (
+        test {\ifentrytype{jurisdiction}}
+        or
+        test {\ifentrytype{legislation}}
+      )
+      and
+      test {\IfStrEq{\Result}{4}}
+    }{\def\Result{3}}{}%
+%    \end{macrocode}
+%
 % Since \cs{Result} is the number of digits to trim from the left hand side of
 % the year, plus one, we provide an extra sacrificial zero before trimming.
 %
