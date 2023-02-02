@@ -15180,7 +15180,7 @@ reference,mvreference,inreference]{volume}{%
   suplayer         = {{superior layer}{sup\adddotspace lay\adddot}},
   paper            = {{paper}{pap\adddot}},
   papyrus          = {{papyrus}{papy\adddot}},
-  parchment        = {{parchment}{perg\adddot}},
+  parchment        = {{parchment}{parch\adddot}},
   eucase           = {{Case}{Case}},
   eujoinedcases    = {{Joined Cases}{Joined Cases}},
   commissiondecision = {{Commission Decision}{Commission Decision}},
@@ -15472,20 +15472,20 @@ reference,mvreference,inreference]{volume}{%
 % \end{itemize}
 %
 %    \begin{macrocode}
-  director         = {{director}{dir\adddot}},
-  directors        = {{directors}{dirs\adddot}},
+  director         = {{r\'ealisateur}{r\'eal\adddot}},
+  directors        = {{r\'ealisateurs}{r\'eals\adddot}},
   performer        = {{}{}},
   performers       = {{}{}},
-  reader           = {{reader}{reader}},
-  readers          = {{readers}{readers}},
-  conductor        = {{conductor}{cond\adddot}},
-  conductors       = {{conductors}{cond\adddot}},
-  serieseditor     = {{series editor}{ser\adddotspace ed\adddot}},
-  serieseditors    = {{series editors}{ser\adddotspace eds\adddot}},
-  holder           = {{holder}{holder}},
-  holders          = {{holders}{holders}},
-  editorcm         = {{editor and compiler}{ed\adddotspace and comp\adddot}},
-  editorcms        = {{editors and compilers}{eds\adddotspace and comp\adddot}},
+  reader           = {{lecteur}{lecteur\adddot}},
+  readers          = {{lecteurs}{lects\adddot}},
+  conductor        = {{chef d'orchestre}{chef d'orch\adddot}},
+  conductors       = {{chefs d'orchestre}{chefs d'orch\adddot}},
+  serieseditor     = {{\'editeur de s\'erie}{\'ed\adddotspace ser\adddot}},
+  serieseditors    = {{\'editeurs de s\'erie}{\'ed\adddotspace ser\adddot}},
+  holder           = {{titulaire}{titulaire}},
+  holders          = {{titulaires}{titulaires}},
+  editorcm         = {{\'editeur et compilateur}{\'ed\adddotspace et comp\adddot}},
+  editorcms        = {{\'editeurs et compilateurs}{\'eds\adddotspace et comp\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -15494,12 +15494,13 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
   byperformer      = {{}{}},
-  bydirector       = {{directed by}{dir\adddot}},
-  byreader         = {{read by}{read by}},
-  byconductor      = {{conducted by}{cond\adddot}},
-  byserieseditor   = {{edited by}{ed\adddot}},
-  byholder         = {{held by}{held by}},
-  byeditorcm       = {{edited and compiled by}{ed\adddotspace and comp\adddot}},
+  bydirector       = {{r\'ealis\'e par}{r\'eal\adddot}},
+  byreader         = {{lu par}{lu par}},
+  byconductor      = {{dirig\'ee par}{dirig\adddot}},
+  byserieseditor   = {{sous la direction\smartof}{sous la dir\adddot\smartof}},
+  byholder         = {{d\'etenu par}{d\'etenu par}},
+  byeditorcm       = {{\'edition \'etablie et compil\'e par}%
+                      {\'ed\adddotspace \'etablie et comp\adddotspace par}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -15613,9 +15614,9 @@ reference,mvreference,inreference]{volume}{%
 % \end{itemize}
 %
 %    \begin{macrocode}
-  countryjp        = {{Japan}{JP}},
-  patentjp         = {{Japanese patent}{Japanese pat.\adddot}},
-  patreqjp         = {{Japanese patent request}{Japanese pat.\adddot req.\adddot}},
+  countryjp        = {{Japon}{JP}},
+  patentjp         = {{brevet japonais}{brev\adddotspace japon\adddot}},
+  patreqjp         = {{demande de brevet japonais}{demande de brev\adddotspace japon\adddot}},
 %    \end{macrocode}
 %
 % \begin{itemize}
@@ -15643,135 +15644,128 @@ reference,mvreference,inreference]{volume}{%
   inforce          = {{entered into force}{entered into force}},
 %    \end{macrocode}
 %
-% The rest of these strings are the standard ones, overridden to match the
-% examples in the \emph{Oxford Guide to Style} and \emph{New Hart's Rules}.
-% Many of these are guesses extrapolated from what is given.
+% The rest of these strings are overrides for the standard ones.
 %
-% The roles expressed as functions do not need adjusting. The roles
-% expressed as actions do not typically end in \enquote{by} when abbreviated;
-% the \enquote{with} parts go first when abbreviated if there is more than one
-% editorial role (at least, that is one way of interpreting the examples).
+% In parallel with the English versions, we remove the final \enquote{par} from
+% the abbreviated versions of the roles expressed as actions.
 %
 %    \begin{macrocode}
-  byeditor         = {{edited by}{ed\adddot}},
-  bycompiler       = {{compiled by}{comp\adddot}},
-  byfounder        = {{founded by}{found\adddot}},
-  bycontinuator    = {{continued by}{cont\adddot}},
-  byredactor       = {{redacted by}{red\adddot}},
-  byreviser        = {{revised by}{rev\adddot}},
-  byreviewer       = {{reviewed by}{rev\adddot}},
-  bycollaborator   = {{in collaboration with}{in collab\adddotspace with}},
-  bytranslator     = {{translated \lbx@lfromlang\ by}{trans\adddot\ \lbx@sfromlang}},
-  bycommentator    = {{commented by}{comm\adddot}},
-  byannotator      = {{annotated by}{annot\adddot}},
-  byeditortr       = {{edited and translated \lbx@lfromlang\ by}%
-                      {ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
-  byeditorco       = {{edited and commented by}%
-                      {ed\adddotspace and comm\adddot}},
-  byeditoran       = {{edited and annotated by}%
-                      {ed\adddotspace and annot\adddot}},
-  byeditorin       = {{edited, with an introduction, by}%
-                      {ed.\adddotspace with introduction}},
-  byeditorfo       = {{edited, with a foreword, by}%
-                      {ed.\adddotspace with foreword}},
-  byeditoraf       = {{edited, with an afterword, by}%
-                      {ed.\adddotspace with afterword}},
-  byeditortrco     = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented by}%
-                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
-  byeditortran     = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated by}%
-                      {ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
-  byeditortrin     = {{edited and translated \lbx@lfromlang, with an introduction, by}%
-                      {with introduction, ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
-  byeditortrfo     = {{edited and translated \lbx@lfromlang, with a foreword, by}%
-                      {with foreword, ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
-  byeditortraf     = {{edited and translated \lbx@lfromlang, with an afterword, by}%
-                      {with afterword, ed\adddotspace and trans\adddot\ \lbx@sfromlang}},
-  byeditorcoin     = {{edited and commented, with an introduction, by}%
-                      {with introduction, ed\adddotspace and comm\adddot}},
-  byeditorcofo     = {{edited and commented, with a foreword, by}%
-                      {with foreword, ed\adddotspace and comm\adddot}},
-  byeditorcoaf     = {{edited and commented, with an afterword, by}%
-                      {with afterword, ed\adddotspace and comm\adddot}},
-  byeditoranin     = {{edited and annotated, with an introduction, by}%
-                      {with introduction, ed\adddotspace and annot\adddot}},
-  byeditoranfo     = {{edited and annotated, with a foreword, by}%
-                      {with foreword, ed\adddotspace and annot\adddot}},
-  byeditoranaf     = {{edited and annotated, with an afterword, by}%
-                      {with afterword, ed\adddotspace and annot\adddot}},
-  byeditortrcoin   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with an introduction, by}%
-                      {with introduction, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
-  byeditortrcofo   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with a foreword, by}%
-                      {with foreword, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
-  byeditortrcoaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and commented, with an afterword, by}%
-                      {with afterword, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and comm\adddot}},
-  byeditortranin   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an introduction, by}%
-                      {with introduction, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
-  byeditortranfo   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with a foreword, by}%
-                      {with foreword, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
-  byeditortranaf   = {{edited, translated \lbx@lfromlang\finalandcomma\ and annotated, with an afterword, by}%
-                      {with afterword, ed.,\addabbrvspace trans\adddot\ \lbx@sfromlang\finalandcomma\ and annot\adddot}},
-  bytranslatorco   = {{translated \lbx@lfromlang\ and commented by}%
-                      {trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
-  bytranslatoran   = {{translated \lbx@lfromlang\ and annotated by}%
-                      {trans\adddot\ \lbx@sfromlang\ and annot\adddot}},
-  bytranslatorin   = {{translated \lbx@lfromlang, with an introduction, by}%
-                      {trans\adddot\ \lbx@sfromlang\ with introduction}},
-  bytranslatorfo   = {{translated \lbx@lfromlang, with a foreword, by}%
-                      {trans\adddot\ \lbx@sfromlang\ with foreword}},
-  bytranslatoraf   = {{translated \lbx@lfromlang, with an afterword, by}%
-                      {trans\adddot\ \lbx@sfromlang\ with afterword}},
-  bytranslatorcoin = {{translated \lbx@lfromlang\ and commented, with an introduction, by}%
-                      {with introduction, trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
-  bytranslatorcofo = {{translated \lbx@lfromlang\ and commented, with a foreword, by}%
-                      {with foreword, trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
-  bytranslatorcoaf = {{translated \lbx@lfromlang\ and commented, with an afterword, by}%
-                      {with afterword, trans\adddot\ \lbx@sfromlang\ and comm\adddot}},
-  bytranslatoranin = {{translated \lbx@lfromlang\ and annotated, with an introduction, by}%
-                      {with introduction, trans\adddot\ \lbx@sfromlang\ and annot\adddot}},
-  bytranslatoranfo = {{translated \lbx@lfromlang\ and annotated, with a foreword, by}%
-                      {with foreword, trans\adddot\ \lbx@sfromlang\ and annot\adddot}},
-  bytranslatoranaf = {{translated \lbx@lfromlang\ and annotated, with an afterword, by}%
-                      {with afterword, trans\adddot\ \lbx@sfromlang\ and annot\adddot}},
+  byeditor         = {{sous la direction\smartof}{sous la dir\adddot}},
+  bycompiler       = {{compil\'e par}{comp\adddot}},
+  byfounder        = {{d\'ecouvert par}{d\'ecouv\adddot}},
+  bycontinuator    = {{continu\'e par}{cont\adddot}},
+  byredactor       = {{r\'edig\'e par}{r\'ed\adddot}},
+  byreviser        = {{r\'evis\'e par}{r\'ev\adddot}},
+  byreviewer       = {{examin\'e par}{ex\adddot}},
+  bycollaborator   = {{avec la collaboration\smartof}{avec la coll\adddot}},
+  bytranslator     = {{traduit \lbx@lfromlang\ par}{trad\adddotspace \lbx@sfromlang}},
+  bycommentator    = {{comment\'e par}{comm\adddot}},
+  byannotator      = {{annot\'e par}{annot\adddot}},
+  byeditortr       = {{\'edition \'etablie et traduite \lbx@lfromlang\ par}%
+                      {\'ed\adddotspace \'etablie et trad\adddotspace \lbx@sfromlang}},
+  byeditorco       = {{\'edition \'etablie et comment\'ee par}%
+                      {\'ed\adddotspace \'etablie et comm\adddot}},
+  byeditoran       = {{\'edition \'etablie et annot\'ee par}%
+                      {\'ed\adddotspace \'etablie et annot\adddot}},
+  byeditorin       = {{\'edition \'etablie et introduite par}%
+                      {\'ed\adddotspace \'etablie et introd\adddot}},
+  byeditorfo       = {{\'edition \'etablie et pr\'efac\'ee par}%
+                      {\'ed\adddotspace \'etablie et pr\'ef\adddot}},
+  byeditoraf       = {{\'edition \'etablie et postfac\'ee par}%
+                      {\'ed\adddotspace \'etablie et postf\adddot}},
+  byeditortrco     = {{\'edition \'etablie, traduite \lbx@lfromlang\ et comment\'ee par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang\ et comm\adddot}},
+  byeditortran     = {{\'edition \'etablie, traduite \lbx@lfromlang\ et annot\'ee par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang\ et annot\adddot}},
+  byeditortrin     = {{\'edition \'etablie, traduite \lbx@lfromlang\ et introduite par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang\ et introd\adddot}},
+  byeditortrfo     = {{\'edition \'etablie, traduite \lbx@lfromlang\ et pr\'efac\'ee par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang\ et pr\'ef\adddot}},
+  byeditortraf     = {{\'edition \'etablie, traduite \lbx@lfromlang\ et postfac\'ee par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang\ et postf\adddot}},
+  byeditorcoin     = {{\'edition \'etablie, comment\'ee et introduite par}%
+                      {\'ed\adddotspace \'etablie, comm\adddotspace et introd\adddot}},
+  byeditorcofo     = {{\'edition \'etablie, comment\'ee et pr\'efac\'ee par}%
+                      {\'ed\adddotspace \'etablie, comm\adddotspace et pr\'ef\adddot}},
+  byeditorcoaf     = {{\'edition \'etablie, comment\'ee et postfac\'ee par}%
+                      {\'ed\adddotspace \'etablie, comm\adddotspace et postf\adddot}},
+  byeditoranin     = {{\'edition \'etablie, annot\'ee et introduite par}%
+                      {\'ed\adddotspace \'etablie, annot\adddotspace et introd\adddot}},
+  byeditoranfo     = {{\'edition \'etablie, annot\'ee et pr\'efac\'ee par}%
+                      {\'ed\adddotspace \'etablie, annot\adddotspace et pr\'ef\adddot}},
+  byeditoranaf     = {{\'edition \'etablie, annot\'ee et postfac\'ee par}%
+                      {\'ed\adddotspace \'etablie, annot\adddotspace et postf\adddot}},
+  byeditortrcoin   = {{\'edition \'etablie, traduite \lbx@lfromlang, comment\'ee et introduite par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang, comm\adddotspace et introd\adddot}},
+  byeditortrcofo   = {{\'edition \'etablie, traduite \lbx@lfromlang, comment\'ee et pr\'efac\'ee par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang, comm\adddotspace et pr\'ef\adddot}},
+  byeditortrcoaf   = {{\'edition \'etablie, traduite \lbx@lfromlang, comment\'ee et postfac\'ee par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang, comm\adddotspace et postf\adddot}},
+  byeditortranin   = {{\'edition \'etablie, traduite \lbx@lfromlang, annot\'ee et introduite par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang, annot\adddotspace et introd\adddot}},
+  byeditortranfo   = {{\'edition \'etablie, traduite \lbx@lfromlang, annot\'ee et pr\'efac\'ee par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang, annot\adddotspace et pr\'ef\adddot}},
+  byeditortranaf   = {{\'edition \'etablie, traduite \lbx@lfromlang, annot\'ee et postfac\'ee par}%
+                      {\'ed\adddotspace \'etablie, trad\adddotspace \lbx@sfromlang, annot\adddotspace et postf\adddot}},
+  bytranslatorco   = {{traduit \lbx@lfromlang\ et comment\'e par}%
+                      {trad\adddotspace \lbx@sfromlang\ et comm\adddot}},
+  bytranslatoran   = {{traduit \lbx@lfromlang\ et annot\'e par}%
+                      {trad\adddotspace \lbx@sfromlang\ et annot\adddot}},
+  bytranslatorin   = {{traduit \lbx@lfromlang\ et introduit par}%
+                      {trad\adddotspace \lbx@sfromlang\ et introd\adddot}},
+  bytranslatorfo   = {{traduit \lbx@lfromlang\ et pr\'efac\'e par}%
+                      {trad\adddotspace \lbx@sfromlang\ et pr\'ef\adddot}},
+  bytranslatoraf   = {{traduit \lbx@lfromlang\ et postfac\'e par}%
+                      {trad\adddotspace \lbx@sfromlang\ et postf\adddot}},
+  bytranslatorcoin = {{traduit \lbx@lfromlang, comment\'e et introduit par}%
+                      {trad\adddotspace \lbx@sfromlang, comm\adddotspace et introd\adddot}},
+  bytranslatorcofo = {{traduit \lbx@lfromlang, comment\'e et pr\'efac\'e par}%
+                      {trad\adddotspace \lbx@sfromlang, comm\adddotspace et pr\'ef\adddot}},
+  bytranslatorcoaf = {{traduit \lbx@lfromlang, comment\'e et postfac\'e par}%
+                      {trad\adddotspace \lbx@sfromlang, comm\adddotspace et postf\adddot}},
+  bytranslatoranin = {{traduit \lbx@lfromlang, annot\'e et introduit par}%
+                      {trad\adddotspace \lbx@sfromlang, annot\adddotspace et introd\adddot}},
+  bytranslatoranfo = {{traduit \lbx@lfromlang, annot\'e et pr\'efac\'e par}%
+                      {trad\adddotspace \lbx@sfromlang, annot\adddotspace et pr\'ef\adddot}},
+  bytranslatoranaf = {{traduit \lbx@lfromlang, annot\'e et postfac\'e par}%
+                      {trad\adddotspace \lbx@sfromlang, annot\adddotspace et postf\adddot}},
 %    \end{macrocode}
 %
 % The roles expressed as objects and terms for supplementary material
 % are not abbreviated.
 %
 %    \begin{macrocode}
-  withintroduction = {{with an introduction by}{with an introduction by}},
-  withcommentator  = {{with a commentary by}{with a commentary by}},
-  withannotator    = {{with annotations by}{with annotations by}},
-  withintroduction = {{with an introduction by}{with an introduction by}},
-  withforeword     = {{with a foreword by}{with a foreword by}},
-  withafterword    = {{with an afterword by}{with an afterword by}},
+  withcommentator  = {{avec des commentaires\smartof}{avec des commentaires\smartof}},
+  withannotator    = {{avec des annotations\smartof}{avec des annotations\smartof}},
+  withintroduction = {{avec une introduction\smartof}{avec une introduction\smartof}},
+  withforeword     = {{avec une pr\'eface\smartof}{avec une pr\'eface\smartof}},
+  withafterword    = {{avec une postface\smartof}{avec une postface\smartof}},
   introduction     = {{introduction}{introduction}},
 %    \end{macrocode}
 %
 % The abbreviations for some publication details are different.
 %
 %    \begin{macrocode}
-  newseries        = {{new series}{\mkbibacro{NS}}},
-  oldseries        = {{old series}{\mkbibacro{OS}}},
-  edition          = {{edition}{edn\adddot}},
-  reprint          = {{reprint\nopunct}{repr\adddot\nopunct}},
-  reviewof         = {{review of}{review of}},
-  reprintas        = {{reprinted as}{repr\adddotspace as}},
-  reprintfrom      = {{from}{from}},
-  translationas    = {{English translation as}{Eng\adddotspace trans\adddotspace as}},
-  origpubin        = {{originally published in}{originally pub\adddot}},
+  newseries        = {{nouvelle s\'erie}{\mkbibacro{NS}}},
+  oldseries        = {{ancienne s\'erie}{\mkbibacro{AS}}},
+  edition          = {{\'edition}{\'edn\adddot}},
+  reviewof         = {{critique de}{critique de}},
+  reprintfrom      = {{\`a partir\smartof}{\`a part\adddot\smartof}},
+  translationas    = {{traduction française\smartof}{trad\adddotspace française\smartof}},
+  origpubin        = {{publi\'e \`a l'origine en}{pub\adddotspace \`a l'orig\adddotspace}},
 %    \end{macrocode}
 %
 % There is also a different abbreviation for \enquote{paragraph}.
 %
 %    \begin{macrocode}
-  paragraph        = {{paragraph}{para\adddot}},
-  paragraphs       = {{paragraphs}{paras\adddot}},
+  paragraph        = {{paragraphe}{para\adddot}},
+  paragraphs       = {{paragraphes}{paras\adddot}},
 %    \end{macrocode}
 %
 % \emph{New Hart's Rules} uses \enquote{accessed} for URL dates.
 %
 %    \begin{macrocode}
-  urlseen          = {{accessed}{accessed}},
+  urlseen          = {{consult\'e}{consult\'e}},
 %    \end{macrocode}
 %
 % Scholarly citation terms are abbreviated. Oxford style is to use \enquote{henceforth}
@@ -15786,36 +15780,43 @@ reference,mvreference,inreference]{volume}{%
   idempf           = {{eaedem}{eaed\adddot}},
   idempn           = {{eadem}{ead\adddot}},
   idempp           = {{eidem}{eid\adddot}},
-  citedas          = {{henceforth}{henceforth}},
-  thiscite         = {{at}{at}},
+  citedas          = {{d\'esormais}{d\'esormais}},
+  thiscite         = {{\`a}{\`a}},
 %    \end{macrocode}
 %
 % Languages are abbreviated.
 %
 %    \begin{macrocode}
-  langamerican     = {{English}{Eng\adddot}},
-  langbrazilian    = {{Brazilian}{Braz\adddot}},
-  langcatalan      = {{Catalan}{Catal\adddot}},
-  langcroatian     = {{Croatian}{Croat\adddot}},
-  langczech        = {{Czech}{Czech}},
-  langdanish       = {{Danish}{Dan\adddot}},
-  langdutch        = {{Dutch}{Dutch}},
-  langenglish      = {{English}{Eng\adddot}},
-  langestonian     = {{Estonian}{Eston\adddot}},
-  langfinnish      = {{Finnish}{Finn\adddot}},
-  langfrench       = {{French}{Fr\adddot}},
-  langgerman       = {{German}{Ger\adddot}},
-  langgreek        = {{Greek}{Gr\adddot}},
-  langitalian      = {{Italian}{It\adddot}},
-  langlatin        = {{Latin}{Lat\adddot}},
-  langnorwegian    = {{Norwegian}{Norw\adddot}},
-  langpolish       = {{Polish}{Pol\adddot}},
-  langportuguese   = {{Portuguese}{Port\adddot}},
-  langrussian      = {{Russian}{Russ\adddot}},
-  langslovene      = {{Slovene}{Slov\adddot}},
-  langspanish      = {{Spanish}{Sp\adddot}},
-  langswedish      = {{Swedish}{Swed\adddot}},
-}
+langamerican     = {{am\'ericain}{am\'eric\adddot}},
+langbrazilian    = {{br\'esilien}{br\'esil\adddot}},
+langbulgarian    = {{bulgare}{bulg\adddot}},
+langcatalan      = {{catalan}{catal\adddot}},
+langcroatian     = {{croate}{croate}},
+langczech        = {{tch\`eque}{tch\`eque}},
+langdanish       = {{danois}{dan\adddot}},
+langdutch        = {{n\'eerlandais}{n\'eerland\adddot}},
+langenglish      = {{anglais}{angl\adddot}},
+langestonian     = {{estonien}{eston\adddot}},
+langfinnish      = {{finnois}{finnois}},
+langfrench       = {{fran\c{c}ais}{fran\c{c}\adddot}},
+langgalician     = {{galicien}{galic\adddot}},
+langgerman       = {{allemand}{allem\adddot}},
+langgreek        = {{grec}{grec}},
+langhungarian    = {{hongrois}{hongrois}},
+langitalian      = {{italien}{ital\adddot}},
+langjapanese     = {{japonais}{japon\adddot}},
+langlatin        = {{latin}{latin}},
+langlatvian      = {{letton}{letton}},
+langnorwegian    = {{norv\'egien}{norv\'eg\adddot}},
+langpolish       = {{polonais}{polon\adddot}},
+langportuguese   = {{portugais}{portug\adddot}},
+langrussian      = {{russe}{russe}},
+langserbian      = {{serbe}{serbe}},
+langslovak       = {{slovaque}{slovaque}},
+langslovene      = {{slov\`ene}{slov\`ene}},
+langspanish      = {{espagnol}{espagn\adddot}},
+langswedish      = {{su\'edois}{su\'ed\adddot}},
+langukrainian    = {{ukrainien}{ukrain\adddot}},
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
