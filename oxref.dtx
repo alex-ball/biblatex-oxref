@@ -1953,6 +1953,48 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 \end{Verbatim}
 \end{bibexbox}
 
+% Journal title is abbreviated, no following comma
+%</n|m|a|y>
+%<*n|m>
+\begin{bibexbox}<OGS \S15.4.1>
+{lindars1965eir}
+B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452–67.
+\tcblower
+\begin{Verbatim}
+%</n|m>
+%<*n|m|bib>
+@article{lindars1965eir,
+  author = {B. Lindars},
+  title = {Ezechiel and Individual Responsibility},
+  journaltitle = {VT},
+  volume = {15},
+  date = {1965},
+  pages = {452-467}}
+%</n|m|bib>
+%<*n|m>
+\end{Verbatim}
+\end{bibexbox}
+%</n|m>
+%<*n|m|a|y>
+
+If the last\slash only word of the journal title is abbreviated
+(indicated by point or capital letter), it does not need a comma after it.
+\pkg[biblatex]{Oxref} will try to detect this and adjust the punctuation accordingly;
+the list of characters that it uses is set with \cs{DeclareAbbrEndChars}.
+The default setting is this:
+
+\begin{tcblisting}{listing only}
+\DeclareAbbrEndChars{A\^{A}BCDEFG\u{G}HI\^{I}JKLMNO\"{O}\^{O}PQRSTU\"{U}\^{U}VWXYZ.}
+\end{tcblisting}
+
+There is also a starred version of the command that appends to this list:
+
+\begin{tcblisting}{listing only}
+\DeclareAbbrEndChars*{\c{C}\.{I}\c{S}}
+\end{tcblisting}
+
+\hack{To override this mechanism for a single entry, you can suppress the comma by adding \cs{nopunct} to the end of the journal (sub)title, or restore it by adding a pair of braces.}
+
 % Electronic identifier instead of a page range
 \begin{bibexbox}(hacked)
 %<n|m><NHR \S18.8.5*>
@@ -1976,31 +2018,6 @@ Unwin, T. (1994), \enquote{Structural Change in Estonian Agriculture: From Comma
 %<*n|m|a|y>
 \end{Verbatim}
 \end{bibexbox}
-
-\hack{If the last\slash only word of the journal title is abbreviated (indicated by point or capital letter), it does not need a comma after it. \pkg[biblatex]{Oxref} will try to detect this; if it gets it wrong, you can suppress the comma by adding \cs{nopunct} to the end of the journal (sub)title, or restore it by adding a pair of braces.}
-
-%</n|m|a|y>
-%<*n|m>
-\begin{bibexbox}<OGS \S15.4.1>
-{lindars1965eir}
-B. Lindars, \enquote{Ezechiel and Individual Responsibility}, \emph{VT} 15 (1965), 452–67.
-\tcblower
-\begin{Verbatim}
-%</n|m>
-%<*n|m|bib>
-@article{lindars1965eir,
-  author = {B. Lindars},
-  title = {Ezechiel and Individual Responsibility},
-  journaltitle = {VT},
-  volume = {15},
-  date = {1965},
-  pages = {452-467}}
-%</n|m|bib>
-%<*n|m>
-\end{Verbatim}
-\end{bibexbox}
-%</n|m>
-%<*n|m|a|y>
 
 % Unsigned, with month as issue name
 \begin{bibexbox}
@@ -8845,19 +8862,22 @@ rather than \pkg[biblatex]{oxref}.}
 \DeclareFieldFormat[article,periodical,suppperiodical,review]{entrysubtype}{\mkbibbrackets{#1}}
 %    \end{macrocode}
 %
-% We provide a command for testing if a title is abbreviated. We use the
-% traditional \LaTeX\ accent commands in case a non-Unicode input encoding is
-% being used. Testing for \c{C} and \c{S} causes errors when using OT1 encoding.
+% We provide a configurable command for testing if a title is abbreviated. We
+% test for ASCII capitals and a limited number of accented capitals by default,
+% but users can extend or replace the list if it causes problems.
 %
 %    \begin{macrocode}
-\newcommand*{\blx@ox@abbrevstring}{%
-  A\^{A}BCDEFG\u{G}HI\.{I}\^{I}JKLMNO\"{O}\^{O}PQRSTU\"{U}\^{U}VWXYZ.}%
-\AtBeginDocument{
-  \ifdefstring{\encodingdefault}{OT1}{}{%
-    \renewcommand*{\blx@ox@abbrevstring}{%
-      A\^{A}BC\c{C}DEFG\u{G}HI\.{I}\^{I}JKLMNO\"{O}\^{O}PQRS\c{S}TU\"{U}\^{U}VWXYZ.}%
-  }%
-}
+\global\let\blx@ox@abbrevstring\@empty
+\newrobustcmd*{\DeclareAbbrEndChars}{%
+  \@ifstar{%
+    \blx@ox@apptoabbrevstring
+  }{%
+    \global\let\blx@ox@abbrevstring\@empty
+    \blx@ox@apptoabbrevstring}}
+\def\blx@ox@apptoabbrevstring#1{
+  \xdef\blx@ox@abbrevstring{\blx@ox@abbrevstring#1}}
+\DeclareAbbrEndChars{%
+  A\^{A}BCDEFG\u{G}HI\^{I}JKLMNO\"{O}\^{O}PQRSTU\"{U}\^{U}VWXYZ.}%
 \newcommand*{\ifabbrev}[3]{%
   \StrRight{#1}{1}[\blx@ox@lastchar]%
   \expandafter\IfSubStr*{\blx@ox@abbrevstring}{\blx@ox@lastchar}{#2}{#3}%
