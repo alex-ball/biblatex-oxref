@@ -292,6 +292,12 @@ Copyright (C) 2016–2023 Alex Ball
 \colorlet{hacked}{orange}
 \colorlet{manual}{purple}
 
+\usepackage{iftex}
+\ifluatex
+  % Fix spacing in tcolorbox
+  \usepackage{luacolor}
+\fi
+
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,xparse,documentation,breakable,minted}
 \colorlet{Option}{violet}
@@ -2698,7 +2704,8 @@ Rosemary Stewart et al. (eds.), \emph{Managing in Britain} (London, 1994).
 %</n|m>
 %<*n|m|bib>
 @collection{stewart.etal1994mb,
-  editor = {Rosemary Stewart and Jean-Louis Barsoux and Alfred Kieser and Hans-Dieter Ganter and Peter Walgenbach},
+  editor = {Rosemary Stewart and Jean-Louis Barsoux and Alfred Kieser and Hans-Dieter Ganter
+    and Peter Walgenbach},
   title = {Managing in {Britain}},
   location = {London},
   date = {1994}}
@@ -8510,7 +8517,7 @@ rather than \pkg[biblatex]{oxref}.}
 % In legal references, the truncated year is at least two digits.
 %
 %    \begin{macrocode}
-      \ifboolexpr{
+    \ifboolexpr{
       (
         test {\ifentrytype{jurisdiction}}
         or
