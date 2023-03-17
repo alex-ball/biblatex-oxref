@@ -83,6 +83,10 @@
 \ProvidesFile{american-oxref.lbx}
     [\Version\space American English conventions required by the biblatex-oxref styles]
 %</lbx&us>
+%<*lbx&es>
+\ProvidesFile{spanish-oxref.lbx}
+    [\Version\space Spanish conventions required by the biblatex-oxref styles]
+%</lbx&es>
 %<*doc&n>
 \ProvidesFile{oxnotes-doc.tex}
     [\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]
@@ -215,6 +219,7 @@ Copyright (C) 2016–2023 Alex Ball
   \file{american-\jobname.lbx}{\from{\jobname.dtx}{lbx,us}}
   \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx,gb}}
   \file{english-\jobname.lbx}{\from{\jobname.dtx}{lbx,en}}
+  \file{spanish-\jobname.lbx}{\from{\jobname.dtx}{lbx,es}}
   \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc,n}}
   \file{oxnum-doc.tex}{\from{\jobname.dtx}{doc,m}}
   \file{oxalph-doc.tex}{\from{\jobname.dtx}{doc,a}}
@@ -766,7 +771,8 @@ UNIX-like systems:
       - oxnotes.cbx, oxnotes-ibid.cbx, oxnotes-note.cbx, oxnotes-inote.cbx,
         oxnotes-trad1.cbx, oxnotes-trad2.cbx, oxnotes-trad3.cbx, oxyear.cbx,
         oxnum.cbx, oxalph.cbx
-      - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx
+      - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx,
+        spanish-oxref.lbx
       - oxnotes.dbx, oxnotes-ibid.dbx, oxnotes-note.dbx, oxnotes-inote.dbx,
         oxnotes-trad1.dbx, oxnotes-trad2.dbx, oxnotes-trad3.dbx, oxyear.dbx,
         oxnum.dbx, oxalph.dbx
@@ -809,6 +815,7 @@ first two steps.
         american-oxref.lbx,
         british-oxref.lbx,
         english-oxref.lbx,
+        spanish-oxref.lbx
         oxalph.bbx,
         oxalph.cbx,
         oxalph.dbx,
@@ -15462,15 +15469,378 @@ reference,mvreference,inreference]{volume}{%
 \InheritBibliographyStrings{english}
 %    \end{macrocode}
 %
-% \section{Other languages}
-%
-% Currently \pkg[biblatex]{oxref} only supports British and American
-% English explicitly, but if there is demand more languages may be
-% added. If you would like to contribute support for your language, a
-% list of the non-standard bibliography strings requiring definition may
-% be found in section~\ref{sec:setup}.
-%
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</us>
+%<*es>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Spanish: spanish-oxref.lbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% We load the standard language-specific punctuation and date formatting.
+%
+%    \begin{macrocode}
+\InheritBibliographyExtras{spanish}
+%    \end{macrocode}
+%
+% We load the standard set of localization strings, then add our
+% adjustments.
+%
+%    \begin{macrocode}
+\DeclareBibliographyStrings{%
+  inherit          = {spanish},
+%    \end{macrocode}
+%
+% These are new strings defined by \pkg[biblatex]{oxref}:
+%
+% \begin{itemize}
+%   \item Roles expressed as functions
+% \end{itemize}
+%
+%    \begin{macrocode}
+  director         = {{director}{dir\adddot}},
+  directors        = {{directors}{dirs\adddot}},
+  performer        = {{}{}},
+  performers       = {{}{}},
+  reader           = {{reader}{reader}},
+  readers          = {{readers}{readers}},
+  conductor        = {{conductor}{cond\adddot}},
+  conductors       = {{conductors}{cond\adddot}},
+  serieseditor     = {{series editor}{ser\adddotspace ed\adddot}},
+  serieseditors    = {{series editors}{ser\adddotspace eds\adddot}},
+  holder           = {{holder}{holder}},
+  holders          = {{holders}{holders}},
+  editorcm         = {{editor and compiler}{ed\adddotspace and comp\adddot}},
+  editorcms        = {{editors and compilers}{eds\adddotspace and comp\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Roles expressed as actions
+% \end{itemize}
+%
+%    \begin{macrocode}
+  byperformer      = {{}{}},
+  bydirector       = {{directed by}{dir\adddot}},
+  byreader         = {{read by}{read by}},
+  byconductor      = {{conducted by}{cond\adddot}},
+  byserieseditor   = {{edited by}{ed\adddot}},
+  byholder         = {{held by}{held by}},
+  byeditorcm       = {{edited and compiled by}{ed\adddotspace and comp\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Publication details
+% \end{itemize}
+%
+%    \begin{macrocode}
+  facsimile        = {{facsimile edition}{facs\adddotspace edn\adddot}},
+  revised          = {{revised edition}{rev\adddotspace edn\adddot}},
+  revisedenlarged  = {{revised and enlarged edition}{rev\adddotspace and enl\addotspace edn\adddot}},
+  revisedreprint   = {{revised reprint}{rev\adddotspace repr\adddot}},
+  suppto           = {{Supplement to}{Supplement to}},
+  equals           = {{=}{=}},
+  original         = {{original}{orig\adddot}},
+  amendedby        = {{as amended by}{as amended by}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Publication state
+% \end{itemize}
+%
+%    \begin{macrocode}
+  inpressin        = {{to be published in}{to be published in}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Pagination
+% \end{itemize}
+%
+%    \begin{macrocode}
+  book             = {{book}{bk\adddot}},
+  books            = {{books}{bks\adddot}},
+  canto            = {{canto}{canto}},
+  cantos           = {{cantos}{cantos}},
+  stanza           = {{stanza}{stanza}},
+  stanzas          = {{stanzas}{stanzas}},
+  act              = {{Act}{Act}},
+  acts             = {{Acts}{Acts}},
+  scene            = {{Scene}{Scene}},
+  scenes           = {{Scenes}{Scenes}},
+  folio            = {{folio}{fo\adddot}},
+  folios           = {{folios}{fos\adddot}},
+  article          = {{article}{art\adddot}},
+  articles         = {{articles}{arts\adddot}},
+  clause           = {{clause}{cl\adddot}},
+  clauses          = {{clauses}{cls\adddot}},
+  regulation       = {{regulation}{reg\adddot}},
+  regulations      = {{regulations}{regs\adddot}},
+  rule             = {{rule}{r\adddot}},
+  rules            = {{rules}{rr\adddot}},
+  booktotal        = {{book}{bk\adddot}},
+  booktotals       = {{books}{bks\adddot}},
+  cantototal       = {{canto}{canto}},
+  cantototals      = {{cantos}{cantos}},
+  stanzatotal      = {{stanza}{stanza}},
+  stanzatotals     = {{stanzas}{stanzas}},
+  acttotal         = {{Act}{Act}},
+  acttotals        = {{Acts}{Acts}},
+  scenetotal       = {{Scene}{Scene}},
+  scenetotals      = {{Scenes}{Scenes}},
+  foliototal       = {{folio}{fo\adddot}},
+  foliototals      = {{folios}{fos\adddot}},
+  articletotal     = {{article}{art\adddot}},
+  articletotals    = {{articles}{arts\adddot}},
+  clausetotal      = {{clause}{cl\adddot}},
+  clausetotals     = {{clauses}{cls\adddot}},
+  regulationtotal  = {{regulation}{reg\adddot}},
+  regulationtotals = {{regulations}{regs\adddot}},
+  ruletotal        = {{rule}{r\adddot}},
+  ruletotals       = {{rules}{rr\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Types
+% \end{itemize}
+%
+%    \begin{macrocode}
+  facebook         = {{Facebook post}{Facebook post}},
+  tweet            = {{Twitter post}{Twitter post}},
+  podcast          = {{podcast}{podcast}},
+  clip             = {{video}{video}},
+  webcast          = {{webcast}{webcast}},
+  poster           = {{poster}{poster}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Miscellaneous
+% \end{itemize}
+%
+%    \begin{macrocode}
+  nolocation       = {{no place}{n\adddot p\adddot}},
+  modified         = {{last modified}{last modified}},
+  recorded         = {{recorded}{recorded}},
+  uploaded         = {{uploaded}{uploaded}},
+  filed            = {{filed}{filed}},
+  issued           = {{issued}{issued}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Labels
+% \end{itemize}
+%
+%    \begin{macrocode}
+  anon             = {{Anonymous}{Anon\adddot}},
+  pseudo           = {{Pseudo-}{Ps\adddot-}},
+  urldown          = {{downloaded}{downloaded}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Country names, patents, and patent requests,
+% \end{itemize}
+%
+%    \begin{macrocode}
+  countryjp        = {{Japan}{JP}},
+  patentjp         = {{Japanese patent}{Japanese pat.\adddot}},
+  patreqjp         = {{Japanese patent request}{Japanese pat.\adddot req.\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item These are borrowed from other styles.
+% \end{itemize}
+%
+%    \begin{macrocode}
+  1column          = {{one column}{1\addnbspace col\adddot}},
+  2column          = {{two columns}{2\addnbspace col\adddot}},
+  inflayer         = {{inferior layer}{inf\adddotspace lay\adddot}},
+  suplayer         = {{superior layer}{sup\adddotspace lay\adddot}},
+  paper            = {{paper}{pap\adddot}},
+  papyrus          = {{papyrus}{papy\adddot}},
+  parchment        = {{parchment}{parch\adddot}},
+  eucase           = {{Case}{Case}},
+  eujoinedcases    = {{Joined Cases}{Joined Cases}},
+  commissiondecision = {{Commission Decision}{Commission Decision}},
+  application      = {{Application}{App\adddot}},
+  order            = {{Order}{Ord\adddot}},
+  bill             = {{Bill}{Bill}},
+  draft            = {{draft}{draft}},
+  opened           = {{opened for signature}{opened for signature}},
+  signed           = {{signed}{signed}},
+  adopted          = {{adopted}{adopted}},
+  inforce          = {{entered into force}{entered into force}},
+%    \end{macrocode}
+%
+% The rest of these strings are overrides for the standard ones.
+%
+% In parallel with the English versions, we remove the final \enquote{por} from
+% the abbreviated versions of the roles expressed as actions.
+%
+%    \begin{macrocode}
+  byeditor         = {{editado}{ed\adddotspace}},
+  byredactor       = {{redacci\'on de}{red\adddotspace de}},
+  byreviser        = {{revisado}{rev\adddotspace}},
+  byreviewer       = {{rese\~{n}ado}{res\adddotspace}},
+  byfounder        = {{fundado}{fund\adddotspace}},
+  bycontinuator    = {{continuado}{cont\adddotspace}},
+  bycollaborator   = {{colaboraci\'{o}n de}{col\adddotspace de}},
+  bytranslator     = {{traducido \lbx@lfromlang\}{trad\adddotspace \lbx@sfromlang\}},
+  bycommentator    = {{comentado}{com\adddotspace}},
+  byannotator      = {{anotado}{anot\adddotspace}},
+  byeditortr       = {{editado y traducido \lbx@lfromlang\}%
+                      {ed\adddotspace y trad\adddotspace \lbx@sfromlang\}},
+  byeditorco       = {{editado y comentado}%
+                      {ed\adddotspace y com\adddotspace}},
+  byeditoran       = {{editado y anotado}%
+                      {ed\adddotspace y anot\adddotspace}},
+  byeditorin       = {{editado e introducido}%
+                      {ed\adddotspace e intr\adddotspace}},
+  byeditorfo       = {{editado y prologado}%
+                      {ed\adddotspace y pr\'ol\adddotspace}},
+  byeditoraf       = {{editado y epilogado}%
+                      {ed\adddotspace y ep\'{\i}l\adddotspace}},
+  byeditortrco     = {{editado, traducido \lbx@lfromlang\ y comentado}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang\ y com\adddotspace}},
+  byeditortran     = {{editado, traducido \lbx@lfromlang\ y anotado}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang\ y anot\adddotspace}},
+  byeditortrin     = {{editado, traducido \lbx@lfromlang\ e introducido}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang\ e intr\adddotspace}},
+  byeditortrfo     = {{editado, traducido \lbx@lfromlang\ y prologado}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang\ y pr\'ol\adddotspace}},
+  byeditortraf     = {{editado, traducido \lbx@lfromlang\ y epilogado}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang\ y ep\'{\i}l\adddotspace}},
+  byeditorcoin     = {{editado, comentado e introducido}%
+                      {ed.,\addabbrvspace com\adddotspace e intr\adddotspace}},
+  byeditorcofo     = {{editado, comentado y prologado}%
+                      {ed.,\addabbrvspace com\adddotspace y pr\'ol\adddotspace}},
+  byeditorcoaf     = {{editado, comentado y epilogado}%
+                      {ed.,\addabbrvspace com\adddotspace y ep\'{\i}l\adddotspace}},
+  byeditoranin     = {{editado, anotado e introducido}%
+                      {ed.,\addabbrvspace anot\adddotspace e intr\adddotspace}},
+  byeditoranfo     = {{editado, anotado y prologado}%
+                      {ed.,\addabbrvspace anot\adddotspace y pr\'ol\adddotspace}},
+  byeditoranaf     = {{editado, anotado y epilogado}%
+                      {ed.,\addabbrvspace anot\adddotspace y ep\'{\i}l\adddotspace}},
+  byeditortrcoin   = {{editado, traducido \lbx@lfromlang, comentado e introducido}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang, com\adddotspace e intr\adddotspace}},
+  byeditortrcofo   = {{editado, traducido \lbx@lfromlang, comentado y prologado}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang, com\adddotspace y pr\'ol\adddotspace}},
+  byeditortrcoaf   = {{editado, traducido \lbx@lfromlang, comentado y epilogado}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang, com\adddotspace y ep\'{\i}l\adddotspace}},
+  byeditortranin   = {{editado, traducido \lbx@lfromlang, anotado e introducido}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang, anot\adddotspace e intr\adddotspace}},
+  byeditortranfo   = {{editado, traducido \lbx@lfromlang, anotado y prologado}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang, anot\adddotspace y pr\'ol\adddotspace}},
+  byeditortranaf   = {{editado, traducido \lbx@lfromlang, anotado y epilogado}%
+                      {ed.,\addabbrvspace trad\adddotspace \lbx@sfromlang, anot\adddotspace y ep\'{\i}l\adddotspace}},
+  bytranslatorco   = {{traducido \lbx@lfromlang\ y comentado}%
+                      {trad\adddotspace \lbx@sfromlang\ y com\adddotspace}},
+  bytranslatoran   = {{traducido \lbx@lfromlang\ y anotado}%
+                      {trad\adddotspace \lbx@sfromlang\ y anot\adddotspace}},
+  bytranslatorin   = {{traducido \lbx@lfromlang\ e introducido}%
+                      {trad\adddotspace \lbx@sfromlang\ e introd\adddotspace}},
+  bytranslatorfo   = {{traducido \lbx@lfromlang\ y prologado}%
+                      {trad\adddotspace \lbx@sfromlang\ y pr\'ol\adddotspace}},
+  bytranslatoraf   = {{traducido \lbx@lfromlang\ y epilogado}%
+                      {trad\adddotspace \lbx@sfromlang\ y ep\'{\i}l\adddotspace}},
+  bytranslatorcoin = {{traducido \lbx@lfromlang, comentado e introducido}%
+                      {trad\adddotspace \lbx@sfromlang, com\adddotspace e intr\adddotspace}},
+  bytranslatorcofo = {{traducido \lbx@lfromlang, comentado y prologado}%
+                      {trad\adddotspace \lbx@sfromlang, com\adddotspace y pr\'ol\adddotspace}},
+  bytranslatorcoaf = {{traducido \lbx@lfromlang, comentado y epilogado}%
+                      {trad\adddotspace \lbx@sfromlang, com\adddotspace y ep\'{\i}l\adddotspace}},
+  bytranslatoranin = {{traducido \lbx@lfromlang, anotado e introducido}%
+                      {trad\adddotspace \lbx@sfromlang, anot\adddotspace e intr\adddotspace}},
+  bytranslatoranfo = {{traducido \lbx@lfromlang, anotado y prologado}%
+                      {trad\adddotspace \lbx@sfromlang, anot\adddotspace y pr\'ol\adddotspace}},
+  bytranslatoranaf = {{traducido \lbx@lfromlang, anotado y epilogado}%
+                      {trad\adddotspace \lbx@sfromlang, anot\adddotspace y ep\'{\i}l\adddotspace}},
+%    \end{macrocode}
+%
+% The roles expressed as objects and terms for supplementary material
+% are not abbreviated.
+%
+%    \begin{macrocode}
+  withcommentator  = {{con comentario de}{con comentario de}},
+  withannotator    = {{con notas de}{con notas de}},
+  withintroduction = {{con introduci\'on de}{con introduci\'on de}},
+  withforeword     = {{con pr\'ologo de}{con pr\'ologo de}},
+  withafterword    = {{con ep\'{i}logo de}{con ep\'{i}logo de}},
+  introduction     = {{introduci\'on}{introduci\'on}},
+%    \end{macrocode}
+%
+% The abbreviations for some publication details are different.
+%
+%    \begin{macrocode}
+  newseries        = {{nueva \'epoca}{\mkbibacro{N\'E}}},
+  oldseries        = {{antigua \'epoca}{\mkbibacro{A\'E}}},
+  edition          = {{edici\'on}{edn\adddot}},
+  reprintfrom      = {{de}{de}},
+  translationas    = {{traducido espa\~nol como}{trad\adddotspace espa\~nol como}},
+  origpubin        = {{publicado originalmente en}{pub\adddot orig\adddotspace}},
+%    \end{macrocode}
+%
+% \emph{New Hart's Rules} uses \enquote{accessed} for URL dates.
+%
+%    \begin{macrocode}
+  urlseen          = {{accessed}{accessed}},
+%    \end{macrocode}
+%
+% Oxford style is to use \enquote{henceforth}
+% for shorthands and \enquote{at} to cite a page within a range.
+%
+%    \begin{macrocode}
+  citedas          = {{henceforth}{henceforth}},
+  thiscite         = {{at}{at}},
+%    \end{macrocode}
+%
+% Languages are abbreviated.
+%
+%    \begin{macrocode}
+  langamerican     = {{ingl\'{e}s americano}{ingl\'{e}s americano}},
+  langbrazilian    = {{brasile\~no}{brasile\~no}},
+  langbulgarian    = {{b\'ulgaro}{b\'ulgaro}},
+  langcatalan      = {{catal\'{a}n}{catal\'{a}n}},
+  langcroatian     = {{croata}{croata}},
+  langczech        = {{checo}{checo}},
+  langdanish       = {{dan\'es}{dan\'es}},
+  langdutch        = {{neerland\'es}{neerland\'es}},
+  langenglish      = {{ingl\'es}{ingl\'es}},
+  langestonian     = {{estonio}{estonio}},
+  langfinnish      = {{fin\'{e}s}{fin\'{e}s}},
+  langfrench       = {{franc\'es}{franc\'es}},
+  langgalician     = {{gallego}{gallego}},
+  langgerman       = {{alem\'an}{alem\'an}},
+  langgreek        = {{griego}{griego}},
+  langhungarian    = {{h\'ungaro}{h\'ungaro}},
+  langitalian      = {{italiano}{italiano}},
+  langjapanese     = {{japon\'es}{japon\'es}},
+  langlatin        = {{lat\'{\i}n}{lat\'{\i}n}},
+  langlatvian      = {{lituano}{lituano}},
+  langnorwegian    = {{noruego}{noruego}},
+  langpolish       = {{polaco}{polaco}},
+  langportuguese   = {{portugu\'es}{portugu\'es}},
+  langrussian      = {{ruso}{ruso}},
+  langserbian      = {{serbio}{serbio}},
+  langslovak       = {{eslovaco}{eslovaco}},
+  langslovene      = {{esloveno}{esloveno}},
+  langspanish      = {{espa\~nol}{espa\~nol}},
+  langswedish      = {{sueco}{sueco}},
+  langukrainian    = {{ucraniano}{ucraniano}},
+}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</es>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Other languages}
+%
+% Currently \pkg[biblatex]{oxref} only supports English (British and American)
+% and Spanish explicitly, but if there is demand more languages may be added. If
+% you would like to contribute support for your language, a list of the
+% non-standard bibliography strings requiring definition may be found in
+% section~\ref{sec:setup}.
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</lbx>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
