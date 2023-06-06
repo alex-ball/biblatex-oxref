@@ -644,6 +644,9 @@ Copyright (C) 2016–2023 Alex Ball
   \endgroup
 }
 \makeatother
+\AtBeginDocument{%
+\hypersetup{linkcolor=black}%
+}
 
 \GetFileInfo{\jobname.dtx}
 \title{OXREF -- Biblatex styles inspired by the \emph{Oxford Guide to Style}}
@@ -653,7 +656,28 @@ Copyright (C) 2016–2023 Alex Ball
 %<doc&a>\title{OXALPH -- An alphabetic style for Biblatex}
 %<doc&y>\title{OXYEAR -- An author–year style for Biblatex}
 %<*driver|doc>
+
+\newcounter{elementcount}
+\newcommand{\commaorandlist}[1]{%
+  \renewcommand*{\do}[1]{\stepcounter{elementcount}}%
+  \dolistloop{#1}%
+  \ifnumgreater{\value{elementcount}}{2}{%
+    \def\finaland{, and }%
+  }{%
+    \def\finaland{ and }%
+  }%
+  \renewcommand*{\do}[1]{%
+    \ifnumequal{\value{elementcount}}{1}{%
+      ##1%
+    }{%
+      \ifnumequal{\value{elementcount}}{2}{#1\finaland}{##1, }%
+    }%
+    \addtocounter{elementcount}{-1}%
+  }%
+  \dolistloop{#1}}
+
 \author{Alex Ball}
+\listadd\thetranslators{Bruno Maltras}
 \date{\printdateTeX{\filedate}}
 \begin{document}
 \thispagestyle{empty}
@@ -665,7 +689,8 @@ Copyright (C) 2016–2023 Alex Ball
   \LARGE\thetitle
 
   \bigskip
-  \Large\theauthor
+  \Large\theauthor\par
+  \normalsize with translations by \commaorandlist\thetranslators
 
   \bigskip
   \Large\thedate
@@ -679,7 +704,9 @@ Copyright (C) 2016–2023 Alex Ball
 \hspace*{.1\textwidth}\raisebox{0pt}[0pt][0pt]{\rule{\normalrulethickness}{\textheight}}
 
 \newpage
-\tableofcontents*
+\begin{KeepFromToc}
+\tableofcontents
+\end{KeepFromToc}
 
 %</driver|doc>
 %<*driver>
@@ -15477,6 +15504,8 @@ reference,mvreference,inreference]{volume}{%
 % \section{Spanish: spanish-oxref.lbx}
 %
 % \setcounter{FancyVerbLine}{19}
+%
+% Thanks to Bruno Maltras for contributing these translations.
 %
 % We load the standard language-specific punctuation and date formatting.
 %
