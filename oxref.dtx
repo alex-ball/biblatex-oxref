@@ -7927,19 +7927,35 @@ rather than \pkg[biblatex]{oxref}.}
     }{}{\usebibmacro{name:revsdelim}}%
   }{%
     \ifgiveninits{%
-      \usebibmacro{name:title-given-family}%
-        {\ifitemannotation{pseudo}{\biblstring{pseudo}}{}\namepartfamily}%
-        {\namepartgiveni}%
-        {\namepartprefix}%
-        {\namepartsuffix}%
-        {\nameparttitle}%
+      \ifitemannotation{pseudo}{%
+        \usebibmacro{name:title-given-family}%
+          {\biblstring{pseudo}\namepartfamily}%
+          {\namepartgiveni}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+          {\nameparttitle}%
+      }{%
+        \usebibmacro{name:title-given-family}%
+          {\namepartfamily}%
+          {\namepartgiveni}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+          {\nameparttitle}}%
     }{%
-      \usebibmacro{name:title-given-family}%
-        {\ifitemannotation{pseudo}{\biblstring{pseudo}}{}\namepartfamily}%
-        {\namepartgiven}%
-        {\namepartprefix}%
-        {\namepartsuffix}%
-        {\nameparttitle}%
+      \ifitemannotation{pseudo}{%
+        \usebibmacro{name:title-given-family}%
+          {\biblstring{pseudo}\namepartfamily}%
+          {\namepartgiven}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+          {\nameparttitle}%
+      }{%
+        \usebibmacro{name:title-given-family}%
+          {\namepartfamily}%
+          {\namepartgiven}%
+          {\namepartprefix}%
+          {\namepartsuffix}%
+          {\nameparttitle}}%
     }%
     \savefield{hash}{\blx@ox@lasthash}%
   }%
@@ -13821,6 +13837,13 @@ reference,mvreference,inreference]{volume}{%
     and
     togl {blx@ox@nonodate}
   }{}{\printtext[datelabel]{\printlabeldateextra}}}
+%    \end{macrocode}
+%
+% Since v3.12, authoryear.bbx has had an |bbx:ifmergeddate| test. We don't use
+% it, but if we define as well it suppresses redefinition warnings later.
+%
+%    \begin{macrocode}
+\newbibmacro*{bbx:ifmergeddate}{\@secondoftwo}
 
 %    \end{macrocode}
 %
