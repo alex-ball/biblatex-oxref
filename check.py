@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 import os
+from pathlib import Path
 import re
 import subprocess
 import typing as t
@@ -19,7 +20,7 @@ def extract_targets(filename: str) -> t.Mapping[str, t.Mapping[str, str]]:
     subprocess.run(["make", filename], check=True)
     if not os.path.isfile(filename):
         raise click.FileError(f"Could not generate {filename}.")
-    print()
+    click.echo()
 
     targets = {BIB: dict(), CIT: dict()}
     undotted = list()
@@ -101,7 +102,7 @@ def get_bibitems(filename: str) -> t.List[str]:
     subprocess.run(["make", filename], check=True)
     if not os.path.isfile(filename):
         raise click.FileError(f"Could not generate {filename}.")
-    print()
+    click.echo()
 
     # Process BBI file:
     preamble = True
@@ -222,17 +223,68 @@ def contrast_refs(**kwargs: t.Mapping[str, t.Mapping[str, str]]) -> t.Mapping[st
             click.echo(f"{labels[0]}: {target}")
             for error in errors:
                 click.echo(error)
-            print()
+            click.echo()
 
     return stats
 
 
+def parse_log(jobname: str):
+    logfile = Path(f"{jobname}.log")
+
+    if not logfile.is_file():
+        return
+
+    error_lines = list()
+    capture_til_blank = False
+    with open(logfile) as f:
+        for whole_line in f:
+            line = whole_line.strip()
+            if line.startswith("! ") or line.startswith("Package biblatex Warning"):
+                capture_til_blank = True
+                error_lines.extend(["", line])
+                continue
+            elif line.startswith("WARNING: biblatex-oxref"):
+                error_lines.extend(["", line])
+                continue
+
+            if capture_til_blank:
+                if not line:
+                    capture_til_blank = False
+                else:
+                    error_lines.append(line)
+
+    if error_lines:
+        click.echo("\nErrors and warnings from log file:")
+        for line in error_lines:
+            click.echo(f"  {line}")
+        click.echo()
+
+
+def run_lbx_check(jobname: str):
+    filename = f"{jobname}.pdf"
+    try:
+        subprocess.run(["make", filename], check=True)
+    except subprocess.CalledProcessError as e:
+        parse_log(jobname)
+        raise click.ClickException(f"LaTeX run did not complete successfully.\n{e}")
+
+    parse_log(jobname)
+    if not os.path.isfile(filename):
+        raise click.FileError(f"Could not generate {filename}.")
+    click.echo("Compilation successful.")
+
+
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("style", type=click.Choice(["oxalph", "oxnotes", "oxnum", "oxyear"]))
+@click.argument(
+    "style", type=click.Choice(["oxalph", "oxnotes", "oxnum", "oxyear", "spanish"])
+)
 def main(style):
     """Performs unit tests on LaTeX output from the biblatex-oxref
     bibliography styles.
     """
+    if style in ["spanish"]:
+        return run_lbx_check(f"test-{style}")
+
     targets = extract_targets(f"{style}-doc.tex")
     lines = get_bibitems(f"{style}.bbi")
     outputs = parse_simple_bibitems(lines)
@@ -256,6 +308,7 @@ def main(style):
             + f" {stats[key]['skipped']} skipped;"
             + f" {stats[key]['failed']} failed."
         )
+    parse_log(f"test-{style}")
 
 
 if __name__ == "__main__":

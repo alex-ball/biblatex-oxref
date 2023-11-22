@@ -4,6 +4,8 @@ STY1  = oxnotes
 STYS  = oxnotes oxyear oxnum oxalph
 VARS  = ibid note inote trad1 trad2 trad3
 LANGS = american british english spanish
+LANGX = spanish
+TESTS = $(STYS) $(LANGX)
 AUX   = aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb
 SHELL = bash
 PWD   = $(shell pwd)
@@ -34,14 +36,18 @@ test-oxnum.tex : test-template.tex
 	sed 's/style=oxref/style=oxnum,scnames,backref=true/' $< > $@
 test-oxyear.tex : test-template.tex
 	sed 's/style=oxref/style=oxyear/' $< > $@
+test-spanish.tex : test-template.tex
+	sed -e 's/british/spanish/' -e 's/style=oxref/style=oxnotes/' $< > $@
 $(STYS:%=test-%.pdf): test-%.pdf : test-%.tex $(NAME).bbx %.bbx %.cbx british-$(NAME).lbx english-$(NAME).lbx
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
-$(STYS:%=%.bbi): %.bbi : test-%.pdf
+$(LANGX:%=test-%.pdf): test-%.pdf : test-%.tex $(NAME).bbx oxnotes.bbx oxnotes.cbx %-$(NAME).lbx
+	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
+$(TESTS:%=%.bbi): %.bbi : test-%.pdf
 	pdftotext $< $@
 
 clean:
 	@for log in *.log; do [ -e "$$log" ] || continue; grep "WARNING: biblatex-oxref" $$log; test $$? -eq 1; done
-	rm -f $(NAME).{$(AUX)} $(STYS:%=%-doc.{$(AUX)}) $(STYS:%=test-%.{tex,pdf}) $(STYS:%=test-%.{$(AUX)})
+	rm -f $(NAME).{$(AUX)} $(STYS:%=%-doc.{$(AUX)}) $(TESTS:%=test-%.{tex,pdf}) $(TESTS:%=test-%.{$(AUX)})
 	rm -f $(STYS:%=%.doc) $(LANGS:%=%-$(NAME).doc)
 	rm -rf _minted-*
 	rm -f $(NAME).markdown.in
