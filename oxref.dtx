@@ -7926,6 +7926,13 @@ rather than \pkg[biblatex]{oxref}.}
       )
     }{}{\usebibmacro{name:revsdelim}}%
   }{%
+%    \end{macrocode}
+%
+% Some implementations of |\lbx@finalnamedelim| do not allow logical tests to
+% be included in the argument, so we need to spell out all these alternatives
+% longhand.
+%
+%    \begin{macrocode}
     \ifgiveninits{%
       \ifitemannotation{pseudo}{%
         \usebibmacro{name:title-given-family}%
