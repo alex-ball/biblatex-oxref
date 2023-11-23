@@ -5,7 +5,7 @@ STYS  = oxnotes oxyear oxnum oxalph
 VARS  = ibid note inote trad1 trad2 trad3
 LANGS = american british english spanish
 LANGX = spanish
-TESTS = $(STYS) $(LANGX)
+TESTS = $(STYS) $(foreach sty, $(STYS), $(LANGX:%=%-$(sty)))
 AUX   = aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb
 SHELL = bash
 PWD   = $(shell pwd)
@@ -28,20 +28,31 @@ $(NAME).pdf: $(NAME).dtx $(NAME).bbx $(STY1).bbx $(STY1).cbx british-$(NAME).lbx
 $(STYS:%=%-doc.pdf): %-doc.pdf : %-doc.tex $(NAME).bbx %.bbx %.cbx british-$(NAME).lbx english-$(NAME).lbx
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
 
-test-oxalph.tex : test-template.tex
+test-oxalph.tex: test-template.tex
 	sed 's/style=oxref/style=oxalph/' $< > $@
-test-oxnotes.tex : test-template.tex
+test-oxnotes.tex: test-template.tex
 	sed 's/style=oxref/style=oxnotes,scnames/' $< > $@
-test-oxnum.tex : test-template.tex
+test-oxnum.tex: test-template.tex
 	sed 's/style=oxref/style=oxnum,scnames,backref=true/' $< > $@
-test-oxyear.tex : test-template.tex
+test-oxyear.tex: test-template.tex
 	sed 's/style=oxref/style=oxyear/' $< > $@
-test-spanish.tex : test-template.tex
-	sed -e 's/british/spanish/' -e 's/style=oxref/style=oxnotes/' $< > $@
 $(STYS:%=test-%.pdf): test-%.pdf : test-%.tex $(NAME).bbx %.bbx %.cbx british-$(NAME).lbx english-$(NAME).lbx
 	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
-$(LANGX:%=test-%.pdf): test-%.pdf : test-%.tex $(NAME).bbx oxnotes.bbx oxnotes.cbx %-$(NAME).lbx
-	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $< >/dev/null
+
+define LANGTESTTEX =
+test-$(1)-$(2).tex: test-template.tex
+	sed -e 's/british/$(1)/' -e 's/style=oxref/style=$(2)/' $$< > $$@
+endef
+
+$(foreach lang, $(LANGX), $(foreach sty, $(STYS), $(eval $(call LANGTESTTEX,$(lang),$(sty)))))
+
+define LANGTESTPDF =
+test-$(1)-$(2).pdf: test-$(1)-$(2).tex $(NAME).bbx $(2).bbx $(2).cbx $(1)-$(NAME).lbx
+	latexmk -silent -lualatex -shell-escape -interaction=nonstopmode $$< >/dev/null
+endef
+
+$(foreach lang, $(LANGX), $(foreach sty, $(STYS), $(eval $(call LANGTESTPDF,$(lang),$(sty)))))
+
 $(TESTS:%=%.bbi): %.bbi : test-%.pdf
 	pdftotext $< $@
 

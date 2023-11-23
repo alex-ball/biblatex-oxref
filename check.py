@@ -260,18 +260,23 @@ def parse_log(jobname: str):
         click.echo()
 
 
-def run_lbx_check(jobname: str):
-    filename = f"{jobname}.pdf"
-    try:
-        subprocess.run(["make", filename], check=True)
-    except subprocess.CalledProcessError as e:
-        parse_log(jobname)
-        raise click.ClickException(f"LaTeX run did not complete successfully.\n{e}")
+def run_lbx_check(language: str):
+    for i, style in enumerate(["oxalph", "oxnotes", "oxnum", "oxyear"]):
+        if i:
+            click.echo()
+        click.echo(f"--- Testing for errors in {language} translation of {style} ---")
+        jobname = f"test-{language}-{style}"
+        filename = f"{jobname}.pdf"
+        try:
+            subprocess.run(["make", filename], check=True)
+        except subprocess.CalledProcessError as e:
+            parse_log(jobname)
+            raise click.ClickException(f"LaTeX run did not complete successfully.\n{e}")
 
-    parse_log(jobname)
-    if not os.path.isfile(filename):
-        raise click.FileError(f"Could not generate {filename}.")
-    click.echo("Compilation successful.")
+        parse_log(jobname)
+        if not os.path.isfile(filename):
+            raise click.FileError(f"Could not generate {filename}.")
+        click.echo("Compilation successful.")
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -283,7 +288,7 @@ def main(style):
     bibliography styles.
     """
     if style in ["spanish"]:
-        return run_lbx_check(f"test-{style}")
+        return run_lbx_check(style)
 
     targets = extract_targets(f"{style}-doc.tex")
     lines = get_bibitems(f"{style}.bbi")
