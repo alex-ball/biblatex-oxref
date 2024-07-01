@@ -8111,7 +8111,7 @@ rather than \pkg[biblatex]{oxref}.}
         \setunit*{\addspace\bibstring{and}\addspace}%
       }{%
         \ifnumequal{\value{namepairs}}{\value{#1}}{%
-          \setunit*{\addcomma\space\bibstring{and}\addspace}%
+          \setunit*{\finalandcomma\space\bibstring{and}\addspace}%
         }{%
           \setunit*{\addcomma\space}%
         }%
@@ -9429,7 +9429,7 @@ reference,mvreference,inreference]{volume}{%
           \setunit*{\addspace\bibstring{and}\addspace}%
         }{%
           \ifnumequal{\value{locpubpairs}}{\value{publisher}}{%
-            \setunit*{\addcomma\space\bibstring{and}\addspace}%
+            \setunit*{\finalandcomma\space\bibstring{and}\addspace}%
           }{%
             \setunit*{\addcomma\space}%
           }%
@@ -11383,7 +11383,11 @@ reference,mvreference,inreference]{volume}{%
     \setcounter{blx@tmpcnt}{\value{listcount}}%
     \addtocounter{blx@tmpcnt}{1}%
     \ifnumequal{\value{blx@tmpcnt}}{\value{listtotal}}{%
-      #1\space\bibstring{and}\addspace
+      \ifnumgreater{\value{listtotal}}{2}{%
+        #1\finalandcomma\space\bibstring{and}\addspace
+      }{%
+        #1\space\bibstring{and}\addspace
+      }
     }{%
       #1\addcomma\space}}}%
 
