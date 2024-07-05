@@ -7770,6 +7770,7 @@ rather than \pkg[biblatex]{oxref}.}
 \newcommand*{\uscasetitlepunct}{\addcomma\space}
 \renewcommand*{\relateddelim}{\addsemicolon\space}
 \DeclareDelimFormat{revsdnamedelim}{\addcomma}
+\DeclareDelimFormat[pair]{revsdnamedelim}{}
 \DeclareDelimFormat{authortypedelim}{\addspace}
 \DeclareDelimFormat{editortypedelim}{\addspace}
 \DeclareDelimFormat{translatortypedelim}{\addspace}
@@ -7846,7 +7847,7 @@ rather than \pkg[biblatex]{oxref}.}
       and
       test {\ifdefvoid{#2}}%
     }{}{%
-      \printdelim{revsdnamedelim}}%
+      \printdelim{revsdnamepunct}}%
     \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\bibnamedelimd\mkbibnametitle{#5}\isdot}{}}%
     \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
   }{%
@@ -7861,7 +7862,7 @@ rather than \pkg[biblatex]{oxref}.}
       and
       test {\ifdefvoid{#3}}%
     }{}{%
-      \printdelim{revsdnamedelim}}%
+      \printdelim{revsdnamepunct}}%
     \ifdefvoid{#5}{}{\iftoggle{blx@ox@nametitle}{\bibnamedelimd\mkbibnametitle{#5}\isdot}{}}%
     \ifdefvoid{#2}{}{\bibnamedelimd\mkbibnamegiven{#2}\isdot}%
     \ifdefvoid{#3}{}{\bibnamedelimd\mkbibnameprefix{#3}\isdot}}}
@@ -7871,9 +7872,22 @@ rather than \pkg[biblatex]{oxref}.}
 % the bibliography, but in natural order in citations. We implement this, along
 % with the case changing option, in the following name format. We also add a
 % second hash for checking if names (e.g.\@ |author| and |authoraddon|) are the
-% same.
+% same. We only need |name:revsdelim| on the first item, and only if it will be
+% followed by something else.
 %
 %    \begin{macrocode}
+\renewbibmacro*{name:revsdelim}{%
+  \ifboolexpr{
+    (
+      test {\ifnumequal{\value{liststop}}{1}}
+      and
+      test \ifmorenames
+    )
+    or
+    test {\ifnumequal{\value{liststop}}{2}}
+  }
+    {\printdelim{revsdnamedelim}}
+    {}}
 \def\blx@ox@lasthash{}
 \DeclareNameFormat{bib-family-given/cite-given-family}{%
   \iffieldannotation{inferred}{\ifnumequal{\value{listcount}}{1}{\bibopenbracket}{}}{}%
@@ -7918,13 +7932,22 @@ rather than \pkg[biblatex]{oxref}.}
       \renewcommand*{\mkbibnametitle}[1]{##1}%
     }{}%
     \ifboolexpe{%
-      test {\ifnumgreater{\value{listcount}}{1}}
-      or (
+      test {\ifnumequal{\value{listcount}}{\@ne}}
+      and
+      (
+        test {\ifnumless{\value{listcount}}{\value{liststop}}}
+        or
+        test {\ifnumgreater{\value{listtotal}}{\value{maxnames}}}
+        or
+        test {\ifandothers{\currentname}}
+      )
+      and not
+      (
         test {\ifdefvoid\namepartgiven}
         and
         test {\ifdefvoid\namepartprefix}
       )
-    }{}{\usebibmacro{name:revsdelim}}%
+    }{\usebibmacro{name:revsdelim}}{}%
   }{%
 %    \end{macrocode}
 %
@@ -7967,6 +7990,10 @@ rather than \pkg[biblatex]{oxref}.}
     \savefield{hash}{\blx@ox@lasthash}%
   }%
   \ifitemannotation{inferred}{\bibclosebracket}{}%
+  \ifitemannotation{variant}{%
+    \global\settoggle{blx@ox@variantname}{true}%
+  }{%
+    \global\settoggle{blx@ox@variantname}{false}}%
   \usebibmacro{name:andothers}%
   \iffieldannotation{inferred}{%
     \ifboolexpr{
@@ -8012,7 +8039,9 @@ rather than \pkg[biblatex]{oxref}.}
   \usebibmacro{name:andothers}}
 %    \end{macrocode}
 %
-% We do likewise for the regular |family-given| format.
+% We do likewise for the regular |family-given| format. Also, we only want to
+% use the |name:revsdelim| on the last name in the list if it will be followed
+% by \enquote{et al.}.
 %
 %    \begin{macrocode}
 \DeclareNameFormat{family-given}{%
@@ -8035,13 +8064,20 @@ rather than \pkg[biblatex]{oxref}.}
   }{%
     \global\settoggle{blx@ox@variantname}{false}}%
   \ifboolexpe{%
-    test {\ifnumgreater{\value{listcount}}{1}}
-    or (
+    (
+      test {\ifnumless{\value{listcount}}{\value{liststop}}}
+      or
+      test {\ifnumgreater{\value{listtotal}}{\value{maxnames}}}
+      or
+      test {\ifandothers{\currentname}}
+    )
+    and not
+    (
       test {\ifdefvoid\namepartgiven}
       and
       test {\ifdefvoid\namepartprefix}
     )
-  }{}{\usebibmacro{name:revsdelim}}%
+  }{\usebibmacro{name:revsdelim}}{}%
   \usebibmacro{name:andothers}}
 %    \end{macrocode}
 %
@@ -8068,21 +8104,46 @@ rather than \pkg[biblatex]{oxref}.}
 \DeclareFieldFormat{namevariant}{\mkbibparens{\bibstring{equals}\space #1}}
 %    \end{macrocode}
 %
-% We provide an alternative method that uses new name fields |authoraddon| and
-% |editoraddon|. To do this, we define a bibmacro that reimplements the loopcode
-% logic of \cs{printnames}, but operates on two name lists simultaneously; we use
-% saveboxes to extract the hashes, and only print the alternative name if it has
-% a different hash. The same technique is used by \textsf{oxyear} below to pair
-% up names with the short form used in references, so this bibmacro is written
-% to handle both cases.
+% We have two use cases for a bibmacro that reimplements the loopcode logic of
+% \cs{printnames}, but operates on two name lists simultaneously. One is to
+% support the new name fields |authoraddon| and |editoraddon|; the other is to
+% pair up names with the short form used in references, as required by
+% \textsf{oxyear} below.
 %
-% The |namepairs| bibmacro takes two arguments: the data fields holding the main
-% name and alternative name respectively.
+% We need to do this in a way that doesn't break the patterns used for
+% configuring and adapting the punctuation that delimits the list items, so the
+% |namepair:delim| macro does the same as |name:delim| but instead of reading
+% the current counters, takes two extra arguments (in addition to the current name):
+% the number of the current name pair and the total number of name pairs.
+% The regular |finallistdelim| delimiter format looks up the value of the
+% |liststop| counter, so we need to give it the right value.
 %
 %    \begin{macrocode}
+\newbibmacro*{namepair:delim}[3]{%
+  \ifnumgreater{#2}{\@ne}{%
+    \ifnumless{#2}{#3}{%
+      \printdelim{multinamedelim}%
+    }{%
+      \ifnumgreater{#3}{\c@maxnames}{%
+        \c@liststop\c@minnames
+      }{%
+        \c@liststop#3}%
+      \lbx@finalnamedelim{#1}}%
+  }{}}
+%    \end{macrocode}
+%
+% The |namepairs| bibmacro takes two arguments: the data fields holding the main
+% name and alternative name respectively. When rendering the names, we use
+% saveboxes to extract the hashes, and only print the alternative name if it has
+% a different hash. In this case, we also switch to the \enquote{pair}
+% delimiter context, where the |revsdnamedelim| (if any) is suppressed.
+%
+%    \begin{macrocode}
+\DeclareFieldFormat{expanded}{\mkbibparens{#1}}
 \newcounter{namepairs}
 \newsavebox{\blx@ox@namebox}
 \newsavebox{\blx@ox@altnamebox}
+\newtoggle{blx@ox@thispairvariant}%
 \newbibmacro*{namepairs}[2]{%
   \setcounter{namepairs}{0}%
   \savebibmacro{name:andothers}%
@@ -8106,21 +8167,19 @@ rather than \pkg[biblatex]{oxref}.}
     )
   }{%
     \stepcounter{namepairs}%
-    \ifnumgreater{\value{namepairs}}{1}{%
-      \ifnumequal{\value{#1}}{2}{%
-        \setunit*{\addspace\bibstring{and}\addspace}%
-      }{%
-        \ifnumequal{\value{namepairs}}{\value{#1}}{%
-          \setunit*{\finalandcomma\space\bibstring{and}\addspace}%
-        }{%
-          \setunit*{\addcomma\space}%
-        }%
-      }%
-    }{}%
     \savebox{\blx@ox@namebox}{%
       \printnames[#1][\value{namepairs}-\value{namepairs}]{#1}%
     }%
     \let\blx@ox@firsthash=\blx@ox@lasthash
+    \savebox{\blx@ox@altnamebox}{%
+      \printnames[#1][\value{namepairs}-\value{namepairs}]{#2}%
+    }%
+    \let\blx@ox@secondhash=\blx@ox@lasthash
+    \iftoggle{blx@ox@variantname}{%
+      \toggletrue{blx@ox@thispairvariant}%
+    }{%
+      \togglefalse{blx@ox@thispairvariant}%
+    }%
 %    \end{macrocode}
 %
 % This is the part intended for |authoraddon| and |editoraddon|. Note that it
@@ -8128,20 +8187,28 @@ rather than \pkg[biblatex]{oxref}.}
 %
 %    \begin{macrocode}
     \IfEndWith{#2}{addon}{%
-      \savebox{\blx@ox@altnamebox}{%
-        \printnames[by#1][\value{namepairs}-\value{namepairs}]{#2}%
-      }%
-      \let\blx@ox@secondhash=\blx@ox@lasthash
+      \usebibmacro{namepair:delim}%
+        {\unhbox\blx@ox@namebox}{\value{namepairs}}{\value{#1}}%
       \ifdefstrequal{\blx@ox@firsthash}{\blx@ox@secondhash}{%
-        \unhbox\blx@ox@namebox
+        \hbox{}\unhbox\blx@ox@namebox
       }{%
-        \unhbox\blx@ox@namebox\addspace
-        \iftoggle{blx@ox@variantname}{%
+        \iftoggle{blx@ox@thispairvariant}{%
           \ifbibliography{%
-            \printtext[namevariant]{\printnames[#1][\value{namepairs}-\value{namepairs}]{#2}}%
-          }{}%
+            \delimcontext{pair}%
+            \printnames[#1][\value{namepairs}-\value{namepairs}]{#1}%
+            \setunit{\addspace}%
+            \printtext[namevariant]{%
+              \printnames[#1][\value{namepairs}-\value{namepairs}]{#2}}%
+          }{%
+            \hbox{}\unhbox\blx@ox@namebox
+          }%
         }{%
-          \printtext[nameaddon]{\unhbox\blx@ox@altnamebox}%
+          \delimcontext{pair}%
+          \printnames[#1][\value{namepairs}-\value{namepairs}]{#1}%
+          \setunit{\addspace}%
+          \printtext[nameaddon]{%
+            \printnames[#1][\value{namepairs}-\value{namepairs}]{#2}%
+          }%
         }%
       }%
 %    \end{macrocode}
@@ -8152,15 +8219,19 @@ rather than \pkg[biblatex]{oxref}.}
 %
 %    \begin{macrocode}
     }{%
-      \savebox{\blx@ox@altnamebox}{%
-        \printnames[#1][\value{namepairs}-\value{namepairs}]{#2}%
-      }%
-      \let\blx@ox@secondhash=\blx@ox@lasthash
       \ifdefstrequal{\blx@ox@firsthash}{\blx@ox@secondhash}{%
-        \unhbox\blx@ox@namebox
+        \usebibmacro{namepair:delim}%
+          {\unhbox\blx@ox@namebox}{\value{namepairs}}{\value{#1}}%
+        \hbox{}\unhbox\blx@ox@namebox
       }{%
-        \unhbox\blx@ox@altnamebox
-        \addspace\mkbibparens{\unhbox\blx@ox@namebox}%
+        \usebibmacro{namepair:delim}%
+          {\unhbox\blx@ox@altnamebox}{\value{namepairs}}{\value{#1}}%
+        \delimcontext{pair}%
+        \printnames[#1][\value{namepairs}-\value{namepairs}]{#2}%
+        \setunit{\addspace}%
+        \printtext[expanded]{%
+          \printnames[#1][\value{namepairs}-\value{namepairs}]{#1}%
+        }%
       }%
     }%
   }%
@@ -9377,6 +9448,37 @@ reference,mvreference,inreference]{volume}{%
       {Valid values are 'in' and 'out'.}}}}
 %    \end{macrocode}
 %
+% If there are the same number of locations and publishers, and there are more
+% than one pair, we print them pairwaise rather than in two separate lists. In
+% order to do this while retaining the normal mechanisms for punctuating the
+% list, we need a |listpair:delim| macro similar to |namepair:delim| (above)
+% that uses the generic list punctuation. Again, the three arguments are the
+% item being printed, the number of the current item pair and the total number
+% of item pairs.
+%
+%    \begin{macrocode}
+\newbibmacro*{listpair:delim}[3]{%
+  \ifnumgreater{#2}{\@ne}{%
+    \ifnumless{#2}{#3}{%
+      \printdelim{multilistdelim}%
+    }{%
+      \c@liststop#3%
+      \lbx@finallistdelim{#1}}%
+  }{}}
+%    \end{macrocode}
+%
+% We use this as the basis of a list format that will be applied to the location
+% element of a location--publisher pair.
+%
+%    \begin{macrocode}
+\newcounter{locpubpairs}
+\DeclareListFormat{locpub}{%
+  \usebibmacro{listpair:delim}%
+    {#1}{\value{locpubpairs}}{\value{location}}%
+  #1\isdot
+}
+%    \end{macrocode}
+%
 % When citing both the first and a later edition, the first one comes
 % first, and the later one comes after a semicolon. As per standard
 % \pkg{biblatex}, the elements of a single edition are separated by commas
@@ -9385,7 +9487,7 @@ reference,mvreference,inreference]{volume}{%
 % origpublisher is also specified.
 %
 %    \begin{macrocode}
-\newcounter{locpubpairs}
+\newsavebox{\blx@ox@locbox}
 \newbibmacro*{edition+publisher+location+date}{%
   \printlist{origlocation}%
   \iflistundef{origpublisher}%
@@ -9406,10 +9508,11 @@ reference,mvreference,inreference]{volume}{%
   \setunit*{\addcomma\space}%
 %    \end{macrocode}
 %
-% If there are the same number of locations and publishers, and there
-% are more than one pair, we print them pairwaise rather than in two
+% As mentioned, if there are the same number of locations and publishers, and
+% there are more than one pair, we print them pairwaise rather than in two
 % separate lists. This uses the same principle as the |namepairs| bibmacro,
-% but does not have the list truncation apparatus.
+% but does not have the list truncation apparatus. This time we use a savebox
+% just for efficiency.
 %
 %    \begin{macrocode}
   \ifboolexpr{%
@@ -9424,19 +9527,8 @@ reference,mvreference,inreference]{volume}{%
       test {\ifnumcomp{\value{locpubpairs}}{<}{\value{publisher}}}
     }{%
       \stepcounter{locpubpairs}%
-      \ifnumcomp{\value{locpubpairs}}{>}{1}{%
-        \ifnumequal{\value{publisher}}{2}{%
-          \setunit*{\addspace\bibstring{and}\addspace}%
-        }{%
-          \ifnumequal{\value{locpubpairs}}{\value{publisher}}{%
-            \setunit*{\finalandcomma\space\bibstring{and}\addspace}%
-          }{%
-            \setunit*{\addcomma\space}%
-          }%
-        }%
-      }{}%
-      \printlist[][\value{locpubpairs}-\value{locpubpairs}]{location}%
-      \setunit*{\addcolon\space}%
+      \printlist[locpub][\value{locpubpairs}-\value{locpubpairs}]{location}%
+      \setunit{\addcolon\space}%
       \printlist[][\value{locpubpairs}-\value{locpubpairs}]{publisher}%
     }%
     \restorebibmacro{list:andothers}%
@@ -14260,11 +14352,6 @@ reference,mvreference,inreference]{volume}{%
 % \code{authoraddon} has not been provided.
 %
 %    \begin{macrocode}
-\xpatchbibmacro{namepairs}{%
-  \printnames[by#1]%
-}{%
-  \printnames[#1]%
-}{}{\wlog{WARNING: biblatex-oxref (oxyear) failed to patch namepairs}}
 \xpatchbibmacro{author+altauthor}{%
   \printnames{author}%
 }{%
