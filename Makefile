@@ -3,8 +3,8 @@ PFX   = biblatex-
 STY1  = oxnotes
 STYS  = oxnotes oxyear oxnum oxalph
 VARS  = ibid note inote trad1 trad2 trad3
-LANGS = american british english spanish
-LANGX = spanish
+LANGS = american british english spanish polish
+LANGX = spanish polish
 TESTS = $(STYS) $(foreach sty, $(STYS), $(LANGX:%=%-$(sty)))
 AUX   = aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb
 SHELL = bash

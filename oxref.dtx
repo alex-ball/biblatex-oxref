@@ -87,6 +87,10 @@
 \ProvidesFile{spanish-oxref.lbx}
     [\Version\space Spanish conventions required by the biblatex-oxref styles]
 %</lbx&es>
+%<*lbx&pl>
+\ProvidesFile{polish-oxref.lbx}
+    [\Version\space Polish conventions required by the biblatex-oxref styles]
+%</lbx&pl>
 %<*doc&n>
 \ProvidesFile{oxnotes-doc.tex}
     [\Version\space Footnote-based biblatex style inspired by the Oxford Guide to Style]
@@ -220,6 +224,7 @@ Copyright (C) 2016–2023 Alex Ball
   \file{british-\jobname.lbx}{\from{\jobname.dtx}{lbx,gb}}
   \file{english-\jobname.lbx}{\from{\jobname.dtx}{lbx,en}}
   \file{spanish-\jobname.lbx}{\from{\jobname.dtx}{lbx,es}}
+  \file{polish-\jobname.lbx}{\from{\jobname.dtx}{lbx,pl}}
   \file{oxnotes-doc.tex}{\from{\jobname.dtx}{doc,n}}
   \file{oxnum-doc.tex}{\from{\jobname.dtx}{doc,m}}
   \file{oxalph-doc.tex}{\from{\jobname.dtx}{doc,a}}
@@ -678,6 +683,7 @@ Copyright (C) 2016–2023 Alex Ball
 
 \author{Alex Ball}
 \listadd\thetranslators{Bruno Maltras}
+\listadd\thetranslators{Sebastian Wasiuta}
 \date{\printdateTeX{\filedate}}
 \begin{document}
 \thispagestyle{empty}
@@ -799,7 +805,7 @@ UNIX-like systems:
         oxnotes-trad1.cbx, oxnotes-trad2.cbx, oxnotes-trad3.cbx, oxyear.cbx,
         oxnum.cbx, oxalph.cbx
       - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx,
-        spanish-oxref.lbx
+        spanish-oxref.lbx, polish.lbx
       - oxnotes.dbx, oxnotes-ibid.dbx, oxnotes-note.dbx, oxnotes-inote.dbx,
         oxnotes-trad1.dbx, oxnotes-trad2.dbx, oxnotes-trad3.dbx, oxyear.dbx,
         oxnum.dbx, oxalph.dbx
@@ -842,7 +848,8 @@ first two steps.
         american-oxref.lbx,
         british-oxref.lbx,
         english-oxref.lbx,
-        spanish-oxref.lbx
+        spanish-oxref.lbx,
+        polish-oxref.lbx,
         oxalph.bbx,
         oxalph.cbx,
         oxalph.dbx,
@@ -15464,7 +15471,6 @@ reference,mvreference,inreference]{volume}{%
 % are not abbreviated.
 %
 %    \begin{macrocode}
-  withintroduction = {{with an introduction by}{with an introduction by}},
   withcommentator  = {{with a commentary by}{with a commentary by}},
   withannotator    = {{with annotations by}{with annotations by}},
   withintroduction = {{with an introduction by}{with an introduction by}},
@@ -15519,8 +15525,10 @@ reference,mvreference,inreference]{volume}{%
 % Languages are abbreviated.
 %
 %    \begin{macrocode}
-  langamerican     = {{English}{Eng\adddot}},
+  langamerican     = {{American English}{Amer\adddotspace Eng\adddot}},
+  langbasque       = {{Basque}{Basq\adddot}},
   langbrazilian    = {{Brazilian}{Braz\adddot}},
+  langbulgarian    = {{Bulgarian}{Bulg\adddot}},
   langcatalan      = {{Catalan}{Catal\adddot}},
   langcroatian     = {{Croatian}{Croat\adddot}},
   langczech        = {{Czech}{Czech}},
@@ -15530,17 +15538,28 @@ reference,mvreference,inreference]{volume}{%
   langestonian     = {{Estonian}{Eston\adddot}},
   langfinnish      = {{Finnish}{Finn\adddot}},
   langfrench       = {{French}{Fr\adddot}},
+  langgalician     = {{Galician}{Galic\adddot}},
   langgerman       = {{German}{Ger\adddot}},
   langgreek        = {{Greek}{Gr\adddot}},
+  langhungarian    = {{Hungarian}{Hung\adddot}},
   langitalian      = {{Italian}{It\adddot}},
+  langjapanese     = {{Japanese}{Jap\adddot}},
   langlatin        = {{Latin}{Lat\adddot}},
+  langlatvian      = {{Latvian}{Latv\adddot}},
+  langlithuanian   = {{Lithuanian}{Lith\adddot}},
+  langmarathi      = {{Marathi}{Mar\adddot}},
   langnorwegian    = {{Norwegian}{Norw\adddot}},
   langpolish       = {{Polish}{Pol\adddot}},
   langportuguese   = {{Portuguese}{Port\adddot}},
+  langromanian     = {{Romanian}{Rom\adddot}},
   langrussian      = {{Russian}{Russ\adddot}},
+  langserbian      = {{Serbian}{Serb\adddot}},
+  langslovak       = {{Slovak}{Slovak}},
   langslovene      = {{Slovene}{Slov\adddot}},
   langspanish      = {{Spanish}{Sp\adddot}},
   langswedish      = {{Swedish}{Swed\adddot}},
+  langturkish      = {{Turkish}{Turk\adddot}},
+  langukrainian    = {{Ukrainian}{Ukr\adddot}},
 }
 %    \end{macrocode}
 %
@@ -15939,6 +15958,14 @@ reference,mvreference,inreference]{volume}{%
 % for shorthands and \enquote{at} to cite a page within a range.
 %
 %    \begin{macrocode}
+  idem             = {{idem}{id\adddot}},
+  idemsm           = {{idem}{id\adddot}},
+  idemsf           = {{eadem}{ead\adddot}},
+  idemsn           = {{idem}{id\adddot}},
+  idempm           = {{eidem}{eid\adddot}},
+  idempf           = {{eaedem}{eaed\adddot}},
+  idempn           = {{eadem}{ead\adddot}},
+  idempp           = {{eidem}{eid\adddot}},
   citedas          = {{en adelante}{en adelante}},
   thiscite         = {{en}{en}},
 %    \end{macrocode}
@@ -15947,6 +15974,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
   langamerican     = {{ingl\'es americano}{ing\adddotspace amer\adddotspace}},
+  langbasque       = {{vasco}{vasc\adddot}}, % TODO check
   langbrazilian    = {{brasile\~no}{por\adddotspace bras\adddotspace}},
   langbulgarian    = {{b\'ulgaro}{bul\adddotspace}},
   langcatalan      = {{catal\'an}{cat\adddotspace}},
@@ -15965,7 +15993,9 @@ reference,mvreference,inreference]{volume}{%
   langitalian      = {{italiano}{ita\adddotspace}},
   langjapanese     = {{japon\'es}{jap\adddotspace}},
   langlatin        = {{lat\'in}{lat\adddotspace}},
-  langlatvian      = {{lituano}{lit\adddotspace}},
+  langlatvian      = {{let\'on}{let\adddotspace}}, % TODO check
+  langlithuanian   = {{lituano}{Lit\adddot}}, % TODO check
+  langmarathi      = {{marathi}{mar\adddot}}, % TODO check
   langnorwegian    = {{noruego}{nor\adddotspace}},
   langpolish       = {{polaco}{pol\adddotspace}},
   langportuguese   = {{portugu\'es}{port\adddotspace}},
@@ -15975,21 +16005,418 @@ reference,mvreference,inreference]{volume}{%
   langslovene      = {{esloveno}{slv\adddotspace}},
   langspanish      = {{espa\~nol}{esp\adddotspace}},
   langswedish      = {{sueco}{sueco}},
+  langturkish      = {{turco}{turco}}, % TODO check
   langukrainian    = {{ucraniano}{ucr\adddotspace}},
 }
 %    \end{macrocode}
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</es>
+%<*pl>
+% \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Polish: polish-oxref.lbx}
+%
+% \setcounter{FancyVerbLine}{19}
+%
+% Thanks to Sebastian Wasiuta for contributing these translations.
+%
+% We load the standard language-specific punctuation and date formatting.
+%
+%    \begin{macrocode}
+\InheritBibliographyExtras{polish}
+%    \end{macrocode}
+%
+% In addition, we need to use the grammatically correct macro in treaty
+% execution dates.
+%
+%    \begin{macrocode}
+\DeclareBibliographyExtras{
+  \savecommand\makebbx@dateii
+  \def\makebbx@dateii#1#2#3{%
+    \blx@imc@stripzeros{#3}~\lbx@pl@mkbibmonth{#2}%
+    \space
+    #1}
+}
+\UndeclareBibliographyExtras{%
+  \restorecommand\makebbx@dateii
+}
+%    \end{macrocode}
+%
+% We load the standard set of localization strings, then add our
+% adjustments.
+%
+%    \begin{macrocode}
+\DeclareBibliographyStrings{%
+  inherit          = {polish},
+%    \end{macrocode}
+%
+% These are new strings defined by \pkg[biblatex]{oxref}:
+%
+% \begin{itemize}
+%   \item Roles expressed as functions
+% \end{itemize}
+%
+%    \begin{macrocode}
+  director         = {{re\.{z}yser}{re\.{z}\adddot}},
+  directors        = {{re\.{z}yserzy}{re\.{z}\adddot}},
+  performer        = {{wykonawca}{wyk\adddot}},
+  performers       = {{wykonawcy}{wyk\adddot}},
+  reader           = {{czytelnik}{czytelnik}},
+  readers          = {{czytelnicy}{czytelnicy}},
+  conductor        = {{dyrygent}{dyr\adddot}},
+  conductors       = {{dyrygenci}{dyr\adddot}},
+  serieseditor     = {{redaktor serii}{red\adddotspace serii}},
+  serieseditors    = {{redaktor serii}{red\adddotspace serii}},
+  holder           = {{w\l a\'{s}ciciel}{w\l a\'{s}ciciel}},
+  holders          = {{w\l a\'{s}ciciele}{w\l a\'{s}ciciele}},
+  editorcm         = {{redaktor i~kompilator}{red\adddotspace i~kompilator}},
+  editorcms        = {{redaktorzy i~kompilatorzy}{red\adddotspace i~kompilatorzy}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Roles expressed as actions
+% \end{itemize}
+%
+%    \begin{macrocode}
+  byperformer      = {{wykonawca}{wyk\adddot}},
+  bydirector       = {{re\.{z}yseria}{re\.{z}\adddot}},
+  byreader         = {{czyta}{czyta}},
+  byconductor      = {{kieruje}{kier\adddot}},
+  byserieseditor   = {{redakcja}{red\adddot}},
+  byholder         = {{w~posiadaniu}{w~posiadaniu}},
+  byeditorcm       = {{redakcja i~opracowanie}{red\adddotspace i~oprac\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Publication details
+% \end{itemize}
+%
+%    \begin{macrocode}
+  facsimile        = {{wydanie faksymile}{wyd\adddotspace faksymile}},
+  revised          = {{wydanie poprawione}{wyd\adddotspace popr\adddot}},
+  revisedenlarged  = {{wydanie poprawione i~rozszerzone}{wyd\adddotspace popr\addotspace i~rozszerz\adddot}},
+  revisedreprint   = {{przedruk poprawiony}{przedr\adddotspace popr\adddot}},
+  suppto           = {{dodatek do}{dod\adddotspace do}},
+  equals           = {{=}{=}},
+  original         = {{oryginalny}{oryg\adddot}},
+  amendedby        = {{zmienione przez}{zmien\adddotspace przez}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Publication state
+% \end{itemize}
+%
+%    \begin{macrocode}
+  inpressin        = {{z\l o\.{z}one do}{z\l o\.{z}one do}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Pagination
+% \end{itemize}
+%
+%    \begin{macrocode}
+  book             = {{ksi\k{e}ga}{ks\adddot}},
+  books            = {{ksi\k{e}gi}{ks\adddot}},
+  canto            = {{pie\'{s}\'{n}}{pie\'{s}\'{n}}},
+  cantos           = {{pie\'{s}ni}{pie\'{s}ni}},
+  stanza           = {{zwrotka}{zwr\adddot}},
+  stanzas          = {{zwrotki}{zwr\adddot}},
+  act              = {{akt}{a\adddot}},
+  acts             = {{akty}{aa\adddot}},
+  scene            = {{scena}{sc\adddot}},
+  scenes           = {{sceny}{sc\adddot}},
+  folio            = {{karta}{k\adddot}},
+  folios           = {{karty}{kk\adddot}},
+  article          = {{artyku\l }{art\adddot}},
+  articles         = {{artyku\l y}{art\adddot}},
+  clause           = {{klauzula}{klauz\adddot}},
+  clauses          = {{klauzule}{klauz\adddot}},
+  regulation       = {{rozporz\k{a}dzenie}{rozp\adddot}},
+  regulations      = {{rozporz\k{a}dzenia}{rozp\adddot}},
+  rule             = {{przepis}{przep\adddot}},
+  rules            = {{przepisy}{przep\adddot}},
+  booktotal        = {{ksi\k{e}ga}{ks\adddot}},
+  booktotals       = {{ksi\k{e}gi}{ks\adddot}},
+  cantototal       = {{pie\'{s}\'{n}}{pie\'{s}\'{n}}},
+  cantototals      = {{pie\'{s}ni}{pie\'{s}ni}},
+  stanzatotal      = {{zwrotka}{zwr\adddot}},
+  stanzatotals     = {{zwrotki}{zwr\adddot}},
+  acttotal         = {{akt}{a\adddot}},
+  acttotals        = {{akty}{aa\adddot}},
+  scenetotal       = {{scena}{sc\adddot}},
+  scenetotals      = {{sceny}{sc\adddot}},
+  foliototal       = {{karta}{k\adddot}},
+  foliototals      = {{karty}{kk\adddot}},
+  articletotal     = {{artyku\l }{art\adddot}},
+  articletotals    = {{artyku\l y}{art\adddot}},
+  clausetotal      = {{klauzula}{klauz\adddot}},
+  clausetotals     = {{klauzule}{klauz\adddot}},
+  regulationtotal  = {{rozporz\k{a}dzenie}{rozp\adddot}},
+  regulationtotals = {{rozporz\k{a}dzenia}{rozp\adddot}},
+  ruletotal        = {{przepis}{przep\adddot}},
+  ruletotals       = {{przepisy}{przep\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Types
+% \end{itemize}
+%
+%    \begin{macrocode}
+  facebook         = {{wpis na Facebooku}{wpis na Facebooku}},
+  tweet            = {{wpis na Twitterze}{wpis na Twitterze}},
+  podcast          = {{podcast}{podcast}},
+  clip             = {{wideo}{wideo}},
+  webcast          = {{webcast}{webcast}},
+  poster           = {{plakat}{plakat}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Miscellaneous
+% \end{itemize}
+%
+%    \begin{macrocode}
+  nolocation       = {{bez miejsca}{b\adddot m\adddot}},
+  modified         = {{ostatnio zmodyfikowany}{ostatnio zmodyf\adddot}},
+  recorded         = {{nagrane}{nagr\adddot}},
+  uploaded         = {{za\l adowane}{za\l ad\adddot}},
+  filed            = {{wniesione}{wniesione}},
+  issued           = {{wydany}{wyd\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Labels
+% \end{itemize}
+%
+%    \begin{macrocode}
+  anon             = {{Anonim}{Anon\adddot}},
+  pseudo           = {{Pseudo-}{Ps\adddot-}},
+  urldown          = {{pobrane}{pobrane}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item Country names, patents, and patent requests,
+% \end{itemize}
+%
+%    \begin{macrocode}
+  countryjp        = {{Japonia}{JP}},
+  patentjp         = {{japo\'{n}ski patent}{jap\adddotspace pat\adddot}},
+  patreqjp         = {{japo\'{n}ski wniosek patentowy}{jap\adddotspace wniosek pat\adddot}},
+%    \end{macrocode}
+%
+% \begin{itemize}
+%   \item These are borrowed from other styles.
+% \end{itemize}
+%
+%    \begin{macrocode}
+  1column          = {{jedna kolumna}{1\addnbspace kol\adddot}},
+  2column          = {{dwie kolumny}{2\addnbspace kol\adddot}},
+  inflayer         = {{warstwa ni\.{z}sza}{warstwa ni\.{z}sza}},
+  suplayer         = {{warstwa wy\.{z}sza}{warstwa wy\.{z}sza}},
+  paper            = {{gazeta}{gazeta}},
+  papyrus          = {{papirus}{papirus}},
+  parchment        = {{pergamin}{pergamin}},
+  eucase           = {{sprawa}{sprawa}},
+  eujoinedcases    = {{po\l \k{a}czone sprawy}{po\l \k{a}czone sprawy}},
+  commissiondecision = {{decyzja komisji}{decyzja komisji}},
+  application      = {{wniosek}{wniosek}},
+  order            = {{polecenie}{polecenie}},
+  bill             = {{rachunek}{rachunek}},
+  draft            = {{projekt}{proj\adddot}},
+  opened           = {{otwarty na podpis}{otwarty na podpis}}, %TODO check
+  signed           = {{podpisane}{podpisane}},
+  adopted          = {{przyj\k{e}te}{przyj\k{e}te}},
+  inforce          = {{wesz\l o w~\.{z}ycie}{wesz\l o w~\.{z}ycie}},
+%    \end{macrocode}
+%
+% The rest of these strings are overrides for the standard ones.
+%
+%    \begin{macrocode}
+  byeditor         = {{redakcja}{red\adddot}},
+  bycompiler       = {{opracowanie}{oprac\adddot}},
+  byfounder        = {{za\l o\.{z}one przez}{za\l o\.{z}\adddotspace przez}},
+  bycontinuator    = {{kontynuowane przez}{kont\adddotspace przez}},
+  byredactor       = {{redakcja}{red\adddot}},
+  byreviser        = {{poprawki}{popr\adddot}},
+  byreviewer       = {{recenzja}{rec\adddot}},
+  bycollaborator   = {{we wsp\'{o}\l pracy z}{we wsp\'{o}\l pr\adddotspace z}},
+  bytranslator     = {{t\l umaczenie \lbx@lfromlang}{t\l um\adddot\ \lbx@sfromlang}},
+  bycommentator    = {{komentarz}{kom\adddot}},
+  byannotator      = {{obja\'{s}nienia}{obja\'{s}n\adddot}},
+  byeditortr       = {{redakcja i~t\l umaczenie \lbx@lfromlang}%
+                      {red\adddotspace i~t\l um\adddot\ \lbx@sfromlang}},
+  byeditorco       = {{redakcja i~komentarz}%
+                      {red\adddotspace i~kom\adddot}},
+  byeditoran       = {{redakcja i~obja\'{s}nienia}%
+                      {red\adddotspace i~obja\'{s}n\adddot}},
+  byeditorin       = {{redakcja i~wst\k{e}p}%
+                      {red\adddotspace i~wst\k{e}p}},
+  byeditorfo       = {{redakcja i~przedmowa}%
+                      {red\adddotspace i~przedm\adddot}},
+  byeditoraf       = {{redakcja i~pos\l owie}%
+                      {red\adddotspace i~pos\l \adddot}},
+  byeditortrco     = {{redakcja, t\l umaczenie \lbx@lfromlang\finalandcomma\ i~komentarz}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, kom\adddot}},
+  byeditortran     = {{redakcja, t\l umaczenie \lbx@lfromlang\finalandcomma\ i~obja\'{s}nienia}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot}},
+  byeditortrin     = {{redakcja, t\l umaczenie \lbx@lfromlang, wst\k{e}p}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, wst\k{e}p}},
+  byeditortrfo     = {{redakcja, t\l umaczenie \lbx@lfromlang, przedmowa}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, przedm\adddot}},
+  byeditortraf     = {{redakcja, t\l umaczenie \lbx@lfromlang, pos\l \adddot}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, pos\l \adddot}},
+  byeditorcoin     = {{redakcja, komentarz, wst\k{e}p}%
+                      {red\adddot, kom\adddot, wst\k{e}p}},
+  byeditorcofo     = {{redakcja, komentarz i~przedmowa}%
+                      {red\adddot, kom\adddot, przedm\adddot}},
+  byeditorcoaf     = {{redakcja, komentarz, pos\l owie}%
+                      {red\adddot, kom\adddot, pos\l \adddot}},
+  byeditoranin     = {{redakcja, obja\'{s}nienia, wst\k{e}p}%
+                      {red\adddot, obja\'{s}n\adddot, wst\k{e}p}},
+  byeditoranfo     = {{redakcja, obja\'{s}nienia, przedmowa}%
+                      {red\adddot, obja\'{s}n\adddot, przedm\adddot}},
+  byeditoranaf     = {{redakcja, obja\'{s}nienia, pos\l owie}%
+                      {red\adddot, obja\'{s}n\adddot, pos\l \adddot}},
+  byeditortrcoin   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz, wst\k{e}p}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, kom\adddot, wst\k{e}p}},
+  byeditortrcofo   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz, przedmowa}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, kom\adddot, przedm\adddot}},
+  byeditortrcoaf   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz, pos\l owie}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, kom\adddot, pos\l \adddot}},
+  byeditortranin   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia, wst\k{e}p}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, wst\k{e}p}},
+  byeditortranfo   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia, przedmowa}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, przedm\adddot}},
+  byeditortranaf   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia, pos\l owie}%
+                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, pos\l \adddot}},
+  bytranslatorco   = {{t\l umaczenie \lbx@lfromlang\ i~komentarz}%
+                      {t\l um\adddot\ \lbx@sfromlang\ i~kom\adddot}},
+  bytranslatoran   = {{t\l umaczenie \lbx@lfromlang\ i~obja\'{s}nienia}%
+                      {t\l um\adddot\ \lbx@sfromlang\ i~obja\'{s}n\adddot}},
+  bytranslatorin   = {{t\l umaczenie \lbx@lfromlang i~wst\k{e}p}%
+                      {t\l um\adddot\ \lbx@sfromlang, wst\k{e}p}},
+  bytranslatorfo   = {{t\l umaczenie \lbx@lfromlang i~przedmowa}%
+                      {t\l um\adddot\ \lbx@sfromlang, przedm\adddot}},
+  bytranslatoraf   = {{t\l umaczenie \lbx@lfromlang i~pos\l owie}%
+                      {t\l um\adddot\ \lbx@sfromlang, pos\l \adddot}},
+  bytranslatorcoin = {{t\l umaczenie \lbx@lfromlang, komentarz i~wst\k{e}p}%
+                      {t\l um\adddot\ \lbx@sfromlang, kom\adddot, wst\k{e}p}},
+  bytranslatorcofo = {{t\l umaczenie \lbx@lfromlang, komentarz i~przedmowa}%
+                      {t\l um\adddot\ \lbx@sfromlang, kom\adddot, przedm\adddot}},
+  bytranslatorcoaf = {{t\l umaczenie \lbx@lfromlang, komentarz i~pos\l owie}%
+                      {t\l um\adddot\ \lbx@sfromlang, kom\adddot, pos\l \adddot}},
+  bytranslatoranin = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~wst\k{e}p}%
+                      {t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, wst\k{e}p}},
+  bytranslatoranfo = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~przedmowa}%
+                      {t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, przedm\adddot}},
+  bytranslatoranaf = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~pos\l owie}%
+                      {t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, pos\l \adddot}},
+%    \end{macrocode}
+%
+% The roles expressed as objects and terms for supplementary material
+% are not abbreviated.
+%
+%    \begin{macrocode}
+  withcommentator  = {{komentarz}{komentarz}},
+  withannotator    = {{obja\'{s}nienia}{obja\'{s}nienia}},
+  withintroduction = {{wst\k{e}p}{wst\k{e}p}},
+  withforeword     = {{przedmowa}{przedmowa}},
+  withafterword    = {{pos\l owie}{pos\l owie}},
+  introduction     = {{wst\k{e}p}{wst\k{e}p}},
+%    \end{macrocode}
+%
+% The translations and abbreviations for some publication details are different.
+%
+%    \begin{macrocode}
+  newseries        = {{nowa seria}{nowa seria}},
+  oldseries        = {{dawna seria}{dawna seria}},
+  edition          = {{wydanie}{wyd\adddot}},
+  reviewof         = {{recenzja}{rec\adddot}},
+  reprintfrom      = {{przedruk z}{przedr\adddotspace z}},
+  origpubin        = {{pierwodruk w}{pierwodr\adddotspace w}},
+%    \end{macrocode}
+%
+% We use a different translation for \enquote{paragraph}.
+%
+%    \begin{macrocode}
+  paragraph        = {{ust\k{e}p}{ust\adddot}},
+  paragraphs       = {{ust\k{e}py}{ust\adddot}},
+%    \end{macrocode}
+%
+% \emph{New Hart's Rules} uses \enquote{accessed} for URL dates.
+%
+%    \begin{macrocode}
+  urlseen          = {{dost\k{e}p}{dost\k{e}p}},
+%    \end{macrocode}
+%
+% Scholarly citation terms are abbreviated. Oxford style is to use \enquote{henceforth}
+% for shorthands and \enquote{at} to cite a page within a range.
+%
+%    \begin{macrocode}
+  idem             = {{idem}{id\adddot}},
+  idemsm           = {{idem}{id\adddot}},
+  idemsf           = {{eadem}{ead\adddot}},
+  idemsn           = {{idem}{id\adddot}},
+  idempm           = {{eidem}{eid\adddot}},
+  idempf           = {{eaedem}{eaed\adddot}},
+  idempn           = {{eadem}{ead\adddot}},
+  idempp           = {{eidem}{eid\adddot}},
+  citedas          = {{dalej}{dalej}},
+  thiscite         = {{na}{na}},
+%    \end{macrocode}
+%
+% Languages are abbreviated.
+%
+%    \begin{macrocode}
+  langamerican     = {{ameryka\'{n}ski angielski}{ameryk\adddotspace ang\adddot}}, % TODO check
+  langbasque       = {{baskijski}{bask\adddot}}, % TODO check
+  langbrazilian    = {{brazylijski}{braz\adddot}},
+  langbulgarian    = {{bu\l garski}{bu\l g\adddot}}, % TODO check
+  langcatalan      = {{katalo\'{n}ski}{katal\adddot}},
+  langcroatian     = {{chorwacki}{chorw\adddot}},
+  langczech        = {{czeski}{czeski}},
+  langdanish       = {{du\'{n}ski}{du\'{n}\adddot}},
+  langdutch        = {{holenderski}{holend\adddot}},
+  langenglish      = {{angielski}{ang\adddot}},
+  langestonian     = {{esto\'{n}ski}{est\adddot}},
+  langfinnish      = {{fi\'{n}ski}{fi\'{n}\adddot}},
+  langfrench       = {{francuski}{fr\adddot}},
+  langgalician     = {{galicyjski}{galic\adddot}}, % TODO check
+  langgerman       = {{niemiecki}{niem\adddot}},
+  langgreek        = {{grecki}{gr\adddot}},
+  langhungarian    = {{w\c{e}gierski}{w\c{e}g\adddot}}, % TODO check
+  langitalian      = {{w\l oski}{w\l \adddot}},
+  langjapanese     = {{japo\'{n}ski}{jap\adddot}}, % TODO check
+  langlatin        = {{\l aci\'{n}ski}{\l ac\adddot}},
+  langlatvian      = {{\l otewski}{\l ot\adddot}}, % TODO check
+  langlithuanian   = {{litewski}{lit\adddot}}, % TODO check
+  langmarathi      = {{marathi}{mar\adddot}}, % TODO check
+  langnorwegian    = {{norweski}{norw\adddot}},
+  langpolish       = {{polski}{pol\adddot}},
+  langportuguese   = {{portugalski}{port\adddot}},
+  langromanian     = {{rumu\'{n}ski}{rum\adddot}},
+  langrussian      = {{rosyjski}{ros\adddot}},
+  langserbian      = {{serbski}{serb\adddot}}, % TODO check
+  langslovak       = {{s\l owackiego}{s\l owack\adddot}}, % TODO check
+  langslovene      = {{s\l owe\'{n}ski}{s\l owe\'{n}\adddot}},
+  langspanish      = {{hiszpa\'{n}ski}{hiszp\adddot}},
+  langswedish      = {{szwedzki}{szw\adddot}},
+  langturkish      = {{turecki}{tur\adddot}}, % TODO check
+  langukrainian    = {{ukrai\'{n}ski}{ukr\adddot}}, % TODO check
+}
+%    \end{macrocode}
+%
+% \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</pl>
 % \fi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \section{Other languages}
 %
-% Currently \pkg[biblatex]{oxref} only supports English (British and American)
-% and Spanish explicitly, but if there is demand more languages may be added. If
-% you would like to contribute support for your language, a list of the
-% non-standard bibliography strings requiring definition may be found in
-% section~\ref{sec:setup}.
+% Currently \pkg[biblatex]{oxref} only supports English (British and American),
+% Spanish, and Polish explicitly,
+% but if there is demand more languages may be added. If you would like to
+% contribute support for your language, a list of the non-standard bibliography
+% strings requiring definition may be found in section~\ref{sec:setup}.
 %
 % \iffalse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %</lbx>
