@@ -1670,9 +1670,12 @@ This can be set globally or on a per-type or per-entry basis.
 
 \section{Works in foreign languages}
 
-If you used a foreign language work, you might want to recommend a good translation.
+If you used a work in a different language from the one in which you are currently writing,
+you might want to recommend a good translation into the latter language.
 
-\tip{Add the translation in \code{related}, and set \code{relatedtype} to \code{translationas}.}
+\tip{Add the translation in \code{related}, and set \code{relatedtype} to \code{translationas}.
+  The localized bibstring reflects the current localization language:
+  \enquote{English translation}, \enquote{traducido espa\~nol}, and so on.}
 
 \begin{bibexbox}
 %<n|m><NHR \S18.2.5*>
@@ -15183,7 +15186,7 @@ reference,mvreference,inreference]{volume}{%
 \InheritBibliographyExtras{english}
 \DeclareBibliographyExtras{%
   \def\finalandcomma{\addcomma}%
-  \def\blx@ox@langbibstring#1#2{#1\addspace\bibstring{#2}}%
+  \def\blx@ox@langbibstring#1#2{#1\setunit*{\addspace}\bibstring{#2}}%
 }
 \UndeclareBibliographyExtras{%
   \def\blx@ox@langbibstring#1#2{\bibstring{#2}}%
@@ -16333,6 +16336,7 @@ reference,mvreference,inreference]{volume}{%
   edition          = {{wydanie}{wyd\adddot}},
   reviewof         = {{recenzja}{rec\adddot}},
   reprintfrom      = {{przedruk z}{przedr\adddotspace z}},
+  translationas    = {{t\l umaczenie polskie jako}{t\l um\adddotspace pol\adddotspace jako}},
   origpubin        = {{pierwodruk w}{pierwodr\adddotspace w}},
 %    \end{macrocode}
 %
