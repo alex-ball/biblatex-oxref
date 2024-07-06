@@ -145,4 +145,5 @@ _markdown_*/
 biblatex-oxref*.zip
 oxref.pdf
 test-ox*.tex
+test-*-ox*.tex
 test-*.pdf

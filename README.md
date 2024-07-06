@@ -46,7 +46,7 @@ UNIX-like systems:
         oxnotes-trad1.cbx, oxnotes-trad2.cbx, oxnotes-trad3.cbx, oxyear.cbx,
         oxnum.cbx, oxalph.cbx
       - american-oxref.lbx, british-oxref.lbx, english-oxref.lbx,
-        spanish-oxref.lbx
+        spanish-oxref.lbx, polish.lbx
       - oxnotes.dbx, oxnotes-ibid.dbx, oxnotes-note.dbx, oxnotes-inote.dbx,
         oxnotes-trad1.dbx, oxnotes-trad2.dbx, oxnotes-trad3.dbx, oxyear.dbx,
         oxnum.dbx, oxalph.dbx
@@ -89,7 +89,8 @@ first two steps.
         american-oxref.lbx,
         british-oxref.lbx,
         english-oxref.lbx,
-        spanish-oxref.lbx
+        spanish-oxref.lbx,
+        polish-oxref.lbx,
         oxalph.bbx,
         oxalph.cbx,
         oxalph.dbx,

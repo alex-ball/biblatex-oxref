@@ -281,13 +281,14 @@ def run_lbx_check(language: str):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument(
-    "style", type=click.Choice(["oxalph", "oxnotes", "oxnum", "oxyear", "spanish"])
+    "style",
+    type=click.Choice(["oxalph", "oxnotes", "oxnum", "oxyear", "spanish", "polish"]),
 )
 def main(style):
     """Performs unit tests on LaTeX output from the biblatex-oxref
     bibliography styles.
     """
-    if style in ["spanish"]:
+    if style in ["spanish", "polish"]:
         return run_lbx_check(style)
 
     targets = extract_targets(f"{style}-doc.tex")
