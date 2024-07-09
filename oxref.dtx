@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2023/11/23 v3.2}
+\def\Version{2024/07/09 v3.3-pre1}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -664,18 +664,24 @@ Copyright (C) 2016–2023 Alex Ball
 
 \newcounter{elementcount}
 \newcommand{\commaorandlist}[1]{%
+  % Counting up
   \renewcommand*{\do}[1]{\stepcounter{elementcount}}%
   \dolistloop{#1}%
   \ifnumgreater{\value{elementcount}}{2}{%
-    \def\finaland{, and }%
+    \def\thisfinaland{,\space and\space}%
   }{%
-    \def\finaland{ and }%
+    \def\thisfinaland{\space and\space}%
   }%
+  % Counting back down
   \renewcommand*{\do}[1]{%
-    \ifnumequal{\value{elementcount}}{1}{%
-      ##1%
+    \ifnumgreater{\value{elementcount}}{2}{% antipenultimate or earlier
+      ##1,\space
     }{%
-      \ifnumequal{\value{elementcount}}{2}{#1\finaland}{##1, }%
+      \ifnumequal{\value{elementcount}}{2}{% penultimate
+        ##1\thisfinaland
+      }{% last
+        ##1%
+      }%
     }%
     \addtocounter{elementcount}{-1}%
   }%
@@ -1701,7 +1707,8 @@ you might want to recommend a good translation into the latter language.
 \end{Verbatim}
 \end{bibexbox}
 
-\tip{To specify the translator up front, set the \code{relatedtype} to \code{bytranslator} instead.}
+\tip{To specify the translator up front, or to recommend a translation into a third language,
+  set the \code{relatedtype} to \code{bytranslator} instead.}
 
 \begin{bibexbox}
 %<n|m><NHR \S18.2.14>
@@ -8806,7 +8813,7 @@ rather than \pkg[biblatex]{oxref}.}
 \DeclareFieldFormat{pages}{%
   \iffieldundef{bookpagination}%
     {\mkcomprange{#1}}%
-    {\mkcomprange[{\mkpageprefix[bookpagination]}]{#1}}%
+    {\mkpageprefix[bookpagination][\mkcomprange]{#1}}%
 }
 %    \end{macrocode}
 %
@@ -8816,7 +8823,7 @@ rather than \pkg[biblatex]{oxref}.}
 \DeclareFieldFormat{postnote}{%
   \iffieldundef{pagination}%
   {\mkcomprange{#1}}%
-  {\mkcomprange[{\mkpageprefix}]{#1}}%
+  {\mkpageprefix[pagination][\mkcomprange]{#1}}%
 }
 
 %    \end{macrocode}
