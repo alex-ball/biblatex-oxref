@@ -9380,6 +9380,7 @@ rather than \pkg[biblatex]{oxref}.}
 % considered on request.
 %
 %    \begin{macrocode}
+\newcommand*{\mkvolroman}[1]{\Rn{#1}}
 \DeclareFieldFormat[book,mvbook,bookinbook,inbook,suppbook,%
 collection,mvcollection,incollection,suppcollection,%
 proceedings,mvproceedings,inproceedings,%
@@ -9387,11 +9388,11 @@ reference,mvreference,inreference]{volume}{%
 \IfSubStr{#1}{-}{%
   \StrCount{#1}{-}[\blx@ox@dashnum]%
   \StrBefore{#1}{-}[\blx@ox@volnum]%
-  \expandafter\ifinteger\blx@ox@volnum{\Rn{\blx@ox@volnum}}{\blx@ox@volnum}\bibrangedash
+  \expandafter\ifinteger\blx@ox@volnum{\mkvolroman{\blx@ox@volnum}}{\blx@ox@volnum}\bibrangedash
   \StrBehind[\blx@ox@dashnum]{#1}{-}[\blx@ox@volnum]%
-  \expandafter\ifinteger\blx@ox@volnum{\Rn{\blx@ox@volnum}}{\blx@ox@volnum}%
+  \expandafter\ifinteger\blx@ox@volnum{\mkvolroman{\blx@ox@volnum}}{\blx@ox@volnum}%
 }{%
-  \ifinteger{#1}{\Rn{#1}}{#1}}}
+  \ifinteger{#1}{\mkvolroman{#1}}{#1}}}
 %    \end{macrocode}
 %
 % Where a multi-volume work is more like a series, the volume number and
@@ -16022,7 +16023,7 @@ reference,mvreference,inreference]{volume}{%
 %
 % \setcounter{FancyVerbLine}{19}
 %
-% Thanks to Sebastian Wasiuta for contributing these translations.
+% Thanks to Sebastian Wasiuta for contributing these translations and extras.
 %
 % We load the standard language-specific punctuation and date formatting.
 %
@@ -16030,19 +16031,78 @@ reference,mvreference,inreference]{volume}{%
 \InheritBibliographyExtras{polish}
 %    \end{macrocode}
 %
-% In addition, we need to use the grammatically correct macro in treaty
-% execution dates.
+% Here are some additional specific settings we need.
+%
+% There is no comma after forenames in the inverted position.
 %
 %    \begin{macrocode}
-\DeclareBibliographyExtras{
+\DeclareBibliographyExtras{%
+  \DeclareDelimFormat{revsdnamedelim}{}%
+%    \end{macrocode}
+%
+% We need to use the right case for month names in treaty execution dates.
+%
+%    \begin{macrocode}
   \savecommand\makebbx@dateii
   \def\makebbx@dateii#1#2#3{%
     \blx@imc@stripzeros{#3}~\lbx@pl@mkbibmonth{#2}%
     \space
-    #1}
+    #1}%
+%    \end{macrocode}
+%
+% Volume numbers are expressed in uppercase Roman numerals.
+%
+%    \begin{macrocode}
+  \savecommand\mkvolroman
+  \renewcommand*{\mkvolroman}[1]{\RN{#1}}%
+%    \end{macrocode}
+%
+% There is no compression of years.
+%
+%    \begin{macrocode}
+  \savecommand\blx@ox@compyear
+  \renewcommand*{\blx@ox@compyear}[2]{#2}%
+%    \end{macrocode}
+%
+% There is no compression of pagination ranges.
+%
+%    \begin{macrocode}
+  \savefieldformat{pages}%
+  \DeclareFieldFormat{pages}{%
+    \iffieldundef{bookpagination}%
+      {\mknormrange{#1}}%
+      {\mkpageprefix[bookpagination][\mknormrange]{#1}}%
+  }%
+  \savefieldformat{postnote}%
+  \DeclareFieldFormat{postnote}{%
+    \iffieldundef{pagination}%
+      {\mknormrange{#1}}%
+      {\mkpageprefix[pagination][\mknormrange]{#1}}%
+  }%
+%    \end{macrocode}
+%
+% We flip the word order when specifying the edition.
+%
+%    \begin{macrocode}
+  \savefieldformat{edition}%
+  \DeclareFieldFormat{edition}{%
+    \ifinteger{#1}
+      {\bibstring{edition}~\mkbibordedition{#1}}
+      {\ifbibstring{#1}{\bibstring{#1}}{#1\isdot}}}%
 }
+%    \end{macrocode}
+%
+% Lastly we add code to undo these changes before switching to another language.
+%
+%    \begin{macrocode}
 \UndeclareBibliographyExtras{%
+  \DeclareDelimFormat{revsdnamedelim}{\addcomma}%
   \restorecommand\makebbx@dateii
+  \restorecommand\mkvolroman
+  \restorecommand\blx@ox@compyear
+  \restorefieldformat{pages}%
+  \restorefieldformat{postnote}%
+  \restorefieldformat{edition}%
 }
 %    \end{macrocode}
 %
@@ -16226,7 +16286,7 @@ reference,mvreference,inreference]{volume}{%
   order            = {{polecenie}{polecenie}},
   bill             = {{rachunek}{rachunek}},
   draft            = {{projekt}{proj\adddot}},
-  opened           = {{otwarty na podpis}{otwarty na podpis}}, %TODO check
+  opened           = {{przed\l o\.{z}one do podpisu}{przed\l\adddotspace do podp\adddot}},
   signed           = {{podpisane}{podpisane}},
   adopted          = {{przyj\k{e}te}{przyj\k{e}te}},
   inforce          = {{wesz\l o w~\.{z}ycie}{wesz\l o w~\.{z}ycie}},
@@ -16243,11 +16303,11 @@ reference,mvreference,inreference]{volume}{%
   byreviser        = {{poprawki}{popr\adddot}},
   byreviewer       = {{recenzja}{rec\adddot}},
   bycollaborator   = {{we wsp\'{o}\l pracy z}{we wsp\'{o}\l pr\adddotspace z}},
-  bytranslator     = {{t\l umaczenie \lbx@lfromlang}{t\l um\adddot\ \lbx@sfromlang}},
+  bytranslator     = {{t\l umaczenie}{t\l um\adddot}},
   bycommentator    = {{komentarz}{kom\adddot}},
   byannotator      = {{obja\'{s}nienia}{obja\'{s}n\adddot}},
-  byeditortr       = {{redakcja i~t\l umaczenie \lbx@lfromlang}%
-                      {red\adddotspace i~t\l um\adddot\ \lbx@sfromlang}},
+  byeditortr       = {{redakcja i~t\l umaczenie}%
+                      {red\adddotspace i~t\l um\adddot}},
   byeditorco       = {{redakcja i~komentarz}%
                       {red\adddotspace i~kom\adddot}},
   byeditoran       = {{redakcja i~obja\'{s}nienia}%
@@ -16258,62 +16318,62 @@ reference,mvreference,inreference]{volume}{%
                       {red\adddotspace i~przedm\adddot}},
   byeditoraf       = {{redakcja i~pos\l owie}%
                       {red\adddotspace i~pos\l \adddot}},
-  byeditortrco     = {{redakcja, t\l umaczenie \lbx@lfromlang\finalandcomma\ i~komentarz}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, kom\adddot}},
-  byeditortran     = {{redakcja, t\l umaczenie \lbx@lfromlang\finalandcomma\ i~obja\'{s}nienia}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot}},
-  byeditortrin     = {{redakcja, t\l umaczenie \lbx@lfromlang, wst\k{e}p}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, wst\k{e}p}},
-  byeditortrfo     = {{redakcja, t\l umaczenie \lbx@lfromlang, przedmowa}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, przedm\adddot}},
-  byeditortraf     = {{redakcja, t\l umaczenie \lbx@lfromlang, pos\l \adddot}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, pos\l \adddot}},
+  byeditortrco     = {{redakcja, t\l umaczenie i~komentarz}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace kom\adddot}},
+  byeditortran     = {{redakcja, t\l umaczenie i~obja\'{s}nienia}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace obja\'{s}n\adddot}},
+  byeditortrin     = {{redakcja, t\l umaczenie, wst\k{e}p}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace wst\k{e}p}},
+  byeditortrfo     = {{redakcja, t\l umaczenie, przedmowa}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace przedm\adddot}},
+  byeditortraf     = {{redakcja, t\l umaczenie, pos\l \adddot}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace pos\l \adddot}},
   byeditorcoin     = {{redakcja, komentarz, wst\k{e}p}%
-                      {red\adddot, kom\adddot, wst\k{e}p}},
+                      {red.,\addabbrvspace kom.,\addabbrvspace wst\k{e}p}},
   byeditorcofo     = {{redakcja, komentarz i~przedmowa}%
-                      {red\adddot, kom\adddot, przedm\adddot}},
+                      {red.,\addabbrvspace kom.,\addabbrvspace przedm\adddot}},
   byeditorcoaf     = {{redakcja, komentarz, pos\l owie}%
-                      {red\adddot, kom\adddot, pos\l \adddot}},
+                      {red.,\addabbrvspace kom.,\addabbrvspace pos\l \adddot}},
   byeditoranin     = {{redakcja, obja\'{s}nienia, wst\k{e}p}%
-                      {red\adddot, obja\'{s}n\adddot, wst\k{e}p}},
+                      {red.,\addabbrvspace obja\'{s}n.,\addabbrvspace wst\k{e}p}},
   byeditoranfo     = {{redakcja, obja\'{s}nienia, przedmowa}%
-                      {red\adddot, obja\'{s}n\adddot, przedm\adddot}},
+                      {red.,\addabbrvspace obja\'{s}n.,\addabbrvspace przedm\adddot}},
   byeditoranaf     = {{redakcja, obja\'{s}nienia, pos\l owie}%
-                      {red\adddot, obja\'{s}n\adddot, pos\l \adddot}},
-  byeditortrcoin   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz, wst\k{e}p}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, kom\adddot, wst\k{e}p}},
-  byeditortrcofo   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz, przedmowa}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, kom\adddot, przedm\adddot}},
-  byeditortrcoaf   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz, pos\l owie}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, kom\adddot, pos\l \adddot}},
-  byeditortranin   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia, wst\k{e}p}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, wst\k{e}p}},
-  byeditortranfo   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia, przedmowa}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, przedm\adddot}},
-  byeditortranaf   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia, pos\l owie}%
-                      {red\adddot, t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, pos\l \adddot}},
-  bytranslatorco   = {{t\l umaczenie \lbx@lfromlang\ i~komentarz}%
-                      {t\l um\adddot\ \lbx@sfromlang\ i~kom\adddot}},
-  bytranslatoran   = {{t\l umaczenie \lbx@lfromlang\ i~obja\'{s}nienia}%
-                      {t\l um\adddot\ \lbx@sfromlang\ i~obja\'{s}n\adddot}},
-  bytranslatorin   = {{t\l umaczenie \lbx@lfromlang i~wst\k{e}p}%
-                      {t\l um\adddot\ \lbx@sfromlang, wst\k{e}p}},
-  bytranslatorfo   = {{t\l umaczenie \lbx@lfromlang i~przedmowa}%
-                      {t\l um\adddot\ \lbx@sfromlang, przedm\adddot}},
-  bytranslatoraf   = {{t\l umaczenie \lbx@lfromlang i~pos\l owie}%
-                      {t\l um\adddot\ \lbx@sfromlang, pos\l \adddot}},
-  bytranslatorcoin = {{t\l umaczenie \lbx@lfromlang, komentarz i~wst\k{e}p}%
-                      {t\l um\adddot\ \lbx@sfromlang, kom\adddot, wst\k{e}p}},
-  bytranslatorcofo = {{t\l umaczenie \lbx@lfromlang, komentarz i~przedmowa}%
-                      {t\l um\adddot\ \lbx@sfromlang, kom\adddot, przedm\adddot}},
-  bytranslatorcoaf = {{t\l umaczenie \lbx@lfromlang, komentarz i~pos\l owie}%
-                      {t\l um\adddot\ \lbx@sfromlang, kom\adddot, pos\l \adddot}},
-  bytranslatoranin = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~wst\k{e}p}%
-                      {t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, wst\k{e}p}},
-  bytranslatoranfo = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~przedmowa}%
-                      {t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, przedm\adddot}},
-  bytranslatoranaf = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~pos\l owie}%
-                      {t\l um\adddot\ \lbx@sfromlang, obja\'{s}n\adddot, pos\l \adddot}},
+                      {red.,\addabbrvspace obja\'{s}n.,\addabbrvspace pos\l \adddot}},
+  byeditortrcoin   = {{redakcja, t\l umaczenie, komentarz, wst\k{e}p}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace kom.,\addabbrvspace wst\k{e}p}},
+  byeditortrcofo   = {{redakcja, t\l umaczenie, komentarz, przedmowa}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace kom.,\addabbrvspace przedm\adddot}},
+  byeditortrcoaf   = {{redakcja, t\l umaczenie, komentarz, pos\l owie}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace kom.,\addabbrvspace pos\l \adddot}},
+  byeditortranin   = {{redakcja, t\l umaczenie, obja\'{s}nienia, wst\k{e}p}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace obja\'{s}n.,\addabbrvspace wst\k{e}p}},
+  byeditortranfo   = {{redakcja, t\l umaczenie, obja\'{s}nienia, przedmowa}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace obja\'{s}n.,\addabbrvspace przedm\adddot}},
+  byeditortranaf   = {{redakcja, t\l umaczenie, obja\'{s}nienia, pos\l owie}%
+                      {red.,\addabbrvspace t\l um.,\addabbrvspace obja\'{s}n.,\addabbrvspace pos\l \adddot}},
+  bytranslatorco   = {{t\l umaczenie i~komentarz}%
+                      {t\l um\adddotspace i~kom\adddot}},
+  bytranslatoran   = {{t\l umaczenie i~obja\'{s}nienia}%
+                      {t\l um\adddotspace i~obja\'{s}n\adddot}},
+  bytranslatorin   = {{t\l umaczenie i~wst\k{e}p}%
+                      {t\l um.,\addabbrvspace wst\k{e}p}},
+  bytranslatorfo   = {{t\l umaczenie i~przedmowa}%
+                      {t\l um.,\addabbrvspace przedm\adddot}},
+  bytranslatoraf   = {{t\l umaczenie i~pos\l owie}%
+                      {t\l um.,\addabbrvspace pos\l \adddot}},
+  bytranslatorcoin = {{t\l umaczenie, komentarz i~wst\k{e}p}%
+                      {t\l um.,\addabbrvspace kom.,\addabbrvspace wst\k{e}p}},
+  bytranslatorcofo = {{t\l umaczenie, komentarz i~przedmowa}%
+                      {t\l um.,\addabbrvspace kom.,\addabbrvspace przedm\adddot}},
+  bytranslatorcoaf = {{t\l umaczenie, komentarz i~pos\l owie}%
+                      {t\l um.,\addabbrvspace kom.,\addabbrvspace pos\l \adddot}},
+  bytranslatoranin = {{t\l umaczenie, obja\'{s}nienia i~wst\k{e}p}%
+                      {t\l um.,\addabbrvspace obja\'{s}n.,\addabbrvspace wst\k{e}p}},
+  bytranslatoranfo = {{t\l umaczenie, obja\'{s}nienia i~przedmowa}%
+                      {t\l um.,\addabbrvspace obja\'{s}n.,\addabbrvspace przedm\adddot}},
+  bytranslatoranaf = {{t\l umaczenie, obja\'{s}nienia i~pos\l owie}%
+                      {t\l um.,\addabbrvspace obja\'{s}n.,\addabbrvspace pos\l \adddot}},
 %    \end{macrocode}
 %
 % The roles expressed as objects and terms for supplementary material
@@ -16336,7 +16396,7 @@ reference,mvreference,inreference]{volume}{%
   edition          = {{wydanie}{wyd\adddot}},
   reviewof         = {{recenzja}{rec\adddot}},
   reprintfrom      = {{przedruk z}{przedr\adddotspace z}},
-  translationas    = {{t\l umaczenie polskie jako}{t\l um\adddotspace pol\adddotspace jako}},
+  translationas    = {{t\l umaczenie polskie}{t\l um\adddotspace pol\adddotspace}},
   origpubin        = {{pierwodruk w}{pierwodr\adddotspace w}},
 %    \end{macrocode}
 %
@@ -16372,10 +16432,10 @@ reference,mvreference,inreference]{volume}{%
 % Languages are abbreviated.
 %
 %    \begin{macrocode}
-  langamerican     = {{ameryka\'{n}ski angielski}{ameryk\adddotspace ang\adddot}}, % TODO check
-  langbasque       = {{baskijski}{bask\adddot}}, % TODO check
-  langbrazilian    = {{brazylijski}{braz\adddot}},
-  langbulgarian    = {{bu\l garski}{bu\l g\adddot}}, % TODO check
+  langamerican     = {{ameryka\'{n}ski angielski}{amer\adddotspace ang\adddot}},
+  langbasque       = {{baskijski}{bask\adddot}},
+  langbrazilian    = {{brazylijski portugalski}{braz\adddot port\adddot}},
+  langbulgarian    = {{bu\l garski}{bu\l g\adddot}},
   langcatalan      = {{katalo\'{n}ski}{katal\adddot}},
   langcroatian     = {{chorwacki}{chorw\adddot}},
   langczech        = {{czeski}{czeski}},
@@ -16385,28 +16445,28 @@ reference,mvreference,inreference]{volume}{%
   langestonian     = {{esto\'{n}ski}{est\adddot}},
   langfinnish      = {{fi\'{n}ski}{fi\'{n}\adddot}},
   langfrench       = {{francuski}{fr\adddot}},
-  langgalician     = {{galicyjski}{galic\adddot}}, % TODO check
+  langgalician     = {{galicyjski}{galic\adddot}},
   langgerman       = {{niemiecki}{niem\adddot}},
   langgreek        = {{grecki}{gr\adddot}},
-  langhungarian    = {{w\c{e}gierski}{w\c{e}g\adddot}}, % TODO check
+  langhungarian    = {{w\k{e}gierski}{w\k{e}g\adddot}},
   langitalian      = {{w\l oski}{w\l \adddot}},
-  langjapanese     = {{japo\'{n}ski}{jap\adddot}}, % TODO check
+  langjapanese     = {{japo\'{n}ski}{jap\adddot}},
   langlatin        = {{\l aci\'{n}ski}{\l ac\adddot}},
-  langlatvian      = {{\l otewski}{\l ot\adddot}}, % TODO check
-  langlithuanian   = {{litewski}{lit\adddot}}, % TODO check
-  langmarathi      = {{marathi}{mar\adddot}}, % TODO check
+  langlatvian      = {{\l otewski}{\l ot\adddot}},
+  langlithuanian   = {{litewski}{lit\adddot}},
+  langmarathi      = {{marathi}{mar\adddot}},
   langnorwegian    = {{norweski}{norw\adddot}},
   langpolish       = {{polski}{pol\adddot}},
   langportuguese   = {{portugalski}{port\adddot}},
   langromanian     = {{rumu\'{n}ski}{rum\adddot}},
   langrussian      = {{rosyjski}{ros\adddot}},
-  langserbian      = {{serbski}{serb\adddot}}, % TODO check
-  langslovak       = {{s\l owackiego}{s\l owack\adddot}}, % TODO check
+  langserbian      = {{serbski}{serb\adddot}},
+  langslovak       = {{s\l owacki}{s\l c\adddot}},
   langslovene      = {{s\l owe\'{n}ski}{s\l owe\'{n}\adddot}},
   langspanish      = {{hiszpa\'{n}ski}{hiszp\adddot}},
   langswedish      = {{szwedzki}{szw\adddot}},
-  langturkish      = {{turecki}{tur\adddot}}, % TODO check
-  langukrainian    = {{ukrai\'{n}ski}{ukr\adddot}}, % TODO check
+  langturkish      = {{turecki}{tur\adddot}},
+  langukrainian    = {{ukrai\'{n}ski}{ukr\adddot}},
 }
 %    \end{macrocode}
 %
