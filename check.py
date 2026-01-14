@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 import re
 import subprocess
-import typing as t
 
 import click
 
@@ -12,7 +11,7 @@ BIB = "bibitems"
 CIT = "fullcites"
 
 
-def extract_targets(filename: str) -> t.Mapping[str, t.Mapping[str, str]]:
+def extract_targets(filename: str) -> dict[str, dict[str, str]]:
     """Parses a LaTeX file and returns two mappings of IDs to target output
     extracted from `bibexbox` environments. The outer mapping keys are
     `fullcites` and `bibitems`.
@@ -92,7 +91,7 @@ def extract_targets(filename: str) -> t.Mapping[str, t.Mapping[str, str]]:
     return targets
 
 
-def get_bibitems(filename: str) -> t.List[str]:
+def get_bibitems(filename: str) -> list[str]:
     """From a text file, extracts and returns a list of lines in a
     recurring pattern such that there is a `\\bibitem` line, followed
     by a line containing a formatted reference, followed by a blank
@@ -155,7 +154,7 @@ def get_bibitems(filename: str) -> t.List[str]:
     return lines
 
 
-def parse_simple_bibitems(lines: t.List[str]) -> t.Mapping[str, t.Mapping[str, str]]:
+def parse_simple_bibitems(lines: list[str]) -> dict[str, dict[str, str]]:
     """Parses the output from biblatex2bibitem and returns a mapping of
     IDs to actual bibitem output.
     """
@@ -182,7 +181,7 @@ def parse_simple_bibitems(lines: t.List[str]) -> t.Mapping[str, t.Mapping[str, s
     return outputs
 
 
-def contrast_refs(**kwargs: t.Mapping[str, t.Mapping[str, str]]) -> t.Mapping[str, int]:
+def contrast_refs(**kwargs: dict[str, str]) -> dict[str, int]:
     """Performs a comparison between different sets of mappings from
     bib database IDs to formatted references.
 
