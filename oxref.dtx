@@ -372,9 +372,9 @@ Copyright (C) 2016–2023 Alex Ball
 %,isbn=false%
 ]{biblatex}
 \addbibresource{oxref.bib}
-\setcounter{biburllcpenalty}{900}
-\setcounter{biburlucpenalty}{800}
-\setcounter{biburlnumpenalty}{700}
+\setcounter{biburllcpenalty}{9000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{7000}
 \DeclareBibliographyCategory{hidden}
 \makeatletter
 \DeclareCiteCommand{\fullcite}
@@ -1860,6 +1860,26 @@ localization string \code{nodate}. If you don't want this behaviour, you can
 suppress it with the \key{nonodate} option, which can be set globally or on a
 per-type or per-entry basis.
 %</a|y>
+
+\section{URL formatting}
+
+In line with the instructions in \emph{New Hart's Rules} \S18.8.3, \pkg[biblatex]{oxref}
+adjusts the standard \pkg{biblatex} settings for stretching and breaking URLs.
+The main differences are as follows:
+
+\begin{itemize}
+\item Low-penalty breaks are \emph{after} slashes and colons
+  (these are affected by \code{biburlbigbreakpenalty} and \cs{biburlbigskip}).
+\item Higher-penalty breaks are \emph{after} percents
+  (these are affected by \code{biburlbreakpenalty} and \cs{biburlbigskip}).
+\item Higher-penalty breaks are also \emph{before} all other \textsc{ascii} punctuation.
+  These can be tuned separately using the counter \code{biburlpunctpenalty}
+  (default \code{200}, matching \code{biburlbreakpenalty}) and length \cs{biburlpunctskip}
+  (default \code{0mu} \code{plus} \code{1mu}, one-third as stretchy as the default 
+  \cs{biburlbigskip}).
+\end{itemize}
+
+The settings for numbers, lowercase letters, and uppercase letters remain unchanged.
 
 \chapter{Articles and periodicals}\label{sec:article}
 \chapterprecis{article, periodical, suppperiodical, review}
@@ -8904,9 +8924,9 @@ rather than \pkg[biblatex]{oxref}.}
 % NHR specifies that URLs should be broken across lines \emph{after} slashes
 % and (for presumably visual reasons, certainly not syntactical ones) percents;
 % and if that doesn't work, \emph{before} other punctuation (including hyphens).
-% We deviate slightly from this by breaking after colons as well, for practical
-% reasons. The break penalty and stretch around punctuation can be configured
-% independently of those for slashes, colons, percents, numbers, and letters.
+% Out of necessity, we deviate slightly by breaking after colons as well. The
+% break penalty and stretch around punctuation can be configured independently
+% of those for slashes, colons, percents, numbers, and letters.
 %
 %    \begin{macrocode}
 \newcounter{biburlpunctpenalty}
