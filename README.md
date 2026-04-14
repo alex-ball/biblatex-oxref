@@ -143,7 +143,7 @@ first two steps.
 
 ## Licence
 
-Copyright 2016–2023 Alex Ball.
+Copyright 2016–2026 Alex Ball.
 
 This work consists of the documented LaTeX file oxref.dtx and a Makefile.
 
